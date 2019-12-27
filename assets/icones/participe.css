@@ -1,0 +1,152 @@
+@font-face {
+	font-family: "participe";
+	src: url("participe.eot?8d0fad4f9f8455f406f8d8a9e6ea5156?#iefix") format("embedded-opentype"), 
+	url("participe.woff2?8d0fad4f9f8455f406f8d8a9e6ea5156") format("woff2"), 
+	url("participe.woff?8d0fad4f9f8455f406f8d8a9e6ea5156") format("woff");
+}
+
+.icon {
+	line-height: 100%;
+}
+
+.icon:before {
+	font-family: 'participe';
+	font-style: normal;
+	vertical-align: -.25rem;
+}
+
+.icon-abrir_direita:before {
+	content: "\f101";
+}
+.icon-abrir_esquerda:before {
+	content: "\f102";
+}
+.icon-aceitar:before {
+	content: "\f103";
+}
+.icon-acessar_url:before {
+	content: "\f104";
+}
+.icon-adicionar:before {
+	content: "\f105";
+}
+.icon-agrupar:before {
+	content: "\f106";
+}
+.icon-anexos:before {
+	content: "\f107";
+}
+.icon-apresentacao:before {
+	content: "\f108";
+}
+.icon-assunto:before {
+	content: "\f109";
+}
+.icon-buscar:before {
+	content: "\f10a";
+}
+.icon-calendario_vazio:before {
+	content: "\f10b";
+}
+.icon-comentario:before {
+	content: "\f10c";
+}
+.icon-contribuicao:before {
+	content: "\f10d";
+}
+.icon-correto:before {
+	content: "\f10e";
+}
+.icon-data:before {
+	content: "\f10f";
+}
+.icon-desagrupar:before {
+	content: "\f110";
+}
+.icon-diagonal_para_baixo:before {
+	content: "\f111";
+}
+.icon-diagonal_para_cima:before {
+	content: "\f112";
+}
+.icon-dialogo:before {
+	content: "\f113";
+}
+.icon-download:before {
+	content: "\f114";
+}
+.icon-editar:before {
+	content: "\f115";
+}
+.icon-expandir:before {
+	content: "\f116";
+}
+.icon-github:before {
+	content: "\f117";
+}
+.icon-grade:before {
+	content: "\f118";
+}
+.icon-home:before {
+	content: "\f119";
+}
+.icon-imprimir:before {
+	content: "\f11a";
+}
+.icon-incorreto:before {
+	content: "\f11b";
+}
+.icon-lista:before {
+	content: "\f11c";
+}
+.icon-listagem:before {
+	content: "\f11d";
+}
+.icon-mais:before {
+	content: "\f11e";
+}
+.icon-material:before {
+	content: "\f11f";
+}
+.icon-menu:before {
+	content: "\f120";
+}
+.icon-novamente:before {
+	content: "\f121";
+}
+.icon-oficio:before {
+	content: "\f122";
+}
+.icon-pdf:before {
+	content: "\f123";
+}
+.icon-pessoa-outline:before {
+	content: "\f124";
+}
+.icon-recolher:before {
+	content: "\f125";
+}
+.icon-rejeitar:before {
+	content: "\f126";
+}
+.icon-remover:before {
+	content: "\f127";
+}
+.icon-responder:before {
+	content: "\f128";
+}
+.icon-seta_baixo:before {
+	content: "\f129";
+}
+.icon-seta_cima:before {
+	content: "\f12a";
+}
+.icon-seta_direita:before {
+	content: "\f12b";
+}
+.icon-seta_esquerda:before {
+	content: "\f12c";
+}
+.icon-tempo:before {
+	content: "\f12d";
+}
