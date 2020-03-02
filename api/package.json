@@ -1,0 +1,30 @@
+{
+  "name": "apropricaohoras",
+  "version": "0.0.1",
+  "description": "API da apropriação de horas da São Paulo Urbanismo",
+  "engines": {
+    "node": ">=8.10.0"
+  },
+  "main": "server.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node server.js",
+    "lint": "prettier-standard server.js src/{*,/**/*}.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mysql2": "^2.0.2",
+    "sequelize": "^5.21.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.6",
+    "@babel/node": "^7.8.4",
+    "@babel/preset-env": "^7.8.6",
+    "cross-env": "^7.0.0",
+    "custom-env": "^2.0.1",
+    "nodemon": "^2.0.2",
+    "prettier-standard": "^16.1.0"
+  }
+}
