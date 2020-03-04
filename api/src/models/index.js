@@ -17,6 +17,10 @@ const db = {}
 db.Sequelize = Sequelize
 db.sequelize = sequelize
 
-db.horas = require('./horas.model.js')(sequelize, Sequelize)
+db.usuarios = require('./usuarios.model.js')(sequelize, Sequelize)
+db.projetos = require('./projetos.model.js')(sequelize, Sequelize)
+db.fases = require('./fases.model.js')(sequelize, Sequelize)
+db.subatividades = require('./subatividades.model.js')(sequelize, Sequelize)
+db.horas = require('./horas.model.js')(sequelize, Sequelize, db)
 
 module.exports = db
