@@ -35,28 +35,28 @@ const dataAccessObject = {
   update: (req, res, Model) => {
     const id = req.params.id
 
-    Model.update(req.body, { where: { id }})
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: `Sucesso! id: ${id} foi atualizado`
-        })
-      } else {
-        res.send({
-          message: `Erro. Não foi possível atualizar id: ${id}. Verifique se o conteúdo da requisição não está vazio`
-        })
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || `Erro. Não foi possível atualizar id: ${id}`
+    Model.update(req.body, { where: { id } })
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: `Sucesso! id: ${id} foi atualizado`
+          })
+        } else {
+          res.send({
+            message: `Erro. Não foi possível atualizar id: ${id}. Verifique se o conteúdo da requisição não está vazio`
+          })
+        }
       })
-    })
+      .catch(err => {
+        res.status(500).send({
+          message: err.message || `Erro. Não foi possível atualizar id: ${id}`
+        })
+      })
   },
   delete: (req, res, Model) => {
     const id = req.params.id
 
-    Model.destroy({ where: { id }})
+    Model.destroy({ where: { id } })
       .then(num => {
         if (num == 1) {
           res.send({

@@ -3,7 +3,14 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const version = `v${require('./package.json').version}`
-const endpoints = ['horas', 'usuarios', 'projetos', 'fases', 'subatividades', 'usuarios-projetos']
+const endpoints = [
+  'horas',
+  'usuarios',
+  'projetos',
+  'fases',
+  'subatividades',
+  'usuarios-projetos'
+]
 
 let corsOptions = {
   origin: 'http://localhost:5001'
@@ -20,7 +27,9 @@ const db = require('./src/models')
 db.sequelize.sync()
 
 // create endpoinsts
-endpoints.forEach(endpoint => require(`./src/routes/${endpoint}.routes`)(app, version))
+endpoints.forEach(endpoint =>
+  require(`./src/routes/${endpoint}.routes`)(app, version)
+)
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000

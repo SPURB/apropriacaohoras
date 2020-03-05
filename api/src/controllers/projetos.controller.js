@@ -11,7 +11,8 @@ exports.create = (req, res) => {
   }
 
   const body = {
-    nome: req.body.nome
+    nome: req.body.nome,
+    ativo: 1
   }
 
   dao.create(res, Projeto, body)
@@ -19,6 +20,8 @@ exports.create = (req, res) => {
 
 exports.findAll = (req, res) => dao.findAll(res, Projeto)
 exports.findOne = (req, res) => dao.findOne(req, res, Projeto)
-exports.update = (req, res) => dao.update(req, res, Projeto)
+exports.update = (req, res) => {
+  dao.update(req, res, Projeto)
+}
 exports.delete = (req, res) => dao.delete(req, res, Projeto)
 exports.deleteAll = (req, res) => dao.deleteAll(req, res, Projeto)
