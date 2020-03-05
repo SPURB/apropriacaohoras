@@ -16,9 +16,14 @@ API da aplicação de apropriação de horas
 npm install
 ```
 
-4. Inicie o ambiente. O comando também irá criar os modelos definido em `src/models/`
+4. Inclua dados definidos pelos arquivos em `/seed`
+```
+npm run seed
+```
+
+5. Inicie o ambiente. O comando também irá criar os modelos definido em `src/models/`
 ```
 npm run dev
 ```
 
-5. Com o browser acesse a base da api [localhost:5000/](http://localhost:5000/)
+6. Com o browser acesse a base da api [localhost:5000/](http://localhost:5000/)

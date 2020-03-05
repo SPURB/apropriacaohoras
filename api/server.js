@@ -18,11 +18,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // create models
 const db = require('./src/models')
 db.sequelize.sync()
-  .then(()=> {
-    // set dummy data if this is env is development
-    if(process.env.NODE_ENV === 'development') {
-    }
-  })
 
 // create endpoinsts
 endpoints.forEach(endpoint => require(`./src/routes/${endpoint}.routes`)(app, version))

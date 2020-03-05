@@ -1,0 +1,6 @@
+require("babel-register");
+const path = require('path');
+
+module.exports = {
+  'config': path.resolve('config', 'index.js'),
+};
