@@ -8,22 +8,34 @@ API da aplicação de apropriação de horas
 
 ## Instruções
 
-1. Acesse o seu mysql local e crie um banco
-2. A partir do arquivo `.env` crie o arquivo `env.development` incluindo as suas credenciais de acesso
-3. Instale as dependências
+1. Instale as dependências
 
 ```
 npm install
 ```
 
-4. Inclua dados definidos pelos arquivos em `/seed`
+2. A partir do arquivo `.env` crie o arquivo `env.development` incluindo as suas credenciais de acesso ao banco de dados mysql
+
+3. Crie o banco de dados
 ```
-npm run seed
+npm run db:create
 ```
 
-5. Inicie o ambiente. O comando também irá criar os modelos definido em `src/models/`
+4. Inicie o ambiente. O comando também irá criar os modelos definido em `src/models/`
 ```
 npm run dev
 ```
 
-6. Com o browser acesse a base da api [localhost:5000/](http://localhost:5000/)
+5. Inclua dados definidos pelos arquivos em `/seed` para auxiliar no desenvolvimento. Abra uma nova janela do terminal e inicie o comando:
+```
+npm run db:seed
+```
+
+6. Acesse a base da api [localhost:5000/](http://localhost:5000/)
+
+7. Mantenha a [documentação](https://www.getpostman.com/collections/6cd690a2f50f512b5130) atualizada
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/6cd690a2f50f512b5130)
+
+
+> veja a documentação do [sequelize](https://sequelize.org/master/manual/) para detalhamento do contexto e detalhamento do ORM utilizado.

@@ -3,4 +3,6 @@ const path = require('path');
 
 module.exports = {
   'config': path.resolve('config', 'index.js'),
+  'seeders-path': path.resolve('seeders'),
+  'models-path': path.resolve('models', 'models')
 };

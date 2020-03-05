@@ -7,9 +7,12 @@
   },
   "main": "server.js",
   "scripts": {
+    "lint": "prettier-standard server.js src/{*,/**/*}.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node server.js",
-    "seed": "cross-env NODE_ENV=development sequelize-cli db:seed:all",
-    "lint": "prettier-standard server.js src/{*,/**/*}.js"
+    "db:create": "cross-env NODE_ENV=development sequelize-cli db:create",
+    "db:seed": "cross-env NODE_ENV=development sequelize-cli db:seed:all",
+    "db:reset": "cross-env NODE_ENV=development sequelize-cli db:seed:undo:all",
+    "db:drop": "cross-env NODE_ENV=development sequelize-cli db:drop"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
