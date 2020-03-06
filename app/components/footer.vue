@@ -1,7 +1,7 @@
 <template>
 	<footer>
 		<div>
-			<span>Dúvidas e sugestões</span> &middot; Ramal XXXX &middot; email@spurbanismo.prefeitura.sp.gov.br
+			<span>Dúvidas e sugestões</span> &middot; Ramal 7533 &middot; desenvolvimento@spurbanismo.prefeitura.sp.gov.br
 		</div>
 	</footer>
 </template>
