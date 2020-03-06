@@ -13,9 +13,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'assets/variables';
-@import 'assets/generalstyles';
-
 footer {
 	background-color: $verde;
 	color: #FFF;

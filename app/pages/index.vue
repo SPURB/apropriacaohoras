@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Header from '../components/header.vue'
+import Header from '../components/Header.vue'
 
 export default {
 	name: 'Index',
@@ -33,10 +33,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'assets/icones/participe.css';
-@import 'assets/variables';
-@import 'assets/generalstyles';
-
 div#index {
 	height: 100vh;
 	z-index: 0;

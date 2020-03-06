@@ -9,7 +9,7 @@
 					<div class="main">
 						<label for="horas">Número de horas</label>
 						<div>
-							<button @click="hoursInc(-1)">-</button>
+							<button @click="hoursInc(-1)">-</button> 
 							<input id="horas" type="number" min="0" max="12" ref="hours" value="0">
 							<button @click="hoursInc(1)">+</button>
 						</div>
@@ -69,9 +69,9 @@
 </template>
 
 <script>
-import Header from '../components/header.vue'
-import Footer from '../components/footer.vue'
-import Calendario from '../components/calendario.vue'
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
+import Calendario from '../components/Calendario.vue'
 
 export default {
 	name: 'Registrar',
@@ -126,10 +126,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import 'assets/icones/participe.css';
-@import 'assets/variables';
-@import 'assets/generalstyles';
-
 .registrar {
 	h2 {
 		max-width: 1200px;

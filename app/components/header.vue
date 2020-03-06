@@ -9,7 +9,7 @@
 				</nuxt-link>
 			</span>
 			<ul class="user-menu" id="user-menu" :class="{ opened: userMenuState }">
-				<li class="user-info" @click="tellParent()">
+				<li class="user-info" @click="tellParent">
 					Nome Sobrenome <!-- from get -->
 					<img class="prof32x32" src="~/assets/temp-prof.png" alt="Imagem de perfil 32x32"> <!-- from get -->
 					<i class="icon icon-expandir"></i>
@@ -99,9 +99,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'assets/icones/participe.css';
-@import 'assets/variables';
-
 header {
 	background-color: #FFF;
 	box-shadow: $s-2-4-48;

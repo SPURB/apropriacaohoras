@@ -77,9 +77,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import 'assets/variables';
-@import 'assets/generalstyles';
-
 table {
 	border-spacing: 1rem;
 	table-layout: fixed;
