@@ -19,8 +19,15 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr v-for="(week, weekIndex) in weeksThisMonth">
-				<td v-for="(day, dayIndex) in (daysThisMonth + firstWeekDay)" v-if="dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1" :class="daysClassification(day)" v-html="formatDate(day)" @click="selectDate($event)"></td>
+			<tr :key="week+weekIndex" v-for="(week, weekIndex) in weeksThisMonth">
+				<td 
+					:key="dayIndex"
+					v-if="dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1" 
+					v-for="(day, dayIndex) in (daysThisMonth + firstWeekDay)"
+					:class="daysClassification(day)" 
+					v-html="formatDate(day)"
+					@click="selectDate($event)">
+				</td>
 			</tr>
 		</tbody>
 	</table>
