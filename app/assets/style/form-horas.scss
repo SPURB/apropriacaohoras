@@ -123,13 +123,13 @@
                     height: 100%;
                     width: 12%;
                     margin: .5%;
-                }
-                
-                .count-first {
-                    border-radius: 1.5rem 0 0 1.5rem;
-                }
-                .count-last {
-                    border-radius: 0 1.5rem 1.5rem 0;
+
+                    &:nth-child(1) {
+                      border-radius: 1.5rem 0 0 1.5rem;
+                    }
+                    &:nth-child(8) {
+                      border-radius: 0 1.5rem 1.5rem 0;
+                    }
                 }
               }
               
@@ -137,6 +137,10 @@
                   .count-hours {
                     background-color: $verde-claro;
                     width: 25%;
+
+                    &:nth-child(4) {
+                      border-radius: 0 1.5rem 1.5rem 0;
+                    }
                   }
               }
             }
