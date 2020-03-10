@@ -17,7 +17,7 @@ exports.create = (req, res) => {
   dao.create(res, Subatividade, body)
 }
 
-exports.findAll = (req, res) => dao.findAll(res, Subatividade)
+exports.findAll = (req, res) => dao.findAll(res, 'Subatividade', Subatividade)
 exports.findOne = (req, res) => dao.findOne(req, res, Subatividade)
 exports.update = (req, res) => dao.update(req, res, Subatividade)
 exports.delete = (req, res) => dao.delete(req, res, Subatividade)

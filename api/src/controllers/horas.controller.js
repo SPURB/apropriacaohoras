@@ -22,7 +22,7 @@ exports.create = (req, res) => {
   dao.create(res, Hora, body)
 }
 
-exports.findAll = (req, res) => dao.findAll(res, Hora)
+exports.findAll = (req, res) => dao.findAll(res, 'Hora', Hora)
 exports.findOne = (req, res) => dao.findOne(req, res, Hora)
 exports.update = (req, res) => dao.update(req, res, Hora)
 exports.delete = (req, res) => dao.delete(req, res, Hora)
