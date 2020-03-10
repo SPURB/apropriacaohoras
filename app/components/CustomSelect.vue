@@ -1,22 +1,26 @@
 <template>
   <fieldset>
-    <label for="projeto-atividade">{{ buildSelect.title }}</label>
-        <select>
+    <label>{{ buildSelect.title }}</label>
+        <select
+            @change="setValueOption({ title: buildSelect.title, value: optionValue})"
+            v-model="optionValue"
+        >
             <option value="" selected disabled>
                 Selecione uma opção
             </option>
             <option
-                :key="item.name+index"
+                :key="item.nome+index"
                 v-for="(item, index) in buildSelect.values"
-                :value="item.value"
+                :value="item.id"
             >
-            {{ item.name }}
+            {{ item.nome }}
             </option>
         </select>
     </fieldset>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
     name: 'CustomSelect',
     props: {
@@ -24,6 +28,14 @@ export default {
             type: Object,
             required: true
         }
+    },
+    data () {
+        return {
+            optionValue: ''
+        }
+    },
+    methods: {
+        ...mapActions(['setValueOption'])
     }
 }
 </script>

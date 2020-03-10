@@ -12,23 +12,22 @@
             <label for="horas">Número de horas</label>
             <div>
               <button
-                :disabled="this.registro.horas == 1"
-                @click="hoursDec"
+                :disabled="registro.horas == 1"
+                @click="toggleBar(false)"
               >
                 -
               </button> 
               <input 
                 id="horas"
-                v-model="registro.horas"
+                :value="registro.horas"
                 type="number"
                 min="0" 
                 max="12"
                 ref="hours"
-                value="0"
               />
               <button
-                :disabled="this.registro.horas == 12"
-                @click="hoursInc">
+                :disabled="registro.horas == 12"
+                @click="toggleBar(true)">
                 +
               </button>
             </div>
@@ -64,7 +63,7 @@
       <div class="formbtm">
         <fieldset>
           <label for="descricao">Descrição (opcional)</label>
-          <input id="descricao" type="text">
+          <input id="descricao" @keyup="setDescricao(descricao)" v-model="descricao" type="text">
         </fieldset>
       </div>
 
@@ -80,6 +79,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Calendario from '@/components/Calendario'
 import CustomSelect from '@/components/CustomSelect'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Registrar',
@@ -93,55 +93,22 @@ export default {
     return {
       userMenuState: false,
       userMenuEl: null,
-      registro: {
-        dataRefInicio: null,
-        dataRefFim: null,
-        id: null,
-        horas: 0,
-        extras: 0,
-        projeto: null,
-        fase: null,
-        subatividade: null,
-        descricao: null,
-      }
+      descricao: ''
     }
   },
   computed: {
-    dataSelects () {
-      const data = [
-        {
-          title: 'Projeto/Atividade',
-          values: [
-            { name: 'PIU Minhocão', value: '0' },
-            { name: 'PIU Setor Central', value: '1' },
-            { name: 'PIU Bairros do Tamanduateí', value: '2' },
-            { name: 'PIU Jockey Club', value: '3'}
-          ]
-        },
-        {
-          title: 'FASE',
-          values: [
-            { name: 'Diagnóstico Socioterritorial', value: '0' },
-            { name: 'Diagnóstico Territorial', value: '1' },
-            { name: 'Programa de Interesse Público', value: '2' },
-            { name: 'Diretrizes Urbanísticas', value: '3' },
-            { name: 'Viabilidade da Transformação', value: '4' },
-            { name: 'Adensamento Populacional', value: '5' }
-          ]
-        },
-        {
-          title: 'Subatividade',
-          values: [
-            { name: 'Elementos prévios', value: '0' },
-            { name: 'Formulação', value: '1' },
-            { name: 'Consolidação', value: '2' },
-          ]
-        }
-      ]
-      return data
-    }
+    ...mapState(['registro']),
+    ...mapGetters([
+      'dataSelects'
+    ]),
   },
-  methods: {
+  created () {
+    this.addData()
+  },
+  methods: { 
+    ...mapActions([
+      'addData','toggleBar','setDescricao'
+    ]),
     toggleUserMenu (elementFromChild) {
       this.userMenuState = !this.userMenuState
       if (this.userMenuEl === undefined) { this.userMenuEl = elementFromChild }
@@ -150,23 +117,7 @@ export default {
       if (this.userMenuState && event.target.contains(this.userMenuEl)) {
         this.toggleUserMenu()
       }
-    },
-    hoursInc () {
-     this.registro.horas = this.registro.horas + 1
-     if (this.registro.horas > 8) {
-       this.registro.extras = this.registro.extras + 1
-     }
-    },
-    hoursDec () {
-      this.registro.horas = this.registro.horas - 1
-      this.extraHoursDec()
-    },
-    extraHoursDec () {
-      this.registro.extras = this.registro.extras - 1
-      if (this.registro.horas <= 8) {
-        this.registro.extras = 0
-      }
-    }
+    }    
   }
 }
 </script>
