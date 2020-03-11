@@ -3,7 +3,6 @@
     <Header @toggle-menu="toggleUserMenu" :userMenuState="userMenuState" :fullHeaderFromParent="true"></Header>
     <h2>Registrar horas</h2>
     <main>
-
       <Calendario class="calendario"></Calendario>
 
       <div class="formtop">
@@ -12,21 +11,21 @@
             <label for="horas">Número de horas</label>
             <div>
               <button
-                :disabled="registro.horas == 1"
+                :disabled="horas.horas == 1"
                 @click="toggleBar(false)"
               >
                 -
               </button> 
               <input 
                 id="horas"
-                :value="registro.horas"
+                :value="horas.horas"
                 type="number"
                 min="0" 
                 max="12"
                 ref="hours"
               />
               <button
-                :disabled="registro.horas == 12"
+                :disabled="horas.horas == 12"
                 @click="toggleBar(true)">
                 +
               </button>
@@ -35,18 +34,18 @@
           <aside>
             <label for="">Restante do dia</label><label for="">Horas extras</label>
             <div class="bar">
-              <div class="normal-hours" v-if="registro.horas <= 8">
+              <div class="normal-hours" v-if="horas.horas <= 8">
                 <div
                   :key="`normal-${index}`"
                   class="count-hours"
-                  v-for="index in registro.horas"
+                  v-for="index in horas.horas"
                 ></div>
               </div>
               <div class="extra-hours" v-else>
                 <div
                   :key="`extras-${index}`"
                   class="count-hours"
-                  v-for="index in registro.extras"
+                  v-for="index in horas.extras"
                 ></div>
               </div>
             </div>
@@ -67,7 +66,7 @@
         </fieldset>
       </div>
 
-      <button class="postBtn">Registrar horas</button>
+      <button @click.prevent="postForm" class="postBtn">Registrar horas</button>
     
     </main>
     <Footer></Footer>
@@ -97,7 +96,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['registro']),
+    ...mapState(['horas']),
     ...mapGetters([
       'dataSelects'
     ]),
@@ -107,7 +106,7 @@ export default {
   },
   methods: { 
     ...mapActions([
-      'addData','toggleBar','setDescricao'
+      'addData','toggleBar','setDescricao','postForm'
     ]),
     toggleUserMenu (elementFromChild) {
       this.userMenuState = !this.userMenuState

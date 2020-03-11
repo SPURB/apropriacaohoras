@@ -1,13 +1,13 @@
 import Fase from '@/services/api-fase'
 import Projeto from '@/services/api-projeto'
 import Subatividade from '@/services/api-subatividade'
+import Horas from '@/services/api-horas'
 
 export const state = () => ({
   dataSelects: [],
-  registro: {
+  horas: {
     dataRefInicio: null,
-    dataRefFim: null,
-    id: null,
+    id: 1, // id fixo mudar para quando for consumir api
     horas: 0,
     extras: 0,
     projeto: null,
@@ -33,6 +33,15 @@ export const actions = {
       alert('Ocorreu algum erro! Tente mais tarde.')
     }
   },
+  async postForm ({ state }) {
+    await Horas.post(state.horas)
+      .then(res => {
+        console.log(res)
+      })
+      .catch(err => {
+        alert('Ocorreu algum erro! Tente mais tarde')
+      })
+  },
   toggleBar ({ commit }, bool) {
     if (bool) {
       commit('hoursInc')
@@ -45,6 +54,9 @@ export const actions = {
   },
   setDescricao ({ commit }, payload) {
     commit('setDescricao', payload)
+  },
+  setData ({ commit }, payload) {
+    commit('setData', payload)
   }
 }
 
@@ -61,32 +73,36 @@ export const mutations = {
   setValueOption (state, payload) {
     switch (payload.title) {
       case 'Fase':
-        state.registro.fase = payload.value
+        state.horas.fase = payload.value
         break
       case 'Projeto':
-        state.registro.projeto = payload.value
+        state.horas.projeto = payload.value
         break
       case 'Subatividade':
-        state.registro.subatividade = payload.value
+        state.horas.subatividade = payload.value
         break
       default:
         break
     }
   },
   setDescricao (state, payload) {
-    state.registro.descricao = payload
+    state.horas.descricao = payload
+  },
+  setData (state, payload) {
+    let newPayload = `${payload.year}-${payload.month}-${payload.day} ${payload.hms}`
+    state.horas.dataRefInicio = newPayload
   },
   hoursInc (state) {
-    state.registro.horas = state.registro.horas + 1
-    if (state.registro.horas > 8) {
-      state.registro.extras = state.registro.extras + 1
+    state.horas.horas = state.horas.horas + 1
+    if (state.horas.horas > 8) {
+      state.horas.extras = state.horas.extras + 1
     }
   },
   hoursDec (state) {
-    state.registro.horas = state.registro.horas - 1
-    state.registro.extras = state.registro.extras - 1
-    if (state.registro.horas <= 8) {
-      state.registro.extras = 0
+    state.horas.horas = state.horas.horas - 1
+    state.horas.extras = state.horas.extras - 1
+    if (state.horas.horas <= 8) {
+      state.horas.extras = 0
     }
   }
 }

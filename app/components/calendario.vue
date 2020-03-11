@@ -19,28 +19,37 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr :key="week+weekIndex" v-for="(week, weekIndex) in weeksThisMonth">
+			<tr
+				:key="weekIndex"
+				v-for="(week, weekIndex) in weeksThisMonth">
 				<td 
-					:key="dayIndex"
-					v-if="dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1" 
-					v-for="(day, dayIndex) in (daysThisMonth + firstWeekDay)"
+					:key="day"
+					v-for="day in calendario(weekIndex)" 
 					:class="daysClassification(day)" 
 					v-html="formatDate(day)"
-					@click="selectDate($event)">
-				</td>
+					@click="setData(
+						{
+							day: `${day}`.padStart(2, '0'),
+							month: `${month}`.padStart(2, '0'),
+							year,
+							hms: hms()
+						}
+					)"
+				/>
 			</tr>
 		</tbody>
 	</table>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
 	name: 'Calendario',
 	data () {
 		return {
 			date: new Date(),
 			months: [ 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro' ],
-			selection: undefined
+			selection: null
 		}
 	},
 	computed: {
@@ -48,15 +57,40 @@ export default {
 			get () { return this.date },
 			set (newDate) { this.date = newDate }
 		},
-		todayWeekDay () { return this.today.getDay() }, 
-		todayMonthDay () { return this.today.getDate() }, 
-		month () { return this.today.getMonth() }, 
-		year () { return this.today.getFullYear() }, 
-		daysThisMonth () { return new Date(this.year, (this.month + 1), 0).getDate() }, 
-		weeksThisMonth () { return Math.ceil(this.daysThisMonth/7) }, 
-		firstWeekDay () { return new Date(this.year, this.month, 1).getDay() }
+		todayWeekDay () { 
+			return this.today.getDay()
+		}, 
+		todayMonthDay () { 
+			return this.today.getDate() 
+		}, 
+		month () { 
+			return this.today.getMonth() 
+		}, 
+		year () { 
+			return this.today.getFullYear() 
+		}, 
+		daysThisMonth () { 
+			return new Date(this.year, (this.month + 1), 0).getDate() 
+		}, 
+		weeksThisMonth () { 
+			return Math.ceil(this.daysThisMonth/7) }, 
+		firstWeekDay () { 
+			return new Date(this.year, this.month, 1).getDay() 
+		}
 	},
 	methods: {
+		...mapActions(['setData']),
+		calendario (weekIndex) {
+			const totalDayMonth = this.daysThisMonth + this.firstWeekDay
+			let day = []
+			// if (dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1) {}
+			for (let dayIndex = 0; dayIndex <= this.daysThisMonth + this.firstWeekDay; dayIndex++) {
+				if (dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1) {
+					day.push(dayIndex+1) // attr + 1 para acertar data
+				}
+			}
+			return day
+		},
 		monthInc (inc) {
 			let newMonth = this.month + inc
 			this.today = new Date(this.year, newMonth, this.todayMonthDay)
@@ -73,11 +107,19 @@ export default {
 		formatDate (monthday) {
 			if (monthday - this.firstWeekDay < 1) { return '' }
 			else { return monthday - this.firstWeekDay }
+		},		
+		hms () {
+			let d = new Date()
+			let h = `${d.getHours()}`.padStart(2, '0')
+			let m = `${d.getMinutes()}`.padStart(2, '0')
+			let s = `${d.getSeconds()}`.padStart(2, '0')
+
+			return h + ":" + m + ":" + s
 		},
-		selectDate (event) {
+		toggleSelect () {
 			this.selection ? this.selection.classList.remove('selected') : false
 			event.target.innerText ? this.selection = event.target : false
-			this.selection ? this.selection.classList.add('selected') : false
+			this.selection ? this.selection.classList.add('selected') : false	
 		}
 	}
 }
