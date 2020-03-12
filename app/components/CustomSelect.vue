@@ -4,7 +4,7 @@
         <select
             @change="setValueOption({ title: buildSelect.title, value: optionValue})"
             v-model="optionValue"
-        >
+        required>
             <option value="" selected disabled>
                 Selecione uma opção
             </option>

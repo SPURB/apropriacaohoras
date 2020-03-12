@@ -1,8 +1,12 @@
 <template>
   <div class="registrar" @click="frameClick($event)">
+    
+    <Modal />
     <Header @toggle-menu="toggleUserMenu" :userMenuState="userMenuState" :fullHeaderFromParent="true"></Header>
+
     <h2>Registrar horas</h2>
     <main>
+      <form @submit.prevent="postForm">
       <Calendario class="calendario"></Calendario>
 
       <div class="formtop">
@@ -18,14 +22,15 @@
               </button> 
               <input 
                 id="horas"
-                :value="horas.horas"
+                :value="horas.horas + horas.extras"
                 type="number"
-                min="0" 
+                min="1" 
                 max="12"
                 ref="hours"
+                required
               />
               <button
-                :disabled="horas.horas == 12"
+                :disabled="horas.horas + horas.extras == 12"
                 @click="toggleBar(true)">
                 +
               </button>
@@ -34,7 +39,7 @@
           <aside>
             <label for="">Restante do dia</label><label for="">Horas extras</label>
             <div class="bar">
-              <div class="normal-hours" v-if="horas.horas <= 8">
+              <div class="normal-hours" v-if="horas.horas + horas.extras <= 8">
                 <div
                   :key="`normal-${index}`"
                   class="count-hours"
@@ -66,8 +71,8 @@
         </fieldset>
       </div>
 
-      <button @click.prevent="postForm" class="postBtn">Registrar horas</button>
-    
+      <button type="submit" class="postBtn">Registrar horas</button>
+    </form>
     </main>
     <Footer></Footer>
   </div>
@@ -76,6 +81,7 @@
 <script>
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Modal from '@/components/Modal'
 import Calendario from '@/components/Calendario'
 import CustomSelect from '@/components/CustomSelect'
 import { mapGetters, mapActions, mapState } from 'vuex'
@@ -86,7 +92,8 @@ export default {
     Header,
     Footer,
     Calendario,
-    CustomSelect
+    CustomSelect,
+    Modal
   },
   data () {
     return {
@@ -96,18 +103,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(['horas']),
-    ...mapGetters([
-      'dataSelects'
-    ]),
+    ...mapState(['horas', 'showModal']),
+    ...mapGetters(['dataSelects', 'validateForm']),
   },
   created () {
     this.addData()
   },
   methods: { 
-    ...mapActions([
-      'addData','toggleBar','setDescricao','postForm'
-    ]),
+    ...mapActions(['addData','toggleBar','setDescricao','postForm']),
     toggleUserMenu (elementFromChild) {
       this.userMenuState = !this.userMenuState
       if (this.userMenuEl === undefined) { this.userMenuEl = elementFromChild }

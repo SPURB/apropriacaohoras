@@ -24,16 +24,15 @@
 				v-for="(week, weekIndex) in weeksThisMonth">
 				<td 
 					:key="day"
-					v-for="day in calendario(weekIndex)" 
+					v-for="day in calendario(weekIndex)"
 					:class="daysClassification(day)" 
 					v-html="formatDate(day)"
-					@click="setData(
-						{
-							day: `${day}`.padStart(2, '0'),
-							month: `${month}`.padStart(2, '0'),
-							year,
-							hms: hms()
-						}
+					@click="setData({
+						day: `${day}`.padStart(2, '0'),
+						month: `${month}`.padStart(2, '0'),
+						year,
+						hms: hms()
+						},
 					)"
 				/>
 			</tr>
@@ -115,11 +114,6 @@ export default {
 			let s = `${d.getSeconds()}`.padStart(2, '0')
 
 			return h + ":" + m + ":" + s
-		},
-		toggleSelect () {
-			this.selection ? this.selection.classList.remove('selected') : false
-			event.target.innerText ? this.selection = event.target : false
-			this.selection ? this.selection.classList.add('selected') : false	
 		}
 	}
 }
