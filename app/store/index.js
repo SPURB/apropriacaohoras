@@ -44,10 +44,11 @@ export const actions = {
       })
       .catch(err => {
         alert('Ocorreu algum erro! Tente mais tarde')
-      }).finally(() => {
+      })
+      .finally(() => {
         setTimeout(() => {
           commit('setShowModal', false)
-        }, 2000);
+        }, 2000)
       })
   },
   toggleBar ({ commit }, bool) {
@@ -78,10 +79,10 @@ export const getters = {
   },
   validateForm (state) {
     let res = []
-    Object.keys(state.horas).map((key) => {
+    Object.keys(state.horas).map(key => {
       const value = state.horas[key]
       if (value == null) {
-        res.msg = "Preecha todos os campos"
+        res.msg = 'Preecha todos os campos'
         res.disabled = true
       }
     })
@@ -116,7 +117,7 @@ export const mutations = {
   },
   toggleSelect (state, event) {
     state.selection ? state.selection.classList.remove('selected') : false
-    event.target.innerText ? state.selection = event.target : false
+    event.target.innerText ? (state.selection = event.target) : false
     state.selection ? state.selection.classList.add('selected') : false
   },
   setData (state, payload) {
