@@ -13,6 +13,7 @@ exports.create = (req, res) => {
   const body = {
     horas: req.body.horas,
     extras: req.body.extras,
+    usuario: req.body.usuario,
     projeto: req.body.projeto,
     fase: req.body.fase,
     subatividade: req.body.subatividade,
