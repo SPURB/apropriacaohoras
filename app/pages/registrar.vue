@@ -16,6 +16,7 @@
             <div>
               <button
                 :disabled="horas.horas == 1"
+                type="button"
                 @click="toggleBar(false)"
               >
                 -
@@ -24,13 +25,13 @@
                 id="horas"
                 :value="horas.horas + horas.extras"
                 type="number"
-                min="1" 
+                min="0" 
                 max="12"
-                ref="hours"
-                required
+                ref="hours"                
               />
               <button
                 :disabled="horas.horas + horas.extras == 12"
+                type="button"
                 @click="toggleBar(true)">
                 +
               </button>
@@ -103,14 +104,17 @@ export default {
     }
   },
   computed: {
-    ...mapState(['horas', 'showModal']),
-    ...mapGetters(['dataSelects', 'validateForm']),
+    ...mapState('module/form-registrar-horas', {
+      horas: state => state.horas,
+      showModal: state => state.showModal
+    }),
+    ...mapGetters('module/form-registrar-horas', ['dataSelects', 'showModal']),
   },
   created () {
     this.addData()
   },
   methods: { 
-    ...mapActions(['addData','toggleBar','setDescricao','postForm']),
+    ...mapActions('module/form-registrar-horas', ['addData','toggleBar','setDescricao','postForm']),
     toggleUserMenu (elementFromChild) {
       this.userMenuState = !this.userMenuState
       if (this.userMenuEl === undefined) { this.userMenuEl = elementFromChild }

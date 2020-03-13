@@ -7,17 +7,16 @@ export const state = () => ({
   dataSelects: [],
   selection: null,
   showModal: null,
+  multipleData: [],
   horas: {
-    dataRefInicio: null,
-    id: 1, // id fixo mudar para quando for consumir api
+    usuario: 1, // id fixo mudar para quando for consumir api
     horas: null,
-    extras: null,
+    extras: 0,
     projeto: null,
     fase: null,
     subatividade: null,
-    descricao: null
-  },
-  validate: {}
+    descricao: ''
+  }
 })
 
 export const actions = {
@@ -36,20 +35,25 @@ export const actions = {
       alert('Ocorreu algum erro! Tente mais tarde.')
     }
   },
-  async postForm ({ state, commit }) {
-    await Horas.post(state.horas)
-      .then(res => {
-        commit('setShowModal', true)
-        console.log(res)
-      })
-      .catch(err => {
-        alert('Ocorreu algum erro! Tente mais tarde')
-      })
-      .finally(() => {
-        setTimeout(() => {
-          commit('setShowModal', false)
-        }, 2000)
-      })
+  async postForm ({ commit, getters, state }) {
+    let validateForm = getters.validateForm
+    try {
+      if (validateForm.disabledButton !== true) {
+        state.multipleData.forEach(dataRefInicio => {
+          const postObj = {
+            dataRefInicio,
+            ...state.horas
+          }
+          Horas.post(postObj).then(res => {
+            commit('setShowModal', true)
+            console.log(res)
+          })
+        })
+      }
+      throw validateForm
+    } catch (error) {
+      console.log(error)
+    }
   },
   toggleBar ({ commit }, bool) {
     if (bool) {
@@ -64,9 +68,8 @@ export const actions = {
   setDescricao ({ commit }, payload) {
     commit('setDescricao', payload)
   },
-  setData ({ commit }, payload) {
-    commit('toggleSelect', event)
-    commit('setData', payload)
+  setMultipleData ({ commit }, payload) {
+    commit('setMultipleData', { event, ...payload })
   }
 }
 
@@ -78,12 +81,38 @@ export const getters = {
     return state.showModal
   },
   validateForm (state) {
-    let res = []
+    let array = []
+    let res = {
+      msg: [],
+      disabledButton: false
+    }
     Object.keys(state.horas).map(key => {
       const value = state.horas[key]
-      if (value == null) {
-        res.msg = 'Preecha todos os campos'
-        res.disabled = true
+      if (value == null && key !== 'extras' && key !== 'descricao') {
+        array.push(key)
+      }
+    })
+    array.forEach(element => {
+      switch (element) {
+        case 'dataRefInicio':
+          res.msg.push('Preencha o campo data')
+          res.disabledButton = true
+          break
+        case 'horas':
+          res.msg.push('Preencha o campo horas')
+          res.disabledButton = true
+          break
+        case 'fase':
+          res.msg.push('Preencha o campo fase')
+          res.disabledButton = true
+        case 'projeto':
+          res.msg.push('Preencha o campo projeto')
+          res.disabledButton = true
+          break
+        case 'subatividade':
+          res.msg.push('Preencha o campo subatividade')
+          res.disabledButton = true
+          break
       }
     })
     return res
@@ -109,20 +138,34 @@ export const mutations = {
         break
     }
   },
+  setDefaultHoras (state) {
+    state.horas = {
+      dataRefInicio: null,
+      id: 1, // id fixo mudar para quando for consumir api
+      horas: null,
+      extras: 0,
+      projeto: null,
+      fase: null,
+      subatividade: null,
+      descricao: ''
+    }
+  },
   setDescricao (state, payload) {
     state.horas.descricao = payload
   },
   setShowModal (state, payload) {
     state.showModal = payload
   },
-  toggleSelect (state, event) {
-    state.selection ? state.selection.classList.remove('selected') : false
-    event.target.innerText ? (state.selection = event.target) : false
-    state.selection ? state.selection.classList.add('selected') : false
-  },
-  setData (state, payload) {
-    let newPayload = `${payload.year}-${payload.month}-${payload.day} ${payload.hms}`
-    state.horas.dataRefInicio = newPayload
+  setMultipleData (state, payload) {
+    let eTarget = payload.event
+    let data = `${payload.year}-${payload.month}-${payload.day}`
+    if (eTarget.target.classList.contains('selected')) {
+      event.target.classList.remove('selected')
+      state.multipleData = state.multipleData.filter(item => item !== data)
+    } else {
+      event.target.classList.add('selected')
+      state.multipleData.push(data)
+    }
   },
   hoursInc (state) {
     state.horas.horas = state.horas.horas + 1

@@ -27,13 +27,7 @@
 					v-for="day in calendario(weekIndex)"
 					:class="daysClassification(day)" 
 					v-html="formatDate(day)"
-					@click="setData({
-						day: `${day}`.padStart(2, '0'),
-						month: `${month}`.padStart(2, '0'),
-						year,
-						hms: hms()
-						},
-					)"
+					@click="setMultipleData({ day: `${day}`.padStart(2, '0'), month: `${month}`.padStart(2, '0'), year })"
 				/>
 			</tr>
 		</tbody>
@@ -78,7 +72,7 @@ export default {
 		}
 	},
 	methods: {
-		...mapActions(['setData']),
+		...mapActions('module/form-registrar-horas', ['setMultipleData']),
 		calendario (weekIndex) {
 			const totalDayMonth = this.daysThisMonth + this.firstWeekDay
 			let day = []

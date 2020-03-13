@@ -4,7 +4,7 @@
         <select
             @change="setValueOption({ title: buildSelect.title, value: optionValue})"
             v-model="optionValue"
-        required>
+        >
             <option value="" selected disabled>
                 Selecione uma opção
             </option>
@@ -35,7 +35,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['setValueOption'])
+        ...mapActions('module/form-registrar-horas', ['setValueOption'])
     }
 }
 </script>

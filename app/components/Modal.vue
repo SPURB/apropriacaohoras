@@ -30,7 +30,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'Modal',
     computed: {
-        ...mapGetters(['showModal'])
+        ...mapGetters('module/form-registrar-horas', ['showModal'])
     }
 }
 </script>
