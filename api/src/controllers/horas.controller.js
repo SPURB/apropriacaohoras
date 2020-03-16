@@ -17,7 +17,8 @@ exports.create = (req, res) => {
     projeto: req.body.projeto,
     fase: req.body.fase,
     subatividade: req.body.subatividade,
-    descricao: req.body.subatividade
+    dataRefInicio: req.body.dataRefInicio,
+    descricao: req.body.descricao
   }
 
   dao.create(res, Hora, body)
