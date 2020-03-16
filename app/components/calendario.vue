@@ -27,7 +27,7 @@
 					v-for="day in calendario(weekIndex)"
 					:class="daysClassification(day)" 
 					v-html="formatDate(day)"
-					@click="setMultipleData({ day: `${day}`.padStart(2, '0'), month: `${month}`.padStart(2, '0'), year })"
+					@click="setMultipleData({ event: $event, day: `${day}`.padStart(2, '0'), month: `${month}`.padStart(2, '0'), year })"
 				/>
 			</tr>
 		</tbody>
@@ -180,12 +180,18 @@ table {
 					text-shadow: $s-1-2-48;
 				}
 				&.selected {
-					transform: scale(1.25);
+					transform: scale(1.20);
 					@include bg-white-alpha(.12);
 					box-shadow: $s-2-4-48;
 				}
 			}
 		}
+	}
+}
+
+@media (max-width: 850px) {
+	.selected {
+		transform: scale(1.15) !important;
 	}
 }
 </style>

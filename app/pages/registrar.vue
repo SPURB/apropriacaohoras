@@ -6,7 +6,7 @@
 
     <h2>Registrar horas</h2>
     <main>
-      <form @submit.prevent="postForm">
+      <form @submit.prevent="postForm" id="form-registrar-horas">
       <Calendario class="calendario"></Calendario>
 
       <div class="formtop">
@@ -38,7 +38,8 @@
             </div>
           </div>
           <aside>
-            <label for="">Restante do dia</label><label for="">Horas extras</label>
+            <label :style="horas.horas + horas.extras <= 8 ? '' : 'color: rgba(255, 255, 255, 0.1)'">Restante do dia</label>
+            <label :style="horas.horas + horas.extras > 8 ? '' : 'color: rgba(255, 255, 255, 0.1)'">Horas extras</label>
             <div class="bar">
               <div class="normal-hours" v-if="horas.horas + horas.extras <= 8">
                 <div

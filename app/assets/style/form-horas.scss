@@ -6,7 +6,7 @@
     line-height: 3rem;
     margin: 4rem auto 1rem;
   }
-  form {
+  #form-registrar-horas {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
@@ -122,7 +122,7 @@
                     border: 2px solid rgba(255, 255, 255, 0.2);
                     height: 100%;
                     width: 12%;
-                    margin: .5%;
+                    margin-left: .5%;
 
                     &:nth-child(1) {
                       border-radius: 1.5rem 0 0 1.5rem;
@@ -166,6 +166,36 @@
       cursor: pointer;
       transition: all ease-in .2s;
       &:hover { box-shadow: $s-4-8-24; }
+    }
+  }
+}
+
+@media (max-width: 850px) {
+  .registrar {
+    h2 {
+      margin-left: 15px;
+    }
+    #form-registrar-horas {
+      flex-direction: column;
+      padding: 15px;
+  
+      .calendario, .formtop {
+        margin: 0 !important;
+        width: 100%;
+  
+        fieldset {
+          margin: 15px 0px 15px 0px;
+        }
+        .timeInput {
+          .main, aside {
+            margin: 0px;
+            width: 100% !important;
+          }
+          aside {
+            padding-left: 0rem !important;
+          }
+        }
+      }
     }
   }
 }

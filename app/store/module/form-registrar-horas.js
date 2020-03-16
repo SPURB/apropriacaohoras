@@ -38,21 +38,28 @@ export const actions = {
   async postForm ({ commit, getters, state }) {
     let validateForm = getters.validateForm
     try {
-      if (validateForm.disabledButton !== true) {
+      if (validateForm.disabled !== true) {
         state.multipleData.forEach(dataRefInicio => {
           const postObj = {
             dataRefInicio,
             ...state.horas
           }
-          Horas.post(postObj).then(res => {
-            commit('setShowModal', true)
-            console.log(res)
-          })
+          Horas.post(postObj)
+            .then(() => {
+              commit('setShowModal', true)
+            })
+            .catch(err => {
+              console.log(err)
+            })
         })
+      } else {
+        throw validateForm
       }
-      throw validateForm
     } catch (error) {
-      console.log(error)
+      commit('setShowModal', true)
+      setTimeout(() => {
+        commit('setShowModal', false)
+      }, 2500)
     }
   },
   toggleBar ({ commit }, bool) {
@@ -69,7 +76,7 @@ export const actions = {
     commit('setDescricao', payload)
   },
   setMultipleData ({ commit }, payload) {
-    commit('setMultipleData', { event, ...payload })
+    commit('setMultipleData', payload)
   }
 }
 
@@ -84,34 +91,42 @@ export const getters = {
     let array = []
     let res = {
       msg: [],
-      disabledButton: false
+      disabled: false
     }
+    // valida o objeto horas :: sem dataRefInicio
     Object.keys(state.horas).map(key => {
       const value = state.horas[key]
       if (value == null && key !== 'extras' && key !== 'descricao') {
         array.push(key)
       }
     })
+
+    // valida o multipleData :: dataRefInicio
+    if (state.multipleData.length == 0) {
+      array.push('dataRefInicio')
+    }
+
     array.forEach(element => {
       switch (element) {
         case 'dataRefInicio':
           res.msg.push('Preencha o campo data')
-          res.disabledButton = true
+          res.disabled = true
           break
         case 'horas':
           res.msg.push('Preencha o campo horas')
-          res.disabledButton = true
+          res.disabled = true
           break
         case 'fase':
           res.msg.push('Preencha o campo fase')
-          res.disabledButton = true
+          res.disabled = true
+          break
         case 'projeto':
           res.msg.push('Preencha o campo projeto')
-          res.disabledButton = true
+          res.disabled = true
           break
         case 'subatividade':
           res.msg.push('Preencha o campo subatividade')
-          res.disabledButton = true
+          res.disabled = true
           break
       }
     })
@@ -138,18 +153,6 @@ export const mutations = {
         break
     }
   },
-  setDefaultHoras (state) {
-    state.horas = {
-      dataRefInicio: null,
-      id: 1, // id fixo mudar para quando for consumir api
-      horas: null,
-      extras: 0,
-      projeto: null,
-      fase: null,
-      subatividade: null,
-      descricao: ''
-    }
-  },
   setDescricao (state, payload) {
     state.horas.descricao = payload
   },
@@ -160,10 +163,10 @@ export const mutations = {
     let eTarget = payload.event
     let data = `${payload.year}-${payload.month}-${payload.day}`
     if (eTarget.target.classList.contains('selected')) {
-      event.target.classList.remove('selected')
+      eTarget.target.classList.remove('selected')
       state.multipleData = state.multipleData.filter(item => item !== data)
     } else {
-      event.target.classList.add('selected')
+      eTarget.target.classList.add('selected')
       state.multipleData.push(data)
     }
   },
