@@ -51,6 +51,10 @@
           -moz-appearance: textfield;
           caret-color: transparent;
       }
+
+      select:hover {
+        cursor: pointer;
+      }
     }
     & > .formtop {
       display: flex;
