@@ -3,9 +3,9 @@
 		<thead>
 			<tr>
 				<th colspan="7">
-					<button @click="monthInc(-1)"><i class="icon icon-seta_esquerda"></i></button>
+					<button type="button" @click="monthInc(-1)"><i class="icon icon-seta_esquerda"></i></button>
 					{{ `${decodeMonth(month)} &middot; ${year}` }}
-					<button @click="monthInc(1)"><i class="icon icon-seta_direita"></i></button>
+					<button type="button" @click="monthInc(1)"><i class="icon icon-seta_direita"></i></button>
 				</th>
 			</tr>
 			<tr>
