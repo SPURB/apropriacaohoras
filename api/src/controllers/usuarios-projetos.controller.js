@@ -18,7 +18,8 @@ exports.create = (req, res) => {
   dao.create(res, UsuarioProjeto, body)
 }
 
-exports.findAll = (req, res) => dao.findAll(res, UsuarioProjeto)
+exports.findAll = (req, res) =>
+  dao.findAll(res, 'Usuário/Projeto', UsuarioProjeto)
 exports.findOne = (req, res) => dao.findOne(req, res, UsuarioProjeto)
 exports.update = (req, res) => dao.update(req, res, UsuarioProjeto)
 exports.delete = (req, res) => dao.delete(req, res, UsuarioProjeto)

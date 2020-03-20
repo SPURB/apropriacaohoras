@@ -13,16 +13,18 @@ exports.create = (req, res) => {
   const body = {
     horas: req.body.horas,
     extras: req.body.extras,
+    usuario: req.body.usuario,
     projeto: req.body.projeto,
     fase: req.body.fase,
     subatividade: req.body.subatividade,
-    descricao: req.body.subatividade
+    dataRefInicio: req.body.dataRefInicio,
+    descricao: req.body.descricao
   }
 
   dao.create(res, Hora, body)
 }
 
-exports.findAll = (req, res) => dao.findAll(res, Hora)
+exports.findAll = (req, res) => dao.findAll(res, 'Hora', Hora)
 exports.findOne = (req, res) => dao.findOne(req, res, Hora)
 exports.update = (req, res) => dao.update(req, res, Hora)
 exports.delete = (req, res) => dao.delete(req, res, Hora)

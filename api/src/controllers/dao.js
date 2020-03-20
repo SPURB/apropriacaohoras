@@ -8,10 +8,14 @@ const dataAccessObject = {
         })
       })
   },
-  findAll: (res, Model) => {
+  findAll: (res, title, Model) => {
     Model.findAll()
       .then(data => {
-        res.send(data)
+        const customResponse = {
+          title: title,
+          values: data
+        }
+        res.send(customResponse)
       })
       .catch(err => {
         res.status(500).send({

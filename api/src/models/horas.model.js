@@ -36,11 +36,7 @@ module.exports = (sequelize, Sequelize, db) => {
       }
     },
     dataRefInicio: {
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW
-    },
-    dataRefFim: {
-      type: Sequelize.DATE,
+      type: Sequelize.DATEONLY,
       defaultValue: Sequelize.NOW
     },
     descricao: {
