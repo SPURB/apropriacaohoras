@@ -18,7 +18,7 @@
 				<th>SÁB</th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody id="tbody">
 			<tr
 				:key="weekIndex"
 				v-for="(week, weekIndex) in weeksThisMonth">
@@ -29,6 +29,7 @@
 					v-html="formatDate(day)"
 					@click="setMultipleData({ event: $event, day: `${day}`.padStart(2, '0'), month: `${month}`.padStart(2, '0'), year })"
 				/>
+				
 			</tr>
 		</tbody>
 	</table>
@@ -57,13 +58,13 @@ export default {
 			return this.today.getDate() 
 		}, 
 		month () { 
-			return this.today.getMonth() 
+			return this.today.getMonth()
 		}, 
 		year () { 
 			return this.today.getFullYear() 
 		}, 
 		daysThisMonth () { 
-			return new Date(this.year, (this.month + 1), 0).getDate() 
+			return new Date(this.year, (this.month + 1), 0).getDate()
 		}, 
 		weeksThisMonth () { 
 			return Math.ceil(this.daysThisMonth/7) }, 
@@ -76,12 +77,12 @@ export default {
 		calendario (weekIndex) {
 			const totalDayMonth = this.daysThisMonth + this.firstWeekDay
 			let day = []
-			// if (dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1) {}
-			for (let dayIndex = 0; dayIndex <= this.daysThisMonth + this.firstWeekDay; dayIndex++) {
-				if (dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1) {
-					day.push(dayIndex+1) // attr + 1 para acertar data
+			for (let dayIndex = 1; dayIndex <= this.daysThisMonth + this.firstWeekDay; dayIndex++) {
+				if (dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1) {					
+					day.push(dayIndex) // attr + 1 para acertar data
 				}
 			}
+			console.log(day)
 			return day
 		},
 		monthInc (inc) {
@@ -98,15 +99,18 @@ export default {
 			return out.toString()
 		},
 		formatDate (monthday) {
-			if (monthday - this.firstWeekDay < 1) { return '' }
-			else { return monthday - this.firstWeekDay }
+			if (monthday - this.firstWeekDay < 1) { 
+				return ''
+			}
+			else { 
+				return monthday
+			}
 		},		
 		hms () {
 			let d = new Date()
 			let h = `${d.getHours()}`.padStart(2, '0')
 			let m = `${d.getMinutes()}`.padStart(2, '0')
 			let s = `${d.getSeconds()}`.padStart(2, '0')
-
 			return h + ":" + m + ":" + s
 		}
 	}
@@ -188,7 +192,6 @@ table {
 		}
 	}
 }
-
 @media (max-width: 850px) {
 	.selected {
 		transform: scale(1.15) !important;

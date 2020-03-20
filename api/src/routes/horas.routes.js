@@ -8,5 +8,8 @@ module.exports = hora => {
   router.put('/:id', horas.update)
   router.delete('/:id', horas.delete)
   router.delete('/', horas.deleteAll)
+
+  router.get('/status/:data', horas.countHoras)
+
   hora.use(`/horas`, router)
 }
