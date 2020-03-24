@@ -9,7 +9,7 @@ module.exports = hora => {
   router.delete('/:id', horas.delete)
   router.delete('/', horas.deleteAll)
 
-  router.get('/status/:data', horas.countHoras)
+  router.get('/status/:id/:data', horas.countHoras)
 
   hora.use(`/horas`, router)
 }
