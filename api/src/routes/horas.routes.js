@@ -10,6 +10,7 @@ module.exports = hora => {
   router.delete('/', horas.deleteAll)
 
   router.get('/status/:id/:data', horas.countHoras)
+  router.post('/where', horas.findAllWhere)
 
   hora.use(`/horas`, router)
 }

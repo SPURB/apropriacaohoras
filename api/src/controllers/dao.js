@@ -23,6 +23,21 @@ const dataAccessObject = {
         })
       })
   },
+  findAllWhere: (req, res, Model) => {
+    Model.findAll({
+      where: {
+        ...req.body
+      }
+    })
+      .then(data => {
+        res.send(data)
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: err.message || `Ocorreu um erro na consulta de id: ${id}`
+        })
+      })
+  },
   findOne: (req, res, Model) => {
     const id = req.params.id
 
