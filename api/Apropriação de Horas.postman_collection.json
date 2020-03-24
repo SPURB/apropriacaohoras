@@ -1,0 +1,394 @@
+{
+	"info": {
+		"_postman_id": "075fa600-fe3b-474c-995f-c73a1b322c6b",
+		"name": "Apropriação de Horas",
+		"description": "Sistema de apropriação de horas trabalhadas, gerenciamento de pessoal e relatoria de trabalho da SP Urbanismo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Model - Horas",
+			"item": [
+				{
+					"name": "localhost:5000/horas",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"horas\": 1,\r\n  \"extras\": 0,\r\n  \"usuario\": 2,\r\n  \"projeto\": 1,\r\n  \"fase\": 1,\r\n  \"subatividade\": 2,\r\n  \"dataRefInicio\": \"2020-03-05\",\r\n  \"descricao\": \"TESTE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/horas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"horas"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "teste",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Cadastrar no objeto de horas"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/horas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/horas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"horas"
+							]
+						},
+						"description": "Retorna todos os elementos registrado na model Hora"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/horas/2",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"horas\": 5 }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/horas/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"horas",
+								"2"
+							]
+						},
+						"description": "Atualiza o cadastro de um dados da model Hora passando o **:id** do dado no banco de dados"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/horas/2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/horas/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"horas",
+								"10"
+							]
+						},
+						"description": "Retorna o objeto hora que possui o **:id** passado como parâmetro"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/horas/4",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/horas/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"horas",
+								"4"
+							]
+						},
+						"description": "Remove o objeto do banco de dados com o **:id** passado."
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/horas/status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/horas/status/1/2020-03-06",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"horas",
+								"status",
+								"1",
+								"2020-03-06"
+							]
+						},
+						"description": "Retorna o total de horas registradas pelo usuário em um dia.     \nParâmetros: :usuario/:data"
+					},
+					"response": []
+				},
+				{
+					"name": "http:localhost:5000/horas/where",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\t\r\n\t\"usuario\": 1,\r\n\t\"dataRefInicio\": \"2020-03-04\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/horas/where",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"horas",
+								"where"
+							]
+						},
+						"description": "Filtra por todos os campos da model"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Model - Projetos",
+			"item": [
+				{
+					"name": "http://localhost:5000/projetos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/projetos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"projetos"
+							]
+						},
+						"description": "Retorna todos os elementos registrado na model Projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/projetos",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"teste projeto2\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/projetos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"projetos"
+							]
+						},
+						"description": "Atualiza o cadastro de um dados da model Hora passando o **:id** do dado no banco de dados"
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/projetos/2",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"nome\": \"novo\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/projetos/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"projetos",
+								"2"
+							]
+						},
+						"description": "Atualiza o cadastro de um dados da model Projetos passando o **:id** do dado no banco de dados"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Model - Fases",
+			"item": [
+				{
+					"name": "http://localhost:5000/fases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/fases",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"fases"
+							]
+						},
+						"description": "Retorna todos os elementos registrado na model Projeto"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Model - Subatividades",
+			"item": [
+				{
+					"name": "http://localhost:5000/subatividades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/subatividades",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"subatividades"
+							]
+						},
+						"description": "Retorna todos os elementos registrado na model Projeto"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Model - Usuários",
+			"item": [
+				{
+					"name": "localhost:5000/usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"usuarios"
+							]
+						},
+						"description": "Retorna todos os elementos registrado na model Projeto"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Model - Usuário_Projeto",
+			"item": [],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
