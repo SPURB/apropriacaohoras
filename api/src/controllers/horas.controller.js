@@ -8,25 +8,42 @@ exports.create = (req, res) => {
       message: `Inclua o objeto 'horas' na requisição`
     })
     return
-  } else if (req.body.horas > 8 || req.body.extras > 4) {
-    res.status(400).send({
-      message: `Não foi possivel efetuar o registro`
+  }
+
+  Hora.findAll({
+    where: {
+      usuario: req.body.usuario,
+      dataRefInicio: req.body.dataRefInicio
+    },
+    attributes: ['horas', 'extras']
+  }).then(data => {
+    let horas = 0
+    let extras = 0
+    data.forEach(dia => {
+      horas = horas + dia.horas
+      extras = extras + dia.extras
     })
-    return
-  }
 
-  const body = {
-    horas: req.body.horas,
-    extras: req.body.extras,
-    usuario: req.body.usuario,
-    projeto: req.body.projeto,
-    fase: req.body.fase,
-    subatividade: req.body.subatividade,
-    dataRefInicio: req.body.dataRefInicio,
-    descricao: req.body.descricao
-  }
+    if (horas < 8 && extras < 4) {
+      const body = {
+        horas: req.body.horas,
+        extras: req.body.extras,
+        usuario: req.body.usuario,
+        projeto: req.body.projeto,
+        fase: req.body.fase,
+        subatividade: req.body.subatividade,
+        dataRefInicio: req.body.dataRefInicio,
+        descricao: req.body.descricao
+      }
 
-  dao.create(res, Hora, body)
+      dao.create(res, Hora, body)
+    } else {
+      res.status(400).send({
+        message: `Registro negado`
+      })
+      return
+    }
+  })
 }
 
 exports.countHoras = (req, res) => {
@@ -39,24 +56,24 @@ exports.countHoras = (req, res) => {
         dataRefInicio: data
       }
     }).then(r => {
-      let total_horas = 0
+      let totalHoras = 0
       r.forEach(dia => {
-        total_horas = total_horas + dia.horas + dia.extras
+        totalHoras = totalHoras + dia.horas + dia.extras
       })
-      if (total_horas == 0) {
+      if (totalHoras == 0) {
         return res.status(200).send({
           type: 'danger',
-          total_horas
+          totalHoras
         })
-      } else if (total_horas < 8 && total_horas !== 0) {
+      } else if (totalHoras < 8 && totalHoras !== 0) {
         return res.status(200).send({
           type: 'warning',
-          total_horas
+          totalHoras
         })
       } else {
         return res.status(200).send({
           type: 'success',
-          total_horas
+          totalHoras
         })
       }
     })
