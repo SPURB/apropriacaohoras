@@ -33,9 +33,6 @@ npm run db:seed
 
 6. Acesse a base da api [localhost:5000/](http://localhost:5000/)
 
-7. Mantenha a [documentação](https://www.getpostman.com/collections/6cd690a2f50f512b5130) atualizada
-
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/6cd690a2f50f512b5130)
-
+7. Mantenha a atualizada documentação com [postman](https://www.postman.com/) - `apropriacao-de-horas.postman_collection.json`
 
 > veja a documentação do [sequelize](https://sequelize.org/master/manual/) para detalhamento do contexto e detalhamento do ORM utilizado.
