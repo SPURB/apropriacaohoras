@@ -8,6 +8,7 @@
   "main": "server.js",
   "scripts": {
     "lint": "prettier-standard server.js src/{*,/**/*}.js",
+    "start": "NODE_ENV=production babel-node server.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node server.js",
     "db:create": "cross-env NODE_ENV=development sequelize-cli db:create",
     "db:seed": "cross-env NODE_ENV=development sequelize-cli db:seed:all",

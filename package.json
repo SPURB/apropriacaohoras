@@ -1,8 +1,7 @@
 {
-  "name": "apropricaohoras",
-  "description": "API da apropriação de horas da São Paulo Urbanismo",
   "scripts": {
     "heroku-prebuild": "cd api && npm install",
-    "start": "cd api && cross-env NODE_ENV=production babel-node server.js"
-  }
+    "start": "cd api && npm start"
+  },
+  "cacheDirectories": ["api/node_modules", "app/node_modules"]
 }
