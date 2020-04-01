@@ -14,7 +14,7 @@ API da aplicação de apropriação de horas
 npm install
 ```
 
-2. A partir do arquivo `.env` crie o arquivo `env.development` incluindo as suas credenciais de acesso ao banco de dados mysql
+2. A partir do arquivo `.env` crie o arquivo `.env.development` incluindo as suas credenciais de acesso ao banco de dados mysql
 
 3. Crie o banco de dados
 ```
