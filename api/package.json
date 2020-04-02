@@ -6,12 +6,13 @@
     "node": ">=8.10.0"
   },
   "scripts": {
-    "lint": "prettier-standard src/{*,/**/*}.js",
-    "start": "node main.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec babel-node dev.js",
-    "clean": "babel-node ./clean.js",
-    "babel-build": "babel -d ./dist ./src -s",
     "build": "npm run clean && npm run babel-build",
+    "babel-build": "babel -d ./dist ./src -s",
+    "start": "node main.js",
+    "start:debug": "cross-env NODE_ENV=development node main.js",
+    "lint": "prettier-standard src/{*,/**/*}.js",
+    "clean": "babel-node ./clean.js",
     "db:create": "cross-env NODE_ENV=development sequelize-cli db:create",
     "db:seed": "cross-env NODE_ENV=development sequelize-cli db:seed:all",
     "db:reset": "cross-env NODE_ENV=development sequelize-cli db:seed:undo:all",
