@@ -1,17 +1,30 @@
 dist: xenial
 os: linux
-language: minimal
+language: shell
 
 before_script:
   - curl https://cli-assets.heroku.com/install.sh | sh
 
 script:
   - cd api
+  - git init
+  - git add .
+  - git commit -m "deploy"
   - git remote add heroku git@heroku.com:apropriacaohoras.git
-  - heroku git:remote -a apropriacaohoras
+  # Turn off warnings about SSH keys:
+  - echo "Host heroku.com" >> ~/.ssh/config
+  - echo "   StrictHostKeyChecking no" >> ~/.ssh/config
+  - echo "   CheckHostIP no" >> ~/.ssh/config
+  - echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config
+  # Clear your current Heroku SSH keys:
+  - heroku keys:clear
+  # Add a new SSH key to Heroku
+  - yes | heroku keys:add
+  - git push heroku master -f
+  - rm -fr .git
 
 after_script:
-  - echo "api deployed {$TRAVIS_BRANCH} to heroku"
+  - echo api deployed to heroku
 
 branches:
   only:
