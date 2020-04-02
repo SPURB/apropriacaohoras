@@ -1,0 +1,19 @@
+dist: xenial
+os: linux
+language: minimal
+
+before_script:
+  - curl https://cli-assets.heroku.com/install.sh | sh
+
+script:
+  - cd api
+  - git remote add heroku git@heroku.com:apropriacaohoras.git
+  - heroku git:remote -a apropriacaohoras
+
+after_script:
+  - echo "api deployed {$TRAVIS_BRANCH} to heroku"
+
+branches:
+  only:
+    - master
+    - stagging/api
