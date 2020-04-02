@@ -1,8 +1,9 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
+import express from 'express'
+import bodyParser from 'body-parser'
+import cors from 'cors'
+
 const app = express()
-const version = `v${require('./package.json').version}`
+const version = `v${require('../package.json').version}`
 const endpoints = [
   'horas',
   'usuarios',
@@ -22,13 +23,9 @@ app.use(bodyParser.json())
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// create models
-const db = require('./src/models')
-db.sequelize.sync()
-
-// create endpoinsts
+// create endpoints
 endpoints.forEach(endpoint =>
-  require(`./src/routes/${endpoint}.routes`)(app, version)
+  require(`./routes/${endpoint}.routes`)(app, version)
 )
 
 // set port, listen for requests

@@ -5,26 +5,17 @@
   "engines": {
     "node": ">=8.10.0"
   },
-  "main": "server.js",
   "scripts": {
-    "lint": "prettier-standard server.js src/{*,/**/*}.js",
-    "start": "NODE_ENV=production babel-node server.js",
-    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node server.js",
+    "lint": "prettier-standard src/{*,/**/*}.js",
+    "start": "node main.js",
+    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node dev.js",
+    "clean": "babel-node ./clean.js",
+    "babel-build": "babel -d ./dist ./src -s",
+    "build": "npm run clean && npm run babel-build",
     "db:create": "cross-env NODE_ENV=development sequelize-cli db:create",
     "db:seed": "cross-env NODE_ENV=development sequelize-cli db:seed:all",
     "db:reset": "cross-env NODE_ENV=development sequelize-cli db:seed:undo:all",
     "db:drop": "cross-env NODE_ENV=development sequelize-cli db:drop"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "npm run lint"
-    ]
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -45,8 +36,10 @@
     "custom-env": "^2.0.1",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.8",
+    "mkdirp": "^1.0.3",
     "nodemon": "^2.0.2",
     "prettier-standard": "^16.1.0",
+    "rimraf": "^3.0.2",
     "sequelize-cli": "^5.5.1"
   }
 }
