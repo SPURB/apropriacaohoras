@@ -28,3 +28,14 @@ Veja as instruções para desenvolvimento do frontend no [app/README](app/README
 ```
 cd app
 ```
+
+___
+### ci
+valide `.travis.yml` antes de commitar
+```bash
+# Instale o ci do travis
+gem install travis --no-rdoc --no-ri
+
+# valide o arquivo de configuração deste diretório
+travis lint ./.travis.yml
+```

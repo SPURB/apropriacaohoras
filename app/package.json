@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
+    "generate": "nuxt generate",
     "lint": "prettier-standard ./{*,/**/*}.js --format"
   },
   "husky": {

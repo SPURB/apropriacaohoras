@@ -1,21 +1,31 @@
 dist: xenial
 os: linux
-language: shell
+language: generic
 
 before_script:
-  - curl https://cli-assets.heroku.com/install.sh | sh
+  - curl https://cli-assets.heroku.com/install.sh | sh # this is for api deploy
 
-script: bash deploy.api.sh
+cache:
+  directories:
+    - ./app/node_modules/
+
+script:
+  - bash deploy.api.sh
+  - bash build.app.sh
+
 branches:
   only:
     - master
     - stagging/api
 
-deploy:
+deploy: # spurb.github.io/apropriacaohoras
   local_dir: app/dist
   provider: pages
   cleanup: true
-  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  github_token: $GITHUB_TOKEN
   keep_history: true
   on:
     branch: master
+
+notifications:
+  webhooks: https://www.travisbuddy.com
