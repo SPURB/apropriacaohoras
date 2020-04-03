@@ -5,28 +5,17 @@ language: shell
 before_script:
   - curl https://cli-assets.heroku.com/install.sh | sh
 
-script:
-  - cd api
-  - git init
-  - git add .
-  - git commit -m "deploy"
-  - git remote add heroku git@heroku.com:apropriacaohoras.git
-  # Turn off warnings about SSH keys:
-  - echo "Host heroku.com" >> ~/.ssh/config
-  - echo "   StrictHostKeyChecking no" >> ~/.ssh/config
-  - echo "   CheckHostIP no" >> ~/.ssh/config
-  - echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config
-  # Clear your current Heroku SSH keys:
-  - heroku keys:clear
-  # Add a new SSH key to Heroku
-  - yes | heroku keys:add
-  - git push heroku master -f
-  - rm -fr .git
-
-after_script:
-  - echo api deployed to heroku
-
+script: bash deploy.api.sh
 branches:
   only:
     - master
     - stagging/api
+
+deploy:
+  local_dir: app/dist
+  provider: pages
+  cleanup: true
+  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    branch: master
