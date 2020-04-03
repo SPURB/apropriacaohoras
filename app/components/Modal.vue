@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import IconSucesso from '@/components/elements/Sucesso'
-import IconErro from '@/components/elements/Erro'
+import IconSucesso from '~/components/elements/Sucesso'
+import IconErro from '~/components/elements/Erro'
 import { mapGetters } from 'vuex'
 export default {
     name: 'Modal',

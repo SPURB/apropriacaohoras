@@ -81,11 +81,11 @@
 </template>
 
 <script>
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import Modal from '@/components/Modal'
-import Calendario from '@/components/Calendario'
-import CustomSelect from '@/components/CustomSelect'
+import Header from '~/components/Header'
+import Footer from '~/components/Footer'
+import Modal from '~/components/Modal'
+import Calendario from '~/components/Calendario'
+import CustomSelect from '~/components/CustomSelect'
 import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default {

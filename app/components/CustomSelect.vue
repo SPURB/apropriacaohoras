@@ -41,5 +41,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/style/form-horas.scss';
+@import '~/assets/style/form-horas.scss';
 </style>
