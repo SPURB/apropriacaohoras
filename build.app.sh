@@ -1,4 +1,4 @@
 #!/bin/bash
 cd app
 npm install
-npm run generate
+npx nuxt generate
