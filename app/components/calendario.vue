@@ -23,12 +23,15 @@
 				:key="weekIndex"
 				v-for="(week, weekIndex) in weeksThisMonth">
 				<td 
-					:key="day"
-					v-for="day in calendario(weekIndex)"
-					:class="daysClassification(day)" 
+					:key="dayIndex"
+					v-for="(day, dayIndex) in calendario(weekIndex)"
+					:class="daysClassification(day)"
 					v-html="formatDate(day)"
-					@click="setMultipleData({ event: $event, day: `${day}`.padStart(2, '0'), month: `${month}`.padStart(2, '0'), year })"
-				/>
+					:data-date="getFullData(formatDate(day))"
+					@click="setMultipleData({ event: $event, date: getFullData(formatDate(day)) })"
+				>
+				{{ day }}
+				</td>
 				
 			</tr>
 		</tbody>
@@ -37,6 +40,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import Horas from '@/services/api-horas'
+
 export default {
 	name: 'Calendario',
 	data () {
@@ -67,22 +72,35 @@ export default {
 			return new Date(this.year, (this.month + 1), 0).getDate()
 		}, 
 		weeksThisMonth () { 
-			return Math.ceil(this.daysThisMonth/7) }, 
+			return Math.ceil(this.daysThisMonth/6) 
+		}, 
 		firstWeekDay () { 
-			return new Date(this.year, this.month, 1).getDay() 
+			return new Date(this.year, this.month, 1).getDay() - 1
+		},
+		currentDate () {
+			const today = new Date()
+			const cDay = `${today.getDate()}`.padStart(2, '0')
+			const cMonth = `${today.getMonth()+1}`.padStart(2, '0')
+			const date = {
+				cMonth,
+				cDay
+			}
+			return date
 		}
+	},
+	mounted() {
+		this.typeClass()
 	},
 	methods: {
 		...mapActions('module/form-registrar-horas', ['setMultipleData']),
 		calendario (weekIndex) {
 			const totalDayMonth = this.daysThisMonth + this.firstWeekDay
 			let day = []
-			for (let dayIndex = 1; dayIndex <= this.daysThisMonth + this.firstWeekDay; dayIndex++) {
-				if (dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1) {					
-					day.push(dayIndex) // attr + 1 para acertar data
+			for (let dayIndex = 0; dayIndex <= totalDayMonth; dayIndex++) {
+				if (dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1) {
+					day.push(dayIndex)
 				}
 			}
-			console.log(day)
 			return day
 		},
 		monthInc (inc) {
@@ -91,10 +109,12 @@ export default {
 			if (this.selection) this.selection.classList.remove('selected')
 			if (this.selection) this.selection = undefined
 		},
-		decodeMonth (monthNumber) { return this.months[monthNumber] },
+		decodeMonth (monthNumber) {
+			return this.months[monthNumber]
+		},
 		daysClassification (monthday) {
 			let out = []
-			let thisday = new Date(this.year, this.month, monthday)
+			let thisday = new Date(this.year, this.month, monthday-2)
 			thisday.toLocaleString().substring(0, 10) === new Date().toLocaleString().substring(0, 10) ? out.push('today') : false
 			return out.toString()
 		},
@@ -103,15 +123,45 @@ export default {
 				return ''
 			}
 			else { 
-				return monthday
+				return monthday - this.firstWeekDay
 			}
-		},		
-		hms () {
-			let d = new Date()
-			let h = `${d.getHours()}`.padStart(2, '0')
-			let m = `${d.getMinutes()}`.padStart(2, '0')
-			let s = `${d.getSeconds()}`.padStart(2, '0')
-			return h + ":" + m + ":" + s
+		},
+		getFullData (day) {
+			return this.year + '-' + `${this.month+1}`.padStart(2, '0') + '-' + `${day}`.padStart(2, '0') 
+		},
+		splitDate (date) {
+			let sDate = date.split('-')
+			sDate = {
+				sMonth: sDate[1],
+				sDay: sDate[2]
+			}
+			return sDate
+		},
+		isWeekend (date){
+			let then = new Date(2020,3,5);  // a Saturday  (March 2, 2013)
+			if (then.getDay() === 6 || then.getDay() === 0) {
+				alert('weekend')
+			} else {
+				alert('not weekend')
+			}
+		},
+		typeClass () {
+			let tbody = document.getElementById('tbody')
+			// acessa cada tr
+			tbody.childNodes.forEach(tr => {
+				// acessa cada td
+				tr.childNodes.forEach(td => {
+					const sDate = this.splitDate(td.dataset.date)
+					const tDate = td.dataset.date
+					if (sDate.sMonth === this.currentDate.cMonth && sDate.sDay <= this.currentDate.cDay && sDate.sDay !== '00') {
+						Horas.getStatus(1, tDate).then(res => {
+							td.classList.add(res.data.type)
+						}).catch(err => {
+							console.log(err)
+						})
+					}
+				})
+			})
 		}
 	}
 }
@@ -192,6 +242,19 @@ table {
 		}
 	}
 }
+
+.danger {
+	background-color: $vermelho;
+}
+
+.warning {
+	background-color: $laranja;
+}
+
+.success {
+	background-color: $verde;
+}
+
 @media (max-width: 850px) {
 	.selected {
 		transform: scale(1.15) !important;

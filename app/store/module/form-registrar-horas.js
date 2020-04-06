@@ -161,7 +161,7 @@ export const mutations = {
   },
   setMultipleData (state, payload) {
     let eTarget = payload.event
-    let data = `${payload.year}-${payload.month}-${payload.day}`
+    let data = payload.date
     if (eTarget.target.classList.contains('selected')) {
       eTarget.target.classList.remove('selected')
       state.multipleData = state.multipleData.filter(item => item !== data)
