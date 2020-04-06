@@ -8,6 +8,7 @@ before_script:
 cache:
   directories:
     - ./app/node_modules/
+    - ~/.cache
 
 script:
   - bash deploy.api.sh
@@ -20,11 +21,10 @@ branches:
     - dev/app
 
 deploy: # spurb.github.io/apropriacaohoras
-  local_dir: app/dist
+  local_dir: app/gh-pages
   provider: pages
   cleanup: true
   github_token: $GITHUB_TOKEN
-  keep_history: true
   on:
     branch: master
 
