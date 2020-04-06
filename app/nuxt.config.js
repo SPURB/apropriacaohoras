@@ -1,8 +1,6 @@
-const repoName = (process.env.TRAVIS_REPO_SLUG || '').split('/').pop()
-
 export default {
   router: {
-    base: process.env.CI ? repoName : '/' // https://spurb.github.io/apropriacaohoras/
+    base: process.env.CI ? '/apropriacaohoras/' : '/' // https://spurb.github.io/apropriacaohoras/
   },
   mode: 'spa',
   modules: ['@nuxtjs/style-resources'],

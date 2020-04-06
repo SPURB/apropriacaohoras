@@ -23,7 +23,7 @@ branches:
 deploy: # spurb.github.io/apropriacaohoras
   local_dir: app/gh-pages
   provider: pages
-  cleanup: true
+  skip_cleanup: true
   github_token: $GITHUB_TOKEN
   on:
     branch: master
