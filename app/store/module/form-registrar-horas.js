@@ -3,9 +3,10 @@ import Projeto from '@/services/api-projeto'
 import Subatividade from '@/services/api-subatividade'
 import Horas from '@/services/api-horas'
 
+import Lib from '@/libs'
+
 export const state = () => ({
   dataSelects: [],
-  selection: null,
   showModal: null,
   multipleData: [],
   horas: {
@@ -162,12 +163,25 @@ export const mutations = {
   setMultipleData (state, payload) {
     let eTarget = payload.event
     let data = payload.date
-    if (eTarget.target.classList.contains('selected')) {
-      eTarget.target.classList.remove('selected')
-      state.multipleData = state.multipleData.filter(item => item !== data)
+
+    const isWeekend = Lib.isWeekend(data)
+    const sDate = Lib.splitDate(data)
+    const currentDate = Lib.currentDate()
+
+    if (
+      sDate.sMonth !== currentDate.cMonth ||
+      (sDate.sDay > currentDate.cDay && isWeekend === false) ||
+      isWeekend === true
+    ) {
+      return alert('Data inválida')
     } else {
-      eTarget.target.classList.add('selected')
-      state.multipleData.push(data)
+      if (eTarget.target.classList.contains('selected')) {
+        eTarget.target.classList.remove('selected')
+        state.multipleData = state.multipleData.filter(item => item !== data)
+      } else {
+        eTarget.target.classList.add('selected')
+        state.multipleData.push(data)
+      }
     }
   },
   hoursInc (state) {

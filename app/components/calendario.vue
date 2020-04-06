@@ -26,8 +26,8 @@
 					:key="dayIndex"
 					v-for="(day, dayIndex) in calendario(weekIndex)"
 					:class="daysClassification(day)"
-					v-html="formatDate(day)"
 					:data-date="getFullData(formatDate(day))"
+					v-html="formatDate(day)"
 					@click="setMultipleData({ event: $event, date: getFullData(formatDate(day)) })"
 				>
 				{{ day }}
@@ -40,6 +40,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import Lib from '@/libs'
 import Horas from '@/services/api-horas'
 
 export default {
@@ -53,8 +54,12 @@ export default {
 	},
 	computed: {
 		today: {
-			get () { return this.date },
-			set (newDate) { this.date = newDate }
+			get () {
+				return this.date 
+			},
+			set (newDate) { 
+				this.date = newDate 
+			}
 		},
 		todayWeekDay () { 
 			return this.today.getDay()
@@ -76,19 +81,12 @@ export default {
 		}, 
 		firstWeekDay () { 
 			return new Date(this.year, this.month, 1).getDay() - 1
-		},
-		currentDate () {
-			const today = new Date()
-			const cDay = `${today.getDate()}`.padStart(2, '0')
-			const cMonth = `${today.getMonth()+1}`.padStart(2, '0')
-			const date = {
-				cMonth,
-				cDay
-			}
-			return date
-		}
+		}		
 	},
 	mounted() {
+		this.typeClass()
+	},
+	updated() {
 		this.typeClass()
 	},
 	methods: {
@@ -106,8 +104,6 @@ export default {
 		monthInc (inc) {
 			let newMonth = this.month + inc
 			this.today = new Date(this.year, newMonth, this.todayMonthDay)
-			if (this.selection) this.selection.classList.remove('selected')
-			if (this.selection) this.selection = undefined
 		},
 		decodeMonth (monthNumber) {
 			return this.months[monthNumber]
@@ -129,31 +125,29 @@ export default {
 		getFullData (day) {
 			return this.year + '-' + `${this.month+1}`.padStart(2, '0') + '-' + `${day}`.padStart(2, '0') 
 		},
-		splitDate (date) {
-			let sDate = date.split('-')
-			sDate = {
-				sMonth: sDate[1],
-				sDay: sDate[2]
-			}
-			return sDate
-		},
-		isWeekend (date){
-			let then = new Date(2020,3,5);  // a Saturday  (March 2, 2013)
-			if (then.getDay() === 6 || then.getDay() === 0) {
-				alert('weekend')
-			} else {
-				alert('not weekend')
-			}
-		},
 		typeClass () {
-			let tbody = document.getElementById('tbody')
-			// acessa cada tr
+			let tbody = document.getElementById('tbody')			
+			// acessa cada
 			tbody.childNodes.forEach(tr => {
 				// acessa cada td
 				tr.childNodes.forEach(td => {
-					const sDate = this.splitDate(td.dataset.date)
 					const tDate = td.dataset.date
-					if (sDate.sMonth === this.currentDate.cMonth && sDate.sDay <= this.currentDate.cDay && sDate.sDay !== '00') {
+					const sDate = Lib.splitDate(td.dataset.date)
+					const isWeekend = Lib.isWeekend(tDate)
+					const currentDate = Lib.currentDate()
+
+					td.classList.remove('warning')
+					td.classList.remove('success')
+					td.classList.remove('danger')
+
+					if (sDate.sMonth === currentDate.cMonth && sDate.sDay <= currentDate.cDay && sDate.sDay !== '00' && isWeekend === false) {
+						Horas.getStatus(1, tDate).then(res => {
+							td.classList.add(res.data.type)
+						}).catch(err => {
+							console.log(err)
+						})
+					} 
+					if (sDate.sDay !== '00' && isWeekend === false) {
 						Horas.getStatus(1, tDate).then(res => {
 							td.classList.add(res.data.type)
 						}).catch(err => {
