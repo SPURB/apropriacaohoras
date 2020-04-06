@@ -20,7 +20,7 @@
   "dependencies": {
     "@nuxtjs/style-resources": "^1.0.0",
     "axios": "^0.19.2",
-    "nuxt": "^2.11.0"
+    "nuxt": "^2.12.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",

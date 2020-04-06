@@ -1,4 +1,4 @@
-# Apropriação de horas
+# Apropriação de horas [![Build Status](https://travis-ci.org/SPURB/apropriacaohoras.svg?branch=master)](https://travis-ci.org/SPURB/apropriacaohoras)
 Sistema de apropriação de horas trabalhadas, gerenciamento de pessoal e relatoria de trabalho da SP Urbanismo.
 
 ### api
@@ -9,8 +9,6 @@ cd api
 ___
 
 **Ambiente de homologação da api**
-[![Build Status](https://travis-ci.org/SPURB/apropriacaohoras.svg?branch=master)](https://travis-ci.org/SPURB/apropriacaohoras)
-
 Uma versão da API está publicada para desenvolvimento do frontend. As enpoints abaixo equivalem ao último commit das branches `master` ou `staging/api`.
 ```
 https://apropriacaohoras.herokuapp.com/
@@ -31,7 +29,15 @@ cd app
 
 ___
 ### ci
-valide `.travis.yml` antes de commitar
+
+
+1. :fire: **Importante** 
+Se o seu ambiente é windows, altere a configuração padrão de ignorar caixas (padrão do windows) para evitar conflitos no build no travis-ci (ubuntu/xenial). No seu git bash:
+```
+git config core.ignorecase false
+```
+
+2. Valide `.travis.yml` antes de commitar
 ```bash
 # Instale o ci do travis
 gem install travis --no-rdoc --no-ri
