@@ -16,7 +16,8 @@ script:
 branches:
   only:
     - master
-    - stagging/api
+    - dev/api
+    - dev/app
 
 deploy: # spurb.github.io/apropriacaohoras
   local_dir: app/dist
