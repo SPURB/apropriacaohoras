@@ -19,12 +19,18 @@ exports.create = (req, res) => {
   }).then(data => {
     let horas = 0
     let extras = 0
+
+    // pega o total de horas e extras registrados no banco para X dia
     data.forEach(dia => {
       horas = horas + dia.horas
       extras = extras + dia.extras
     })
 
-    if (horas < 8 && extras < 4) {
+    const sumHoras = req.body.horas + horas
+    const sumExtras = req.body.extras + extras
+
+    // verifica se a soma das horas já registradas com as que deseja registrar passar de 8
+    if (sumHoras <= 8 && sumExtras <= 4) {
       const body = {
         horas: req.body.horas,
         extras: req.body.extras,
@@ -35,11 +41,11 @@ exports.create = (req, res) => {
         dataRefInicio: req.body.dataRefInicio,
         descricao: req.body.descricao
       }
-
       dao.create(res, Hora, body)
     } else {
       res.status(400).send({
-        message: `Registro negado`
+        message: 'Registro negado! Horas ultrapassaram o limite de 8hr',
+        data: req.body.dataRefInicio
       })
       return
     }
