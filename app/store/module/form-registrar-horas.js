@@ -9,6 +9,10 @@ export const state = () => ({
   dataSelects: [],
   showModal: null,
   multipleData: [],
+  validateForm: {
+    msg: [],
+    disabled: false
+  },
   horas: {
     usuario: 1, // id fixo mudar para quando for consumir api
     horas: null,
@@ -36,8 +40,9 @@ export const actions = {
       alert('Ocorreu algum erro! Tente mais tarde.')
     }
   },
-  async postForm ({ commit, getters, state }) {
-    let validateForm = getters.validateForm
+  async postForm ({ commit, state }) {
+    commit('setValidationForm', state.horas)
+    let validateForm = state.validateForm
     try {
       if (validateForm.disabled !== true) {
         state.multipleData.forEach(dataRefInicio => {
@@ -78,6 +83,9 @@ export const actions = {
   },
   setMultipleData ({ commit }, payload) {
     commit('setMultipleData', payload)
+    setTimeout(() => {
+      commit('setShowModal', false)
+    }, 2500)
   }
 }
 
@@ -89,49 +97,7 @@ export const getters = {
     return state.showModal
   },
   validateForm (state) {
-    let array = []
-    let res = {
-      msg: [],
-      disabled: false
-    }
-    // valida o objeto horas :: sem dataRefInicio
-    Object.keys(state.horas).map(key => {
-      const value = state.horas[key]
-      if (value == null && key !== 'extras' && key !== 'descricao') {
-        array.push(key)
-      }
-    })
-
-    // valida o multipleData :: dataRefInicio
-    if (state.multipleData.length == 0) {
-      array.push('dataRefInicio')
-    }
-
-    array.forEach(element => {
-      switch (element) {
-        case 'dataRefInicio':
-          res.msg.push('Preencha o campo data')
-          res.disabled = true
-          break
-        case 'horas':
-          res.msg.push('Preencha o campo horas')
-          res.disabled = true
-          break
-        case 'fase':
-          res.msg.push('Preencha o campo fase')
-          res.disabled = true
-          break
-        case 'projeto':
-          res.msg.push('Preencha o campo projeto')
-          res.disabled = true
-          break
-        case 'subatividade':
-          res.msg.push('Preencha o campo subatividade')
-          res.disabled = true
-          break
-      }
-    })
-    return res
+    return state.validateForm
   }
 }
 
@@ -168,12 +134,18 @@ export const mutations = {
     const sDate = Lib.splitDate(data)
     const currentDate = Lib.currentDate()
 
+    // verifica se é final de semana
     if (
       sDate.sMonth !== currentDate.cMonth ||
       (sDate.sDay > currentDate.cDay && isWeekend === false) ||
       isWeekend === true
     ) {
-      return alert('Data inválida')
+      state.validateForm = { msg: [], disabled: false } // zera o state para um vazio
+
+      state.validateForm.msg.push('Data informada inválida')
+      state.validateForm.disabled = true
+
+      state.showModal = true
     } else {
       if (eTarget.target.classList.contains('selected')) {
         eTarget.target.classList.remove('selected')
@@ -197,5 +169,47 @@ export const mutations = {
     } else {
       state.horas.horas = state.horas.horas - 1
     }
+  },
+  setValidationForm (state) {
+    let array = []
+    state.validateForm = { msg: [], disabled: false }
+
+    // valida o objeto horas :: sem dataRefInicio
+    Object.keys(state.horas).map(key => {
+      const value = state.horas[key]
+      if (value == null && key !== 'extras' && key !== 'descricao') {
+        array.push(key)
+      }
+    })
+
+    // valida o multipleData :: dataRefInicio
+    if (state.multipleData.length == 0) {
+      array.push('dataRefInicio')
+    }
+
+    array.forEach(element => {
+      switch (element) {
+        case 'dataRefInicio':
+          state.validateForm.msg.push('Preencha o campo data')
+          state.validateForm.disabled = true
+          break
+        case 'horas':
+          state.validateForm.msg.push('Preencha o campo horas')
+          state.validateForm.disabled = true
+          break
+        case 'fase':
+          state.validateForm.msg.push('Preencha o campo fase')
+          state.validateForm.disabled = true
+          break
+        case 'projeto':
+          state.validateForm.msg.push('Preencha o campo projeto')
+          state.validateForm.disabled = true
+          break
+        case 'subatividade':
+          state.validateForm.msg.push('Preencha o campo subatividade')
+          state.validateForm.disabled = true
+          break
+      }
+    })
   }
 }
