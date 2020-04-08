@@ -55,7 +55,11 @@ export const actions = {
               commit('setShowModal', true)
             })
             .catch(err => {
-              console.log(err)
+              commit('setErroData', err.response.data)
+              commit('setShowModal', true)
+              setTimeout(() => {
+                commit('setShowModal', false)
+              }, 3000)
             })
         })
       } else {
@@ -211,5 +215,11 @@ export const mutations = {
           break
       }
     })
+  },
+  setErroData (state, payload) {
+    state.validateForm = { msg: [], disabled: false }
+    state.validateForm.msg.push(payload.message)
+    state.validateForm.msg.push(`Dia negado: ${payload.data}`)
+    state.validateForm.disabled = true
   }
 }

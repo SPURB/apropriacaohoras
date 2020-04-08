@@ -146,13 +146,6 @@ export default {
 						}).catch(err => {
 							console.log(err)
 						})
-					} 
-					if (sDate.sDay !== '00' && isWeekend === false) {
-						Horas.getStatus(1, tDate).then(res => {
-							td.classList.add(res.data.type)
-						}).catch(err => {
-							console.log(err)
-						})
 					}
 				})
 			})
