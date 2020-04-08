@@ -30,7 +30,7 @@ exports.create = (req, res) => {
     const sumExtras = req.body.extras + extras
 
     // verifica se a soma das horas já registradas com as que deseja registrar passar de 8
-    if (sumHoras <= 8 && sumExtras <= 4) {
+    if (sumHoras < 8 && sumExtras < 4) {
       const body = {
         horas: req.body.horas,
         extras: req.body.extras,
