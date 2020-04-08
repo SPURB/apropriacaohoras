@@ -42,11 +42,13 @@ exports.create = (req, res) => {
         descricao: req.body.descricao
       }
       dao.create(res, Hora, body)
-    } else {      
+    } else {
+      let data = req.body.dataRefInicio.split('-')
+      data = `${data[2]}/${data[1]}/${data[0]}` // formatando data para local
       res.status(400).send({
         message: 'Registro negado! Horas ultrapassaram o limite permitido!',
         totalHoras,
-        data: req.body.dataRefInicio
+        data
       })
       return
     }
@@ -64,32 +66,24 @@ exports.countHoras = (req, res) => {
       }
     }).then(r => {
       let totalHoras = 0
-      let horas = 0
-      let extras = 0
+
       r.forEach(dia => {
         totalHoras = totalHoras + dia.horas + dia.extras
-        horas = horas + dia.horas
-        extras = extras + dia.extras
       })
+
       if (totalHoras == 0) {
         return res.status(200).send({
           type: 'danger',
-          horas,
-          extras,
           totalHoras
         })
       } else if (totalHoras < 8 && totalHoras !== 0) {
         return res.status(200).send({
           type: 'warning',
-          horas,
-          extras,
           totalHoras
         })
       } else {
         return res.status(200).send({
           type: 'success',
-          horas,
-          extras,
           totalHoras
         })
       }
