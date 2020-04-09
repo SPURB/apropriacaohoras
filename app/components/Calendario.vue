@@ -23,12 +23,15 @@
 				:key="weekIndex"
 				v-for="(week, weekIndex) in weeksThisMonth">
 				<td 
-					:key="day"
-					v-for="day in calendario(weekIndex)"
-					:class="daysClassification(day)" 
+					:key="dayIndex"
+					v-for="(day, dayIndex) in calendario(weekIndex)"
+					:class="daysClassification(day)"
+					:data-date="getFullData(formatDate(day))"
 					v-html="formatDate(day)"
-					@click="setMultipleData({ event: $event, day: `${day}`.padStart(2, '0'), month: `${month}`.padStart(2, '0'), year })"
-				/>
+					@click="setMultipleData({ event: $event, date: getFullData(formatDate(day)) })"
+				>
+				{{ day }}
+				</td>
 				
 			</tr>
 		</tbody>
@@ -37,6 +40,9 @@
 
 <script>
 import { mapActions } from 'vuex'
+import Lib from '@/libs'
+import Horas from '@/services/api-horas'
+
 export default {
 	name: 'Calendario',
 	data () {
@@ -48,8 +54,12 @@ export default {
 	},
 	computed: {
 		today: {
-			get () { return this.date },
-			set (newDate) { this.date = newDate }
+			get () {
+				return this.date 
+			},
+			set (newDate) { 
+				this.date = newDate 
+			}
 		},
 		todayWeekDay () { 
 			return this.today.getDay()
@@ -67,34 +77,40 @@ export default {
 			return new Date(this.year, (this.month + 1), 0).getDate()
 		}, 
 		weeksThisMonth () { 
-			return Math.ceil(this.daysThisMonth/7) }, 
+			return Math.ceil(this.daysThisMonth/6) 
+		}, 
 		firstWeekDay () { 
-			return new Date(this.year, this.month, 1).getDay() 
-		}
+			return new Date(this.year, this.month, 1).getDay() - 1
+		}		
+	},
+	mounted() {
+		this.typeClass()
+	},
+	updated() {
+		this.typeClass()
 	},
 	methods: {
 		...mapActions('module/form-registrar-horas', ['setMultipleData']),
 		calendario (weekIndex) {
 			const totalDayMonth = this.daysThisMonth + this.firstWeekDay
 			let day = []
-			for (let dayIndex = 1; dayIndex <= this.daysThisMonth + this.firstWeekDay; dayIndex++) {
-				if (dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1) {					
-					day.push(dayIndex) // attr + 1 para acertar data
+			for (let dayIndex = 0; dayIndex <= totalDayMonth; dayIndex++) {
+				if (dayIndex >= weekIndex * 7 && dayIndex <= ((weekIndex + 1) * 7) - 1) {
+					day.push(dayIndex)
 				}
 			}
-			console.log(day)
 			return day
 		},
 		monthInc (inc) {
 			let newMonth = this.month + inc
 			this.today = new Date(this.year, newMonth, this.todayMonthDay)
-			if (this.selection) this.selection.classList.remove('selected')
-			if (this.selection) this.selection = undefined
 		},
-		decodeMonth (monthNumber) { return this.months[monthNumber] },
+		decodeMonth (monthNumber) {
+			return this.months[monthNumber]
+		},
 		daysClassification (monthday) {
 			let out = []
-			let thisday = new Date(this.year, this.month, monthday)
+			let thisday = new Date(this.year, this.month, monthday-2)
 			thisday.toLocaleString().substring(0, 10) === new Date().toLocaleString().substring(0, 10) ? out.push('today') : false
 			return out.toString()
 		},
@@ -103,15 +119,36 @@ export default {
 				return ''
 			}
 			else { 
-				return monthday
+				return monthday - this.firstWeekDay
 			}
-		},		
-		hms () {
-			let d = new Date()
-			let h = `${d.getHours()}`.padStart(2, '0')
-			let m = `${d.getMinutes()}`.padStart(2, '0')
-			let s = `${d.getSeconds()}`.padStart(2, '0')
-			return h + ":" + m + ":" + s
+		},
+		getFullData (day) {
+			return this.year + '-' + `${this.month+1}`.padStart(2, '0') + '-' + `${day}`.padStart(2, '0') 
+		},
+		typeClass () {
+			let tbody = document.getElementById('tbody')			
+			// acessa cada
+			tbody.childNodes.forEach(tr => {
+				// acessa cada td
+				tr.childNodes.forEach(td => {
+					const tDate = td.dataset.date
+					const sDate = Lib.splitDate(td.dataset.date)
+					const isWeekend = Lib.isWeekend(tDate)
+					const currentDate = Lib.currentDate()
+
+					td.classList.remove('warning')
+					td.classList.remove('success')
+					td.classList.remove('danger')
+
+					if (sDate.sMonth === currentDate.cMonth && sDate.sDay <= currentDate.cDay && sDate.sDay !== '00' && isWeekend === false) {
+						Horas.getStatus(1, tDate).then(res => {
+							td.classList.add(res.data.type)
+						}).catch(err => {
+							console.log(err)
+						})
+					}
+				})
+			})
 		}
 	}
 }
@@ -192,6 +229,19 @@ table {
 		}
 	}
 }
+
+.danger {
+	background-color: $vermelho;
+}
+
+.warning {
+	background-color: $laranja;
+}
+
+.success {
+	background-color: $verde;
+}
+
 @media (max-width: 850px) {
 	.selected {
 		transform: scale(1.15) !important;

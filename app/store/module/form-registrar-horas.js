@@ -3,11 +3,16 @@ import Projeto from '@/services/api-projeto'
 import Subatividade from '@/services/api-subatividade'
 import Horas from '@/services/api-horas'
 
+import Lib from '@/libs'
+
 export const state = () => ({
   dataSelects: [],
-  selection: null,
   showModal: null,
   multipleData: [],
+  validateForm: {
+    msg: [],
+    disabled: false
+  },
   horas: {
     usuario: 1, // id fixo mudar para quando for consumir api
     horas: null,
@@ -35,8 +40,9 @@ export const actions = {
       alert('Ocorreu algum erro! Tente mais tarde.')
     }
   },
-  async postForm ({ commit, getters, state }) {
-    let validateForm = getters.validateForm
+  async postForm ({ commit, state }) {
+    commit('setValidationForm', state.horas)
+    let validateForm = state.validateForm
     try {
       if (validateForm.disabled !== true) {
         state.multipleData.forEach(dataRefInicio => {
@@ -49,7 +55,11 @@ export const actions = {
               commit('setShowModal', true)
             })
             .catch(err => {
-              console.log(err)
+              commit('setErroData', err.response.data)
+              commit('setShowModal', true)
+              setTimeout(() => {
+                commit('setShowModal', false)
+              }, 3000)
             })
         })
       } else {
@@ -77,6 +87,9 @@ export const actions = {
   },
   setMultipleData ({ commit }, payload) {
     commit('setMultipleData', payload)
+    setTimeout(() => {
+      commit('setShowModal', false)
+    }, 2500)
   }
 }
 
@@ -88,49 +101,7 @@ export const getters = {
     return state.showModal
   },
   validateForm (state) {
-    let array = []
-    let res = {
-      msg: [],
-      disabled: false
-    }
-    // valida o objeto horas :: sem dataRefInicio
-    Object.keys(state.horas).map(key => {
-      const value = state.horas[key]
-      if (value == null && key !== 'extras' && key !== 'descricao') {
-        array.push(key)
-      }
-    })
-
-    // valida o multipleData :: dataRefInicio
-    if (state.multipleData.length == 0) {
-      array.push('dataRefInicio')
-    }
-
-    array.forEach(element => {
-      switch (element) {
-        case 'dataRefInicio':
-          res.msg.push('Preencha o campo data')
-          res.disabled = true
-          break
-        case 'horas':
-          res.msg.push('Preencha o campo horas')
-          res.disabled = true
-          break
-        case 'fase':
-          res.msg.push('Preencha o campo fase')
-          res.disabled = true
-          break
-        case 'projeto':
-          res.msg.push('Preencha o campo projeto')
-          res.disabled = true
-          break
-        case 'subatividade':
-          res.msg.push('Preencha o campo subatividade')
-          res.disabled = true
-          break
-      }
-    })
-    return res
+    return state.validateForm
   }
 }
 
@@ -161,13 +132,32 @@ export const mutations = {
   },
   setMultipleData (state, payload) {
     let eTarget = payload.event
-    let data = `${payload.year}-${payload.month}-${payload.day}`
-    if (eTarget.target.classList.contains('selected')) {
-      eTarget.target.classList.remove('selected')
-      state.multipleData = state.multipleData.filter(item => item !== data)
+    let data = payload.date
+
+    const isWeekend = Lib.isWeekend(data)
+    const sDate = Lib.splitDate(data)
+    const currentDate = Lib.currentDate()
+
+    // verifica se é final de semana
+    if (
+      sDate.sMonth !== currentDate.cMonth ||
+      (sDate.sDay > currentDate.cDay && isWeekend === false) ||
+      isWeekend === true
+    ) {
+      state.validateForm = { msg: [], disabled: false } // zera o state para um vazio
+
+      state.validateForm.msg.push('Data informada inválida')
+      state.validateForm.disabled = true
+
+      state.showModal = true
     } else {
-      eTarget.target.classList.add('selected')
-      state.multipleData.push(data)
+      if (eTarget.target.classList.contains('selected')) {
+        eTarget.target.classList.remove('selected')
+        state.multipleData = state.multipleData.filter(item => item !== data)
+      } else {
+        eTarget.target.classList.add('selected')
+        state.multipleData.push(data)
+      }
     }
   },
   hoursInc (state) {
@@ -183,5 +173,53 @@ export const mutations = {
     } else {
       state.horas.horas = state.horas.horas - 1
     }
+  },
+  setValidationForm (state) {
+    let array = []
+    state.validateForm = { msg: [], disabled: false }
+
+    // valida o objeto horas :: sem dataRefInicio
+    Object.keys(state.horas).map(key => {
+      const value = state.horas[key]
+      if (value == null && key !== 'extras' && key !== 'descricao') {
+        array.push(key)
+      }
+    })
+
+    // valida o multipleData :: dataRefInicio
+    if (state.multipleData.length == 0) {
+      array.push('dataRefInicio')
+    }
+
+    array.forEach(element => {
+      switch (element) {
+        case 'dataRefInicio':
+          state.validateForm.msg.push('Preencha o campo data')
+          state.validateForm.disabled = true
+          break
+        case 'horas':
+          state.validateForm.msg.push('Preencha o campo horas')
+          state.validateForm.disabled = true
+          break
+        case 'fase':
+          state.validateForm.msg.push('Preencha o campo fase')
+          state.validateForm.disabled = true
+          break
+        case 'projeto':
+          state.validateForm.msg.push('Preencha o campo projeto')
+          state.validateForm.disabled = true
+          break
+        case 'subatividade':
+          state.validateForm.msg.push('Preencha o campo subatividade')
+          state.validateForm.disabled = true
+          break
+      }
+    })
+  },
+  setErroData (state, payload) {
+    state.validateForm = { msg: [], disabled: false }
+    state.validateForm.msg.push(payload.message)
+    state.validateForm.msg.push(`Dia negado: ${payload.data}`)
+    state.validateForm.disabled = true
   }
 }
