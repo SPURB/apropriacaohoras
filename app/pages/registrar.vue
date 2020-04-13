@@ -1,88 +1,114 @@
 <template>
   <div class="registrar" @click="frameClick($event)">
-    
-    <Modal />
-    <Header @toggle-menu="toggleUserMenu" :userMenuState="userMenuState" :fullHeaderFromParent="true"></Header>
+    <modal />
+    <app-header
+      @toggle-menu="toggleUserMenu"
+      :userMenuState="userMenuState"
+      :fullHeaderFromParent="true"
+    />
 
     <h2>Registrar horas</h2>
     <main>
       <form @submit.prevent="postForm" id="form-registrar-horas">
-      <Calendario class="calendario"></Calendario>
+        <calendario />
 
-      <div class="formtop">
-        <fieldset class="timeInput">
-          <div class="main">
-            <label for="horas">Número de horas</label>
-            <div>
-              <button
-                :disabled="horas.horas == 1"
-                type="button"
-                @click="toggleBar(false)"
+        <div class="formtop">
+          <fieldset class="timeInput">
+            <div class="main">
+              <label for="horas">Número de horas</label>
+              <div>
+                <button
+                  :disabled="horas.horas == 1"
+                  type="button"
+                  @click="toggleBar(false)"
+                >
+                  -
+                </button>
+                <input
+                  id="horas"
+                  :value="horas.horas + horas.extras"
+                  type="number"
+                  min="0"
+                  max="12"
+                  ref="hours"
+                />
+                <button
+                  :disabled="horas.horas + horas.extras == 12"
+                  type="button"
+                  @click="toggleBar(true)"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <aside>
+              <label
+                :style="
+                  horas.horas + horas.extras <= 8
+                    ? ''
+                    : 'color: rgba(255, 255, 255, 0.1)'
+                "
+                >Restante do dia</label
               >
-                -
-              </button> 
-              <input 
-                id="horas"
-                :value="horas.horas + horas.extras"
-                type="number"
-                min="0" 
-                max="12"
-                ref="hours"                
-              />
-              <button
-                :disabled="horas.horas + horas.extras == 12"
-                type="button"
-                @click="toggleBar(true)">
-                +
-              </button>
-            </div>
-          </div>
-          <aside>
-            <label :style="horas.horas + horas.extras <= 8 ? '' : 'color: rgba(255, 255, 255, 0.1)'">Restante do dia</label>
-            <label :style="horas.horas + horas.extras > 8 ? '' : 'color: rgba(255, 255, 255, 0.1)'">Horas extras</label>
-            <div class="bar">
-              <div class="normal-hours" v-if="horas.horas + horas.extras <= 8">
+              <label
+                :style="
+                  horas.horas + horas.extras > 8
+                    ? ''
+                    : 'color: rgba(255, 255, 255, 0.1)'
+                "
+                >Horas extras</label
+              >
+              <div class="bar">
                 <div
-                  :key="`normal-${index}`"
-                  class="count-hours"
-                  v-for="index in horas.horas"
-                ></div>
+                  class="normal-hours"
+                  v-if="horas.horas + horas.extras <= 8"
+                >
+                  <div
+                    :key="`normal-${index}`"
+                    class="count-hours"
+                    v-for="index in horas.horas"
+                  ></div>
+                </div>
+                <div class="extra-hours" v-else>
+                  <div
+                    :key="`extras-${index}`"
+                    class="count-hours"
+                    v-for="index in horas.extras"
+                  ></div>
+                </div>
               </div>
-              <div class="extra-hours" v-else>
-                <div
-                  :key="`extras-${index}`"
-                  class="count-hours"
-                  v-for="index in horas.extras"
-                ></div>
-              </div>
-            </div>
-          </aside>
-        </fieldset>
+            </aside>
+          </fieldset>
 
-        <custom-select 
-          :key="index"
-          :buildSelect="item"
-          v-for="(item, index) in dataSelects"
-        />
-      </div>
+          <custom-select
+            :key="index"
+            :buildSelect="item"
+            v-for="(item, index) in dataSelects"
+          />
+        </div>
 
-      <div class="formbtm">
-        <fieldset>
-          <label for="descricao">Descrição (opcional)</label>
-          <input id="descricao" @keyup="setDescricao(descricao)" v-model="descricao" type="text">
-        </fieldset>
-      </div>
+        <div class="formbtm">
+          <fieldset>
+            <label for="descricao">Descrição (opcional)</label>
+            <input
+              id="descricao"
+              @keyup="setDescricao(descricao)"
+              v-model="descricao"
+              type="text"
+            />
+          </fieldset>
+        </div>
 
-      <button type="submit" class="postBtn">Registrar horas</button>
-    </form>
+        <button type="submit" class="postBtn">Registrar horas</button>
+      </form>
     </main>
-    <Footer></Footer>
+    <app-footer />
   </div>
 </template>
 
 <script>
-import Header from '~/components/Header'
-import Footer from '~/components/Footer'
+import AppHeader from '~/components/AppHeader'
+import AppFooter from '~/components/AppFooter'
 import Modal from '~/components/Modal'
 import Calendario from '~/components/Calendario'
 import CustomSelect from '~/components/CustomSelect'
@@ -91,8 +117,8 @@ import { mapGetters, mapActions, mapState } from 'vuex'
 export default {
   name: 'Registrar',
   components: {
-    Header,
-    Footer,
+    AppHeader,
+    AppFooter,
     Calendario,
     CustomSelect,
     Modal
@@ -105,26 +131,33 @@ export default {
     }
   },
   computed: {
-    ...mapState('module/form-registrar-horas', {
+    ...mapState('form-registrar-horas', {
       horas: state => state.horas,
       showModal: state => state.showModal
     }),
-    ...mapGetters('module/form-registrar-horas', ['dataSelects', 'showModal']),
+    ...mapGetters('form-registrar-horas', ['dataSelects', 'showModal'])
   },
   created () {
     this.addData()
   },
-  methods: { 
-    ...mapActions('module/form-registrar-horas', ['addData','toggleBar','setDescricao','postForm']),
+  methods: {
+    ...mapActions('form-registrar-horas', [
+      'addData',
+      'toggleBar',
+      'setDescricao',
+      'postForm'
+    ]),
     toggleUserMenu (elementFromChild) {
       this.userMenuState = !this.userMenuState
-      if (this.userMenuEl === undefined) { this.userMenuEl = elementFromChild }
+      if (this.userMenuEl === undefined) {
+        this.userMenuEl = elementFromChild
+      }
     },
     frameClick (event) {
       if (this.userMenuState && event.target.contains(this.userMenuEl)) {
         this.toggleUserMenu()
       }
-    }    
+    }
   }
 }
 </script>

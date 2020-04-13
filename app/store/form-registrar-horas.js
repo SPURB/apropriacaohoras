@@ -7,7 +7,7 @@ import Lib from '@/libs'
 
 export const state = () => ({
   dataSelects: [],
-  showModal: null,
+  showModal: false,
   multipleData: [],
   validateForm: {
     msg: [],
@@ -127,9 +127,7 @@ export const mutations = {
   setDescricao (state, payload) {
     state.horas.descricao = payload
   },
-  setShowModal (state, payload) {
-    state.showModal = payload
-  },
+  setShowModal (state, payload) { state.showModal = payload },
   setMultipleData (state, payload) {
     let eTarget = payload.event
     let data = payload.date

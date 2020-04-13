@@ -1,16 +1,20 @@
 <template>
   <div id="index" @click="frameClick($event)">
-    <Header @toggle-menu="toggleUserMenu" :userMenuState="userMenuState" :fullHeaderFromParent="false"></Header>
+    <app-header
+      @toggle-menu="toggleUserMenu"
+      :userMenuState="userMenuState"
+      :fullHeaderFromParent="false"
+    />
   </div>
 </template>
 
 <script>
-import Header from '~/components/Header'
+import AppHeader from '~/components/AppHeader'
 
 export default {
   name: 'Index',
   components: {
-    Header
+    AppHeader
   },
   data () {
     return {
@@ -21,7 +25,9 @@ export default {
   methods: {
     toggleUserMenu (elementFromChild) {
       this.userMenuState = !this.userMenuState
-      if (this.userMenuEl === undefined) { this.userMenuEl = elementFromChild }
+      if (this.userMenuEl === undefined) {
+        this.userMenuEl = elementFromChild
+      }
     },
     frameClick (event) {
       if (this.userMenuState && event.target.contains(this.userMenuEl)) {
@@ -37,5 +43,4 @@ div#index {
   height: 100vh;
   z-index: 0;
 }
-
 </style>

@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "nuxt",
     "generate": "nuxt generate",
-    "lint": "prettier-standard ./{*,/**/*}.js --format"
+    "lint": "prettier-standard ./{*,/**/*}.vue --format"
   },
   "husky": {
     "hooks": {
@@ -13,7 +13,7 @@
     }
   },
   "lint-staged": {
-    "*.js": [
+    "*.vue": [
       "npm run lint"
     ]
   },
