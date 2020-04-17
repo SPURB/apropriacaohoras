@@ -15,8 +15,10 @@
     "clean": "babel-node ./clean.js",
     "db:create": "cross-env NODE_ENV=development sequelize-cli db:create",
     "db:seed": "cross-env NODE_ENV=development sequelize-cli db:seed:all",
-    "db:reset": "cross-env NODE_ENV=development sequelize-cli db:seed:undo:all",
-    "db:drop": "cross-env NODE_ENV=development sequelize-cli db:drop"
+    "db:seed:undo": "cross-env NODE_ENV=development sequelize-cli db:seed:undo:all",
+    "db:drop": "cross-env NODE_ENV=development sequelize-cli db:drop",
+    "db:migrate": "cross-env NODE_ENV=development sequelize-cli db:migrate",
+    "db:migrate:undo": "cross-env NODE_ENV=development sequelize-cli db:migrate:undo:all"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

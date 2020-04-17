@@ -6,5 +6,5 @@ module.exports = usuarioProjeto => {
   router.get('/:id', usuariosProjetos.findOne)
   router.put('/:id', usuariosProjetos.update)
   router.delete('/:id', usuariosProjetos.delete)
-  usuarioProjeto.use(`/usuario-projeto`, router)
+  usuarioProjeto.use(`/usuarios-projetos`, router)
 }
