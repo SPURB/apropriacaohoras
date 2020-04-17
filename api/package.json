@@ -13,6 +13,7 @@
     "start:debug": "cross-env NODE_ENV=development node main.js",
     "lint": "prettier-standard src/{*,/**/*}.js",
     "clean": "babel-node ./clean.js",
+    "db:init": "npm run db:create && npm run db:migrate && npm run db:seed",
     "db:create": "cross-env NODE_ENV=development sequelize-cli db:create",
     "db:seed": "cross-env NODE_ENV=development sequelize-cli db:seed:all",
     "db:seed:undo": "cross-env NODE_ENV=development sequelize-cli db:seed:undo:all",
