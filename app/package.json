@@ -2,6 +2,7 @@
   "name": "apropriacaohoras",
   "private": true,
   "scripts": {
+    "dev:local": "nuxt --config-file nuxt.config.local.js",
     "dev": "nuxt",
     "generate": "nuxt generate",
     "lint": "prettier-standard ./{*,/**/*}.vue --format"

@@ -2,6 +2,9 @@ export default {
   router: {
     base: process.env.CI ? '/apropriacaohoras/' : '/' // https://spurb.github.io/apropriacaohoras/
   },
+  env:{
+    apiBase: 'https://apropriacaohoras.herokuapp.com'
+  },
   mode: 'spa',
   modules: ['@nuxtjs/style-resources'],
   styleResources: {
