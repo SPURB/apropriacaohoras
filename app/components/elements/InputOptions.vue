@@ -2,8 +2,19 @@
   <div>
     <div class="select-box">
       <div class="select-box__current" tabindex="1">
-        <div v-for="(option, index) in options" class="select-box__value" :key="index">
-          <input class="select-box__input" type="radio" :id="index" :value="option.value" name="Ben" checked="checked" />
+        <div
+          v-for="(option, index) in options"
+          class="select-box__value"
+          :key="index"
+        >
+          <input
+            class="select-box__input"
+            type="radio"
+            :id="index"
+            :value="option.value"
+            name="Ben"
+            checked="checked"
+          />
           <p class="select-box__input-text">{{ option.title }}</p>
         </div>
         <svg
@@ -16,31 +27,41 @@
           xml:space="preserve"
         >
           <g>
-            <path d="M500,775.4L10,287.2l64.4-62.6L500,650.2l425.6-425.6l64.4,62.6L500,775.4z" />
+            <path
+              d="M500,775.4L10,287.2l64.4-62.6L500,650.2l425.6-425.6l64.4,62.6L500,775.4z"
+            />
           </g>
         </svg>
       </div>
       <ul class="select-box__list">
         <li v-for="(option, index) in options" :key="index">
-          <label class="select-box__option" :for="index" aria-hidden="aria-hidden" @click="setSelectedValue(option.value)">{{ option.value }}</label>
+          <label
+            class="select-box__option"
+            :for="index"
+            aria-hidden="aria-hidden"
+            @click="setSelectedValue(option.value)"
+            >{{ option.value }}</label
+          >
         </li>
       </ul>
     </div>
-    </div>
+  </div>
 </template>
 <script>
 export default {
-  name: "InputOptions",
+  name: 'InputOptions',
   props: {
     options: {
       type: Array,
       required: true
     }
   },
-  methods:{
-    setSelectedValue (value) { this.$emit('setOptionValue', value) }
+  methods: {
+    setSelectedValue (value) {
+      this.$emit('setOptionValue', value)
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -2,8 +2,8 @@
   <button class="btn-progresso" :disabled="disabled">
     <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
       <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2" />
-      <path d="M17 33H47.5" stroke="white" stroke-width="2"/>
-      <path d="M34 20L47 33L34 46" stroke="white" stroke-width="2"/>
+      <path d="M17 33H47.5" stroke="white" stroke-width="2" />
+      <path d="M34 20L47 33L34 46" stroke="white" stroke-width="2" />
     </svg>
   </button>
 </template>
@@ -35,7 +35,7 @@ button {
   -webkit-appearance: none;
   -moz-appearance: none;
   transition: all 250ms ease-in-out;
-  svg > circle { 
+  svg > circle {
     fill: $verde-escuro;
     transition: fill 250ms ease-in-out, transform 150ms ease;
   }
@@ -53,5 +53,4 @@ button {
     }
   }
 }
-
 </style>

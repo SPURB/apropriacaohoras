@@ -30,10 +30,9 @@ footer {
   @media (max-width: $desktop) {
     padding-right: 1rem;
     padding-left: 1rem;
-	}
+  }
   @media (max-width: $tablet) {
-		font-size: small;
-	}
-	
+    font-size: small;
+  }
 }
 </style>
