@@ -19,12 +19,21 @@ footer {
   color: #fff;
   padding: 2.5rem 0;
   margin: 6rem 0 0;
+  line-height: 1.4;
   div {
-    max-width: 1200px;
+    max-width: $desktop;
     margin: 0 auto;
     span {
       font-weight: bold;
     }
   }
+  @media (max-width: $desktop) {
+    padding-right: 1rem;
+    padding-left: 1rem;
+	}
+  @media (max-width: $tablet) {
+		font-size: small;
+	}
+	
 }
 </style>

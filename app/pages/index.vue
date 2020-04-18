@@ -1,46 +1,34 @@
 <template>
-  <div id="index" @click="frameClick($event)">
-    <app-header
-      @toggle-menu="toggleUserMenu"
-      :userMenuState="userMenuState"
-      :fullHeaderFromParent="false"
-    />
+  <div id="index">
+    <auth-card />
+    <div class="footer">
+      <app-footer />
+    </div>
   </div>
 </template>
 
 <script>
-import AppHeader from '~/components/AppHeader'
+import AuthCard from '~/components/AuthCard'
+import AppFooter from '~/components/AppFooter'
 
 export default {
   name: 'Index',
   components: {
-    AppHeader
-  },
-  data () {
-    return {
-      userMenuState: false,
-      userMenuEl: undefined
-    }
-  },
-  methods: {
-    toggleUserMenu (elementFromChild) {
-      this.userMenuState = !this.userMenuState
-      if (this.userMenuEl === undefined) {
-        this.userMenuEl = elementFromChild
-      }
-    },
-    frameClick (event) {
-      if (this.userMenuState && event.target.contains(this.userMenuEl)) {
-        this.toggleUserMenu()
-      }
-    }
+    AuthCard,
+    AppFooter
   }
 }
 </script>
-
-<style lang="scss">
-div#index {
+<style lang="scss" scoped>
+#index {
   height: 100vh;
-  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
 </style>
