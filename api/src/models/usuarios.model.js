@@ -22,9 +22,9 @@ module.exports = (sequelize, Sequelize) => {
   Usuario.prototype.authorize = async function () {
     const { authtokens } = sequelize.models
     const user = this
-    const authoritzation = await authtokens.generate(this.id)
+    const auth = await authtokens.generate(this.id)
 
-		return { usuario: user, authoritzation }
+		return { usuario: user, auth }
   }
 
   return Usuario

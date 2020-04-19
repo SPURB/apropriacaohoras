@@ -24,6 +24,15 @@ exports.create = async (req, res) => {
   }
 }
 
+exports.login = (req, res) => {
+	const { email, password } = req.body
+  if (!email || !password) {
+    return res.status(400).send({
+			message: 'Requisição inválida. Inclua email e/ou password'
+    })
+  }
+}
+
 exports.findAll = (req, res) => {
 	return Usuario.findAll()
 		.then(usuarios => {
@@ -33,7 +42,10 @@ exports.findAll = (req, res) => {
 					nprodam: usuario.nprodam
 				}
 			})
-			res.send(usuariosSemDadosSensiveis)
+			res.send({
+				message: "Usuários cadastrados",
+				data: usuariosSemDadosSensiveis
+			})
 		})
 		.catch(err => {
 			res.status(500).send({
@@ -41,7 +53,24 @@ exports.findAll = (req, res) => {
 			})
 		})
 }
-exports.findOne = (req, res) => dao.findOne(req, res, Usuario)
+exports.findOne = (req, res) => {
+	const iduser = req.params.id
+	Usuario.findByPk(iduser)
+		.then(user => {
+			const { id, nprodam } = user
+			res.send({
+				message: "Usuário",
+				id,
+				nprodam
+			})
+		})
+		.catch(err => {
+			res.status(400).send({
+				message: err.message || "Ocorreu um erro ao encontrar usuário"
+			})
+		})
+}
+
 exports.update = (req, res) => dao.update(req, res, Usuario)
 exports.delete = (req, res) => dao.delete(req, res, Usuario)
 exports.deleteAll = (req, res) => dao.deleteAll(req, res, Usuario)
