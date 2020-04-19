@@ -11,17 +11,19 @@
     "babel-build": "babel -d ./dist ./src -s",
     "start": "node main.js",
     "start:debug": "cross-env NODE_ENV=development node main.js",
-    "lint": "prettier-standard src/{*,/**/*}.js",
+    "lint": "prettier-standard seeders/{*,/**/*}.js migrations/{*,/**/*}.js src/{*,/**/*}.js",
     "clean": "babel-node ./clean.js",
+    "db:reset": "npm run db:drop && npm run db:init",
     "db:init": "npm run db:create && npm run db:migrate && npm run db:seed",
     "db:create": "cross-env NODE_ENV=development sequelize-cli db:create",
     "db:seed": "cross-env NODE_ENV=development sequelize-cli db:seed:all",
     "db:seed:undo": "cross-env NODE_ENV=development sequelize-cli db:seed:undo:all",
     "db:drop": "cross-env NODE_ENV=development sequelize-cli db:drop",
     "db:migrate": "cross-env NODE_ENV=development sequelize-cli db:migrate",
-    "db:migrate:undo": "cross-env NODE_ENV=development sequelize-cli db:migrate:undo:all"
+		"db:migrate:undo": "cross-env NODE_ENV=development sequelize-cli db:migrate:undo:all"
   },
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -42,7 +44,7 @@
     "lint-staged": "^10.0.8",
     "mkdirp": "^1.0.3",
     "nodemon": "^2.0.2",
-    "prettier-standard": "^16.1.0",
+    "prettier-standard": "^16.2.1",
     "rimraf": "^3.0.2",
     "sequelize-cli": "^5.5.1"
   }

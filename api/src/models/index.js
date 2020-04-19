@@ -20,19 +20,18 @@ const sequelize = new Sequelize(
 
 const db = {}
 
-db.Sequelize = Sequelize
-db.sequelize = sequelize
-
 db.usuarios = require('./usuarios.model.js')(sequelize, Sequelize)
+db.authtokens = require('./authtokens.model.js')(sequelize, Sequelize)
 db.projetos = require('./projetos.model.js')(sequelize, Sequelize)
-db.usuarios_projetos = require('./usuarios-projetos.model.js')(
-  sequelize,
-  Sequelize,
-  db
-)
-
+db.usuarios_projetos = require('./usuarios-projetos.model.js')( sequelize, Sequelize, db)
 db.fases = require('./fases.model.js')(sequelize, Sequelize)
 db.subatividades = require('./subatividades.model.js')(sequelize, Sequelize)
 db.horas = require('./horas.model.js')(sequelize, Sequelize, db)
+
+db.usuarios.associate(db.authtokens)
+db.authtokens.associate(db.usuarios)
+
+db.Sequelize = Sequelize
+db.sequelize = sequelize
 
 module.exports = db

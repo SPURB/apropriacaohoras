@@ -1,6 +1,7 @@
+const router = require('express').Router()
+const usuarios = require('../controllers/usuarios.controller.js')
+
 module.exports = usuario => {
-  const usuarios = require('../controllers/usuarios.controller.js')
-  const router = require('express').Router()
   router.post('/', usuarios.create)
   router.get('/', usuarios.findAll)
   router.get('/:id', usuarios.findOne)
