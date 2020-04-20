@@ -11,6 +11,7 @@ module.exports = (sequelize, Sequelize) => {
       }
     },
 	})
+
 	AuthToken.associate = UsuarioModel => AuthToken.belongsTo(UsuarioModel)
 
   AuthToken.generate = async (idusuario) => {
@@ -19,18 +20,16 @@ module.exports = (sequelize, Sequelize) => {
     }
 
     let token = ''
-
     const possibleCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
       'abcdefghijklmnopqrstuvwxyz0123456789'
 
-    for (var i = 0; i < 15; i++) {
+    for (let i = 0; i < 15; i++) {
       token += possibleCharacters.charAt(
         Math.floor(Math.random() * possibleCharacters.length)
       )
-    }
-
+		}
     return AuthToken.create({ token, idusuario })
-  }
+	}
 
 	return AuthToken
 }

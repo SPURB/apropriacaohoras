@@ -1,6 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import customMiddlewares from './middlewares'
 
 const app = express()
 const version = `v${require('../package.json').version}`
@@ -18,10 +19,13 @@ let corsOptions = {
 }
 
 app.use(cors(corsOptions))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(customMiddlewares)
 
 // create endpoints
 endpoints.forEach(endpoint =>
@@ -29,7 +33,7 @@ endpoints.forEach(endpoint =>
 )
 
 // set port, listen for requests
-const PORT = process.env.PORT || 5000
+const PORT = process.env.NODE_ENV === 'development' ? process.env.PORT || 5000 : ''
 
 //set base url with api title, version and endpoints
 app.get('/', (req, res) => {
