@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('horas', {
@@ -13,10 +13,10 @@ module.exports = {
         defaultValue: 0
       },
       extras: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       descricao: {
-        type: Sequelize.TEXT,
+        type: Sequelize.TEXT
       },
       usuario: {
         type: Sequelize.INTEGER,
@@ -56,9 +56,9 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE
       }
-    });
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('horas');
+    return queryInterface.dropTable('horas')
   }
 }

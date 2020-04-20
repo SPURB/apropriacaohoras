@@ -1,6 +1,7 @@
 const dataAccessObject = {
   create: (res, Model, body) => {
-		if (!req.authorized) return res.status(403).send({ message:'Erro! Usuário não autorizado' })
+    if (!req.authorized)
+      return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
     Model.create(body)
       .then(data => res.send(data))
       .catch(err => {
@@ -53,8 +54,9 @@ const dataAccessObject = {
       })
   },
   update: (req, res, Model) => {
-		if (!req.authorized) return res.status(403).send({ message:'Erro! Usuário não autorizado' })
-		const id = req.params.id
+    if (!req.authorized)
+      return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
+    const id = req.params.id
 
     Model.update(req.body, { where: { id } })
       .then(num => {
@@ -75,7 +77,8 @@ const dataAccessObject = {
       })
   },
   delete: (req, res, Model) => {
-		if (!req.authorized) return res.status(403).send({ message:'Erro! Usuário não autorizado' })
+    if (!req.authorized)
+      return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
     const id = req.params.id
 
     Model.destroy({ where: { id } })
@@ -97,7 +100,8 @@ const dataAccessObject = {
       })
   },
   deleteAll: (req, res, Model) => {
-		if (!req.authorized) return res.status(403).send({ message:'Erro! Usuário não autorizado' })
+    if (!req.authorized)
+      return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
     Model.destroy({
       where: {},
       truncate: false

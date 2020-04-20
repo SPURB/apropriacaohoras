@@ -33,7 +33,8 @@ endpoints.forEach(endpoint =>
 )
 
 // set port, listen for requests
-const PORT = process.env.NODE_ENV === 'development' ? process.env.PORT || 5000 : ''
+const PORT =
+  process.env.NODE_ENV === 'development' ? process.env.PORT || 5000 : ''
 
 //set base url with api title, version and endpoints
 app.get('/', (req, res) => {
