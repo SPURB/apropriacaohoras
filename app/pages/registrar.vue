@@ -109,12 +109,13 @@
 <script>
 import AppHeader from '~/components/AppHeader'
 import AppFooter from '~/components/AppFooter'
-import Modal from '~/components/Modal'
+import Modal from '~/components/modals/Modal'
 import Calendario from '~/components/Calendario'
 import CustomSelect from '~/components/CustomSelect'
 import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default {
+  middleware: 'authenticated',
   name: 'Registrar',
   components: {
     AppHeader,

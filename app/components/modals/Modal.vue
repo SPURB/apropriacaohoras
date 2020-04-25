@@ -10,7 +10,7 @@
     >
       <div id="sucesso" v-if="!validateForm.disabled">
         <h1>Horas registradas!</h1>
-        <icon-sucesso></icon-sucesso>
+        <icon-sucesso style="max-width: 170px"></icon-sucesso>
         <ul>
           <li>
             <i class="icon icon-seta_esquerda"></i>
@@ -24,7 +24,7 @@
       </div>
       <div id="erro" v-else>
         <h1>Erro ao cadastrar!</h1>
-        <icon-erro></icon-erro>
+        <icon-erro style="max-width: 170px"></icon-erro>
         <ul>
           <li :key="index" v-for="(item, index) in validateForm.msg">
             <i class="icon icon-incorreto"></i>

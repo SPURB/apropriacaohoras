@@ -14,7 +14,7 @@ export default {
   env:{
     apiBase: 'http://localhost:5000'
   },
-  modules: ['@nuxtjs/style-resources'],
+	modules: ['@nuxtjs/style-resources'],
   styleResources: {
     scss: ['@/assets/style/variables.scss', '@/assets/style/theme.scss']
   },

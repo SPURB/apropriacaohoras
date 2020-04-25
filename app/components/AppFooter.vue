@@ -1,7 +1,7 @@
 <template>
-  <footer>
+  <footer class="app-footer">
     <div>
-      <span>Dúvidas e sugestões</span> &middot; Ramal 7533 &middot;
+      <span>Dúvidas e sugestões</span> &middot;
       desenvolvimento@spurbanismo.prefeitura.sp.gov.br
     </div>
   </footer>
@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style lang="scss">
-footer {
+.app-footer {
   background-color: $verde;
   color: #fff;
   padding: 2.5rem 0;

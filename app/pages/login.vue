@@ -1,63 +1,90 @@
 <template>
-  <div class="auth-card">
-    <section v-if="!validEmail" class="card__email">
-      <form class="auth email" @submit.prevent="checkInputEmail">
-        <p class="auth__group">
-          <label for="auth__email-alias">SEU EMAIL</label>
-          <input
-            tabindex="10000"
-            type="text"
-            name="auth__email-alias"
-            id="auth__email-alias"
-            v-model="alias"
-            autofocus
+  <div class="login">
+    <modal
+      v-if="error"
+      :title="modal.title"
+      :error="error"
+      :description="modal.description"
+      :action-description="modal.action.description"
+      :action-text="modal.action.text"
+      @setModalAction="RESET"
+    />
+    <div class="auth-card">
+      <section v-if="!validEmail" class="card__email">
+        <form class="auth email" @submit.prevent="checkInputEmail">
+          <p class="auth__group">
+            <label for="auth__email-alias">SEU EMAIL</label>
+            <input
+              type="text"
+              name="auth__email-alias"
+              id="auth__email-alias"
+              v-model="alias"
+              autofocus
+            />
+          </p>
+          <p class="auth__group separador">@</p>
+          <input-options :options="hostOptions" @setOptionValue="setOption" />
+          <btn-progresso
+            class="auth__btn"
+            v-on:keyup.enter="checkInputEmail"
+            :disabled="alias === ''"
           />
-        </p>
-        <p class="auth__group separador">@</p>
-        <input-options :options="hostOptions" @setOptionValue="setOption" />
-        <btn-progresso
-          class="auth__btn"
-          v-on:keyup.enter="checkInputEmail"
-          :disabled="alias === ''"
-        />
-      </form>
-    </section>
-    <section v-else class="card__pass">
-      <p class="message">
-        VERIFIQUE SUA SENHA EM <br /><a
-          class="message__action"
-          :href="`https://correioweb.prefeitura.sp.gov.br/exchange/${email}`"
-          >{{ email.toUpperCase() }}</a
-        >
-      </p>
-      <form class="auth pass" @submit.prevent="checkInputPass">
-        <p class="auth__group">
-          <label tabindex="1000" for="auth__pass-input"
-            >SUA SENHA DE ACESSO</label
+        </form>
+      </section>
+      <section v-else class="card__pass">
+        <p class="message">
+          VERIFIQUE SUA SENHA EM <br /><a
+            class="message__action"
+            :href="`https://correioweb.prefeitura.sp.gov.br/exchange/${email}`"
+            >{{ email.toUpperCase() }}</a
           >
-          <input
-            type="password"
-            id="auth__pass-input"
-            name="auth__pass-input"
-            v-model="pass"
-          />
         </p>
-        <btn-progresso
-          class="auth__btn"
-          v-on:keyup.enter="checkInputPass"
-          :disabled="pass === ''"
-        />
-      </form>
-    </section>
+        <p v-if="fetching">carregando...</p>
+        <form
+          v-else
+          class="auth pass"
+          @submit.prevent="login({ email, password })"
+        >
+          <p class="auth__group">
+            <label tabindex="1000" for="auth__pass-input"
+              >SUA SENHA DE ACESSO</label
+            >
+            <input
+              type="password"
+              id="auth__pass-input"
+              name="auth__pass-input"
+              v-model="password"
+            />
+          </p>
+          <btn-progresso
+            class="auth__btn"
+            v-on:keyup.enter="login({ email, password })"
+            :disabled="password === ''"
+          />
+        </form>
+      </section>
+    </div>
+    <app-footer />
   </div>
 </template>
 
 <script>
 import BtnProgresso from '~/components/elements/BtnProgresso'
 import InputOptions from '~/components/elements/InputOptions'
+import AppFooter from '~/components/AppFooter'
+import Modal from '~/components/modals/ModalProps'
+
+import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-  name: 'AuthCard',
+  middleware: 'authenticated',
+  name: 'Login',
+  components: {
+    BtnProgresso,
+    InputOptions,
+    Modal,
+    AppFooter
+  },
   data () {
     return {
       alias: '',
@@ -73,10 +100,24 @@ export default {
         }
       ],
       validEmail: false,
-      pass: ''
+      password: '',
+      modal: {
+        title: 'Erro!',
+        description: 'Usuário não autenticado',
+        action: {
+          description:
+            'Solicite o acesso para \ndesenvolvimento@spurbanismo.sp.gov.br',
+          text: 'Tentar novamente'
+        }
+      }
     }
   },
   computed: {
+    ...mapState({
+      id: state => state.usuario.id,
+      fetching: state => state.usuario.fetching,
+      error: state => state.usuario.error
+    }),
     email: {
       get () {
         return `${this.alias}@${this.host}`
@@ -91,11 +132,16 @@ export default {
       }
     }
   },
-  components: {
-    BtnProgresso,
-    InputOptions
+  watch: {
+    id (usuarioId) {
+      if (usuarioId) {
+        this.$router.push({ path: `/registrar` })
+      }
+    }
   },
   methods: {
+    ...mapActions('usuario', ['login']),
+    ...mapMutations('usuario', ['RESET']),
     setOption (value) {
       this.host = value
     },
@@ -109,12 +155,8 @@ export default {
       return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@spurbanismo.sp.gov.br|[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@prefeitura.sp.gov.br/gim.test(
         email
       )
-    },
-    checkInputPass () {
-      console.log(this.pass)
     }
   },
-
   created () {
     if (!this.$route.query.email) {
       return
