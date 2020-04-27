@@ -80,10 +80,18 @@
             </aside>
           </fieldset>
 
+          <custom-select :title="'Projeto'" :values="projetos" />
+
           <custom-select
-            :key="index"
-            :buildSelect="item"
-            v-for="(item, index) in dataSelects"
+            v-if="fases.title"
+            :title="fases.title"
+            :values="fases.values"
+          />
+
+          <custom-select
+            v-if="subatividades.title"
+            :title="subatividades.title"
+            :values="subatividades.values"
           />
         </div>
 
@@ -112,7 +120,7 @@ import AppFooter from '~/components/AppFooter'
 import Modal from '~/components/modals/Modal'
 import Calendario from '~/components/Calendario'
 import CustomSelect from '~/components/CustomSelect'
-import { mapGetters, mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   middleware: 'authenticated',
@@ -128,15 +136,28 @@ export default {
     return {
       userMenuState: false,
       userMenuEl: null,
-      descricao: ''
+      descricao: '',
+      fases: {},
+      subatividades: {}
     }
   },
   computed: {
     ...mapState('form-registrar-horas', {
       horas: state => state.horas,
-      showModal: state => state.showModal
+      showModal: state => state.showModal,
+      dataSelects: state => state.dataSelects
     }),
-    ...mapGetters('form-registrar-horas', ['dataSelects', 'showModal'])
+    ...mapGetters('form-registrar-horas', ['projetos'])
+  },
+  watch: {
+    dataSelects (selects) {
+      if (selects) {
+        this.fases = selects.find(select => select.title === 'Fase')
+        this.subatividades = selects.find(
+          select => select.title === 'Subatividade'
+        )
+      }
+    }
   },
   created () {
     this.addData()

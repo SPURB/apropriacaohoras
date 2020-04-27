@@ -39,11 +39,11 @@
 <script>
 import IconSucesso from '~/components/elements/Sucesso'
 import IconErro from '~/components/elements/Erro'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 export default {
   name: 'Modal',
   computed: {
-    ...mapGetters('form-registrar-horas', ['showModal', 'validateForm'])
+    ...mapState('form-registrar-horas', ['showModal', 'validateForm'])
   },
   components: {
     IconSucesso,

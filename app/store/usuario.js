@@ -1,4 +1,5 @@
 import Usuario from '@/services/api-usuario'
+import UsuariosProjetos from '@/services/api-usuarios-projetos'
 
 export const state = () => ({
 	id: 0,
@@ -6,14 +7,22 @@ export const state = () => ({
 	fetching: false,
 	errorResponse: {},
 	usuario: {},
-	auth: {}
+	token: '',
+	projetos: []
 })
 
 export const actions = {
-  login ({ commit }, body) {
+  login: ({ commit }, body) => {
 		commit('IS_FETCHING', true)
 		Usuario.post(body)
 			.then(({ data }) => commit('SET_USER', data))
+			.catch(err => commit('SET_ERROR', err))
+			.finally(() => commit('IS_FETCHING', false))
+	},
+	filterProjetos: ({ commit }, idUsuario) => {
+		commit('IS_FETCHING', true)
+		UsuariosProjetos.get(idUsuario)
+			.then(({ data }) => commit('SET_PROJETOS', data))
 			.catch(err => commit('SET_ERROR', err))
 			.finally(() => commit('IS_FETCHING', false))
 	}
@@ -24,8 +33,9 @@ export const mutations = {
   SET_USER (state, { usuario, auth }) {
 		state.usuario = usuario
 		state.id = usuario.id
-		state.auth = auth
+		state.token = auth.token
 	},
+	SET_PROJETOS: (state, { values }) => state.projetos = values.map(value => value.projeto),
 	SET_ERROR (state, errorResponse) {
 		state.error = true
 		state.errorResponse = errorResponse
@@ -36,6 +46,6 @@ export const mutations = {
 		state.errorResponse = {}
 		state.fetching = false
 		state.usuario = {}
-		state.auth = {}
+		state.auth = ''
 	}
 }

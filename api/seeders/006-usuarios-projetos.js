@@ -12,9 +12,15 @@ module.exports = {
       }
     })
 
-    const projeto = await Projeto.findOne({
+    const rioBranco = await Projeto.findOne({
       where: {
         nome: 'PIU Rio Branco'
+      }
+    })
+
+    const tiete = await Projeto.findOne({
+      where: {
+        nome: 'PIU Arco Tietê'
       }
     })
 
@@ -22,7 +28,13 @@ module.exports = {
       'usuarios_projetos',
       [
         {
-          projeto: projeto.id,
+          projeto: rioBranco.id,
+          usuario: usuario.id,
+          createdAt: now,
+          updatedAt: now
+        },
+        {
+          projeto: tiete.id,
           usuario: usuario.id,
           createdAt: now,
           updatedAt: now

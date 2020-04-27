@@ -10,8 +10,8 @@ const dataAccessObject = {
         })
       })
   },
-  findAll: (res, title, Model) => {
-    Model.findAll()
+  findAll: (res, title, Model, where = {}) => {
+    Model.findAll(where)
       .then(data => {
         const customResponse = {
           title: title,

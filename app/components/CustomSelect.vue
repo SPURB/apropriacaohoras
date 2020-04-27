@@ -1,8 +1,8 @@
 <template>
   <fieldset>
-    <label>{{ buildSelect.title }}</label>
+    <label>{{ title }}</label>
     <select
-      @change="setValueOption({ title: buildSelect.title, value: optionValue })"
+      @change="setValueOption({ title, value: optionValue })"
       v-model="optionValue"
     >
       <option value="" selected disabled>
@@ -10,7 +10,7 @@
       </option>
       <option
         :key="item.nome + index"
-        v-for="(item, index) in buildSelect.values"
+        v-for="(item, index) in values"
         :value="item.id"
       >
         {{ item.nome }}
@@ -24,8 +24,12 @@ import { mapActions } from 'vuex'
 export default {
   name: 'CustomSelect',
   props: {
-    buildSelect: {
-      type: Object,
+    title: {
+      type: String,
+      required: true
+    },
+    values: {
+      type: Array,
       required: true
     }
   },

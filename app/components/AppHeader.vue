@@ -13,7 +13,6 @@
       <ul class="user-menu" id="user-menu" :class="{ opened: userMenuState }">
         <li class="user-info" @click="tellParent">
           Nome Sobrenome
-          <!-- from get -->
           <div class="profile-placeholder">
             <user-profile-placeholder :opacity="1" />
           </div>

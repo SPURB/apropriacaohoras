@@ -32,13 +32,6 @@
         </form>
       </section>
       <section v-else class="card__pass">
-        <p class="message">
-          VERIFIQUE SUA SENHA EM <br /><a
-            class="message__action"
-            :href="`https://correioweb.prefeitura.sp.gov.br/exchange/${email}`"
-            >{{ email.toUpperCase() }}</a
-          >
-        </p>
         <p v-if="fetching">carregando...</p>
         <form
           v-else
@@ -62,6 +55,13 @@
             :disabled="password === ''"
           />
         </form>
+        <p class="message">
+          VERIFIQUE SUA SENHA EM <br /><a
+            class="message__action"
+            :href="`https://correioweb.prefeitura.sp.gov.br/exchange/${email}`"
+            >{{ email.toUpperCase() }}</a
+          >
+        </p>
       </section>
     </div>
     <app-footer />
@@ -135,12 +135,13 @@ export default {
   watch: {
     id (usuarioId) {
       if (usuarioId) {
+        this.filterProjetos(usuarioId)
         this.$router.push({ path: `/registrar` })
       }
     }
   },
   methods: {
-    ...mapActions('usuario', ['login']),
+    ...mapActions('usuario', ['login', 'filterProjetos']),
     ...mapMutations('usuario', ['RESET']),
     setOption (value) {
       this.host = value
@@ -213,16 +214,6 @@ input {
   border-radius: 24px;
   font-size: inherit;
   outline: none;
-}
-
-.card__pass {
-  height: 100vh;
-  display: grid;
-  grid-template-rows: 2fr 3fr;
-  .auth {
-    align-items: flex-start;
-    margin-top: 0;
-  }
 }
 
 .pass {

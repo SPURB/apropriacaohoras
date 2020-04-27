@@ -14,7 +14,7 @@ export const state = () => ({
     disabled: false
   },
   horas: {
-    usuario: 1, // id fixo mudar para quando for consumir api
+    // usuario: 1, // id fixo mudar para quando for consumir api
     horas: null,
     extras: 0,
     projeto: null,
@@ -26,19 +26,12 @@ export const state = () => ({
 
 export const actions = {
   async addData ({ commit }) {
-    const payload = []
-    try {
-      await Promise.all([Fase.get(), Projeto.get(), Subatividade.get()]).then(
-        values => {
-          values.map(res => {
-            payload.push(res.data)
-          })
-        }
-      )
-      commit('setSelects', payload)
-    } catch (error) {
-      alert('Ocorreu algum erro! Tente mais tarde.')
-    }
+		Promise.all([Fase.get(), Projeto.get(), Subatividade.get()])
+			.then(values => commit('setSelects', values.map(res => res.data)))
+			.catch(err => {
+				alert('Ocorreu algum erro! Tente mais tarde.')
+				new Error(err)
+			})
   },
   async postForm ({ commit, state }) {
     commit('setValidationForm', state.horas)
@@ -48,7 +41,7 @@ export const actions = {
         state.multipleData.forEach(dataRefInicio => {
           const postObj = {
             dataRefInicio,
-            ...state.horas
+						...state.horas
           }
           Horas.post(postObj)
             .then(() => {
@@ -57,9 +50,6 @@ export const actions = {
             .catch(err => {
               commit('setErroData', err.response.data)
               commit('setShowModal', true)
-              setTimeout(() => {
-                commit('setShowModal', false)
-              }, 3000)
             })
         })
       } else {
@@ -67,9 +57,6 @@ export const actions = {
       }
     } catch (error) {
       commit('setShowModal', true)
-      setTimeout(() => {
-        commit('setShowModal', false)
-      }, 2500)
     }
   },
   toggleBar ({ commit }, bool) {
@@ -87,22 +74,19 @@ export const actions = {
   },
   setMultipleData ({ commit }, payload) {
     commit('setMultipleData', payload)
-    setTimeout(() => {
-      commit('setShowModal', false)
-    }, 2500)
   }
 }
 
 export const getters = {
-  dataSelects (state) {
-    return state.dataSelects
-  },
-  showModal (state) {
-    return state.showModal
-  },
-  validateForm (state) {
-    return state.validateForm
-  }
+	usuario: (state, getters, rootState) => rootState.usuario.id,
+	token: (state, getters, rootState) => rootState.usuario.token,
+	projetos: (state, getters, rootState) => {// projetos válidos para este usuário
+		if (state.dataSelects.length) {
+			const allProjetos = state.dataSelects.find(select => select.title === 'Projetos').values
+			return rootState.usuario.projetos.map(id => allProjetos.find(projeto => projeto.id === id))
+		}
+		else return []
+	}
 }
 
 export const mutations = {
