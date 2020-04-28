@@ -15,7 +15,7 @@ exports.create = (req, res) => {
     usuario: req.body.usuario
   }
 
-  dao.create(res, UsuarioProjeto, body)
+  dao.create(req, res, UsuarioProjeto, body)
 }
 
 exports.findAll = (req, res) => {

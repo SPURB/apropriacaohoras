@@ -22,7 +22,7 @@
         <th>SÁB</th>
       </tr>
     </thead>
-    <tbody id="tbody">
+    <tbody id="tbody" ref=tbody>
       <tr :key="weekIndex" v-for="(week, weekIndex) in weeksThisMonth">
         <td
           :key="dayIndex"
@@ -45,12 +45,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import Lib from '@/libs'
 import Horas from '@/services/api-horas'
 
 export default {
-  name: 'Calendario',
+	name: 'Calendario',
   data () {
     return {
       date: new Date(),
@@ -72,6 +72,12 @@ export default {
     }
   },
   computed: {
+		...mapState('form-registrar-horas', {
+			updateCalendario: state => state.updateCalendario
+		}),
+		...mapState('usuario', {
+			idusuario: state => state.id
+		}),
     today: {
       get () {
         return this.date
@@ -101,14 +107,20 @@ export default {
     firstWeekDay () {
       return new Date(this.year, this.month, 1).getDay() - 1
     }
-  },
+	},
+	watch: {
+		updateCalendario (updateStatus) {
+			if (updateStatus) {
+				this.typeClass()
+				this.TOGGLE_CALENDARIO_STATUS({status: false})
+			}
+		}
+	},
   mounted () {
-    this.typeClass()
-  },
-  updated () {
-    this.typeClass()
+		this.typeClass()
   },
   methods: {
+		...mapMutations('form-registrar-horas', ['TOGGLE_CALENDARIO_STATUS']),
     ...mapActions('form-registrar-horas', ['setMultipleData']),
     calendario (weekIndex) {
       const totalDayMonth = this.daysThisMonth + this.firstWeekDay
@@ -144,17 +156,12 @@ export default {
       }
     },
     getFullData (day) {
-      return (
-        this.year +
-        '-' +
-        `${this.month + 1}`.padStart(2, '0') +
-        '-' +
-        `${day}`.padStart(2, '0')
-      )
-    },
+      return (this.year +'-' +`${this.month + 1}`.padStart(2, '0') +'-' +`${day}`.padStart(2, '0'))
+		},
     typeClass () {
-      let tbody = document.getElementById('tbody')
-      // acessa cada
+      let tbody = this.$refs.tbody
+
+			// acessa cada
       tbody.childNodes.forEach(tr => {
         // acessa cada td
         tr.childNodes.forEach(td => {
@@ -173,13 +180,9 @@ export default {
             sDate.sDay !== '00' &&
             isWeekend === false
           ) {
-            Horas.getStatus(1, tDate)
-              .then(res => {
-                td.classList.add(res.data.type)
-              })
-              .catch(err => {
-                console.log(err)
-              })
+            Horas.getStatus(this.idusuario, tDate)
+              .then(res => td.classList.add(res.data.type))
+              .catch(err => new Error(err))
           }
         })
       })

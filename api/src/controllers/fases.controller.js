@@ -14,7 +14,7 @@ exports.create = (req, res) => {
     nome: req.body.nome
   }
 
-  dao.create(res, Fase, body)
+  dao.create(req, res, Fase, body)
 }
 
 exports.findAll = (req, res) => dao.findAll(res, 'Fase', Fase)

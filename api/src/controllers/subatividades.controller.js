@@ -14,7 +14,7 @@ exports.create = (req, res) => {
     nome: req.body.nome
   }
 
-  dao.create(res, Subatividade, body)
+  dao.create(req, res, Subatividade, body)
 }
 
 exports.findAll = (req, res) => dao.findAll(res, 'Subatividade', Subatividade)

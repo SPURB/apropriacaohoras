@@ -7,7 +7,11 @@ export default {
   getStatus: (id, data) => {
     return http.get(`/horas/status/${id}/${data}`)
   },
-  post: horas => {
-    return http.post('/horas', horas)
+  post: (data, token) => {
+		return http.post('/horas', data, {
+			headers: {
+				'authorization': token
+			}
+		})
   }
 }

@@ -1,20 +1,20 @@
 import Fase from '@/services/api-fase'
 import Projeto from '@/services/api-projeto'
 import Subatividade from '@/services/api-subatividade'
-import Horas from '@/services/api-horas'
+// import Horas from '@/services/api-horas'
 
 import Lib from '@/libs'
 
 export const state = () => ({
+	updateCalendario: false,
   dataSelects: [],
-  showModal: false,
+  // showModal: false,
   multipleData: [],
   validateForm: {
     msg: [],
     disabled: false
   },
   horas: {
-    // usuario: 1, // id fixo mudar para quando for consumir api
     horas: null,
     extras: 0,
     projeto: null,
@@ -33,32 +33,35 @@ export const actions = {
 				new Error(err)
 			})
   },
-  async postForm ({ commit, state }) {
-    commit('setValidationForm', state.horas)
-    let validateForm = state.validateForm
-    try {
-      if (validateForm.disabled !== true) {
-        state.multipleData.forEach(dataRefInicio => {
-          const postObj = {
-            dataRefInicio,
-						...state.horas
-          }
-          Horas.post(postObj)
-            .then(() => {
-              commit('setShowModal', true)
-            })
-            .catch(err => {
-              commit('setErroData', err.response.data)
-              commit('setShowModal', true)
-            })
-        })
-      } else {
-        throw validateForm
-      }
-    } catch (error) {
-      commit('setShowModal', true)
-    }
-  },
+  // async postForm ({ commit, state, getters }) {
+	// 	commit('setValidationForm', state.horas)
+  //   let validateForm = state.validateForm
+  //   try {
+  //     if (validateForm.disabled !== true) {
+  //       state.multipleData.forEach(dataRefInicio => {
+  //         let postObj = {
+  //           dataRefInicio,
+	// 					...state.horas
+	// 				}
+
+	// 				postObject.usuario = getters.usuario
+
+	// 				Horas.post(postObj, getters.token)
+  //           .then(() => {
+  //             commit('setShowModal', true)
+  //           })
+  //           .catch(err => {
+  //             commit('setErroData', err.response.data)
+  //             commit('setShowModal', true)
+  //           })
+  //       })
+  //     } else {
+  //       throw validateForm
+  //     }
+  //   } catch (error) {
+  //     commit('setShowModal', true)
+  //   }
+  // },
   toggleBar ({ commit }, bool) {
     if (bool) {
       commit('hoursInc')
@@ -78,8 +81,8 @@ export const actions = {
 }
 
 export const getters = {
-	usuario: (state, getters, rootState) => rootState.usuario.id,
-	token: (state, getters, rootState) => rootState.usuario.token,
+	// usuario: (state, getters, rootState) => rootState.usuario.id,
+	// token: (state, getters, rootState) => rootState.usuario.token,
 	projetos: (state, getters, rootState) => {// projetos válidos para este usuário
 		if (state.dataSelects.length) {
 			const allProjetos = state.dataSelects.find(select => select.title === 'Projetos').values
@@ -94,7 +97,7 @@ export const mutations = {
     state.dataSelects = payload
   },
   setValueOption (state, payload) {
-    switch (payload.title) {
+		switch (payload.title) {
       case 'Fase':
         state.horas.fase = payload.value
         break
@@ -111,7 +114,7 @@ export const mutations = {
   setDescricao (state, payload) {
     state.horas.descricao = payload
   },
-  setShowModal (state, payload) { state.showModal = payload },
+  // setShowModal (state, payload) { state.showModal = payload },
   setMultipleData (state, payload) {
     let eTarget = payload.event
     let data = payload.date
@@ -131,7 +134,6 @@ export const mutations = {
       state.validateForm.msg.push('Data informada inválida')
       state.validateForm.disabled = true
 
-      state.showModal = true
     } else {
       if (eTarget.target.classList.contains('selected')) {
         eTarget.target.classList.remove('selected')
@@ -176,23 +178,23 @@ export const mutations = {
     array.forEach(element => {
       switch (element) {
         case 'dataRefInicio':
-          state.validateForm.msg.push('Preencha o campo data')
+          state.validateForm.msg.push('Selecione datas no calendário')
           state.validateForm.disabled = true
           break
         case 'horas':
-          state.validateForm.msg.push('Preencha o campo horas')
+          state.validateForm.msg.push('Determine um número de horas')
           state.validateForm.disabled = true
           break
         case 'fase':
-          state.validateForm.msg.push('Preencha o campo fase')
+          state.validateForm.msg.push('Selecione a fase da tarefa realizada')
           state.validateForm.disabled = true
           break
         case 'projeto':
-          state.validateForm.msg.push('Preencha o campo projeto')
+          state.validateForm.msg.push('Selecione um projeto')
           state.validateForm.disabled = true
           break
         case 'subatividade':
-          state.validateForm.msg.push('Preencha o campo subatividade')
+          state.validateForm.msg.push('Selecione uma subatividade')
           state.validateForm.disabled = true
           break
       }
@@ -203,5 +205,6 @@ export const mutations = {
     state.validateForm.msg.push(payload.message)
     state.validateForm.msg.push(`Dia negado: ${payload.data}`)
     state.validateForm.disabled = true
-  }
+	},
+	TOGGLE_CALENDARIO_STATUS: (state, { status }) => state.updateCalendario = status
 }

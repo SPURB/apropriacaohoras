@@ -41,7 +41,7 @@ exports.create = (req, res) => {
         dataRefInicio: req.body.dataRefInicio,
         descricao: req.body.descricao
       }
-      dao.create(res, Hora, body)
+      dao.create(req, res, Hora, body)
     } else {
       let data = req.body.dataRefInicio.split('-')
       data = `${data[2]}/${data[1]}/${data[0]}` // formatando data para local
