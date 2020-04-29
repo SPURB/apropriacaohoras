@@ -1,6 +1,4 @@
 <template> </template>
 <script>
-export default {
-  middleware: 'authenticated'
-}
+export default {}
 </script>

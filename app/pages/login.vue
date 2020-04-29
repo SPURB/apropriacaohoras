@@ -77,7 +77,6 @@ import Modal from '~/components/Modal'
 import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
-  middleware: 'authenticated',
   name: 'Login',
   components: {
     BtnProgresso,

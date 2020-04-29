@@ -132,7 +132,6 @@ import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 import Horas from '@/services/api-horas'
 
 export default {
-  middleware: 'authenticated',
   name: 'Registrar',
   components: {
     AppHeader,

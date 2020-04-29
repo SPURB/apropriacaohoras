@@ -14,7 +14,10 @@ export default {
   env:{
     apiBase: 'https://apropriacaohoras.herokuapp.com'
   },
-  mode: 'spa',
+	mode: 'spa',
+	router: {
+		middleware: ['authenticated']
+	},
   modules: ['@nuxtjs/style-resources'],
   styleResources: {
     scss: ['@/assets/style/variables.scss', '@/assets/style/theme.scss']
