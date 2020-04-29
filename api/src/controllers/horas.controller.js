@@ -44,9 +44,9 @@ exports.create = (req, res) => {
       dao.create(req, res, Hora, body)
     } else {
       let data = req.body.dataRefInicio.split('-')
-      data = `${data[2]}/${data[1]}/${data[0]}` // formatando data para local
-      res.status(400).send({
-        message: 'Registro negado! Horas ultrapassaram o limite permitido!',
+			data = `${data[2]}/${data[1]}/${data[0]}` // formatando data para local
+			res.status(400).send({
+        message: `Registro negado! Horas ultrapassaram o limite permitido para o dia ${data}`,
         totalHoras,
         data
       })
@@ -91,8 +91,8 @@ exports.countHoras = (req, res) => {
   }
 }
 
-exports.findAllWhere = (req, res) => dao.findAllWhere(req, res, Hora)
-exports.findAll = (req, res) => dao.findAll(res, 'Hora', Hora)
+exports.findAllWhere = (req, res) => dao.findAllWhere(req, res, Hora, 'Horas')
+exports.findAll = (req, res) => dao.findAll(req, res, Hora)
 exports.findOne = (req, res) => dao.findOne(req, res, Hora)
 exports.update = (req, res) => dao.update(req, res, Hora)
 exports.delete = (req, res) => dao.delete(req, res, Hora)

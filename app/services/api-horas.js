@@ -1,8 +1,8 @@
 import { http } from './http'
 
 export default {
-  get: () => {
-    return http.get('/horas')
+  get: (query = '') => {
+    return http.get(`/horas${query}`)
   },
   getStatus: (id, data) => {
     return http.get(`/horas/status/${id}/${data}`)

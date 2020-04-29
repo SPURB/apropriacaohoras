@@ -22,7 +22,7 @@
         <th>SÁB</th>
       </tr>
     </thead>
-    <tbody id="tbody" ref=tbody>
+    <tbody id="tbody" ref="tbody">
       <tr :key="weekIndex" v-for="(week, weekIndex) in weeksThisMonth">
         <td
           :key="dayIndex"
@@ -50,7 +50,7 @@ import Lib from '@/libs'
 import Horas from '@/services/api-horas'
 
 export default {
-	name: 'Calendario',
+  name: 'Calendario',
   data () {
     return {
       date: new Date(),
@@ -72,12 +72,12 @@ export default {
     }
   },
   computed: {
-		...mapState('form-registrar-horas', {
-			updateCalendario: state => state.updateCalendario
-		}),
-		...mapState('usuario', {
-			idusuario: state => state.id
-		}),
+    ...mapState('form-registrar-horas', {
+      updateCalendario: state => state.updateCalendario
+    }),
+    ...mapState('usuario', {
+      idusuario: state => state.id
+    }),
     today: {
       get () {
         return this.date
@@ -107,20 +107,23 @@ export default {
     firstWeekDay () {
       return new Date(this.year, this.month, 1).getDay() - 1
     }
-	},
-	watch: {
-		updateCalendario (updateStatus) {
-			if (updateStatus) {
-				this.typeClass()
-				this.TOGGLE_CALENDARIO_STATUS({status: false})
-			}
-		}
-	},
+  },
+  watch: {
+    updateCalendario (updateStatus) {
+      if (updateStatus) {
+        this.typeClass()
+        this.TOGGLE_CALENDARIO_STATUS({ status: false })
+      }
+    }
+  },
+  updated () {
+    this.typeClass()
+  },
   mounted () {
-		this.typeClass()
+    this.typeClass()
   },
   methods: {
-		...mapMutations('form-registrar-horas', ['TOGGLE_CALENDARIO_STATUS']),
+    ...mapMutations('form-registrar-horas', ['TOGGLE_CALENDARIO_STATUS']),
     ...mapActions('form-registrar-horas', ['setMultipleData']),
     calendario (weekIndex) {
       const totalDayMonth = this.daysThisMonth + this.firstWeekDay
@@ -156,26 +159,36 @@ export default {
       }
     },
     getFullData (day) {
-      return (this.year +'-' +`${this.month + 1}`.padStart(2, '0') +'-' +`${day}`.padStart(2, '0'))
-		},
+      return (
+        this.year +
+        '-' +
+        `${this.month + 1}`.padStart(2, '0') +
+        '-' +
+        `${day}`.padStart(2, '0')
+      )
+    },
     typeClass () {
       let tbody = this.$refs.tbody
+      const currentDate = Lib.currentDate()
+      const now = new Date()
+      const currentYear = now.getFullYear().toString()
+      const current = `${currentYear}-${currentDate.cMonth}-${currentDate.cDay}`
 
-			// acessa cada
       tbody.childNodes.forEach(tr => {
-        // acessa cada td
         tr.childNodes.forEach(td => {
           const tDate = td.dataset.date
           const sDate = Lib.splitDate(td.dataset.date)
           const isWeekend = Lib.isWeekend(tDate)
-          const currentDate = Lib.currentDate()
+
+          const currentTdDate = `${sDate.sYear}-${sDate.sMonth}-${sDate.sDay}`
+          const isFuture = new Date(current) < new Date(currentTdDate)
 
           td.classList.remove('warning')
           td.classList.remove('success')
           td.classList.remove('danger')
 
           if (
-            sDate.sMonth === currentDate.cMonth &&
+            !isFuture &&
             sDate.sDay <= currentDate.cDay &&
             sDate.sDay !== '00' &&
             isWeekend === false

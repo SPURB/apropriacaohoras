@@ -1,14 +1,13 @@
 <template>
   <div class="registrar" @click="frameClick($event)">
-    <!-- <modal /> -->
     <modal
-			v-if="modal.show"
+      v-if="modal.show"
       :title="modal.title"
-			:error="modal.error"
+      :error="modal.error"
       :description="modal.description"
-			:description-list="modal.descriptionList"
+      :description-list="modal.descriptionList"
       :action-text="modal.actionText"
-      @setModalAction="modal.show=!modal.show"
+      @setModalAction="modal.show = !modal.show"
     />
     <app-header
       @toggle-menu="toggleUserMenu"
@@ -89,7 +88,7 @@
             </aside>
           </fieldset>
 
-          <custom-select :title="'Projeto'" :values="projetos" />
+          <custom-select :title="'Projetos'" :values="projetos" />
 
           <custom-select
             v-if="fases.title"
@@ -126,8 +125,7 @@
 <script>
 import AppHeader from '~/components/AppHeader'
 import AppFooter from '~/components/AppFooter'
-// import Modal from '~/components/modals/Modal'
-import Modal from '~/components/modals/ModalProps'
+import Modal from '~/components/Modal'
 import Calendario from '~/components/Calendario'
 import CustomSelect from '~/components/CustomSelect'
 import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
@@ -149,54 +147,53 @@ export default {
       userMenuEl: null,
       descricao: '',
       fases: {},
-			subatividades: {},
-			modal: {
-				show: false,
-				title: '',
-				error: true,
-				description: '',
-				descriptionList: [],
-				actionText: ''
-			}
+      subatividades: {},
+      modal: {
+        show: false,
+        title: '',
+        error: true,
+        description: '',
+        descriptionList: [],
+        actionText: ''
+      }
     }
   },
   computed: {
     ...mapState('form-registrar-horas', {
       horas: state => state.horas,
-      // showModal: state => state.showModal,
-			dataSelects: state => state.dataSelects,
-			validateForm: state => state.validateForm,
-			multipleData: state => state.multipleData
+      dataSelects: state => state.dataSelects,
+      validateForm: state => state.validateForm,
+      multipleData: state => state.multipleData
     }),
     ...mapState('usuario', {
-			idusuario: state => state.id,
-			token: state => state.token
-		}),
-		...mapGetters('form-registrar-horas', ['projetos'])
+      idusuario: state => state.id,
+      token: state => state.token
+    }),
+    ...mapGetters('form-registrar-horas', ['projetos'])
   },
   watch: {
     dataSelects (selects) {
       if (selects) {
-        this.fases = selects.find(select => select.title === 'Fase')
+        this.fases = selects.find(select => select.title === 'Fases')
         this.subatividades = selects.find(
-          select => select.title === 'Subatividade'
+          select => select.title === 'Subatividades'
         )
       }
-		}
+    }
   },
   created () {
     this.addData()
   },
   methods: {
-		parentMethod () {
-			console.log('olar')
-		},
     ...mapActions('form-registrar-horas', [
       'addData',
       'toggleBar',
-			'setDescricao'
-		]),
-		...mapMutations('form-registrar-horas', ['setValidationForm', 'TOGGLE_CALENDARIO_STATUS']),
+      'setDescricao'
+    ]),
+    ...mapMutations('form-registrar-horas', [
+      'setValidationForm',
+      'TOGGLE_CALENDARIO_STATUS'
+    ]),
     toggleUserMenu (elementFromChild) {
       this.userMenuState = !this.userMenuState
       if (this.userMenuEl === undefined) {
@@ -207,36 +204,51 @@ export default {
       if (this.userMenuState && event.target.contains(this.userMenuEl)) {
         this.toggleUserMenu()
       }
-		},
-		async postForm () {
-			this.setValidationForm()
-			const messages = this.validateForm.msg
+    },
+    async postForm () {
+      this.setValidationForm()
+      const messages = this.validateForm.msg
 
-			if (messages.length) {
-				this.modal.show = true
-				this.modal.title = 'Erro no formulário!'
-				this.modal.error = true
-				this.modal.description = 'Corriga os campos abaixo:'
-				this.modal.descriptionList = this.validateForm.msg
-				this.modal.actionText = 'Voltar'
-				return
-			}
-			
-			Promise.all(this.multipleData.map(dataRefInicio => {
-					const horas =  {
-						usuario: this.idusuario,
-						dataRefInicio,
-						...this.horas
-					}
-					return Horas.post(horas, this.token)
-				})
-			)
-				.then(res => { 
-					this.TOGGLE_CALENDARIO_STATUS({ status: true })
-					console.log(res)
-				})
-				.catch(err => console.error(err))
-		}
+      if (messages.length) {
+        this.modal.show = true
+        this.modal.title = 'Erro no formulário!'
+        this.modal.error = true
+        this.modal.description = 'Corriga os campos abaixo:'
+        this.modal.descriptionList = this.validateForm.msg
+        this.modal.actionText = 'Voltar'
+        return
+      }
+
+      Promise.all(
+        this.multipleData.map(dataRefInicio => {
+          const horas = {
+            usuario: this.idusuario,
+            dataRefInicio,
+            ...this.horas
+          }
+          return Horas.post(horas, this.token)
+        })
+      )
+        .then(res => {
+          this.TOGGLE_CALENDARIO_STATUS({ status: true })
+          this.modal.show = true
+          this.modal.title = 'Sucesso!'
+          this.modal.error = false
+          this.modal.description = 'Horas cadastradas'
+          this.modal.descriptionList = []
+          this.modal.actionText = 'Voltar'
+        })
+        .catch(err => {
+          this.modal.show = true
+          this.modal.title = 'Erro!'
+          this.modal.error = true
+          this.modal.description = err.response.data.message
+            ? err.response.data.message
+            : err.message
+          this.modal.descriptionList = []
+          this.modal.actionText = 'Voltar'
+        })
+    }
   }
 }
 </script>

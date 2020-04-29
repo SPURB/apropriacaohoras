@@ -1,14 +1,12 @@
 import Fase from '@/services/api-fase'
 import Projeto from '@/services/api-projeto'
 import Subatividade from '@/services/api-subatividade'
-// import Horas from '@/services/api-horas'
 
 import Lib from '@/libs'
 
 export const state = () => ({
 	updateCalendario: false,
   dataSelects: [],
-  // showModal: false,
   multipleData: [],
   validateForm: {
     msg: [],
@@ -33,35 +31,6 @@ export const actions = {
 				new Error(err)
 			})
   },
-  // async postForm ({ commit, state, getters }) {
-	// 	commit('setValidationForm', state.horas)
-  //   let validateForm = state.validateForm
-  //   try {
-  //     if (validateForm.disabled !== true) {
-  //       state.multipleData.forEach(dataRefInicio => {
-  //         let postObj = {
-  //           dataRefInicio,
-	// 					...state.horas
-	// 				}
-
-	// 				postObject.usuario = getters.usuario
-
-	// 				Horas.post(postObj, getters.token)
-  //           .then(() => {
-  //             commit('setShowModal', true)
-  //           })
-  //           .catch(err => {
-  //             commit('setErroData', err.response.data)
-  //             commit('setShowModal', true)
-  //           })
-  //       })
-  //     } else {
-  //       throw validateForm
-  //     }
-  //   } catch (error) {
-  //     commit('setShowModal', true)
-  //   }
-  // },
   toggleBar ({ commit }, bool) {
     if (bool) {
       commit('hoursInc')
@@ -81,8 +50,6 @@ export const actions = {
 }
 
 export const getters = {
-	// usuario: (state, getters, rootState) => rootState.usuario.id,
-	// token: (state, getters, rootState) => rootState.usuario.token,
 	projetos: (state, getters, rootState) => {// projetos válidos para este usuário
 		if (state.dataSelects.length) {
 			const allProjetos = state.dataSelects.find(select => select.title === 'Projetos').values
@@ -98,13 +65,13 @@ export const mutations = {
   },
   setValueOption (state, payload) {
 		switch (payload.title) {
-      case 'Fase':
+      case 'Fases':
         state.horas.fase = payload.value
         break
-      case 'Projeto':
+      case 'Projetos':
         state.horas.projeto = payload.value
         break
-      case 'Subatividade':
+      case 'Subatividades':
         state.horas.subatividade = payload.value
         break
       default:
@@ -114,7 +81,6 @@ export const mutations = {
   setDescricao (state, payload) {
     state.horas.descricao = payload
   },
-  // setShowModal (state, payload) { state.showModal = payload },
   setMultipleData (state, payload) {
     let eTarget = payload.event
     let data = payload.date
@@ -124,13 +90,8 @@ export const mutations = {
     const currentDate = Lib.currentDate()
 
     // verifica se é final de semana
-    if (
-      sDate.sMonth !== currentDate.cMonth ||
-      (sDate.sDay > currentDate.cDay && isWeekend === false) ||
-      isWeekend === true
-    ) {
-      state.validateForm = { msg: [], disabled: false } // zera o state para um vazio
-
+		if ((sDate.sDay > currentDate.cDay && isWeekend === false) || isWeekend === true) {
+			state.validateForm = { msg: [], disabled: false } // zera o state para um vazio
       state.validateForm.msg.push('Data informada inválida')
       state.validateForm.disabled = true
 

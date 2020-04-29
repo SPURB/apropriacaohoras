@@ -72,7 +72,7 @@
 import BtnProgresso from '~/components/elements/BtnProgresso'
 import InputOptions from '~/components/elements/InputOptions'
 import AppFooter from '~/components/AppFooter'
-import Modal from '~/components/modals/ModalProps'
+import Modal from '~/components/Modal'
 
 import { mapActions, mapMutations, mapState } from 'vuex'
 

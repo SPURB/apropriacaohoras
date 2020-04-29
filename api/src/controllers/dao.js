@@ -10,15 +10,16 @@ const dataAccessObject = {
         })
       })
   },
-  findAll: (res, title, Model, where = {}) => {
-    Model.findAll(where)
-      .then(data => {
-        const customResponse = {
-          title: title,
-          values: data
-        }
-        res.send(customResponse)
-      })
+  findAll: (req, res, Model, title) => {
+
+		let where = {}
+
+		if (req.query) {
+				where = req.query
+		}
+
+		Model.findAll({ where })
+      .then(values => res.send({values, title}))
       .catch(err => {
         res.status(500).send({
           message: err.message || 'Ocorreu um erro na busca'

@@ -7,12 +7,12 @@
       <p v-if="description !== ''" class="modal__description">
         {{ description }}
       </p>
-			<ul v-if="descriptionList.length" class="modal__list" :class="{ error }">
-				<li :key="index" v-for="(item, index) in descriptionList">
-					<i class="icon icon-incorreto"></i>
-					{{ item }}
-				</li>
-			</ul>
+      <ul v-if="descriptionList.length" class="modal__list" :class="{ error }">
+        <li :key="index" v-for="(item, index) in descriptionList">
+          <i class="icon icon-incorreto"></i>
+          {{ item }}
+        </li>
+      </ul>
       <p v-if="actionDescription !== ''" class="modal__description">
         {{ actionDescription }}
       </p>
@@ -56,11 +56,11 @@ export default {
     description: {
       type: String,
       default: ''
-		},
-		descriptionList: {
-			type: Array,
-			default: () => []
-		},
+    },
+    descriptionList: {
+      type: Array,
+      default: () => []
+    },
     actionDescription: {
       type: String,
       default: ''
@@ -117,13 +117,13 @@ export default {
   }
   &__list {
     font-size: small;
-		list-style-type: none;
-		margin: 0;
-		padding: 0;
-		text-align: left;
-		i {
-			color: $vermelho
-		}
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    i {
+      color: $vermelho;
+    }
   }
   &__action {
     margin: 1rem 0 0.5rem;

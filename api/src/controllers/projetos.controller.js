@@ -18,18 +18,8 @@ exports.create = (req, res) => {
   dao.create(req, res, Projeto, body)
 }
 
-exports.findAll = (req, res) => {
-  const title = 'Projetos'
-  if (req.query) {
-    return dao.findAll(res, title, Projeto, {
-      where: req.query
-    })
-  }
-  dao.findAll(res, title, Projeto)
-}
+exports.findAll = (req, res) => dao.findAll(req, res, Projeto, 'Projetos')
 exports.findOne = (req, res) => dao.findOne(req, res, Projeto)
-exports.update = (req, res) => {
-  dao.update(req, res, Projeto)
-}
+exports.update = (req, res) => dao.update(req, res, Projeto)
 exports.delete = (req, res) => dao.delete(req, res, Projeto)
 exports.deleteAll = (req, res) => dao.deleteAll(req, res, Projeto)
