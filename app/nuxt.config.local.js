@@ -9,15 +9,13 @@ export default {
     ],
 	},
 	router: {
-    base: '/'
-  },
+    base: '/',
+		middleware: ['authenticated']
+	},
   env:{
     apiBase: 'http://localhost:5000'
   },
 	mode: 'spa',
-	router: {
-		middleware: ['authenticated']
-	},
 	modules: ['@nuxtjs/style-resources'],
   styleResources: {
     scss: ['@/assets/style/variables.scss', '@/assets/style/theme.scss']

@@ -9,15 +9,13 @@ export default {
     ],
 	},
   router: {
-    base: process.env.CI ? '/apropriacaohoras/' : '/' // https://spurb.github.io/apropriacaohoras/
+    base: process.env.CI ? '/apropriacaohoras/' : '/', // https://spurb.github.io/apropriacaohoras/
+		middleware: ['authenticated']
   },
   env:{
     apiBase: 'https://apropriacaohoras.herokuapp.com'
   },
 	mode: 'spa',
-	router: {
-		middleware: ['authenticated']
-	},
   modules: ['@nuxtjs/style-resources'],
   styleResources: {
     scss: ['@/assets/style/variables.scss', '@/assets/style/theme.scss']
