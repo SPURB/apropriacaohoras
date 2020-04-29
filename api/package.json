@@ -6,29 +6,26 @@
     "node": ">=8.10.0"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon --exec babel-node dev.js",
-    "build": "npm run clean && npm run babel-build",
-    "babel-build": "babel -d ./dist ./src -s",
-    "start": "node main.js",
-    "start:debug": "cross-env NODE_ENV=development node main.js",
-    "lint": "prettier-standard seeders/{*,/**/*}.js migrations/{*,/**/*}.js src/{*,/**/*}.js",
-    "clean": "babel-node ./clean.js",
-    "db:reset": "npm run db:drop && npm run db:init",
-    "db:init": "npm run db:create && npm run db:migrate && npm run db:seed",
-    "db:create": "cross-env NODE_ENV=development sequelize-cli db:create",
-    "db:seed": "cross-env NODE_ENV=development sequelize-cli db:seed:all",
-    "db:seed:undo": "cross-env NODE_ENV=development sequelize-cli db:seed:undo:all",
-    "db:drop": "cross-env NODE_ENV=development sequelize-cli db:drop",
-    "db:migrate": "cross-env NODE_ENV=development sequelize-cli db:migrate",
-		"db:migrate:undo": "cross-env NODE_ENV=development sequelize-cli db:migrate:undo:all"
+    "dev": "nodemon --exec babel-node ./src/index.js",
+    "build": "npm run clean && npm run babel-build && npm run db:rebuild",
+    "start": "node ./dist/index.js",
+    "babel-build": "babel --out-dir ./dist ./src --minified --compact --source-maps false",
+    "clean": "babel-node ./prebuild",
+    "db:rebuild": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "db:init": "sequelize-cli db:create && npm run db:migrate && sequelize-cli db:seed:all",
+		"db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+		"lint": "prettier-standard src/{*,/**/*}.js"
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/runtime": "^7.9.2",
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mysql2": "^2.0.2",
-    "sequelize": "^5.21.2"
+    "sequelize": "^5.21.2",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -38,8 +35,6 @@
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
     "babel-register": "^6.26.0",
-    "cross-env": "^7.0.0",
-    "custom-env": "^2.0.1",
     "husky": "^4.2.3",
     "lint-staged": "^10.0.8",
     "mkdirp": "^1.0.3",

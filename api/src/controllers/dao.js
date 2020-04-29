@@ -84,7 +84,7 @@ const dataAccessObject = {
 
     Model.destroy({ where: { id } })
       .then(num => {
-        if (num == 1) {
+        if (num) {
           res.send({
             message: 'Sucesso! id: ${id} foi deletada'
           })

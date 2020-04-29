@@ -1,8 +1,10 @@
-require('custom-env').env(true)
-const path = require('path');
+'use strict';
+
+require('dotenv').config();
+var path = require('path');
 
 module.exports = {
-  'config': path.resolve('src', 'config'),
+  'config': path.resolve('src', 'db.config.js'),
   'seeders-path': path.resolve('seeders'),
   'models-path': path.resolve('src', 'models')
 };
