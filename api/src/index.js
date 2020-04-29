@@ -14,9 +14,7 @@ const endpoints = [
   'usuarios-projetos'
 ]
 
-app.use(cors({
-  origin: 'http://localhost:3000'
-}))
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
