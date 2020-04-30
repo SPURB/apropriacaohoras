@@ -5,19 +5,20 @@ module.exports = {
     return queryInterface.bulkInsert(
       'fases',
       [
-        { nome: 'Proposição', createdAt: now, updatedAt: now },
-        { nome: 'Consulta Pública Inicial', createdAt: now, updatedAt: now },
-        { nome: 'Avaliação', createdAt: now, updatedAt: now },
-        { nome: 'Elaboração', createdAt: now, updatedAt: now },
-        { nome: 'Discussão Pública', createdAt: now, updatedAt: now },
-        { nome: 'Consolidação', createdAt: now, updatedAt: now },
-        { nome: 'Encaminhamento Jurídico', createdAt: now, updatedAt: now },
-        { nome: 'Suspenso', createdAt: now, updatedAt: now },
-        { nome: 'Arquivado', createdAt: now, updatedAt: now },
-        { nome: 'Em prospecção', createdAt: now, updatedAt: now },
-        { nome: 'Vigente', createdAt: now, updatedAt: now },
-        { nome: 'Processo administrativo', createdAt: now, updatedAt: now }
-      ],
+				{ nome: "1. Elementos Prévios", createdAt: now, updatedAt: now },
+				{ nome: "2. Formulação", createdAt: now, updatedAt: now },
+				{ nome: "3. Consolidação", createdAt: now, updatedAt: now },
+				{ nome: "4. Forma Final do PIU", createdAt: now, updatedAt: now },
+				{ nome: "5. Notas Técnicas", createdAt: now, updatedAt: now },
+				{ nome: "6. Consulta Pública", createdAt: now, updatedAt: now },
+				{ nome: "7. Reuniões Intersecretariais", createdAt: now, updatedAt: now },
+				{ nome: "8. Apresentações", createdAt: now, updatedAt: now },
+				{ nome: "9. Participação Social", createdAt: now, updatedAt: now },
+				{ nome: "10. Acompanhemento Legislativo", createdAt: now, updatedAt: now },
+				{ nome: "11. Comunicação", createdAt: now, updatedAt: now },
+				{ nome: "12. Coordenação / Gerenciamento", createdAt: now, updatedAt: now },
+				{ nome: "13. Projetos Especiais", createdAt: now, updatedAt: now }
+			],
       {}
     )
   },
