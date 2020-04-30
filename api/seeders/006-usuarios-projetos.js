@@ -6,21 +6,15 @@ const now = new Date()
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const usuario = await Usuario.findOne({
+    const usuarioE059145 = await Usuario.findOne({
       where: {
         nprodam: 'e059145'
       }
     })
 
-    const rioBranco = await Projeto.findOne({
+    const usuarioE059153 = await Usuario.findOne({
       where: {
-        nome: 'PIU Rio Branco'
-      }
-    })
-
-    const tiete = await Projeto.findOne({
-      where: {
-        nome: 'PIU Arco Tietê'
+        nprodam: 'e059153'
       }
     })
 
@@ -28,18 +22,48 @@ module.exports = {
       'usuarios_projetos',
       [
         {
-          projeto: rioBranco.id,
-          usuario: usuario.id,
+          projeto: 1,
+          usuario: usuarioE059145.id,
           createdAt: now,
           updatedAt: now
         },
         {
-          projeto: tiete.id,
-          usuario: usuario.id,
+          projeto: 2,
+          usuario: usuarioE059145.id,
+          createdAt: now,
+          updatedAt: now
+        },
+        {
+          projeto: 1,
+          usuario: usuarioE059153.id,
+          createdAt: now,
+          updatedAt: now
+        },
+        {
+          projeto: 2,
+          usuario: usuarioE059153.id,
+          createdAt: now,
+          updatedAt: now
+        },
+        {
+          projeto: 3,
+          usuario: usuarioE059153.id,
+          createdAt: now,
+          updatedAt: now
+        },
+        {
+          projeto: 4,
+          usuario: usuarioE059153.id,
+          createdAt: now,
+          updatedAt: now
+        },
+        {
+          projeto: 5,
+          usuario: usuarioE059153.id,
           createdAt: now,
           updatedAt: now
         }
-      ],
+			],
       {}
     )
   },

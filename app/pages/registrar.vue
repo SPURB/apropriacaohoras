@@ -9,11 +9,11 @@
       :action-text="modal.actionText"
       @setModalAction="modal.show = !modal.show"
     />
-    <app-header
+    <!-- <app-header
       @toggle-menu="toggleUserMenu"
       :userMenuState="userMenuState"
       :fullHeaderFromParent="true"
-    />
+    /> -->
 
     <h2>Registrar horas</h2>
     <main>
@@ -118,13 +118,13 @@
         <button type="submit" class="postBtn">Registrar horas</button>
       </form>
     </main>
-    <app-footer />
+    <!-- <app-footer /> -->
   </div>
 </template>
 
 <script>
-import AppHeader from '~/components/AppHeader'
-import AppFooter from '~/components/AppFooter'
+// import AppHeader from '~/components/AppHeader'
+// import AppFooter from '~/components/AppFooter'
 import Modal from '~/components/Modal'
 import Calendario from '~/components/Calendario'
 import CustomSelect from '~/components/CustomSelect'
@@ -134,8 +134,8 @@ import Horas from '@/services/api-horas'
 export default {
   name: 'Registrar',
   components: {
-    AppHeader,
-    AppFooter,
+    // AppHeader,
+    // AppFooter,
     Calendario,
     CustomSelect,
     Modal

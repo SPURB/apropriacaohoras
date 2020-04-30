@@ -32,7 +32,7 @@
         </form>
       </section>
       <section v-else class="card__pass">
-        <p v-if="fetching">carregando...</p>
+        <p class="auth__loader" v-if="fetching">carregando...</p>
         <form
           v-else
           class="auth pass"
@@ -55,7 +55,7 @@
             :disabled="password === ''"
           />
         </form>
-        <p class="message">
+        <p class="message" v-if="!fetching">
           VERIFIQUE SUA SENHA EM <br /><a
             class="message__action"
             :href="`https://correioweb.prefeitura.sp.gov.br/exchange/${email}`"
@@ -64,7 +64,7 @@
         </p>
       </section>
     </div>
-    <app-footer />
+    <app-footer v-if="!fetching" />
   </div>
 </template>
 
@@ -196,7 +196,10 @@ export default {
     @media (max-width: $phone) {
       margin-top: 7rem;
     }
-  }
+	}
+	&__loader {
+		color: #fff
+	}
 }
 
 .separador {
