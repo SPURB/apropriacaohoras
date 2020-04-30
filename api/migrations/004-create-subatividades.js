@@ -11,6 +11,13 @@ module.exports = {
       nome: {
         type: Sequelize.STRING(128)
       },
+      fase: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'fases',
+          key: 'id'
+        }
+      },
       createdAt: {
         type: Sequelize.DATE
       },

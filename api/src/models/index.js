@@ -24,12 +24,7 @@ db.usuarios_projetos = require('./usuarios-projetos.model.js')(
   db
 )
 db.fases = require('./fases.model.js')(sequelize, Sequelize)
-db.subatividades = require('./subatividades.model.js')(sequelize, Sequelize)
-db.fases_subatividades = require('./fases-subatividades.model.js')(
-  sequelize,
-  Sequelize,
-  db
-)
+db.subatividades = require('./subatividades.model.js')(sequelize, Sequelize, db.fases)
 db.horas = require('./horas.model.js')(sequelize, Sequelize, db)
 
 db.usuarios.associate(db.authtokens)

@@ -12,7 +12,6 @@ const endpoints = [
   'fases',
   'subatividades',
 	'usuarios-projetos',
-	'fases-subatividades'
 ]
 
 app.use(cors())
