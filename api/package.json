@@ -11,11 +11,11 @@
     "start": "node ./dist/index.js",
     "babel-build": "babel --out-dir ./dist ./src --minified --compact --source-maps false",
     "clean": "babel-node ./prebuild",
-		"db:rebuild": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:undo:all && sequelize-cli db:seed:all",
-		"db:seed":"sequelize-cli db:seed",
+    "db:rebuild": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:undo:all && sequelize-cli db:seed:all",
+    "db:seed": "sequelize-cli db:seed",
     "db:init": "sequelize-cli db:create && npm run db:migrate && sequelize-cli db:seed:all",
-		"db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
-		"lint": "prettier-standard src/{*,/**/*}.js"
+    "db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "lint": "prettier-standard src/{*,/**/*}.js"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.9.0",
