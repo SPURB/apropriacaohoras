@@ -16,54 +16,27 @@ module.exports = {
       where: {
         nprodam: 'e059153'
       }
-    })
+		})
+		
+		const projetos = await Projeto.findAll()
 
-    return queryInterface.bulkInsert(
+		const setInsertObject = (usuario, projetos) => projetos.map(projeto => {
+			return {
+				projeto: projeto.id,
+				usuario: usuario.id,
+				createdAt: now,
+				updatedAt: now
+			}
+		})
+
+		const projetosE059145 = setInsertObject(usuarioE059145, projetos)
+		const projetosE059153 = setInsertObject(usuarioE059153, projetos)
+
+		const toInsert = projetosE059145.concat(projetosE059153)
+
+		return queryInterface.bulkInsert(
       'usuarios_projetos',
-      [
-        {
-          projeto: 1,
-          usuario: usuarioE059145.id,
-          createdAt: now,
-          updatedAt: now
-        },
-        {
-          projeto: 2,
-          usuario: usuarioE059145.id,
-          createdAt: now,
-          updatedAt: now
-        },
-        {
-          projeto: 1,
-          usuario: usuarioE059153.id,
-          createdAt: now,
-          updatedAt: now
-        },
-        {
-          projeto: 2,
-          usuario: usuarioE059153.id,
-          createdAt: now,
-          updatedAt: now
-        },
-        {
-          projeto: 3,
-          usuario: usuarioE059153.id,
-          createdAt: now,
-          updatedAt: now
-        },
-        {
-          projeto: 4,
-          usuario: usuarioE059153.id,
-          createdAt: now,
-          updatedAt: now
-        },
-        {
-          projeto: 5,
-          usuario: usuarioE059153.id,
-          createdAt: now,
-          updatedAt: now
-        }
-			],
+			toInsert,
       {}
     )
   },
