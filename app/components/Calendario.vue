@@ -144,7 +144,7 @@ export default {
     },
     daysClassification (monthday) {
       let out = []
-      let thisday = new Date(this.year, this.month, monthday - 2)
+      let thisday = new Date(this.year, this.month, monthday - 4)
       thisday.toLocaleString().substring(0, 10) ===
       new Date().toLocaleString().substring(0, 10)
         ? out.push('today')

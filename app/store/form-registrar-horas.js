@@ -23,8 +23,11 @@ export const state = () => ({
 })
 
 export const actions = {
-  async addData ({ commit }) {
-		Promise.all([Fase.get(), Projeto.get(), Subatividade.get()])
+  async addData ({ commit, state }) {
+    let fase = ''
+    if (state.horas.fase !== null) fase = state.horas.fase
+
+		Promise.all([Fase.get(), Projeto.get(), Subatividade.get(fase)])
 			.then(values => commit('setSelects', values.map(res => res.data)))
 			.catch(err => {
 				alert('Ocorreu algum erro! Tente mais tarde.')
