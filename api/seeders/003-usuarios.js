@@ -1,5 +1,5 @@
 const now = new Date()
-
+const { hashSync } = require('bcrypt')
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
@@ -7,23 +7,34 @@ module.exports = {
       [
         {
           nprodam: 'e059145',
-          email: 'tlyuba@spurbanismo.sp.gov.br',
-          password:
-            '$2b$10$4P9ofTvzLRHdVAtWJr4dAunskgYIgT1QAXePqIWKvL0P7IzhdZX0u', // 123456
+					email: 'tlyuba@spurbanismo.sp.gov.br',
+					admin: true,
+          password: '$2b$10$4P9ofTvzLRHdVAtWJr4dAunskgYIgT1QAXePqIWKvL0P7IzhdZX0u', // 123456
           createdAt: now,
           updatedAt: now
         },
         {
           nprodam: 'X490849',
-          email: 'mauriciodantas@spurbanismo.sp.gov.br',
+					email: 'mauriciodantas@spurbanismo.sp.gov.br',
+					admin: true,
           password:
             '$2b$10$4P9ofTvzLRHdVAtWJr4dAunskgYIgT1QAXePqIWKvL0P7IzhdZX0u', // 123456
           createdAt: now,
           updatedAt: now
         },
         {
-          nprodam: 'e059153',
+					nprodam: 'e059153',
+					admin: true,
           email: 'mgiannoni@spurbanismo.sp.gov.br',
+          password:
+            '$2b$10$4P9ofTvzLRHdVAtWJr4dAunskgYIgT1QAXePqIWKvL0P7IzhdZX0u', // 123456
+          createdAt: now,
+          updatedAt: now
+        },
+        {
+					nprodam: 'e0545454',
+					admin: false,
+          email: 'jsilva@spurbanismo.sp.gov.br',
           password:
             '$2b$10$4P9ofTvzLRHdVAtWJr4dAunskgYIgT1QAXePqIWKvL0P7IzhdZX0u', // 123456
           createdAt: now,

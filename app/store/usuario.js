@@ -5,6 +5,7 @@ export const state = () => ({
 	id: 0,
 	error: false,
 	fetching: false,
+	admin: false,
 	errorResponse: {},
 	usuario: {},
 	token: '',
@@ -34,6 +35,7 @@ export const mutations = {
 		state.usuario = usuario
 		state.id = usuario.id
 		state.token = auth.token
+		state.admin = usuario.admin
 	},
 	SET_PROJETOS: (state, { values }) => state.projetos = values.map(value => value.projeto),
 	SET_ERROR (state, errorResponse) {
@@ -47,5 +49,6 @@ export const mutations = {
 		state.fetching = false
 		state.usuario = {}
 		state.auth = ''
+		state.admin = false
 	}
 }

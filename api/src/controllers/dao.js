@@ -1,7 +1,8 @@
 const dataAccessObject = {
   create: (req, res, Model, body) => {
-    if (!req.authorized)
-      return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
+    if (!req.authorized) {
+			return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
+		}
     Model.create(body)
       .then(data => res.send(data))
       .catch(err => {
@@ -86,7 +87,7 @@ const dataAccessObject = {
       .then(num => {
         if (num) {
           res.send({
-            message: 'Sucesso! id: ${id} foi deletada'
+            message: `Sucesso! id: ${id} foi deletado`
           })
         } else {
           res.send({
