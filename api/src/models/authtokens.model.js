@@ -9,12 +9,12 @@ module.exports = (sequelize, Sequelize) => {
         model: sequelize.usuarios,
         key: 'id'
       }
-		}
+    }
   })
 
   AuthToken.associate = UsuarioModel => AuthToken.belongsTo(UsuarioModel)
 
-  AuthToken.generate = async (idusuario) => {
+  AuthToken.generate = async idusuario => {
     if (!idusuario) {
       throw new Error('AuthToken requer o id do usuário')
     }

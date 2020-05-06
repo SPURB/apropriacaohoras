@@ -1,8 +1,8 @@
 const dataAccessObject = {
   create: (req, res, Model, body) => {
     if (!req.authorized) {
-			return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
-		}
+      return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
+    }
     Model.create(body)
       .then(data => res.send(data))
       .catch(err => {
@@ -12,15 +12,14 @@ const dataAccessObject = {
       })
   },
   findAll: (req, res, Model, title) => {
+    let where = {}
 
-		let where = {}
+    if (req.query) {
+      where = req.query
+    }
 
-		if (req.query) {
-				where = req.query
-		}
-
-		Model.findAll({ where })
-      .then(values => res.send({values, title}))
+    Model.findAll({ where })
+      .then(values => res.send({ values, title }))
       .catch(err => {
         res.status(500).send({
           message: err.message || 'Ocorreu um erro na busca'
