@@ -9,5 +9,5 @@ export default async ({ store, route }) => {
 
 	else if (!isAdmin && route.path === '/admin') {
 		store.app.router.replace('/login')
-	}
+  }
 }
