@@ -72,6 +72,35 @@ exports.logout = async (req, res) => {
   }
 }
 
+exports.resetPassword = async (req, res) => {
+  const { email, password } = req.body
+
+  if (!email || !password) {
+    return res
+      .status(400)
+      .send(
+        exceptionsDefault('Ausência de email ou password na requisição')
+      )
+  }
+
+  Usuario.findAll({
+    limit: 1,
+    where: {
+      email
+    }
+  }).then(data => {
+    const { id } = data[0]
+    const hash = hashSync(password, 10)
+    
+    Usuario.update(
+      Object.assign({ password: hash }),
+      { where: { id } }
+    ).then(dup => {
+      res.send(dup)
+    })
+  })
+}
+
 exports.findAll = (req, res) => {
   return Usuario.findAll()
     .then(usuarios => {

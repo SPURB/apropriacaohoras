@@ -5,6 +5,7 @@ module.exports = usuario => {
   router.post('/', usuarios.create) // registro
   router.post('/login', usuarios.login)
   router.delete('/logout', usuarios.logout)
+  router.put('/reset', usuarios.resetPassword)
 
   router.get('/', usuarios.findAll)
   router.get('/:id', usuarios.findOne)
