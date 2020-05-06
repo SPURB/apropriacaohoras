@@ -15,7 +15,7 @@
     "db:seed": "sequelize-cli db:seed",
     "db:init": "sequelize-cli db:create && npm run db:migrate && sequelize-cli db:seed:all",
     "db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
-    "lint": "prettier-standard src/{*,/**/*}.js"
+    "lint": "prettier-standard src/{*,/**/*}.js seeders/{*,/**/*}.js migrations/{*,/**/*}.js"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.9.0",

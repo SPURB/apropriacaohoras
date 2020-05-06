@@ -21,11 +21,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-			admin: {
-				type: Sequelize.BOOLEAN,
+      admin: {
+        type: Sequelize.BOOLEAN,
         defaultValue: false
-			}, 
-			createdAt: {
+      },
+      createdAt: {
         type: Sequelize.DATE
       },
       updatedAt: {

@@ -16,29 +16,26 @@ module.exports = {
       where: {
         nprodam: 'e059153'
       }
-		})
-		
-		const projetos = await Projeto.findAll()
+    })
 
-		const setInsertObject = (usuario, projetos) => projetos.map(projeto => {
-			return {
-				projeto: projeto.id,
-				usuario: usuario.id,
-				createdAt: now,
-				updatedAt: now
-			}
-		})
+    const projetos = await Projeto.findAll()
 
-		const projetosE059145 = setInsertObject(usuarioE059145, projetos)
-		const projetosE059153 = setInsertObject(usuarioE059153, projetos)
+    const setInsertObject = (usuario, projetos) =>
+      projetos.map(projeto => {
+        return {
+          projeto: projeto.id,
+          usuario: usuario.id,
+          createdAt: now,
+          updatedAt: now
+        }
+      })
 
-		const toInsert = projetosE059145.concat(projetosE059153)
+    const projetosE059145 = setInsertObject(usuarioE059145, projetos)
+    const projetosE059153 = setInsertObject(usuarioE059153, projetos)
 
-		return queryInterface.bulkInsert(
-      'usuarios_projetos',
-			toInsert,
-      {}
-    )
+    const toInsert = projetosE059145.concat(projetosE059153)
+
+    return queryInterface.bulkInsert('usuarios_projetos', toInsert, {})
   },
 
   down: (queryInterface, Sequelize) => {
