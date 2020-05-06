@@ -9,7 +9,7 @@
       :action-text="modal.actionText"
       @setModalAction="modal.show = !modal.show"
     />
-		<router-link to="/admin">admin</router-link>
+    <router-link to="/admin">admin</router-link>
 
     <!-- <app-header
       @toggle-menu="toggleUserMenu"

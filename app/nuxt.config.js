@@ -15,6 +15,9 @@ export default {
   env:{
     apiBase: 'https://apropriacaohoras.herokuapp.com'
   },
+  plugins: [
+    { src: '~/plugins/vuex-persist', ssr: false }
+  ],
 	mode: 'spa',
   modules: ['@nuxtjs/style-resources'],
   styleResources: {
