@@ -98,6 +98,7 @@
 
           <custom-select
             v-if="subatividades.title"
+            :disabled="fase !== null ? false : true"
             :title="subatividades.title"
             :values="subatividades.values"
           />
@@ -160,6 +161,7 @@ export default {
   computed: {
     ...mapState('form-registrar-horas', {
       horas: state => state.horas,
+      fase: state => state.horas.fase,
       dataSelects: state => state.dataSelects,
       validateForm: state => state.validateForm,
       multipleData: state => state.multipleData
@@ -178,6 +180,9 @@ export default {
           select => select.title === 'Subatividades'
         )
       }
+    },
+    fase (newValue, oldValue) {
+      this.addData()
     }
   },
   created () {

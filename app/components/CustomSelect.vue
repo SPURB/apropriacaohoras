@@ -4,6 +4,8 @@
     <select
       @change="setValueOption({ title, value: optionValue })"
       v-model="optionValue"
+      :disabled="disabled"
+      :class="disabledClass"
     >
       <option value="" selected disabled>
         Selecione uma opção
@@ -31,11 +33,19 @@ export default {
     values: {
       type: Array,
       required: true
+    },
+    disabled: {
+      type: Boolean
     }
   },
   data () {
     return {
       optionValue: ''
+    }
+  },
+  computed: {
+    disabledClass () {
+      if (this.disabled) return 'disabled-select'
     }
   },
   methods: {
@@ -46,4 +56,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/assets/style/form-horas.scss';
+.disabled-select {
+  background-color: #8a8888 !important;
+  cursor: no-drop !important;
+}
 </style>
