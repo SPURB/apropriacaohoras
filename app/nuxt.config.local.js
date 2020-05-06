@@ -15,6 +15,9 @@ export default {
   env:{
     apiBase: 'http://localhost:5000'
   },
+  plugins: [
+    { src: '~/plugins/vuex-persist', ssr: false }
+  ],
 	mode: 'spa',
 	modules: ['@nuxtjs/style-resources'],
   styleResources: {

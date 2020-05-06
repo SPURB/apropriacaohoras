@@ -1,13 +1,10 @@
 export default async ({ store, route }) => {
+  const isLogged = JSON.parse(localStorage.getItem('credencial'))
 
-	const isLogged = store.state.usuario.id > 0
-	const isAdmin = store.state.usuario.admin
-
-	if (!isLogged && route.path !== '/login') {
-		store.app.router.replace('/login')
-	}
-
-	else if (!isAdmin && route.path === '/admin') {
-		store.app.router.replace('/login')
+  if (!isLogged || !isLogged.usuario.token) {
+    if (route.path !== '/login') store.app.router.replace('/login')
+  } else {
+    const isAdmin = isLogged.usuario.admin
+    if (!isAdmin && route.path === '/admin') store.app.router.replace('/login')
   }
 }

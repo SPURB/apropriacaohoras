@@ -196,10 +196,10 @@ export default {
     @media (max-width: $phone) {
       margin-top: 7rem;
     }
-	}
-	&__loader {
-		color: #fff
-	}
+  }
+  &__loader {
+    color: #fff;
+  }
 }
 
 .separador {
