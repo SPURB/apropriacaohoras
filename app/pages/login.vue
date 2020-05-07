@@ -55,7 +55,7 @@
             :disabled="password === ''"
           />
         </form>
-        <box-email 
+        <box-email
           :email="email"
           :titulo="`VERIFIQUE SUA SENHA EM`"
           v-if="!fetching"
