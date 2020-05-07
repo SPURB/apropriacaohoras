@@ -1,9 +1,9 @@
 <template>
   <div class="reset-password">
     <modal
-      v-if="error"
+      v-if="show"
       :title="modal.title"
-      :error="false"
+      :error="typeErro"
       :description="modal.description"
       :action-description="modal.action.description"
       :action-text="modal.action.text"
@@ -55,7 +55,8 @@ export default {
         fpass: '',
         spass: ''
       },
-      error: false,
+      show: false,
+      typeErro: false,
       modal: {
         title: 'Senha alterada.',
         description: 'Senha alterada com sucesso.',
@@ -97,7 +98,17 @@ export default {
       this.form.fpass = ''
       this.form.spass = ''
       this.$refs.fpass.focus()
-      alert(message)
+      this.modal.title = 'Senha negada.'
+      this.modal.description = message
+      this.modal.action.description =
+        'Sua senha foi negada, por favor insira corretamente.'
+      this.modal.action.text = 'Tente novamente'
+      this.show = true
+      this.typeErro = true
+
+      setTimeout(() => {
+        this.show = false
+      }, 2500)
     },
     checkPassword () {
       if (this.form.fpass !== this.form.spass) {
@@ -108,7 +119,7 @@ export default {
         this.form.fpass === this.form.spass &&
         this.form.fpass === this.password
       ) {
-        this.clearInputs('Senha já utilizada, cadastre uma senha diferente')
+        this.clearInputs('Senha já utilizada, cadastre uma senha diferente.')
       } else {
         this.resetPassword(this.form.fpass)
       }
@@ -116,16 +127,17 @@ export default {
     resetPassword (password) {
       Usuario.reset({ password }, this.id, this.token)
         .then(res => {
-          this.error = true
+          ;(this.modal.title = 'Senha alterada.'),
+            (this.modal.description = 'Senha alterada com sucesso.'),
+            (this.modal.action.description =
+              'Sua senha foi alterada, você será redirecionado para realizar o acesso a plataforma com a senha que acabou de cadastrar.'),
+            (this.modal.action.text = 'Efetuar login')
+          this.typeErro = false
+          this.show = true
         })
         .catch(err => {
           console.log(err)
         })
-    },
-    updateStorage () {
-      setTimeout(() => {
-        this.$router.push(`/login?email=${this.email}`)
-      }, 2000)
     }
   }
 }
