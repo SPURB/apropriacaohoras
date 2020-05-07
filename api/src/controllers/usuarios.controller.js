@@ -111,9 +111,16 @@ exports.findOne = (req, res) => {
 }
 
 exports.update = (req, res) => {
-  if (!req.authorized)
+  if (!req.authorized) {
     res.status(403).send(exceptionsDefault('Operação não autorizada'))
-  dao.update(req, res, Usuario)
+  } else {
+    if (!!req.body.password) {
+      req.body.password = hashSync(req.body.password, 10)
+      dao.update(req, res, Usuario)
+    } else {
+      dao.update(req, res, Usuario)
+    }
+  }
 }
 exports.delete = (req, res) => {
   if (!req.authorized)
