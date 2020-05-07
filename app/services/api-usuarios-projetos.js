@@ -1,7 +1,17 @@
 import { http } from './http'
 
 export default {
-  get: id => {
-    return http.get(`/usuarios-projetos?usuario=${id}`)
-  }
+  get: (query = '') => {
+    return http.get(`/usuarios-projetos${query}`)
+	},
+	delete: (id, token) => http.delete(`/usuarios-projetos/${id}`, {
+		headers: {
+			authorization: token
+		}
+	}),
+	post: (body, token) => http.post(`/usuarios-projetos`, body, {
+		headers: {
+			authorization: token
+		}
+	})
 }

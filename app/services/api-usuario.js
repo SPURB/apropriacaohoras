@@ -6,5 +6,6 @@ export default {
     headers: {
       Authorization: token
     }
-  })
+  }),
+	get: () => http.get('/usuarios')
 }

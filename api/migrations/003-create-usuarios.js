@@ -24,7 +24,10 @@ module.exports = {
       admin: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
-      },
+			},
+			nome: {
+        type: Sequelize.STRING
+			},
       createdAt: {
         type: Sequelize.DATE
       },

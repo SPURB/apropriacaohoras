@@ -2,8 +2,8 @@
   <svg
     :opacity="opacity"
     class="user-profile-placeholder"
-    width="33"
-    height="32"
+    :width="width"
+    :height="width"
     viewBox="0 0 33 32"
     fill="none"
   >
@@ -42,6 +42,10 @@ export default {
     opacity: {
       type: Number,
       default: 1
+    },
+    width: {
+      type: String,
+      default: '32'
     }
   }
 }

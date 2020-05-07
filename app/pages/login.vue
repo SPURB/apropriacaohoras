@@ -23,7 +23,11 @@
             />
           </p>
           <p class="auth__group separador">@</p>
-          <input-options :options="hostOptions" @setOptionValue="setOption" />
+          <input-options
+            style="margin-top:1rem"
+            :options="hostOptions"
+            @setOptionValue="setOption"
+          />
           <btn-progresso
             class="auth__btn"
             v-on:keyup.enter="checkInputEmail"
@@ -89,6 +93,10 @@ export default {
       alias: '',
       host: 'spurbanismo.sp.gov.br',
       hostOptions: [
+        {
+          title: 'spurbanismo.sp.gov.br',
+          value: 'spurbanismo.sp.gov.br'
+        },
         {
           title: 'prefeitura.sp.gov.br',
           value: 'prefeitura.sp.gov.br'

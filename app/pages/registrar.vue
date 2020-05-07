@@ -176,7 +176,7 @@ export default {
   },
   watch: {
     dataSelects (selects) {
-      if (selects) {
+      if (selects.length) {
         this.fases = selects.find(select => select.title === 'Fases')
         this.subatividades = selects.find(
           select => select.title === 'Subatividades'

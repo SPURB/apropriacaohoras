@@ -22,7 +22,7 @@ export const actions = {
 	},
 	filterProjetos: ({ commit }, idUsuario) => {
 		commit('IS_FETCHING', true)
-		UsuariosProjetos.get(idUsuario)
+		UsuariosProjetos.get(`?usuario=${idUsuario}`)
 			.then(({ data }) => commit('SET_PROJETOS', data))
 			.catch(err => commit('SET_ERROR', err))
 			.finally(() => commit('IS_FETCHING', false))
