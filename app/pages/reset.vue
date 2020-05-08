@@ -1,13 +1,23 @@
 <template>
   <div class="reset-password">
     <modal
+      v-if="erro"
+      :title="'Link inválido'"
+      :error="true"
+      :description="'Este link não está autorizado ou expirou. Tente fazer o login com a sua senha atual'"
+      :action-description="'Se tiver problemas entre em contato com desenvolvimento@spurbanismo.sp.gov.br'"
+      :action-text="'Fazer login com senha atual'"
+      @setModalAction="resetAndredirect('/login', { email })"
+    />
+
+    <modal
       v-if="show"
       :title="modal.title"
       :error="typeErro"
       :description="modal.description"
       :action-description="modal.action.description"
       :action-text="modal.action.text"
-      @setModalAction="RESET"
+      @setModalAction="resetAndredirect('/login', { email })"
     />
     <box-email :email="email" :titulo="`DEFINA UMA SENHA PARA`" />
     <section class="card__password">
@@ -81,19 +91,17 @@ export default {
       erro: state => state.usuario.error
     })
   },
-  watch: {
-    erro (newErro) {
-      if (!newErro) {
-        this.$router.push(`/login?email=${this.email}`)
-      }
-    }
-  },
   created () {
-    this.login({ email: this.email, password: this.password })
-  },
-  methods: {
-    ...mapActions('usuario', ['login']),
-    ...mapMutations('usuario', ['RESET']),
+		this.login({ email: this.email, password: this.password })
+	},
+	beforeRouteEnter (to, from, next) {
+		next(vm => {
+			vm.resetAsync()
+		})
+	},
+	methods: {
+    ...mapActions('usuario', [ 'login', 'resetAsync' ]),
+    ...mapMutations('usuario', [ 'RESET', 'SET_ERROR' ]),
     clearInputs (message) {
       this.form.fpass = ''
       this.form.spass = ''
@@ -136,9 +144,16 @@ export default {
           this.show = true
         })
         .catch(err => {
-          console.log(err)
+					this.SET_ERROR(err)
         })
-    }
+		},
+		resetAndredirect (path, query) {
+			this.resetAsync()
+			if (!this.email || !this.password) {
+				this.$router.push({ path: '/login', query: {} })
+			}
+			this.$router.push({ path, query })
+		}
   }
 }
 </script>
