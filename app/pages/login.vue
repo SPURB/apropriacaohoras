@@ -55,13 +55,11 @@
             :disabled="password === ''"
           />
         </form>
-        <p class="message" v-if="!fetching">
-          VERIFIQUE SUA SENHA EM <br /><a
-            class="message__action"
-            :href="`https://correioweb.prefeitura.sp.gov.br/exchange/${email}`"
-            >{{ email.toUpperCase() }}</a
-          >
-        </p>
+        <box-email
+          :email="email"
+          :titulo="`VERIFIQUE SUA SENHA EM`"
+          v-if="!fetching"
+        />
       </section>
     </div>
     <app-footer v-if="!fetching" />
@@ -69,6 +67,7 @@
 </template>
 
 <script>
+import BoxEmail from '~/components/elements/BoxEmail'
 import BtnProgresso from '~/components/elements/BtnProgresso'
 import InputOptions from '~/components/elements/InputOptions'
 import AppFooter from '~/components/AppFooter'
@@ -79,6 +78,7 @@ import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
   name: 'Login',
   components: {
+    BoxEmail,
     BtnProgresso,
     InputOptions,
     Modal,
@@ -232,29 +232,5 @@ input {
 
 label {
   margin-bottom: 0.25rem;
-}
-
-.message {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  text-align: center;
-  line-height: 2;
-  &__action {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.8);
-    background: rgba(255, 255, 255, 0.04);
-    padding: 0.2rem 0.7rem;
-    transition: all ease-in-out 0.15s;
-  }
-  &__action:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-  }
-  @media (max-width: $phone) {
-    font-size: small;
-  }
 }
 </style>

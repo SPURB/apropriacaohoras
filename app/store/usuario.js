@@ -26,6 +26,9 @@ export const actions = {
 			.then(({ data }) => commit('SET_PROJETOS', data))
 			.catch(err => commit('SET_ERROR', err))
 			.finally(() => commit('IS_FETCHING', false))
+	},
+	resetAsync: ({ commit }) => {
+		commit('RESET')		
 	}
 }
 
