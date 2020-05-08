@@ -90,16 +90,22 @@
             </aside>
           </fieldset>
 
-          <custom-select :title="'Projetos'" :values="projetos" />
+          <custom-select
+            :title="'Projetos'"
+            ref="projetos"
+            :values="projetos"
+          />
 
           <custom-select
             v-if="fases.title"
+            ref="fases"
             :title="fases.title"
             :values="fases.values"
           />
 
           <custom-select
             v-if="subatividades.title"
+            ref="subatividades"
             :disabled="fase !== null ? false : true"
             :title="subatividades.title"
             :values="subatividades.values"
@@ -185,6 +191,9 @@ export default {
     },
     fase (newValue, oldValue) {
       this.addData()
+    },
+    modal (val) {
+      console.log(val)
     }
   },
   created () {
@@ -194,7 +203,8 @@ export default {
     ...mapActions('form-registrar-horas', [
       'addData',
       'toggleBar',
-      'setDescricao'
+      'setDescricao',
+      'RESET'
     ]),
     ...mapMutations('form-registrar-horas', [
       'setValidationForm',
@@ -210,6 +220,15 @@ export default {
       if (this.userMenuState && event.target.contains(this.userMenuEl)) {
         this.toggleUserMenu()
       }
+    },
+    resetSelectBox (ref) {
+      let select = ref.$el.children[1]
+      console.log((select.selectedIndex = 0))
+    },
+    resetForm () {
+      this.resetSelectBox(this.$refs.subatividades)
+      this.resetSelectBox(this.$refs.projetos)
+      this.resetSelectBox(this.$refs.fases)
     },
     async postForm () {
       this.setValidationForm()
@@ -253,6 +272,7 @@ export default {
             : err.message
           this.modal.descriptionList = []
           this.modal.actionText = 'Voltar'
+          this.RESET()
         })
     }
   }
