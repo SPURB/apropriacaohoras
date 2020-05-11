@@ -6,6 +6,7 @@ import Lib from '@/libs'
 
 export const state = () => ({
   updateCalendario: false,
+  reset: false, // variavel para resetar
   dataSelects: [],
   multipleData: [],
   validateForm: {
@@ -62,7 +63,10 @@ export const getters = {
 			return rootState.usuario.projetos.map(id => allProjetos.find(projeto => projeto.id === id))
 		}
 		else return []
-	}
+  },
+  isReset (state) {
+    return state.reset
+  }
 }
 
 export const mutations = {
@@ -173,7 +177,7 @@ export const mutations = {
     state.validateForm.msg.push(`Dia negado: ${payload.data}`)
     state.validateForm.disabled = true
   },  
-  RESET (state) {
+  RESET (state, payload) {
     state.multipleData = []
     state.horas =  {
       horas: null,
@@ -183,6 +187,7 @@ export const mutations = {
       subatividade: null,
       descricao: ''
     }
+    state.reset = payload
   },
   TOGGLE_CALENDARIO_STATUS: (state, { status }) => state.updateCalendario = status
 }
