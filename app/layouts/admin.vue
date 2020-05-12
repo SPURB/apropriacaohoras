@@ -21,5 +21,6 @@ export default {
   width: 100%;
   height: 100%;
   background: $verde-escuro;
+  color: #fff;
 }
 </style>
