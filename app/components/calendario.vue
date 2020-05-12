@@ -215,7 +215,11 @@ export default {
           td.classList.remove('success')
           td.classList.remove('danger')
 
-          if (!isFuture && sDate.sDay !== '00' && isWeekend === false) {
+          if (
+            !isFuture &&
+            sDate.sDay !== '00' &&
+            isWeekend === false
+          ) {
             Horas.getStatus(this.idusuario, tDate)
               .then(res => td.classList.add(res.data.type))
               .catch(err => new Error(err))

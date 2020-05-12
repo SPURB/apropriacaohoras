@@ -3,7 +3,8 @@
     <div class="row">
       <div class="column">
         <h2>Projetos</h2>
-        <ul class="lista-projetos">
+				<list-horizontal-nav :routes='projetosRoutes' />
+        <!-- <ul v-if='!idProjeto' class="lista-projetos">
           <li
             class="lista-projetos__projeto"
             v-for="(projeto, index) in projetos"
@@ -14,17 +15,36 @@
             }}</router-link>
           </li>
         </ul>
+				<admin-projetos-projeto v-else :idProjeto="idProjeto" /> -->
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
+// import AdminProjetosProjeto from '~/components/sections/AdminProjetosProjeto'
+import ListHorizontalNav from '~/components/router-links/ListHorizontalNav'
 export default {
   name: 'Projetos',
-  layout: 'admin',
+	layout: 'admin',
+	components: {
+		// AdminProjetosProjeto,
+		ListHorizontalNav
+	},
   computed: {
-    ...mapGetters('admin/equipes', ['projetos'])
+		...mapGetters('admin/equipes', ['projetos']),
+		projetosRoutes () {
+			return this.projetos.map(projeto => {
+				return {
+					to: { query: { projeto: projeto.id } },
+					title: projeto.nome
+				}
+			})
+		},
+		idProjeto () {
+			const id =  this.$route.query.projeto
+			return id ? id : 0
+		}
   },
   methods: {
     ...mapActions('admin/equipes', ['getProjetos'])
