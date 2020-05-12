@@ -189,5 +189,8 @@ export const mutations = {
     }
     state.reset = payload
   },
+  RESET_CALENDARIO (state) {
+    state.multipleData = []
+  },
   TOGGLE_CALENDARIO_STATUS: (state, { status }) => state.updateCalendario = status
 }
