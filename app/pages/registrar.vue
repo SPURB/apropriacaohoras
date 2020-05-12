@@ -90,16 +90,22 @@
             </aside>
           </fieldset>
 
-          <custom-select :title="'Projetos'" :values="projetos" />
+          <custom-select
+            :title="'Projetos'"
+            :idInput="'projetos'"
+            :values="projetos"
+          />
 
           <custom-select
             v-if="fases.title"
+            :idInput="'fases'"
             :title="fases.title"
             :values="fases.values"
           />
 
           <custom-select
             v-if="subatividades.title"
+            :idInput="'subatividades'"
             :disabled="fase !== null ? false : true"
             :title="subatividades.title"
             :values="subatividades.values"
@@ -154,6 +160,7 @@ export default {
         show: false,
         title: '',
         error: true,
+        errorAPI: false,
         description: '',
         descriptionList: [],
         actionText: ''
@@ -172,7 +179,7 @@ export default {
       idusuario: state => state.id,
       token: state => state.token
     }),
-    ...mapGetters('form-registrar-horas', ['projetos'])
+    ...mapGetters('form-registrar-horas', ['projetos', 'isReset'])
   },
   watch: {
     dataSelects (selects) {
@@ -194,7 +201,8 @@ export default {
     ...mapActions('form-registrar-horas', [
       'addData',
       'toggleBar',
-      'setDescricao'
+      'setDescricao',
+      'RESET'
     ]),
     ...mapMutations('form-registrar-horas', [
       'setValidationForm',
@@ -210,6 +218,25 @@ export default {
       if (this.userMenuState && event.target.contains(this.userMenuEl)) {
         this.toggleUserMenu()
       }
+    },
+    resetSelectBox (ref) {
+      let select = document.querySelector(`#${ref}`)
+      select.selectedIndex = 0
+    },
+    resetCalendario () {
+      let calendario = document.querySelector('#tbody')
+
+      calendario.childNodes.forEach(tr => {
+        tr.childNodes.forEach(td => {
+          td.classList.remove('selected')
+        })
+      })
+    },
+    resetForm (v) {
+      this.resetSelectBox('projetos')
+      this.resetSelectBox('fases')
+      this.resetCalendario()
+      this.RESET(v)
     },
     async postForm () {
       this.setValidationForm()
@@ -243,16 +270,24 @@ export default {
           this.modal.description = 'Horas cadastradas'
           this.modal.descriptionList = []
           this.modal.actionText = 'Voltar'
+          this.resetForm(true)
         })
         .catch(err => {
           this.modal.show = true
           this.modal.title = 'Erro!'
           this.modal.error = true
+          this.modal.errorAPI = true
           this.modal.description = err.response.data.message
             ? err.response.data.message
             : err.message
           this.modal.descriptionList = []
           this.modal.actionText = 'Voltar'
+          this.resetForm(true)
+        })
+        .finally(fn => {
+          setTimeout(() => {
+            this.RESET(false)
+          }, 1500)
         })
     }
   }

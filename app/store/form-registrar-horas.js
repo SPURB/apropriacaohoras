@@ -5,7 +5,8 @@ import Subatividade from '@/services/api-subatividade'
 import Lib from '@/libs'
 
 export const state = () => ({
-	updateCalendario: false,
+  updateCalendario: false,
+  reset: false, // variavel para resetar
   dataSelects: [],
   multipleData: [],
   validateForm: {
@@ -32,7 +33,7 @@ export const actions = {
 			.catch(err => {
 				alert('Ocorreu algum erro! Tente mais tarde.')
 				new Error(err)
-			})
+      })
   },
   toggleBar ({ commit }, bool) {
     if (bool) {
@@ -49,6 +50,9 @@ export const actions = {
   },
   setMultipleData ({ commit }, payload) {
     commit('setMultipleData', payload)
+  },
+  RESET ({ commit }, payload) {
+    commit('RESET', payload)
   }
 }
 
@@ -59,7 +63,10 @@ export const getters = {
 			return rootState.usuario.projetos.map(id => allProjetos.find(projeto => projeto.id === id))
 		}
 		else return []
-	}
+  },
+  isReset (state) {
+    return state.reset
+  }
 }
 
 export const mutations = {
@@ -125,7 +132,7 @@ export const mutations = {
   setValidationForm (state) {
     let array = []
     state.validateForm = { msg: [], disabled: false }
-
+         
     // valida o objeto horas :: sem dataRefInicio
     Object.keys(state.horas).map(key => {
       const value = state.horas[key]
@@ -169,6 +176,18 @@ export const mutations = {
     state.validateForm.msg.push(payload.message)
     state.validateForm.msg.push(`Dia negado: ${payload.data}`)
     state.validateForm.disabled = true
-	},
-	TOGGLE_CALENDARIO_STATUS: (state, { status }) => state.updateCalendario = status
+  },  
+  RESET (state, payload) {
+    state.multipleData = []
+    state.horas =  {
+      horas: null,
+      extras: 0,
+      projeto: null,
+      fase: null,
+      subatividade: null,
+      descricao: ''
+    }
+    state.reset = payload
+  },
+  TOGGLE_CALENDARIO_STATUS: (state, { status }) => state.updateCalendario = status
 }

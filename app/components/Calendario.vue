@@ -75,9 +75,6 @@ export default {
     ...mapState('form-registrar-horas', {
       updateCalendario: state => state.updateCalendario
     }),
-    ...mapState('usuario', {
-      idusuario: state => state.id
-    }),
     today: {
       get () {
         return this.date
@@ -106,6 +103,10 @@ export default {
     },
     firstWeekDay () {
       return new Date(this.year, this.month, 1).getDay() - 1
+    },
+    idusuario () {
+      const credencial = JSON.parse(localStorage.getItem('credencial'))
+      return credencial.usuario.id
     }
   },
   watch: {
@@ -193,6 +194,7 @@ export default {
             sDate.sDay !== '00' &&
             isWeekend === false
           ) {
+            console.log(this.idusuario)
             Horas.getStatus(this.idusuario, tDate)
               .then(res => td.classList.add(res.data.type))
               .catch(err => new Error(err))
@@ -272,7 +274,7 @@ table {
           @include bg-white-alpha(0.08);
         }
         &.today {
-          border-bottom-color: rgba(255, 255, 255, 0.2);
+          border-bottom: 5px solid #89afab !important;
         }
         &.filled {
           background-color: $verde;
@@ -287,8 +289,8 @@ table {
           text-shadow: $s-1-2-48;
         }
         &.selected {
+          background-color: $verde-escuro;
           transform: scale(1.2);
-          @include bg-white-alpha(0.12);
           box-shadow: $s-2-4-48;
         }
       }
@@ -297,15 +299,20 @@ table {
 }
 
 .danger {
-  background-color: $vermelho;
+  border: 1px dashed rgba(255, 255, 255, 0.5);
 }
 
 .warning {
-  background-color: $laranja;
+  background-color: $laranja !important;
 }
 
 .success {
-  background-color: $verde;
+  background-color: $verde !important;
+}
+
+.success:hover,
+.warning:hover {
+  opacity: 0.8;
 }
 
 @media (max-width: 850px) {

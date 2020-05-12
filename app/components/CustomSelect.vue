@@ -4,10 +4,11 @@
     <select
       @change="setValueOption({ title, value: optionValue })"
       v-model="optionValue"
+      :id="idInput"
       :disabled="disabled"
       :class="disabledClass"
     >
-      <option value="" selected disabled>
+      <option value="0" selected disabled>
         Selecione uma opção
       </option>
       <option
@@ -22,11 +23,15 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'CustomSelect',
   props: {
     title: {
+      type: String,
+      required: true
+    },
+    idInput: {
       type: String,
       required: true
     },
@@ -40,12 +45,22 @@ export default {
   },
   data () {
     return {
-      optionValue: ''
+      optionValue: 0
     }
   },
   computed: {
     disabledClass () {
       if (this.disabled) return 'disabled-select'
+    },
+    ...mapGetters('form-registrar-horas', ['isReset'])
+  },
+  watch: {
+    isReset (val) {
+      if (!val) {
+        this.optionValue = 0
+      } else {
+        this.optionValue = 0
+      }
     }
   },
   methods: {
