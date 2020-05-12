@@ -59,7 +59,7 @@ export default {
     options: {
       // check https://fusejs.io/api/options.html#basic-options
       type: Object,
-      true: true
+      required: true
     },
     placeholder: {
       type: String,

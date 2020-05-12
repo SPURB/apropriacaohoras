@@ -17,7 +17,7 @@
           <li
             class="card"
             v-for="(usuario, index) in validUsuarios"
-            :key="index"
+            :key="usuario.id"
           >
             <div class="card__info">
               <user-profile-placeholder
@@ -98,9 +98,6 @@ export default {
     checks: {
       get () {
         return this.validUsuarios.map(usuario => usuario.id)
-      },
-      set (validUsuariosIds) {
-        console.log(validUsuariosIds)
       }
     }
   },
@@ -203,7 +200,8 @@ export default {
     box-sizing: border-box;
     border-radius: 4px;
     border: 2px solid #f07f7f;
-    background-color: $vermelho;
+		background-color: $vermelho;
+		margin-right: 1rem;
     color: #fff;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.48);
     cursor: pointer;
