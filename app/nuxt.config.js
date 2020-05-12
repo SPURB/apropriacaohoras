@@ -10,7 +10,7 @@ export default {
 	},
   router: {
     base: process.env.CI ? '/apropriacaohoras/' : '/', // https://spurb.github.io/apropriacaohoras/
-		middleware: ['authenticated']
+		middleware: [ 'authenticated' ]
   },
   env:{
     apiBase: 'https://apropriacaohoras.herokuapp.com'
@@ -19,11 +19,17 @@ export default {
     { src: '~/plugins/vuex-persist', ssr: false }
   ],
 	mode: 'spa',
-  modules: ['@nuxtjs/style-resources'],
+  buildModules: [
+		'@nuxtjs/style-resources',
+		'@nuxtjs/moment'
+	],
   styleResources: {
-    scss: ['@/assets/style/variables.scss', '@/assets/style/theme.scss']
+    scss: [
+			'@/assets/style/variables.scss',
+			'@/assets/style/theme.scss'
+		]
   },
-  css: ['@/assets/style/icones/participe.css'],
+  css: [ '@/assets/style/icones/participe.css' ],
   generate: {
     dir: process.env.CI ? 'gh-pages' : 'dist'
   }

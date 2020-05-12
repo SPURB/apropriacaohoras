@@ -20,7 +20,6 @@
     ]
   },
   "dependencies": {
-    "@nuxtjs/style-resources": "^1.0.0",
     "axios": "^0.19.2",
     "fuse.js": "^3.2.1",
     "nuxt": "^2.12.2",
@@ -29,6 +28,8 @@
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "@nuxtjs/moment": "^1.6.1",
+    "@nuxtjs/style-resources": "^1.0.0",
     "husky": "^4.2.3",
     "node-sass": "^4.13.1",
     "prettier-standard": "^16.1.0",

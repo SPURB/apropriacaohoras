@@ -10,7 +10,7 @@ export default {
 	},
 	router: {
     base: '/',
-		middleware: ['authenticated']
+		middleware: [ 'authenticated' ]
 	},
   env:{
     apiBase: 'http://localhost:5000'
@@ -19,9 +19,15 @@ export default {
     { src: '~/plugins/vuex-persist', ssr: false }
   ],
 	mode: 'spa',
-	modules: ['@nuxtjs/style-resources'],
+	buildModules: [
+		'@nuxtjs/style-resources',
+		'@nuxtjs/moment'
+	],
   styleResources: {
-    scss: ['@/assets/style/variables.scss', '@/assets/style/theme.scss']
+    scss: [
+			'@/assets/style/variables.scss',
+			'@/assets/style/theme.scss'
+		]
   },
-  css: ['@/assets/style/icones/participe.css']
+  css: [ '@/assets/style/icones/participe.css' ]
 }

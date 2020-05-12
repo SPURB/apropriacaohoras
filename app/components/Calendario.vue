@@ -182,7 +182,7 @@ export default {
           const isWeekend = Lib.isWeekend(tDate)
 
           const currentTdDate = `${sDate.sYear}-${sDate.sMonth}-${sDate.sDay}`
-          const isFuture = new Date(current) < new Date(currentTdDate)
+          const isFuture = this.$moment(current).isBefore(currentTdDate)
 
           td.classList.remove('warning')
           td.classList.remove('success')
@@ -190,11 +190,9 @@ export default {
 
           if (
             !isFuture &&
-            sDate.sDay <= currentDate.cDay &&
             sDate.sDay !== '00' &&
             isWeekend === false
           ) {
-            console.log(this.idusuario)
             Horas.getStatus(this.idusuario, tDate)
               .then(res => td.classList.add(res.data.type))
               .catch(err => new Error(err))

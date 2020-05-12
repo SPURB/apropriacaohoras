@@ -117,7 +117,6 @@
             <label for="descricao">Descrição (opcional)</label>
             <input
               id="descricao"
-              @keyup="setDescricao(descricao)"
               v-model="descricao"
               type="text"
             />
@@ -153,7 +152,6 @@ export default {
     return {
       userMenuState: false,
       userMenuEl: null,
-      descricao: '',
       fases: {},
       subatividades: {},
       modal: {
@@ -179,7 +177,11 @@ export default {
       idusuario: state => state.id,
       token: state => state.token
     }),
-    ...mapGetters('form-registrar-horas', ['projetos', 'isReset'])
+		...mapGetters('form-registrar-horas', ['projetos', 'isReset']),
+		descricao: {
+			get () { return this.horas.descricao },
+			set (text) { this.setDescricao(text) }
+		}
   },
   watch: {
     dataSelects (selects) {

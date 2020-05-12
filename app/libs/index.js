@@ -26,9 +26,11 @@ export default {
     const today = new Date()
     const cDay = `${today.getDate()}`.padStart(2, '0')
     const cMonth = `${today.getMonth() + 1}`.padStart(2, '0')
-    const date = {
+		const cYear = today.getFullYear()
+		const date = {
       cMonth,
-      cDay
+			cDay,
+			cYear
     }
     return date
   }
