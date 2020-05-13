@@ -73,7 +73,8 @@ export default {
   },
   computed: {
     ...mapState('form-registrar-horas', {
-      updateCalendario: state => state.updateCalendario
+      updateCalendario: state => state.updateCalendario,
+      multipleData: state => state.multipleData
     }),
     today: {
       get () {
@@ -119,12 +120,16 @@ export default {
   },
   updated () {
     this.typeClass()
+    this.resetSelected()
   },
   mounted () {
     this.typeClass()
   },
   methods: {
-    ...mapMutations('form-registrar-horas', ['TOGGLE_CALENDARIO_STATUS']),
+    ...mapMutations('form-registrar-horas', [
+      'TOGGLE_CALENDARIO_STATUS',
+      'RESET_CALENDARIO'
+    ]),
     ...mapActions('form-registrar-horas', ['setMultipleData']),
     calendario (weekIndex) {
       const totalDayMonth = this.daysThisMonth + this.firstWeekDay
@@ -135,6 +140,50 @@ export default {
         }
       }
       return day
+    },
+    resetSelected (event) {
+      let calendario = this.$refs.tbody
+      let dateIn = [] // var aux
+      let allTds = [] // var aux
+
+      // guarda o primeiro valor do array antes de mudar o mês
+      const multipleDate = this.multipleData
+
+      // reseta o state de multipleDate para adicionar os dias do mês selecionado
+      this.RESET_CALENDARIO()
+
+      // remove todas as ocorrencias da class::selected
+      calendario.childNodes.forEach(tr => {
+        tr.childNodes.forEach(td => {
+          if (td.classList.contains('selected')) td.classList.remove('selected')
+          allTds.push(td)
+        })
+      })
+
+      // passa por todas as td's do calendario
+      allTds.forEach(td => {
+        const dataTd = Lib.splitDate(td.dataset.date)
+
+        // percorre as datas do mês prev do selecionado
+        for (const item of multipleDate) {
+          const data = Lib.splitDate(item) // split para um objeto com dia, mes e ano
+
+          // compara dos dias para fazer a mudança
+          // ex: 2020-05-06 para 2020-06-06
+          if (dataTd.sDay === data.sDay) {
+            let day = `${dataTd.sYear}-${dataTd.sMonth}-${dataTd.sDay}`
+            let el = document.querySelector(`[data-date~="${day}"]`)
+
+            // efetu o click no el para registrar o valor no state
+            el.click(event => {
+              this.setMultipleData({
+                event,
+                date: el.dataset.date
+              })
+            })
+          }
+        }
+      })
     },
     monthInc (inc) {
       let newMonth = this.month + inc

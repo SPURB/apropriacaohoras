@@ -63,27 +63,44 @@ exports.countHoras = (req, res) => {
       where: {
         usuario: id,
         dataRefInicio: data
-      }
+      },
+      include: [
+        { model: db.projetos, attributes: ['id', 'nome'], as: 'id_projeto' },
+      ],
+      group: ['projeto']
     }).then(r => {
       let totalHoras = 0
+      let horas = { projetos: [], total: 0 }
+      let extras = { projetos: [], total: 0 }
 
-      r.forEach(dia => {
+      r.forEach(dia => {        
         totalHoras = totalHoras + dia.horas + dia.extras
+        horas.total = horas.total  + dia.horas
+        extras.total  = extras.total + dia.extras
+
+        if (dia.horas > 0) horas.projetos.push({ nome: dia.id_projeto.nome })
+        if (dia.extras > 0) extras.projetos.push({ nome: dia.id_projeto.nome })
       })
 
       if (totalHoras == 0) {
         return res.status(200).send({
           type: 'danger',
+          horas,
+          extras,
           totalHoras
         })
       } else if (totalHoras < 8 && totalHoras !== 0) {
         return res.status(200).send({
           type: 'warning',
+          horas,
+          extras,
           totalHoras
         })
       } else {
         return res.status(200).send({
           type: 'success',
+          horas,
+          extras,
           totalHoras
         })
       }
