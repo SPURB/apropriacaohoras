@@ -112,6 +112,15 @@
           />
         </div>
 
+        <div class="list_horas">
+          <h3>Horas já registradas</h3>
+          <listar-horas
+            :key="index"
+            v-for="(item, index) in arrayHoras"
+            :registro="item"
+          />
+        </div>
+
         <div class="formbtm">
           <fieldset>
             <label for="descricao">Descrição (opcional)</label>
@@ -132,6 +141,7 @@
 import Modal from '~/components/Modal'
 import Calendario from '~/components/Calendario'
 import CustomSelect from '~/components/CustomSelect'
+import ListarHoras from '~/components/ListarHoras'
 import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 import Horas from '@/services/api-horas'
 
@@ -142,6 +152,7 @@ export default {
     // AppFooter,
     Calendario,
     CustomSelect,
+    ListarHoras,
     Modal
   },
   data () {
@@ -158,7 +169,8 @@ export default {
         description: '',
         descriptionList: [],
         actionText: ''
-      }
+      },
+      arrayHoras: []
     }
   },
   computed: {
@@ -194,6 +206,13 @@ export default {
     },
     fase (newValue, oldValue) {
       this.addData()
+    },
+    multipleData (newValue, oldValue) {
+      if (newValue.length > 0) {
+        this.listarHoras(newValue)
+      } else {
+        this.arrayHoras = []
+      }
     }
   },
   created () {
@@ -291,6 +310,15 @@ export default {
             this.RESET(false)
           }, 1500)
         })
+    },
+    async listarHoras (array) {
+      this.arrayHoras = []
+
+      await array.map(data => {
+        return Horas.getStatus(this.idusuario, data).then(res => {
+          this.arrayHoras.push({ data, res: res.data })
+        })
+      })
     }
   }
 }
@@ -298,4 +326,8 @@ export default {
 
 <style lang="scss">
 @import '@/assets/style/form-horas.scss';
+.list_horas {
+  margin-top: 7px;
+  width: 100%;
+}
 </style>
