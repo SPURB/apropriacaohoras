@@ -115,11 +115,7 @@
         <div class="formbtm">
           <fieldset>
             <label for="descricao">Descrição (opcional)</label>
-            <input
-              id="descricao"
-              v-model="descricao"
-              type="text"
-            />
+            <input id="descricao" v-model="descricao" type="text" />
           </fieldset>
         </div>
 
@@ -177,11 +173,15 @@ export default {
       idusuario: state => state.id,
       token: state => state.token
     }),
-		...mapGetters('form-registrar-horas', ['projetos', 'isReset']),
-		descricao: {
-			get () { return this.horas.descricao },
-			set (text) { this.setDescricao(text) }
-		}
+    ...mapGetters('form-registrar-horas', ['projetos', 'isReset']),
+    descricao: {
+      get () {
+        return this.horas.descricao
+      },
+      set (text) {
+        this.setDescricao(text)
+      }
+    }
   },
   watch: {
     dataSelects (selects) {

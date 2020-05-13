@@ -76,6 +76,9 @@ export default {
       updateCalendario: state => state.updateCalendario,
       multipleData: state => state.multipleData
     }),
+    ...mapState('usuario', {
+      idusuario: state => state.id
+    }),
     today: {
       get () {
         return this.date
@@ -104,10 +107,6 @@ export default {
     },
     firstWeekDay () {
       return new Date(this.year, this.month, 1).getDay() - 1
-    },
-    idusuario () {
-      const credencial = JSON.parse(localStorage.getItem('credencial'))
-      return credencial.usuario.id
     }
   },
   watch: {
@@ -149,9 +148,6 @@ export default {
       // guarda o primeiro valor do array antes de mudar o mês
       const multipleDate = this.multipleData
 
-      // reseta o state de multipleDate para adicionar os dias do mês selecionado
-      this.RESET_CALENDARIO()
-
       // remove todas as ocorrencias da class::selected
       calendario.childNodes.forEach(tr => {
         tr.childNodes.forEach(td => {
@@ -160,28 +156,10 @@ export default {
         })
       })
 
-      // passa por todas as td's do calendario
-      allTds.forEach(td => {
-        const dataTd = Lib.splitDate(td.dataset.date)
-
-        // percorre as datas do mês prev do selecionado
-        for (const item of multipleDate) {
-          const data = Lib.splitDate(item) // split para um objeto com dia, mes e ano
-
-          // compara dos dias para fazer a mudança
-          // ex: 2020-05-06 para 2020-06-06
-          if (dataTd.sDay === data.sDay) {
-            let day = `${dataTd.sYear}-${dataTd.sMonth}-${dataTd.sDay}`
-            let el = document.querySelector(`[data-date~="${day}"]`)
-
-            // efetu o click no el para registrar o valor no state
-            el.click(event => {
-              this.setMultipleData({
-                event,
-                date: el.dataset.date
-              })
-            })
-          }
+      this.multipleData.forEach(data => {
+        const el = document.querySelector(`[data-date~="${data}"]`)
+        if (el) {
+          el.classList.add('selected')
         }
       })
     },
@@ -237,11 +215,7 @@ export default {
           td.classList.remove('success')
           td.classList.remove('danger')
 
-          if (
-            !isFuture &&
-            sDate.sDay !== '00' &&
-            isWeekend === false
-          ) {
+          if (!isFuture && sDate.sDay !== '00' && isWeekend === false) {
             Horas.getStatus(this.idusuario, tDate)
               .then(res => td.classList.add(res.data.type))
               .catch(err => new Error(err))

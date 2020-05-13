@@ -200,8 +200,8 @@ export default {
     box-sizing: border-box;
     border-radius: 4px;
     border: 2px solid #f07f7f;
-		background-color: $vermelho;
-		margin-right: 1rem;
+    background-color: $vermelho;
+    margin-right: 1rem;
     color: #fff;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.48);
     cursor: pointer;
