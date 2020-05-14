@@ -113,12 +113,14 @@
         </div>
 
         <div class="list_horas">
-          <h3>Horas já registradas</h3>
-          <listar-horas
-            :key="index"
-            v-for="(item, index) in arrayHoras"
-            :registro="item"
-          />
+          <h3 v-if="arrayHoras.length > 0">Horas já registradas</h3>
+          <transition-group name="list">
+            <listar-horas
+              :key="`${index}-lista`"
+              v-for="(item, index) in arrayHoras"
+              :registro="item"
+            />
+          </transition-group>
         </div>
 
         <div class="formbtm">
@@ -316,7 +318,9 @@ export default {
 
       await array.map(data => {
         return Horas.getStatus(this.idusuario, data).then(res => {
-          this.arrayHoras.push({ data, res: res.data })
+          if (res.data.totalHoras > 0) {
+            this.arrayHoras.push({ data, res: res.data })
+          }
         })
       })
     }
@@ -329,5 +333,15 @@ export default {
 .list_horas {
   margin-top: 7px;
   width: 100%;
+
+  .list-enter-active,
+  .list-leave-active {
+    transition: all 0.2s;
+  }
+  .list-enter,
+  .list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+  }
 }
 </style>
