@@ -1,5 +1,5 @@
 <template>
-  <div class="slide">
+  <div class="slide" @click="scrollDiv" ref="slide">
     <section class="elements">
       <slot></slot>
     </section>
@@ -8,19 +8,46 @@
 
 <script>
 export default {
-  name: 'Slide'
+  name: 'Slide',
+  methods: {
+    scrollDiv () {
+      let slider = this.$refs.slide
+      let isDown = false
+      let startX
+      let scrollLeft
+
+      slider.addEventListener('mousedown', e => {
+        isDown = true
+        startX = e.pageX - slider.offsetLeft
+        scrollLeft = slider.scrollLeft
+      })
+
+      slider.addEventListener('mouseup', () => {
+        isDown = false
+      })
+
+      slider.addEventListener('mousemove', e => {
+        if (!isDown) return
+        e.preventDefault()
+        const x = e.pageX - slider.offsetLeft
+        const walk = (x - startX) * 3
+        slider.scrollLeft = scrollLeft - walk
+      })
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .slide {
+  cursor: grab;
   position: relative;
+  padding: 5px;
+  overflow-x: hidden;
   transform: translate3d(0px, 0px, 0px) scale(1);
   min-height: 100%;
-  width: 80%;
-  overflow-x: auto;
+  width: 100%;
   transform-origin: left top 0px;
-  cursor: grab;
 
   &::-webkit-scrollbar {
     height: 7px;

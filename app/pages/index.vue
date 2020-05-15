@@ -2,14 +2,20 @@
   <div class="index__comum">
     <app-header />
 
-    <div class="list__projetos">
+    <section class="list__projetos">
+      <h2>Projetos que você trabalhou mais tempo</h2>
       <Slide>
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        <Card
+          :key="index"
+          v-for="(projeto, index) in projetos"
+          :projeto="projeto"
+          :isPerfil="false"
+        />
       </Slide>
+    </section>
+
+    <div class="horas__projetos">
+      <tabela-projeto :projetos="todosProjetos" />
     </div>
 
     <app-footer />
@@ -19,15 +25,82 @@
 <script>
 import AppHeader from '~/components/AppHeader'
 import AppFooter from '~/components/AppFooter'
-import Card from '~/components/elements/Card'
 import Slide from '~/components/Slide'
+import Card from '~/components/elements/Card'
+import TabelaProjeto from '~/components/elements/TabelaProjetos'
+
 export default {
   name: 'IndexComum',
+  computed: {
+    projetos () {
+      // essa computed representa os projetos que o usuário trabalhou mais tempo
+      const projetos = [
+        {
+          nome: 'Estudos de Viabilidade Imobiliária',
+          desdeInicio: '4.784',
+          ultimoMes: '477',
+          minhasHoras: '415'
+        },
+        {
+          nome: 'PIU Minhocão',
+          desdeInicio: '3.111',
+          ultimoMes: '1.154',
+          minhasHoras: '359'
+        },
+        {
+          nome: 'PIU Jockey Club',
+          desdeInicio: '1.245',
+          ultimoMes: '688',
+          minhasHoras: '124'
+        },
+        {
+          nome: 'PIU Bairros do Tamanduateí',
+          desdeInicio: '6.578',
+          ultimoMes: '589',
+          minhasHoras: '89'
+        },
+        {
+          nome: 'PIU Eixos de Desenvolvimento',
+          desdeInicio: '5.124',
+          ultimoMes: '25',
+          minhasHoras: '12'
+        }
+      ]
+      return projetos
+    },
+    todosProjetos () {
+      // essa computed representa o total de horas de todos os projetos que o usuário trabalhou
+      const projetos = [
+        {
+          nome: 'Estudos de Viabilidade Imobiliária',
+          totalHoras: '5676'
+        },
+        {
+          nome: 'PIU Minhocão',
+          totalHoras: '4624'
+        },
+        {
+          nome: 'PIU Jockey Club',
+          totalHoras: '2057'
+        },
+        {
+          nome: 'PIU Bairros do Tamanduateí',
+          totalHoras: '7256'
+        },
+        {
+          nome: 'PIU Eixos de Desenvolvimento',
+          totalHoras: '5161'
+        }
+      ]
+      return projetos
+    }
+  },
   components: {
     AppHeader,
     AppFooter,
+    Slide,
     Card,
-    Slide
+    TabelaProjeto
   }
 }
 </script>
@@ -38,18 +111,22 @@ export default {
   padding: 0;
   width: 100%;
 
-  .panel__slide {
-    position: relative;
-    user-select: none;
-    transform: translate3d(0px, 0px, 0px) scale(1);
-    min-height: 100%;
-    min-width: 100%;
-    width: -webkit-fit-content;
-    transform-origin: left top 0px;
-    box-sizing: border-box;
+  .list__projetos {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    width: 100%;
+
+    h2 {
+      color: $verde-escuro;
+      font-size: 15pt;
+      margin-left: 30px;
+      margin-bottom: 0px;
+    }
   }
 
-  .list__projetos {
+  .horas__projetos {
     display: flex;
     justify-content: center;
     width: 100%;
