@@ -98,9 +98,9 @@ export const mutations = {
     const isWeekend = Lib.isWeekend(data)
     const { sYear, sMonth, sDay } = Lib.splitDate(data)
     const { cYear, cMonth, cDay } = Lib.currentDate()
-		const isFuture = this.$moment(`${sYear}-${sMonth}-${sDay}`).isBefore(`${cYear}-${cMonth}-${cDay}`)
+		const isFuture = this.$moment(`${sYear}-${sMonth}-${sDay}`).isSameOrBefore(`${cYear}-${cMonth}-${cDay}`)
 
-		// verifica se é final de semana
+    // verifica se é final de semana
 		if ((!isFuture && isWeekend === false) || isWeekend === true) {
 			state.validateForm = { msg: [], disabled: false } // zera o state para um vazio
       state.validateForm.msg.push('Data informada inválida')
