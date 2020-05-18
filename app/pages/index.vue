@@ -14,8 +14,12 @@
       </Slide>
     </section>
 
+    <div class="filtro__projetos">
+      <filtro :projetos="projetos" />
+    </div>
+
     <div class="horas__projetos">
-      <tabela-projeto :projetos="todosProjetos" />
+      <tabela-projeto :projetos="projetos" />
     </div>
 
     <app-footer />
@@ -27,80 +31,66 @@ import AppHeader from '~/components/AppHeader'
 import AppFooter from '~/components/AppFooter'
 import Slide from '~/components/Slide'
 import Card from '~/components/elements/Card'
+import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/elements/TabelaProjetos'
 
 export default {
   name: 'IndexComum',
+  components: {
+    AppHeader,
+    AppFooter,
+    Slide,
+    Filtro,
+    Card,
+    TabelaProjeto
+  },
   computed: {
     projetos () {
       // essa computed representa os projetos que o usuário trabalhou mais tempo
       const projetos = [
         {
+          id: 1,
           nome: 'Estudos de Viabilidade Imobiliária',
-          desdeInicio: '4.784',
+          desdeInicio: '4784',
+          data: '2020-05-15',
           ultimoMes: '477',
           minhasHoras: '415'
         },
         {
+          id: 2,
           nome: 'PIU Minhocão',
-          desdeInicio: '3.111',
-          ultimoMes: '1.154',
+          desdeInicio: '3111',
+          data: '2020-05-14',
+          ultimoMes: '1154',
           minhasHoras: '359'
         },
         {
+          id: 3,
           nome: 'PIU Jockey Club',
-          desdeInicio: '1.245',
+          desdeInicio: '1245',
+          data: '2020-05-13',
           ultimoMes: '688',
           minhasHoras: '124'
         },
         {
+          id: 4,
           nome: 'PIU Bairros do Tamanduateí',
-          desdeInicio: '6.578',
+          desdeInicio: '6578',
+          data: '2020-05-12',
           ultimoMes: '589',
           minhasHoras: '89'
         },
         {
+          id: 5,
           nome: 'PIU Eixos de Desenvolvimento',
-          desdeInicio: '5.124',
+          desdeInicio: '5124',
+          data: '2020-05-11',
           ultimoMes: '25',
           minhasHoras: '12'
         }
       ]
       return projetos
-    },
-    todosProjetos () {
-      // essa computed representa o total de horas de todos os projetos que o usuário trabalhou
-      const projetos = [
-        {
-          nome: 'Estudos de Viabilidade Imobiliária',
-          totalHoras: '5676'
-        },
-        {
-          nome: 'PIU Minhocão',
-          totalHoras: '4624'
-        },
-        {
-          nome: 'PIU Jockey Club',
-          totalHoras: '2057'
-        },
-        {
-          nome: 'PIU Bairros do Tamanduateí',
-          totalHoras: '7256'
-        },
-        {
-          nome: 'PIU Eixos de Desenvolvimento',
-          totalHoras: '5161'
-        }
-      ]
-      return projetos
     }
-  },
-  components: {
-    AppHeader,
-    AppFooter,
-    Slide,
-    Card,
-    TabelaProjeto
   }
 }
 </script>
@@ -126,10 +116,17 @@ export default {
     }
   }
 
-  .horas__projetos {
+  .horas__projetos,
+  .filtro__projetos {
     display: flex;
-    justify-content: center;
     width: 100%;
+  }
+
+  .filtro__projetos {
+    flex-direction: column;
+  }
+  .horas__projetos {
+    justify-content: center;
   }
 }
 </style>

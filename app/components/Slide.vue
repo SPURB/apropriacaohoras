@@ -46,6 +46,7 @@ export default {
   overflow-x: hidden;
   transform: translate3d(0px, 0px, 0px) scale(1);
   min-height: 100%;
+  overflow: auto;
   width: 100%;
   transform-origin: left top 0px;
 

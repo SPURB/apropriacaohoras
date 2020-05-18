@@ -23,7 +23,7 @@
         >
           <td class="tabela__celula" colspan="2">
             <span class="projeto">{{ projeto.nome }}</span>
-            <span class="hora">{{ projeto.totalHoras }}h</span>
+            <span class="hora">{{ projeto.desdeInicio }}h</span>
           </td>
         </tr>
       </tbody>
