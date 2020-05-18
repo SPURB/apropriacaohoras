@@ -36,7 +36,7 @@ db.subatividades = require('./subatividades.model.js')(
 )
 db.horas = require('./horas.model.js')(sequelize, Sequelize, db)
 
-db.horas.belongsTo(db.projetos, { foreignKey: 'projeto', as: 'id_projeto',})
+db.horas.belongsTo(db.projetos, { foreignKey: 'projeto', as: 'id_projeto' })
 db.usuarios.associate(db.authtokens)
 db.authtokens.associate(db.usuarios)
 

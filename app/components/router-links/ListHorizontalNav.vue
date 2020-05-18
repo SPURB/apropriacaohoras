@@ -17,6 +17,9 @@ export default {
     routes: {
       type: Array,
       required: true
+    },
+    actionType: {
+      validator: value => ['go', 'close'].includes(value)
     }
   }
 }

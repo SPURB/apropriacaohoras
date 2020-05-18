@@ -43,10 +43,10 @@ export default {
       })
     },
     fasesRoutes () {
-      if (!this.fases.length) {
+      if (!this.fases.values.length) {
         return []
       }
-      return this.fases.map(fase => {
+      return this.fases.values.map(fase => {
         return {
           to: {
             query: {
