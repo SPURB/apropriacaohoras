@@ -97,13 +97,13 @@ export default {
   },
   computed: {
     ...mapGetters('admin/equipes', ['projetos']),
-    ...mapGetters('admin/projetos', ['fases']),
     ...mapState('admin/projetos', [
       'subatividades',
       'error',
       'fetching',
       'message',
-      'success'
+      'success',
+      'fases'
     ]),
     ...mapState({
       email: state => state.usuario.usuario.email

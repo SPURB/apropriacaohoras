@@ -11,19 +11,6 @@ export const state = () => ({
 	subatividades: []
 })
 
-export const getters = {
-	fases: (state, getters, rootState) => {
-		const fetchedTables = rootState['form-registrar-horas'].dataSelects
-
-		if (fetchedTables.length) {
-			return fetchedTables.find(select => select.title === 'Fases')
-		}
-		else {
-			return state.fases
-		}
-	}
-}
-
 export const actions = {
 	getFases: ({ commit }) => {
 		commit('IS_FETCHING', true)
