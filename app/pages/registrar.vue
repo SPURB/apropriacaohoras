@@ -1,5 +1,5 @@
 <template>
-  <div class="registrar" @click="frameClick($event)">
+  <div class="registrar">
     <modal
       v-if="modal.show"
       :title="modal.title"
@@ -9,13 +9,6 @@
       :action-text="modal.actionText"
       @setModalAction="modal.show = !modal.show"
     />
-    <router-link to="/admin">admin</router-link>
-
-    <!-- <app-header
-      @toggle-menu="toggleUserMenu"
-      :userMenuState="userMenuState"
-      :fullHeaderFromParent="true"
-    /> -->
 
     <h2>Registrar horas</h2>
     <main>
@@ -133,13 +126,10 @@
         <button type="submit" class="postBtn">Registrar horas</button>
       </form>
     </main>
-    <!-- <app-footer /> -->
   </div>
 </template>
 
 <script>
-// import AppHeader from '~/components/AppHeader'
-// import AppFooter from '~/components/AppFooter'
 import Modal from '~/components/Modal'
 import Calendario from '~/components/Calendario'
 import CustomSelect from '~/components/CustomSelect'
@@ -149,9 +139,8 @@ import Horas from '@/services/api-horas'
 
 export default {
   name: 'Registrar',
+  layout: 'usuario',
   components: {
-    // AppHeader,
-    // AppFooter,
     Calendario,
     CustomSelect,
     ListarHoras,
@@ -159,8 +148,6 @@ export default {
   },
   data () {
     return {
-      userMenuState: false,
-      userMenuEl: null,
       fases: {},
       subatividades: {},
       modal: {
@@ -231,17 +218,6 @@ export default {
       'setValidationForm',
       'TOGGLE_CALENDARIO_STATUS'
     ]),
-    toggleUserMenu (elementFromChild) {
-      this.userMenuState = !this.userMenuState
-      if (this.userMenuEl === undefined) {
-        this.userMenuEl = elementFromChild
-      }
-    },
-    frameClick (event) {
-      if (this.userMenuState && event.target.contains(this.userMenuEl)) {
-        this.toggleUserMenu()
-      }
-    },
     resetSelectBox (ref) {
       let select = document.querySelector(`#${ref}`)
       select.selectedIndex = 0

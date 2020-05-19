@@ -5,130 +5,96 @@
         <logo-spurb :fill-type="'#1D1D1B'" :fill-brand="'#038375'" />
       </div>
       <span class="title">
-        <nuxt-link to="/">
+        <nuxt-link :to="admin ? '/admin' : '/'">
           <i class="icon icon-tempo"></i>
           <h1>Apropriação de horas</h1>
         </nuxt-link>
       </span>
       <ul class="user-menu" id="user-menu" :class="{ opened: userMenuState }">
-        <li class="user-info" @click="tellParent">
-          Nome Sobrenome
+        <li class="user-info" @click="userMenuState = !userMenuState">
+          <span class="user-info__name">{{ nome }}</span>
           <div class="profile-placeholder">
             <user-profile-placeholder :opacity="1" />
           </div>
           <i class="icon icon-expandir"></i>
         </li>
+        <template v-if="admin">
+          <nuxt-link to="/admin/equipes" tag="li" class="class-user-info">
+            <i class="icon icon-pessoa-outline"></i>
+            <span>Equipes</span>
+          </nuxt-link>
+
+          <nuxt-link to="/admin/projetos" tag="li" class="class-user-info">
+            <i class="icon icon-editar"></i>
+            <span>Projetos</span>
+          </nuxt-link>
+
+          <nuxt-link to="/admin/relatorios" tag="li" class="class-user-info">
+            <i class="icon icon-lista"></i>
+            <span>Relatórios</span>
+          </nuxt-link>
+        </template>
+        <template v-else>
+          <nuxt-link to="/" tag="li" class="class-user-info">
+            <i class="icon icon-lista"></i>
+            <span>Relatórios</span>
+          </nuxt-link>
+        </template>
         <nuxt-link to="/registrar" tag="li" class="class-user-info">
-          <i class="icon icon-editar"></i>
+          <i class="icon icon-tempo"></i>
           <span>Registrar horas</span>
         </nuxt-link>
-        <li class="disabled">
-          <i class="icon icon-calendario_vazio"></i>
-          <span>Agenda</span>
-        </li>
-        <li class="disabled">
-          <i class="icon icon-lista"></i>
-          <span>Registros</span>
-        </li>
-        <li class="disabled">
-          <i class="icon icon-oficio"></i>
-          <span>Relatórios</span>
-        </li>
-        <li class="disabled">
-          <i class="icon icon-pessoa-outline"></i>
-          <span>Gerenciar equipes</span>
-        </li>
       </ul>
     </div>
-    <div class="slideable" :class="{ hidden: !fullHeader }">
-      <div class="user-info">
-        <img class="prof120x120" src="" alt="Imagem de perfil 120x120" />
-        <div>
-          <h2>Nome Sobrenome</h2>
-          <!-- from get -->
-          <span>Cargo atribuído</span>
-          <!-- from get -->
-          <span>Gerência</span>
-          <!-- from get -->
-        </div>
-      </div>
-      <div class="ultimo-registro">
-        <div class="label">
-          <span> <i class="icon icon-lista"></i> Último registro </span>
-          <a href=""> Ver todos <i class="icon icon-seta_direita"></i> </a>
-        </div>
-        <div class="data">
-          <span class="date">Ontem &middot; 17/12/2019</span>
-          <!-- from get -->
-          <span class="time">
-            4h &middot; PIU Jockey Club &rsaquo; Consolidação &rsaquo; Mapas e
-            Quadros
-          </span>
-          <!-- from get -->
-        </div>
-      </div>
-      <div class="a-registrar">
-        <div class="label">
-          <span> <i class="icon icon-editar"></i> À registrar </span>
-          <a href="">
-            Registrar horas <i class="icon icon-seta_direita"></i>
-          </a>
-        </div>
-        <ul class="pendentes">
-          <li>
-            16/12/2019 &middot; 8h<button class="edit">
-              <i class="icon icon-editar"></i>
-            </button>
-          </li>
-          <li>
-            17/12/2019 &middot; 4h<button class="edit">
-              <i class="icon icon-editar"></i>
-            </button>
-          </li>
-          <li>
-            18/12/2019 &middot; 8h<button class="edit">
-              <i class="icon icon-editar"></i>
-            </button>
-          </li>
-          <li>
-            19/12/2019 &middot; 8h<button class="edit">
-              <i class="icon icon-editar"></i>
-            </button>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <transition name="fade">
+      <div
+        class="visible__shadow"
+        v-if="userMenuState"
+        @click="userMenuState = false"
+      ></div>
+    </transition>
   </header>
 </template>
 
 <script>
 import LogoSpurb from '~/components/elements/LogoSpurb'
 import UserProfilePlaceholder from '~/components/elements/UserProfilePlaceholder'
+import { mapState } from 'vuex'
 
 export default {
   name: 'AppHeader',
-  props: ['userMenuState', 'fullHeaderFromParent'],
   data () {
-    return {}
+    return {
+      userMenuState: false
+    }
   },
   components: { LogoSpurb, UserProfilePlaceholder },
   computed: {
-    fullHeader () {
-      return this.$props.fullHeaderFromParent
-    }
+    ...mapState({
+      admin: state => state.usuario.admin,
+      nome: state => state.usuario.nome
+    })
   },
-  methods: {
-    tellParent () {
-      this.$emit('toggle-menu', document.querySelector('#user-menu'))
+  watch: {
+    $route (to, from) {
+      this.userMenuState = false
+    },
+    userMenuState (state) {
+      if (state) {
+        document.body.style.overflow = 'hidden'
+        return
+      }
+      document.body.style.overflow = 'auto'
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 header {
   background-color: #fff;
   box-shadow: $s-2-4-48;
+  color: #000;
   .visible {
     max-width: 1200px;
     max-height: 6rem;
@@ -139,8 +105,11 @@ header {
     .logo {
       margin: auto 0;
       max-width: 135px;
+      @media (max-width: $tablet) {
+        display: none;
+      }
     }
-    span.title {
+    .title {
       margin: 2rem 0;
       text-align: center;
       a {
@@ -157,9 +126,18 @@ header {
           margin: 0;
           font-weight: normal;
         }
+        @media (max-width: $tablet) {
+          .icon {
+            font-size: 1.25rem;
+          }
+          h1 {
+            font-size: 1rem;
+            line-height: 1rem;
+          }
+        }
       }
     }
-    ul.user-menu {
+    .user-menu {
       font-size: 1rem;
       white-space: nowrap;
       list-style-type: none;
@@ -188,8 +166,16 @@ header {
         cursor: pointer;
         transition: all ease-in-out 0.2s;
         border-radius: 0.25rem 2.25rem 0.25rem 0.25rem;
+        &__name {
+          @media (max-width: 500px) {
+            display: none;
+          }
+        }
         .profile-placeholder {
           margin: 0 0 0 1rem;
+          @media (max-width: 500px) {
+            margin: 0 0 0 auto;
+          }
         }
         .icon {
           margin-right: 0.25rem;
@@ -253,143 +239,23 @@ header {
         }
       }
     }
-  }
-  .slideable {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    max-width: 1200px;
-    height: calc(120px + 2rem);
-    margin: 0 auto;
-    padding-bottom: 2rem;
-    overflow: hidden;
-    transition: opacity ease-out 0.2s 0.4s, height ease-in-out 0.2s,
-      padding-bottom ease-in-out 0.2s;
-    & > div {
-      width: calc((100% - 4rem) / 3);
-      &:not(:last-child) {
-        margin-right: 2rem;
+    &__shadow {
+      z-index: 5;
+      position: fixed;
+      background-color: rgba(0, 0, 0, 0.4);
+      height: 100vh;
+      width: 100vw;
+      &.fade-enter-active,
+      &.fade-leave-active {
+        transition: opacity 0.2s;
       }
-      &.user-info {
-        display: flex;
-        img.prof120x120 {
-          width: 7.5rem;
-          height: 7.5rem;
-          border-radius: 100%;
-          margin-right: 1rem;
-          display: inline-block;
-          background-color: grey;
-        }
-        & > div {
-          display: inline-flex;
-          flex-flow: column nowrap;
-          justify-content: center;
-          width: calc(100% - 120px - 1rem);
-          height: 100%;
-          h2 {
-            font-size: 1.5rem;
-            font-weight: normal;
-            margin: 0 0 0.5rem;
-          }
-          span {
-            display: block;
-            color: $cinza1;
-            margin-top: 0.25rem;
-          }
-        }
-      }
-      &.ultimo-registro,
-      &.a-registrar {
-        @include bg-black-alpha(0.06);
-        border-radius: 1rem;
-        padding: 1rem;
-        display: flex;
-        flex-flow: column nowrap;
-        justify-content: space-between;
-        .label {
-          font-size: 0.75rem;
-          line-height: 0.75rem;
-          text-transform: uppercase;
-          display: flex;
-          flex-flow: row nowrap;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 0.75rem;
-          & > span {
-            line-height: inherit;
-            color: $cinza1;
-            .icon {
-              font-size: 1.25rem;
-              line-height: 0.75rem;
-              color: $verde;
-              &:before {
-                line-height: inherit;
-                vertical-align: middle;
-              }
-            }
-          }
-          & > a {
-            line-height: inherit;
-            text-decoration: none;
-            transition: all ease-in 0.1s;
-            .icon:before {
-              line-height: inherit;
-              vertical-align: text-top;
-            }
-            &:hover {
-              color: initial;
-            }
-          }
-        }
-      }
-      &.ultimo-registro .data {
-        span {
-          display: block;
-        }
-        .date {
-          font-size: 1.25rem;
-        }
-        .time {
-          color: $cinza1;
-          margin-top: 0.25rem;
-        }
-      }
-      &.a-registrar .pendentes {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        column-count: 2;
-        column-gap: 1rem;
-        li {
-          &:not(:nth-child(2n)) {
-            margin-bottom: 0.75rem;
-          }
-          button {
-            border: 0;
-            background-color: $verde;
-            color: #fff;
-            padding: 0.06rem 0.05rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            margin-left: 0.25rem;
-            .icon:before {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 0.75rem;
-              height: 0.75rem;
-            }
-          }
-        }
+      &.fade-enter,
+      &.fade-leave-to {
+        opacity: 0;
       }
     }
-    &.hidden {
-      height: 0;
-      padding-bottom: 0;
-      opacity: 0;
-      z-index: -1;
-      transition: opacity ease-out 0.2s, height ease-in-out 0.2s 0.4s,
-        padding-bottom ease-in-out 0.2s 0.4s;
+    @media (max-width: $tablet) {
+      margin: 0 0.5rem;
     }
   }
 }

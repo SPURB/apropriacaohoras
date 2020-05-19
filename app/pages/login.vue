@@ -66,7 +66,6 @@
         />
       </section>
     </div>
-    <app-footer v-if="!fetching" />
   </div>
 </template>
 
@@ -74,7 +73,6 @@
 import BoxEmail from '~/components/elements/BoxEmail'
 import BtnProgresso from '~/components/elements/BtnProgresso'
 import InputOptions from '~/components/forms/InputOptions'
-import AppFooter from '~/components/AppFooter'
 import Modal from '~/components/Modal'
 
 import { mapActions, mapMutations, mapState } from 'vuex'
@@ -85,8 +83,7 @@ export default {
     BoxEmail,
     BtnProgresso,
     InputOptions,
-    Modal,
-    AppFooter
+    Modal
   },
   data () {
     return {

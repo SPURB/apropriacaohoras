@@ -1,5 +1,5 @@
 <template>
-  <div class="admin">
+  <div class="usuario">
     <app-header />
     <nuxt style="margin-bottom: 150px" />
     <app-footer style="position: fixed; width: 100%; bottom: 0" />
@@ -9,22 +9,11 @@
 import AppHeader from '~/components/AppHeader'
 import AppFooter from '~/components/AppFooter'
 export default {
-  name: 'admin',
-  scrollToTop: true,
+  name: 'usuario',
   components: {
     AppHeader,
     AppFooter
   }
 }
 </script>
-<style lang="scss" scoped>
-.admin {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: $verde-escuro;
-  color: #fff;
-}
-</style>
+<style lang="scss" scoped></style>
