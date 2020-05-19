@@ -108,6 +108,9 @@ export default {
   flex-direction: column;
   width: 250px;
   height: 300px;
+  &:first-child {
+    margin-left: 3rem;
+  }
 
   .card__header {
     align-items: flex-end;
@@ -124,7 +127,8 @@ export default {
 
   .card__body {
     background-color: #fff;
-    border-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
     justify-self: flex-end;
     height: 70%;
     width: 100%;
