@@ -78,8 +78,8 @@ exports.findAll = (req, res) => {
       const usuariosSemDadosSensiveis = usuarios.map(usuario => {
         return {
           id: usuario.id,
-					nprodam: usuario.nprodam,
-					nome: usuario.nome
+          nprodam: usuario.nprodam,
+          nome: usuario.nome
         }
       })
       res.send({
@@ -101,8 +101,8 @@ exports.findOne = (req, res) => {
       res.send({
         message: 'Usuário',
         id,
-				nprodam,
-				nome
+        nprodam,
+        nome
       })
     })
     .catch(err => {
@@ -115,14 +115,12 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   if (!req.authorized) {
     res.status(403).send(exceptionsDefault('Operação não autorizada'))
-	} 
-	else if (req.body.password) {
-		req.body.password = hashSync(req.body.password, 10)
-		dao.update(req, res, Usuario)
-	}
-	else {
-		dao.update(req, res, Usuario)
-	}
+  } else if (req.body.password) {
+    req.body.password = hashSync(req.body.password, 10)
+    dao.update(req, res, Usuario)
+  } else {
+    dao.update(req, res, Usuario)
+  }
 }
 exports.delete = (req, res) => {
   if (!req.authorized)

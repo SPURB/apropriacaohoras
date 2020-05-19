@@ -14,11 +14,7 @@
         <input-options :options="options" @setOptionValue="setProjeto" />
         <h4>Equipe deste projeto</h4>
         <transition-group class="equipes__cards" name="list" tag="ul">
-          <li
-            class="card"
-            v-for="(usuario, index) in validUsuarios"
-            :key="usuario.id"
-          >
+          <li class="card" v-for="usuario in validUsuarios" :key="usuario.id">
             <div class="card__info">
               <user-profile-placeholder
                 class="card__profile-img"
