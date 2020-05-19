@@ -1,7 +1,5 @@
 <template>
   <div class="index__comum">
-    <app-header />
-
     <section class="list__projetos">
       <h2>Projetos que você trabalhou mais tempo</h2>
       <Slide>
@@ -21,14 +19,10 @@
     <div class="horas__projetos">
       <tabela-projeto :projetos="projetos" />
     </div>
-
-    <app-footer />
   </div>
 </template>
 
 <script>
-import AppHeader from '~/components/AppHeader'
-import AppFooter from '~/components/AppFooter'
 import Slide from '~/components/Slide'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
@@ -36,9 +30,8 @@ import TabelaProjeto from '~/components/elements/TabelaProjetos'
 
 export default {
   name: 'IndexComum',
+  layout: 'usuario',
   components: {
-    AppHeader,
-    AppFooter,
     Slide,
     Filtro,
     Card,

@@ -34,6 +34,11 @@ export default {
     ...mapState({
       admin: state => state.usuario.admin
     })
+  },
+  methods: {
+    closeEvent () {
+      console.log('aoa')
+    }
   }
 }
 </script>
@@ -43,7 +48,6 @@ export default {
   flex-direction: column;
   align-items: center;
   max-width: $desktop;
-  height: calc(100vh - 198px);
   margin: auto;
   &__container {
     width: 100%;
@@ -54,6 +58,9 @@ export default {
     @media (max-width: $desktop) {
       max-width: 90%;
       margin: auto;
+    }
+    @media (max-width: $tablet) {
+      margin-top: 0;
     }
   }
 }

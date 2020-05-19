@@ -17,8 +17,8 @@ export default {
 .app-footer {
   background-color: $verde;
   color: #fff;
-  padding: 2.5rem 0;
-  margin: 6rem 0 0;
+  padding: 1rem 0;
+  margin: 1rem 0 0;
   line-height: 1.4;
   div {
     max-width: $desktop;

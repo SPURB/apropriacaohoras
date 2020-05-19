@@ -5,9 +5,16 @@
       v-for="(link, index) in routes"
       :key="index"
     >
-      <router-link class="list-horizontal-nav__link" tag="a" :to="link.to"
+      <router-link
+        v-if="actionType === 'go'"
+        class="list-horizontal-nav__link"
+        tag="a"
+        :to="link.to"
         >{{ link.title }} <i class="icon icon-abrir_direita"></i
       ></router-link>
+      <span v-else class="list-horizontal-nav__link disabled">{{
+        link.title
+      }}</span>
     </li>
   </ul>
 </template>
@@ -50,6 +57,9 @@ export default {
     }
     &:hover {
       background-color: #00a896;
+    }
+    &.disabled:hover {
+      background-color: unset;
     }
   }
   &__item:nth-child(odd) {

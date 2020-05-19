@@ -66,7 +66,7 @@
           :routes="subatividadesRoutes"
           :action-type="'close'"
         />
-        <admin-projetos-criar
+        <input-create
           :title="setFormTitle(this.currentStep)"
           :description="setFormDescription(this.currentStep)"
           @setValue="setFormValue"
@@ -78,7 +78,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import ListHorizontalNav from '~/components/router-links/ListHorizontalNav'
-import AdminProjetosCriar from '~/components/forms/AdminProjetosCriar'
+import InputCreate from '~/components/forms/InputCreate'
 import Modal from '~/components/Modal'
 
 export default {
@@ -92,7 +92,7 @@ export default {
   },
   components: {
     ListHorizontalNav,
-    AdminProjetosCriar,
+    InputCreate,
     Modal
   },
   computed: {
@@ -306,7 +306,7 @@ export default {
 .nav {
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: flex-end;
   &__title > span {
     font-size: 1rem;
     font-weight: normal;
