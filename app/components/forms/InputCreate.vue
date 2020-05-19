@@ -1,19 +1,17 @@
 <template>
-  <div class="admin-projetos-criar">
-    <a class="admin-projetos-criar__switch-display" @click="display = !display"
+  <div class="input-create">
+    <a class="input-create__switch-display" @click="display = !display"
       ><i class="icon icon-adicionar"></i>{{ title }}</a
     >
-    <form class="admin-projetos-criar__form" v-if="display">
-      <label class="admin-projetos-criar__label" for="name">{{
-        description
-      }}</label>
+    <form class="input-create__form" v-if="display">
+      <label class="input-create__label" for="name">{{ description }}</label>
       <input
-        class="admin-projetos-criar__input"
+        class="input-create__input"
         name="name"
         type="text"
         v-model="input"
       />
-      <div class="admin-projetos-criar__btn-group">
+      <div class="input-create__btn-group">
         <button @click.prevent="cancel">Cancelar</button>
         <button
           class="salvar"
@@ -64,7 +62,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.admin-projetos-criar {
+.input-create {
   &__switch-display {
     background-color: $verde;
     width: 100%;

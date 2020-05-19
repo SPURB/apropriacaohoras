@@ -38,7 +38,7 @@
       <div class="column gutter"></div>
       <div class="column">
         <h4>Equipe disponível</h4>
-        <input-busca
+        <input-search
           :list="usuarios"
           :options="{
             shouldSort: true,
@@ -55,14 +55,14 @@
 </template>
 <script>
 import { mapGetters, mapActions, mapState } from 'vuex'
-import InputOptions from '~/components/elements/InputOptions'
-import InputBusca from '~/components/elements/InputBusca'
+import InputOptions from '~/components/forms/InputOptions'
+import InputSearch from '~/components/forms/InputSearch'
 import UserProfilePlaceholder from '~/components/elements/UserProfilePlaceholder'
 
 export default {
   name: 'equipes',
   layout: 'admin',
-  components: { InputOptions, InputBusca, UserProfilePlaceholder },
+  components: { InputOptions, InputSearch, UserProfilePlaceholder },
   data () {
     return {
       checkboxesDisabled: true,

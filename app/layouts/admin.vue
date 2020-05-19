@@ -1,14 +1,17 @@
 <template>
   <div class="admin">
+    <app-header />
     <nuxt />
     <app-footer style="position: static; width: 100%;" />
   </div>
 </template>
 <script>
+import AppHeader from '~/components/AppHeader'
 import AppFooter from '~/components/AppFooter'
 export default {
   name: 'admin',
   components: {
+    AppHeader,
     AppFooter
   }
 }

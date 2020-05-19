@@ -73,7 +73,7 @@
 <script>
 import BoxEmail from '~/components/elements/BoxEmail'
 import BtnProgresso from '~/components/elements/BtnProgresso'
-import InputOptions from '~/components/elements/InputOptions'
+import InputOptions from '~/components/forms/InputOptions'
 import AppFooter from '~/components/AppFooter'
 import Modal from '~/components/Modal'
 
