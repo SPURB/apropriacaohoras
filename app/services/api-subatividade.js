@@ -7,5 +7,12 @@ export default {
         fase
       }
     })
+	},
+  post: (data, token) => {
+		return http.post('/subatividades', data, {
+			headers: {
+				'authorization': token
+			}
+		})
   }
 }

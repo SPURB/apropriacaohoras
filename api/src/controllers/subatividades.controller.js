@@ -11,7 +11,8 @@ exports.create = (req, res) => {
   }
 
   const body = {
-    nome: req.body.nome
+    nome: req.body.nome,
+    fase: req.body.fase
   }
 
   dao.create(req, res, Subatividade, body)

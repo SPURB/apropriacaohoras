@@ -88,9 +88,10 @@ export default {
   overflow: auto;
   z-index: 11;
   &__container {
+    color: $preto;
     background: #fff;
     max-width: 394px;
-    padding: 0 4rem 1rem;
+    padding: 0 4rem 2.5rem;
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -101,12 +102,16 @@ export default {
     &.error {
       border-color: $vermelho;
     }
+    &:hover {
+      cursor: pointer;
+    }
   }
   &__title {
     margin: 0;
     font-size: 1.5rem;
     font-style: normal;
     font-weight: normal;
+    color: $preto;
   }
   &__description,
   &__action {

@@ -20,10 +20,10 @@ module.exports = (sequelize, Sequelize) => {
     password: {
       type: Sequelize.STRING,
       allowNull: false
-		},
-		nome: {
+    },
+    nome: {
       type: Sequelize.STRING(256)
-		}
+    }
   })
   Usuario.associate = AuthTokenModel => Usuario.hasMany(AuthTokenModel)
 

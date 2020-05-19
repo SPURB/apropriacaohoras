@@ -65,7 +65,7 @@ exports.countHoras = (req, res) => {
         dataRefInicio: data
       },
       include: [
-        { model: db.projetos, attributes: ['id', 'nome'], as: 'id_projeto' },
+        { model: db.projetos, attributes: ['id', 'nome'], as: 'id_projeto' }
       ],
       group: ['projeto']
     }).then(r => {
@@ -73,10 +73,10 @@ exports.countHoras = (req, res) => {
       let horas = { projetos: [], total: 0 }
       let extras = { projetos: [], total: 0 }
 
-      r.forEach(dia => {        
+      r.forEach(dia => {
         totalHoras = totalHoras + dia.horas + dia.extras
-        horas.total = horas.total  + dia.horas
-        extras.total  = extras.total + dia.extras
+        horas.total = horas.total + dia.horas
+        extras.total = extras.total + dia.extras
 
         if (dia.horas > 0) horas.projetos.push({ nome: dia.id_projeto.nome })
         if (dia.extras > 0) extras.projetos.push({ nome: dia.id_projeto.nome })

@@ -24,10 +24,10 @@ module.exports = {
       admin: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
-			},
-			nome: {
+      },
+      nome: {
         type: Sequelize.STRING
-			},
+      },
       createdAt: {
         type: Sequelize.DATE
       },
