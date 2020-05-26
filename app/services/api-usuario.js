@@ -7,5 +7,10 @@ export default {
       Authorization: token
     }
   }),
-	get: () => http.get('/usuarios')
+	get: () => http.get('/usuarios'),
+	logout: (token) => http.delete('/usuarios/logout', {
+		headers: {
+			Authorization: token
+		}
+	})
 }

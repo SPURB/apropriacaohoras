@@ -21,6 +21,12 @@ export const actions = {
 			.catch(err => commit('SET_ERROR', err))
 			.finally(() => commit('IS_FETCHING', false))
 	},
+	logout: ({ commit }, token) => {
+		Usuario.logout(token)
+			.then(() => commit('RESET'))
+			.catch(err => commit('SET_ERROR', err))
+			.finally(() => commit('IS_FETCHING', false))
+	},
 	filterProjetos: ({ commit }, idUsuario) => {
 		commit('IS_FETCHING', true)
 		UsuariosProjetos.get(`?usuario=${idUsuario}`)

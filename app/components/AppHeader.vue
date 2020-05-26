@@ -44,6 +44,9 @@
           <i class="icon icon-tempo"></i>
           <span>Registrar horas</span>
         </nuxt-link>
+        <li @click="sair" class="class-user-info">
+          <span>Sair</span>
+        </li>
       </ul>
     </div>
     <transition name="fade">
@@ -59,7 +62,7 @@
 <script>
 import LogoSpurb from '~/components/elements/LogoSpurb'
 import UserProfilePlaceholder from '~/components/elements/UserProfilePlaceholder'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'AppHeader',
@@ -72,7 +75,8 @@ export default {
   computed: {
     ...mapState({
       admin: state => state.usuario.admin,
-      nome: state => state.usuario.nome
+      nome: state => state.usuario.nome,
+      token: state => state.usuario.token
     })
   },
   watch: {
@@ -85,6 +89,13 @@ export default {
         return
       }
       document.body.style.overflow = 'auto'
+    }
+  },
+  methods: {
+    ...mapActions('usuario', ['logout']),
+    sair () {
+      this.logout(this.token)
+      this.$router.push('/login')
     }
   }
 }
