@@ -3,6 +3,7 @@
   "description": "Sistema de apropriação de horas trabalhadas, gerenciamento de pessoal e relatoria de trabalho da São Paulo Urbanismo",
   "private": true,
   "scripts": {
+    "cypress:open": "cypress open",
     "dev:local": "nuxt --config-file nuxt.config.local.js",
     "dev": "nuxt",
     "generate": "nuxt generate",
@@ -21,6 +22,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "cypress": "^4.6.0",
     "fuse.js": "^3.2.1",
     "nuxt": "^2.12.2",
     "vuex-persist": "^2.2.0"
