@@ -5,7 +5,8 @@ import UsuariosProjetos from '@/services/api-usuarios-projetos'
 export const state = () => ({
 	fetching: false,
 	error: false,
-	message: '',
+	apiMessage: '',
+	status: 0,
 	projetos: [],//this is a fallback if getter.projetos is not ready, if is not ready just populate this state callign 'getProjetos',
 	usuarios: [],
 	usuariosProjeto: []
@@ -31,11 +32,19 @@ export const actions = {
 	getUsuarios: ({ commit }) => {
 		commit('IS_FETCHING', true)
 		Usuarios.get()
-			.then(({data}) => {
+			.then(({ data }) => {
 				commit('SET_USUARIOS', data)
-				commit('SET_ERROR', false)
+				commit('SET_API_MESSAGE', { message:data.message })
+				commit('SET_ERROR', { error: false })
 			})
-			.catch(() => { commit('SET_ERROR', true)})
+			.catch(err => {
+				if (err.response.status) {
+					commit('SET_ERROR', { error: true, status: err.response.status })
+				} else {
+					commit('SET_ERROR', { error: true })
+				}
+				commit('SET_API_MESSAGE', { message: err.message })
+			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
 	getProjetos: ({ commit }) => {
@@ -43,9 +52,17 @@ export const actions = {
 		Projetos.get()
 			.then(({ data }) => {
 				commit('SET_PROJETOS', data)
-				commit('SET_ERROR', false)
+				commit('SET_API_MESSAGE', { message:data.title })
+				commit('SET_ERROR', { error: false })
 			})
-			.catch(() => { commit('SET_ERROR', true)})
+			.catch(err => {
+				if (err.response.status) {
+					commit('SET_ERROR', { error: true, status: err.response.status })
+				} else {
+					commit('SET_ERROR', { error: true })
+				}
+				commit('SET_API_MESSAGE', { message: err.message })
+			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
 	getUsuariosProjetos: ({ commit }, { idProjeto }) => {
@@ -53,9 +70,17 @@ export const actions = {
 		UsuariosProjetos.get(`?projeto=${idProjeto}`)
 			.then(({ data }) => {
 				commit('SET_USUARIOS_PROJETOS', data)
-				commit('SET_ERROR', false)
+				commit('SET_API_MESSAGE', { message:data.title })
+				commit('SET_ERROR', { error: false })
 			})
-			.catch(() => { commit('SET_ERROR', true)})
+			.catch(err => {
+				if (err.response.status) {
+					commit('SET_ERROR', { error: true, status: err.response.status })
+				} else {
+					commit('SET_ERROR', { error: true })
+				}
+				commit('SET_API_MESSAGE', { message: err.message })
+			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
 	removeUsuario: ({ commit, state, rootState }, { idUsuario }) => {
@@ -65,13 +90,23 @@ export const actions = {
 
 		commit('IS_FETCHING', true)
 		Promise.all(toRemove)
-			.then(() => {
+			.then(responses => {
 				const updatedUsuarioProjeto = state.usuariosProjeto
 					.filter(relation => relation.usuario !== idUsuario)
 
+				const message = responses.map(({ data }) => data.message).join('. ')
+				commit('SET_API_MESSAGE', { message })
 				commit('SET_USUARIOS_PROJETOS', { values: updatedUsuarioProjeto })
 			})
-			.catch(() => { commit('SET_ERROR', true)})
+			.catch(err => {
+				if (err.response.status) {
+					commit('SET_ERROR', { error: true, status: err.response.status })
+				} else {
+					commit('SET_ERROR', { error: true })
+				}
+				commit('SET_ERROR', { error: true })
+				commit('SET_API_MESSAGE', { message: err.message })
+			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
 	createUsuariosProjetos: ({ commit, rootState }, { idUsuario, idProjeto }) => {
@@ -83,17 +118,35 @@ export const actions = {
 		UsuariosProjetos.post(body, rootState.usuario.token)
 			.then(({ data }) => {
 				commit('ADD_USUARIOS_PROJETOS', data)
+				commit('SET_API_MESSAGE', { message: data.id })
 			})
-			.catch(() => { commit('SET_ERROR', true)})
+			.catch(err => {
+				commit('SET_ERROR', { error: true })
+				commit('SET_API_MESSAGE', { message: err.message })
+			})
 			.finally(() => commit('IS_FETCHING', false))
-	}
+	},
+	reset: ({ commit }) => { commit('RESET') }
 }
 
 export const mutations = {
 	SET_USUARIOS: (state, { data }) => { state.usuarios = data },
 	SET_PROJETOS: (state, { values }) => { state.projetos = values },
 	SET_USUARIOS_PROJETOS: (state, { values }) => { state.usuariosProjeto = values },
+	SET_API_MESSAGE: (state, { message }) => { state.apiMessage = message }, 
 	ADD_USUARIOS_PROJETOS: (state, item) => state.usuariosProjeto.push(item),
-	SET_ERROR: (state, payload) => { state.error = payload },
+	SET_ERROR: (state, { error, status }) => {
+		state.error = error
+		status ? state.status = status : state.status = state.status
+	},
 	IS_FETCHING: (state, fetchState) => { state.fetching = fetchState },
+	RESET: (state) => {
+		state.fetching = false
+		state.error = false
+		state.apiMessage = ''
+		state.status = 0
+		state.projetos = []
+		state.usuarios = []
+		state.usuariosProjeto = []
+	}
 }

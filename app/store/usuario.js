@@ -35,7 +35,7 @@ export const actions = {
 			.finally(() => commit('IS_FETCHING', false))
 	},
 	resetAsync: ({ commit }) => {
-		commit('RESET')		
+		commit('RESET')
 	}
 }
 
@@ -59,7 +59,6 @@ export const mutations = {
 		state.errorResponse = {}
 		state.fetching = false
 		state.usuario = {}
-		state.auth = ''
 		state.admin = false
 	}
 }

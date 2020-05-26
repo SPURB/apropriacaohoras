@@ -74,6 +74,12 @@ export default {
     toggle () {
       this.$emit('setModalAction')
     }
+  },
+  created () {
+    document.body.style.overflow = 'hidden'
+  },
+  beforeDestroy () {
+    document.body.style.overflow = 'auto'
   }
 }
 </script>
@@ -86,7 +92,7 @@ export default {
   height: 100%;
   position: fixed;
   overflow: auto;
-  z-index: 11;
+  z-index: 9;
   &__container {
     color: $preto;
     background: #fff;
@@ -94,7 +100,7 @@ export default {
     padding: 0 4rem 2.5rem;
     display: flex;
     flex-direction: column;
-    margin: auto;
+    margin: 15vh auto auto;
     text-align: center;
     border-radius: 10px;
     border-top: 20px solid $verde;
@@ -135,8 +141,9 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0.35rem;
+    padding: 0.75rem;
     border-radius: 8px;
+    border: 1px solid $cinza1;
     transition: ease-in-out 0.15s all;
     button {
       font-size: 0.85rem;
@@ -147,7 +154,7 @@ export default {
       font-weight: normal;
     }
     &:hover {
-      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
     }
     &.error {
       color: $vermelho;
