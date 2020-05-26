@@ -19,6 +19,7 @@
               name="auth__email-alias"
               id="auth__email-alias"
               v-model="alias"
+              data-cy="input__email"
               autofocus
             />
           </p>
@@ -30,6 +31,7 @@
           />
           <btn-progresso
             class="auth__btn"
+            data-cy="btn__email"
             v-on:keyup.enter="checkInputEmail"
             :disabled="alias === ''"
           />
@@ -51,10 +53,12 @@
               id="auth__pass-input"
               name="auth__pass-input"
               v-model="password"
+              data-cy="input__pass"
             />
           </p>
           <btn-progresso
             class="auth__btn"
+            data-cy="btn__confirm"
             v-on:keyup.enter="login({ email, password })"
             :disabled="password === ''"
           />

@@ -4,7 +4,11 @@
       <erro-icon v-if="error" style="max-width: 115px; margin: auto" />
       <sucesso-icon v-else style="max-width: 115px; margin: auto" />
       <h3 class="modal__title">{{ title }}</h3>
-      <p v-if="description !== ''" class="modal__description">
+      <p
+        v-if="description !== ''"
+        class="modal__description"
+        data-cy="get__erro"
+      >
         {{ description }}
       </p>
       <ul v-if="descriptionList.length" class="modal__list" :class="{ error }">
