@@ -22,6 +22,7 @@
               <div>
                 <button
                   :disabled="horas.horas == 1"
+                  data-cy="remove__hora"
                   type="button"
                   @click="toggleBar(false)"
                 >
@@ -30,6 +31,7 @@
                 <input
                   id="horas"
                   :value="horas.horas + horas.extras"
+                  data-cy="qtd__horas"
                   type="number"
                   min="0"
                   max="12"
@@ -37,6 +39,7 @@
                 />
                 <button
                   :disabled="horas.horas + horas.extras == 12"
+                  data-cy="inclui__hora"
                   type="button"
                   @click="toggleBar(true)"
                 >
@@ -83,7 +86,8 @@
             </aside>
           </fieldset>
 
-          <custom-select
+          <custom-select          
+            data-cy="select__projeto"
             :title="'Projetos'"
             :idInput="'projetos'"
             :values="projetos"
@@ -91,6 +95,7 @@
 
           <custom-select
             v-if="fases.title"
+            data-cy="select__fase"
             :idInput="'fases'"
             :title="fases.title"
             :values="fases.values"
@@ -98,6 +103,7 @@
 
           <custom-select
             v-if="subatividades.title"
+            data-cy="select__subatividade"
             :idInput="'subatividades'"
             :disabled="fase !== null ? false : true"
             :title="subatividades.title"
@@ -123,7 +129,7 @@
           </fieldset>
         </div>
 
-        <button type="submit" class="postBtn">Registrar horas</button>
+        <button type="submit" data-cy="registrar__horas" class="postBtn">Registrar horas</button>
       </form>
     </main>
   </div>

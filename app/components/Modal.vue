@@ -7,11 +7,11 @@
       <p
         v-if="description !== ''"
         class="modal__description"
-        data-cy="get__erro"
+        data-cy="modal__message"
       >
         {{ description }}
       </p>
-      <ul v-if="descriptionList.length" class="modal__list" :class="{ error }">
+      <ul v-if="descriptionList.length" class="modal__list" :class="{ error }" data-cy="list__erro">
         <li :key="index" v-for="(item, index) in descriptionList">
           <i class="icon icon-incorreto"></i>
           {{ item }}
