@@ -36,6 +36,7 @@
               date: getFullData(formatDate(day))
             })
           "
+          data-cy="select__data"
         >
           {{ day }}
         </td>
