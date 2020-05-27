@@ -1,6 +1,6 @@
 <template>
-  <div class="index__comum">
-    <section class="list__projetos">
+  <div class="index-comum">
+    <section class="index-comum__projetos">
       <h2>Projetos que você trabalhou mais tempo</h2>
       <Slide>
         <Card
@@ -12,11 +12,11 @@
       </Slide>
     </section>
 
-    <div class="filtro__projetos">
+    <div class="index-comun__filtro-projetos">
       <filtro :projetos="projetos" />
     </div>
 
-    <div class="horas__projetos">
+    <div class="index-comun__horas-projetos">
       <tabela-projeto :projetos="projetos" />
     </div>
   </div>
@@ -28,6 +28,8 @@ import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/elements/TabelaProjetos'
 
+import { mapState, mapActions } from 'vuex'
+
 export default {
   name: 'IndexComum',
   layout: 'usuario',
@@ -38,9 +40,13 @@ export default {
     TabelaProjeto
   },
   computed: {
+    ...mapState('usuario', {
+      idUsuario: state => state.id,
+      projetosUsuario: state => state.projetos
+    }),
+    ...mapState('relatorios', ['horasUsuario']),
     projetos () {
-      // essa computed representa os projetos que o usuário trabalhou mais tempo
-      const projetos = [
+      return [
         {
           id: 1,
           nome: 'Estudos de Viabilidade Imobiliária',
@@ -82,19 +88,24 @@ export default {
           minhasHoras: '12'
         }
       ]
-      return projetos
     }
+  },
+  created () {
+    this.get(this.idUsuario)
+  },
+  methods: {
+    ...mapActions('relatorios', ['get'])
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.index__comum {
+.index-comum {
   margin: 0;
   padding: 0;
   width: 100%;
 
-  .list__projetos {
+  &__projetos {
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -109,16 +120,16 @@ export default {
     }
   }
 
-  .horas__projetos,
-  .filtro__projetos {
+  &__horas-projetos,
+  &__filtro-projetos {
     display: flex;
     width: 100%;
   }
 
-  .filtro__projetos {
+  &__filtro-projetos {
     flex-direction: column;
   }
-  .horas__projetos {
+  &__horas-projetos {
     justify-content: center;
   }
 }

@@ -2,6 +2,7 @@
   <div class="registrar">
     <modal
       v-if="modal.show"
+      class="registrar__modal"
       :title="modal.title"
       :error="modal.error"
       :description="modal.description"
@@ -106,7 +107,12 @@
         </div>
 
         <div class="list_horas">
-          <h3 v-if="arrayHoras.length > 0">Horas já registradas</h3>
+          <h3
+            class="list_horas__title"
+            :class="{ 'list_horas__title--show': arrayHoras.length > 0 }"
+          >
+            Horas já registradas
+          </h3>
           <transition-group name="list">
             <listar-horas
               :key="`${index}-lista`"
@@ -202,6 +208,12 @@ export default {
       } else {
         this.arrayHoras = []
       }
+    },
+    idusuario (id) {
+      if (id) {
+        this.filterProjetos(this.idusuario)
+        this.addData()
+      }
     }
   },
   created () {
@@ -214,6 +226,7 @@ export default {
       'setDescricao',
       'RESET'
     ]),
+    ...mapActions('usuario', ['filterProjetos']),
     ...mapMutations('form-registrar-horas', [
       'setValidationForm',
       'TOGGLE_CALENDARIO_STATUS'
@@ -306,6 +319,12 @@ export default {
 
 <style lang="scss">
 @import '@/assets/style/form-horas.scss';
+
+.registrar {
+  &__modal {
+    top: 0;
+  }
+}
 .list_horas {
   margin-top: 7px;
   width: 100%;
@@ -317,7 +336,14 @@ export default {
   .list-enter,
   .list-leave-to {
     opacity: 0;
-    transform: translateX(30px);
+  }
+  &__title {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    transition-delay: 0.1s;
+  }
+  &__title--show {
+    opacity: 1;
   }
 }
 </style>
