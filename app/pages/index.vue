@@ -91,10 +91,10 @@ export default {
     }
   },
   created () {
-    this.get(this.idUsuario)
+    this.getRelatorios()
   },
   methods: {
-    ...mapActions('relatorios', ['get'])
+    ...mapActions('relatorios', ['getRelatorios'])
   }
 }
 </script>
