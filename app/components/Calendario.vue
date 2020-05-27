@@ -3,11 +3,11 @@
     <thead>
       <tr>
         <th colspan="7">
-          <button type="button" @click="monthInc(-1)">
+          <button type="button" @click="monthInc(-1)" data-cy="prev__mes">
             <i class="icon icon-seta_esquerda"></i>
           </button>
           {{ `${decodeMonth(month)} &middot; ${year}` }}
-          <button type="button" @click="monthInc(1)">
+          <button type="button" @click="monthInc(1)" data-cy="prox__mes">
             <i class="icon icon-seta_direita"></i>
           </button>
         </th>
