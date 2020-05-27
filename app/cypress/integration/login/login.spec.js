@@ -17,7 +17,7 @@ describe('Teste unitário para o login de usuário', () => {
     cy.get('[data-cy=btn__confirm]').click()
 
     // verifica erro emitido
-    cy.get('[data-cy=get__erro]').contains('Usuário não autenticado')
+    cy.get('[data-cy=modal__message]').contains('Usuário não autenticado')
   })
 
   it('Testar com campo e-mail errado', () => {
@@ -37,7 +37,7 @@ describe('Teste unitário para o login de usuário', () => {
     cy.get('[data-cy=btn__confirm]').click()
 
     // verifica erro emitido
-    cy.get('[data-cy=get__erro]').contains('Usuário não autenticado')
+    cy.get('[data-cy=modal__message]').contains('Usuário não autenticado')
   })
 
   it('Testar com campo senha errado', () => {
@@ -57,10 +57,10 @@ describe('Teste unitário para o login de usuário', () => {
     cy.get('[data-cy=btn__confirm]').click()
 
     // verifica erro emitido
-    cy.get('[data-cy=get__erro]').contains('Usuário não autenticado')
+    cy.get('[data-cy=modal__message]').contains('Usuário não autenticado')
   })
 
-  it('Testar com campo senha errado', () => {
+  it('Testar com ambos corretos', () => {
     cy.visit('/login')
 
     // seta email
