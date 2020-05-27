@@ -43,9 +43,7 @@
           @submit.prevent="login({ email, password })"
         >
           <p class="auth__group">
-            <label tabindex="1000" for="auth__pass-input"
-              >SUA SENHA DE ACESSO</label
-            >
+            <label tabindex="1000" for="auth__pass-input">SENHA</label>
             <input
               type="password"
               id="auth__pass-input"
@@ -59,18 +57,12 @@
             :disabled="password === ''"
           />
         </form>
-        <box-email
-          :email="email"
-          :titulo="`VERIFIQUE SUA SENHA EM`"
-          v-if="!fetching"
-        />
       </section>
     </div>
   </div>
 </template>
 
 <script>
-import BoxEmail from '~/components/elements/BoxEmail'
 import BtnProgresso from '~/components/elements/BtnProgresso'
 import InputOptions from '~/components/forms/InputOptions'
 import Modal from '~/components/Modal'
@@ -80,7 +72,6 @@ import { mapActions, mapMutations, mapState } from 'vuex'
 export default {
   name: 'Login',
   components: {
-    BoxEmail,
     BtnProgresso,
     InputOptions,
     Modal
@@ -120,7 +111,8 @@ export default {
     ...mapState({
       id: state => state.usuario.id,
       fetching: state => state.usuario.fetching,
-      error: state => state.usuario.error
+      error: state => state.usuario.error,
+      admin: state => state.usuario.admin
     }),
     email: {
       get () {
@@ -141,6 +133,11 @@ export default {
       if (usuarioId) {
         this.filterProjetos(usuarioId)
         this.$router.push({ path: `/registrar` })
+      }
+    },
+    admin (isAdmin) {
+      if (isAdmin) {
+        this.$router.push({ path: '/admin' })
       }
     }
   },

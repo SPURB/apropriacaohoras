@@ -35,6 +35,7 @@ export const actions = {
 			.finally(() => commit('IS_FETCHING', false))
 	},
 	resetAsync: ({ commit }) => {
+		console.log('reset usuario')
 		commit('RESET')
 	}
 }

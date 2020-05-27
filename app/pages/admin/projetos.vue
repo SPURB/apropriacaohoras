@@ -1,6 +1,7 @@
 <template>
   <div class="projetos">
     <modal
+      class="projetos__modal"
       v-if="modal.display"
       :title="modal.title"
       :error="modal.error"
@@ -188,7 +189,7 @@ export default {
         actionText: this.success ? '' : 'Tentar novamente',
         action: () => {
           if (this.error) {
-            localStorage.clear()
+            this.resetAsync()
             this.$router.push({ path: '/login', query: { email: this.email } })
           } else if (this.success && this.currentStep === 'Projetos') {
             this.getProjetos()
@@ -222,6 +223,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('usuario', ['resetAsync']),
     ...mapActions('admin/equipes', ['getProjetos']),
     ...mapActions('admin/projetos', [
       'getFases',
@@ -269,6 +271,9 @@ export default {
   margin: 0 auto;
   min-height: calc(100vh - 200px);
 
+  &__modal {
+    top: 0;
+  }
   &__btn {
     display: flex;
     align-items: center;
