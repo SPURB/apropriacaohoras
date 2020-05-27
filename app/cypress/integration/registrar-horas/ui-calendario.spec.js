@@ -1,6 +1,6 @@
-describe('Teste unitário para o registro de horas', () => {
+describe('Teste unitário para o componente calendário', () => {
   
-  it('Testar nenhum campo setado', () => {
+  it('Testar avançar e voltar mês', () => {
     cy.visit('/login')
 
     // seta email
@@ -16,18 +16,14 @@ describe('Teste unitário para o registro de horas', () => {
     // confirma o acesso
     cy.get('[data-cy=btn__confirm]').click()
     cy.wait(1000)
-
-    cy.get('[data-cy=registrar__horas]').click()
-
-    cy.get('[data-cy=list__erro]').contains('Determine um número de horas')
-    cy.get('[data-cy=list__erro]').contains('Selecione um projeto')
-    cy.get('[data-cy=list__erro]').contains('Selecione a fase da tarefa realizada')
-    cy.get('[data-cy=list__erro]').contains('Selecione uma subatividade')
-    cy.get('[data-cy=list__erro]').contains('Selecione datas no calendário')    
     
+    cy.get('[data-cy=prox__mes]').click()
+    cy.wait(1000)
+
+    cy.get('[data-cy=prev__mes]').click()
   })
 
-  it('Testar somente campo projeto setado', () => {
+  it('Testar multiplas seleções de datas', () => {
     cy.visit('/login')
 
     // seta email
@@ -43,17 +39,14 @@ describe('Teste unitário para o registro de horas', () => {
     // confirma o acesso
     cy.get('[data-cy=btn__confirm]').click()
     cy.wait(1000)
-
-    cy.get('[data-cy=select__projeto]')
-    .children('select')
-    .select('PIU Jurubatuba')
-
-    cy.get('[data-cy=registrar__horas]').click()
-    cy.get('[data-cy=list__erro]').should('not.contain', 'Selecione um projeto')
     
+    cy.get('[data-cy=select__data]').then(btn => {
+      btn[15].click()
+      btn[16].click()
+    })
   })
 
-  it('Testar somente campo fase setado', () => {
+  it('Testar multiplas seleções de datas e remoção de seleção', () => {
     cy.visit('/login')
 
     // seta email
@@ -69,78 +62,21 @@ describe('Teste unitário para o registro de horas', () => {
     // confirma o acesso
     cy.get('[data-cy=btn__confirm]').click()
     cy.wait(1000)
-
-    cy.get('[data-cy=select__fase]')
-    .children('select')
-    .select('1. Elementos Prévios')
-
-    cy.get('[data-cy=registrar__horas]').click()
-    cy.get('[data-cy=list__erro]').should('not.contain', 'Selecione a fase da tarefa realizada')
     
-  })
+    cy.get('[data-cy=select__data]').then(btn => {
+      btn[15].click()
+      btn[16].click()
+    })
 
-  it('Testar somente campo fase e subatividade setado', () => {
-    cy.visit('/login')
-
-    // seta email
-    cy.get('[data-cy=input__email]').click()
-    cy.get('[data-cy=input__email').type('mgiannoni')
-
-    cy.get('[data-cy=btn__email]').click()
-
-    // seta password
-    cy.get('[data-cy=input__pass]').click()
-    cy.get('[data-cy=input__pass]').type('123456')
-
-    // confirma o acesso
-    cy.get('[data-cy=btn__confirm]').click()
     cy.wait(1000)
 
-    cy.get('[data-cy=select__fase]')
-    .children('select')
-    .select('1. Elementos Prévios')
-
-    cy.get('[data-cy=select__subatividade]')
-    .children('select')
-    .select('1.2. Diagnóstico Territorial')
-
-    cy.get('[data-cy=registrar__horas]').click()
-    cy.get('[data-cy=list__erro]').should('not.contain', 'Selecione a fase da tarefa realizada')
-    cy.get('[data-cy=list__erro]').should('not.contain', 'Selecione uma subatividade')
-    
+    cy.get('[data-cy=select__data]').then(btn => {
+      btn[15].click()
+      btn[16].click()
+    })
   })
 
-  it('Testar somente campo hora setado', () => {
-    cy.visit('/login')
-
-    // seta email
-    cy.get('[data-cy=input__email]').click()
-    cy.get('[data-cy=input__email').type('mgiannoni')
-
-    cy.get('[data-cy=btn__email]').click()
-
-    // seta password
-    cy.get('[data-cy=input__pass]').click()
-    cy.get('[data-cy=input__pass]').type('123456')
-
-    // confirma o acesso
-    cy.get('[data-cy=btn__confirm]').click()
-    cy.wait(1000)
-
-    cy.get('[data-cy=inclui__hora]').click()
-    cy.get('[data-cy=inclui__hora]').click()
-    cy.get('[data-cy=qtd__horas').should('have.value', 2)
-    cy.get('[data-cy=remove__hora').click()
-    cy.get('[data-cy=qtd__horas').should('have.value', 1)
-    
-
-
-    cy.get('[data-cy=registrar__horas]').click()
-    cy.get('[data-cy=list__erro]').should('not.contain', 'Determine um número de horas')
-    
-  })
-
-  it('Testar somente campo data setado', () => {
+  it('Testar registro com multiplas datas no mesmo MÊS', () => {
     cy.visit('/login')
 
     // seta email
@@ -159,14 +95,40 @@ describe('Teste unitário para o registro de horas', () => {
 
     cy.get('[data-cy=select__data]').then(btn => {
       btn[15].click()
+      btn[16].click()
     })
+
+    // seta a hora 
+    cy.get('[data-cy=inclui__hora]').click() 
+    cy.get('[data-cy=inclui__hora]').click()
+    cy.get('[data-cy=qtd__horas').should('have.value', 2)
+    cy.get('[data-cy=remove__hora').click()
+    cy.get('[data-cy=qtd__horas').should('have.value', 1)
+
+    // seta o projeto
+    cy.get('[data-cy=select__projeto]')
+    .children('select')
+    .select('PIU Jurubatuba')
+
+    // seta a fase
+    cy.get('[data-cy=select__fase]') 
+    .children('select')
+    .select('1. Elementos Prévios')
+
+     // seta a subatividade
+    cy.get('[data-cy=select__subatividade]')
+    .children('select')
+    .select('1.2. Diagnóstico Territorial')
+    
         
     cy.get('[data-cy=registrar__horas]').click()
-    cy.get('[data-cy=list__erro]').should('not.contain', 'Selecione datas no calendário')
+    cy.wait(1500)
+
+    cy.get('[data-cy=modal__message]').contains('Horas cadastradas')
     
   })
 
-  it('Testar com todos os campos preenchidos', () => {
+  it('Testar registro com multiplas datas em meses DIFERENTES', () => {
     cy.visit('/login')
 
     // seta email
@@ -181,6 +143,15 @@ describe('Teste unitário para o registro de horas', () => {
 
     // confirma o acesso
     cy.get('[data-cy=btn__confirm]').click()
+    cy.wait(1000)
+
+    cy.get('[data-cy=select__data]').then(btn => {
+      btn[15].click()
+      btn[16].click()
+    })
+    cy.wait(1000)
+
+    cy.get('[data-cy=prev__mes]').click()
     cy.wait(1000)
 
     cy.get('[data-cy=select__data]').then(btn => {
@@ -211,6 +182,7 @@ describe('Teste unitário para o registro de horas', () => {
     
         
     cy.get('[data-cy=registrar__horas]').click()
+    cy.wait(1500)
 
     cy.get('[data-cy=modal__message]').contains('Horas cadastradas')
     
