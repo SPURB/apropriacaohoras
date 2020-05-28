@@ -1,6 +1,6 @@
 <template>
   <div class="input-create">
-    <a class="input-create__switch-display" @click="display = !display"
+    <a class="input-create__switch-display" @click="display = !display" data-cy="open__create"
       ><i class="icon icon-adicionar"></i>{{ title }}</a
     >
     <form class="input-create__form" v-if="display">
@@ -10,14 +10,16 @@
         name="name"
         type="text"
         v-model="input"
+        data-cy="input__create"
       />
       <div class="input-create__btn-group">
-        <button @click.prevent="cancel">Cancelar</button>
+        <button @click.prevent="cancel" data-cy="btn__cancel">Cancelar</button>
         <button
           class="salvar"
           :class="{ valid }"
           @click.prevent="set"
           :disabled="!valid"
+          data-cy="btn__create"
         >
           Salvar
         </button>
