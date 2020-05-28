@@ -1,8 +1,8 @@
 import { http } from './http'
 
 export default {
-  get: () => {
-    return http.get('/projetos')
+  get: (query = '') => {
+    return http.get(`/projetos${query}`)
 	},
   post: (data, token) => {
 		return http.post('/projetos', data, {

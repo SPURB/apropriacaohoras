@@ -1,5 +1,5 @@
 <template>
-  <div class="show__horas">
+  <div class="show-horas">
     <section class="grupo__barra horas">
       <div class="data">{{ formateDate }}</div>
       <div
@@ -11,19 +11,23 @@
         }"
         :class="showPH ? 'auto__larg' : `forced__height`"
       >
-        <ul v-if="showPH">
+        <transition-group
+          v-if="showPH"
+          tag="ul"
+          class="show-horas__projetos"
+          name="show-horas__projetos"
+        >
           <li
+            class="show-horas__projetos-item"
             :key="`projeto-${index}`"
             v-for="(projeto, index) in projetosHoras"
           >
             {{ projeto.nome }}
           </li>
-        </ul>
+        </transition-group>
       </div>
 
-      <div class="hora">
-        {{ totalHoras }}
-      </div>
+      <div class="hora">{{ totalHoras }}h</div>
     </section>
 
     <section class="grupo__barra extras" v-if="totalExtras > 0">
@@ -133,12 +137,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.show__horas {
+.show-horas {
   display: flex;
   width: 100%;
   padding: 10px;
   margin-bottom: 5px;
-
+  &__projetos-item {
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
+    transition-delay: 0.5s;
+  }
   .grupo__barra {
     display: flex;
     align-items: center;
@@ -171,17 +179,18 @@ export default {
 }
 
 .forced__height {
-  height: 15px !important;
-  transition: transform 0.3s ease-in; // note that we're transitioning transform, not height!
+  height: 15px;
+  transition: all 0.3s ease-in;
   transform-origin: bottom;
-  transform: scaleY(1); // *squish*
 }
 
 .auto__larg {
-  height: auto !important;
+  height: 50x;
   padding-right: 15px;
-  transition: transform 0.3s ease-out; // note that we're transitioning transform, not height!
+  transition: all 0.3s ease-out;
   transform-origin: top;
-  transform: scaleY(1.2); // implicit, but good to specify explicitly
+  .show-horas__projetos-item {
+    opacity: 1;
+  }
 }
 </style>

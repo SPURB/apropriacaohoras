@@ -1,23 +1,23 @@
 <template>
-  <div class="index__comum">
-    <section class="list__projetos">
+  <div class="index-comum">
+    <section class="index-comum__projetos">
       <h2>Projetos que você trabalhou mais tempo</h2>
       <Slide>
         <Card
           :key="index"
-          v-for="(projeto, index) in projetos"
+          v-for="(projeto, index) in projetosCardMap"
           :projeto="projeto"
           :isPerfil="false"
         />
       </Slide>
     </section>
 
-    <div class="filtro__projetos">
-      <filtro :projetos="projetos" />
+    <div class="index-comun__filtro-projetos">
+      <filtro :projetos="projetosCardMap" />
     </div>
 
-    <div class="horas__projetos">
-      <tabela-projeto :projetos="projetos" />
+    <div class="index-comun__horas-projetos">
+      <tabela-projeto :projetos="projetosCardMap" />
     </div>
   </div>
 </template>
@@ -27,6 +27,8 @@ import Slide from '~/components/Slide'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/elements/TabelaProjetos'
+
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'IndexComum',
@@ -38,63 +40,25 @@ export default {
     TabelaProjeto
   },
   computed: {
-    projetos () {
-      // essa computed representa os projetos que o usuário trabalhou mais tempo
-      const projetos = [
-        {
-          id: 1,
-          nome: 'Estudos de Viabilidade Imobiliária',
-          desdeInicio: '4784',
-          data: '2020-05-15',
-          ultimoMes: '477',
-          minhasHoras: '415'
-        },
-        {
-          id: 2,
-          nome: 'PIU Minhocão',
-          desdeInicio: '3111',
-          data: '2020-05-14',
-          ultimoMes: '1154',
-          minhasHoras: '359'
-        },
-        {
-          id: 3,
-          nome: 'PIU Jockey Club',
-          desdeInicio: '1245',
-          data: '2020-05-13',
-          ultimoMes: '688',
-          minhasHoras: '124'
-        },
-        {
-          id: 4,
-          nome: 'PIU Bairros do Tamanduateí',
-          desdeInicio: '6578',
-          data: '2020-05-12',
-          ultimoMes: '589',
-          minhasHoras: '89'
-        },
-        {
-          id: 5,
-          nome: 'PIU Eixos de Desenvolvimento',
-          desdeInicio: '5124',
-          data: '2020-05-11',
-          ultimoMes: '25',
-          minhasHoras: '12'
-        }
-      ]
-      return projetos
-    }
+    ...mapGetters('relatorios', ['projetosCardMap'])
+  },
+  async created () {
+    await this.getRelatorios()
+    await this.getHorasProjeto()
+  },
+  methods: {
+    ...mapActions('relatorios', ['getRelatorios', 'getHorasProjeto'])
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.index__comum {
+.index-comum {
   margin: 0;
   padding: 0;
   width: 100%;
 
-  .list__projetos {
+  &__projetos {
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -109,16 +73,16 @@ export default {
     }
   }
 
-  .horas__projetos,
-  .filtro__projetos {
+  &__horas-projetos,
+  &__filtro-projetos {
     display: flex;
     width: 100%;
   }
 
-  .filtro__projetos {
+  &__filtro-projetos {
     flex-direction: column;
   }
-  .horas__projetos {
+  &__horas-projetos {
     justify-content: center;
   }
 }

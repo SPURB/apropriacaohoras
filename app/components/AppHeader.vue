@@ -161,7 +161,7 @@ header {
       border-top-color: transparent;
       border-radius: 0.25rem 2.25rem 0.25rem 0.25rem;
       transition: all ease-in-out 0.4s;
-      z-index: 10;
+      z-index: 9;
       li,
       li > * {
         user-select: none;
@@ -198,7 +198,7 @@ header {
           box-shadow: $s-2-4-48;
         }
       }
-      .nuxt-link-active {
+      .nuxt-link-exact-active {
         background: #ececec;
       }
       li:not(.user-info) {
