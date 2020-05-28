@@ -19,47 +19,47 @@
           </p>
         </div>
       </div>
-      <div class="row">
-        <div class="column busca">
-          <input-options :options="options" @setOptionValue="setProjeto" />
-          <h4>Equipe deste projeto</h4>
-          <transition-group class="equipes__cards" name="list" tag="ul">
-            <li class="card" v-for="usuario in validUsuarios" :key="usuario.id">
-              <div class="card__info">
-                <user-profile-placeholder
-                  class="card__profile-img"
-                  :opacity="1"
-                  :width="'60px'"
-                />
-                <label class="card__label" :for="`card__btn--${usuario.id}`">{{
-                  usuario.nome
-                }}</label>
-              </div>
-              <button
-                :id="`card__btn--${usuario.id}`"
-                class="card__btn"
-                @click="removeUsuario({ idUsuario: usuario.id })"
-              >
-                <i class="icon icon-incorreto"></i>
-              </button>
-            </li>
-          </transition-group>
-        </div>
-        <div class="column gutter"></div>
-        <div class="column">
-          <h4>Equipe disponível</h4>
-          <input-search
-            :list="usuarios"
-            :options="{
-              shouldSort: true,
-              keys: ['nome']
-            }"
-            :placeholder="'Pesquise membro...'"
-            :checkboxesDisabled="checkboxesDisabled"
-            :checks="checks"
-            @setCheckedItem="setUsuario"
-          />
-        </div>
+    </div>
+    <div class="row">
+      <div class="column busca">
+        <input-options :options="options" @setOptionValue="setProjeto"/>
+        <h4>Equipe deste projeto</h4>
+        <transition-group class="equipes__cards" name="list" tag="ul">
+          <li class="card" v-for="usuario in validUsuarios" :key="usuario.id" data-cy="usuario__projeto">
+            <div class="card__info">
+              <user-profile-placeholder
+                class="card__profile-img"
+                :opacity="1"
+                :width="'60px'"
+              />
+              <label class="card__label" :for="`card__btn--${usuario.id}`">{{
+                usuario.nome
+              }}</label>
+            </div>
+            <button
+              :id="`card__btn--${usuario.id}`"
+              class="card__btn"
+              @click="removeUsuario({ idUsuario: usuario.id })"
+            >
+              <i class="icon icon-incorreto"></i>
+            </button>
+          </li>
+        </transition-group>
+      </div>
+      <div class="column gutter"></div>
+      <div class="column">
+        <h4>Equipe disponível</h4>
+        <input-search
+          :list="usuarios"
+          :options="{
+            shouldSort: true,
+            keys: ['nome']
+          }"
+          :placeholder="'Pesquise membro...'"
+          :checkboxesDisabled="checkboxesDisabled"
+          :checks="checks"
+          @setCheckedItem="setUsuario"
+        />
       </div>
     </div>
   </div>
