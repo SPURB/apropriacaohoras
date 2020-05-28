@@ -3,9 +3,9 @@
     <section class="actions">
       <h3>
         Projetos mais trabalhados:
-        <span class="active">na última semana</span> · <span>por mês</span> ·
+        <span>na última semana</span> · <span>por mês</span> ·
         <span>por ano</span> ·
-        <span>no total</span>
+        <span class="active">no total</span>
       </h3>
       <h4>Clique sobre um pedaço para ver mais detalhes do projeto</h4>
     </section>
@@ -75,16 +75,13 @@ export default {
     },
     formatProjetos () {
       let projetos = []
-      this.projetos.map(projeto => {
+      this.projetos.forEach(projeto => {
         const porcentagem = (projeto.desdeInicio / this.totalHoras) * 100
         projeto.porcentagem = porcentagem.toFixed(1)
         projetos.push(projeto)
       })
 
-      // ordena do maior para o menor
-      projetos = projetos.sort((a, b) => b.porcentagem - a.porcentagem)
-
-      return projetos
+      return projetos //.sort((a, b) => b.porcentagem - a.porcentagem)
     }
   },
   methods: {
@@ -113,15 +110,15 @@ export default {
   color: #fff;
   display: flex;
   flex-direction: column;
-  width: 100%;
 
   .actions,
   .barra,
   .projeto {
-    width: 70%;
+    width: 100%;
   }
 
   .actions {
+    line-height: 1.52;
     h3 {
       margin-bottom: 0px;
 
@@ -141,6 +138,7 @@ export default {
     }
 
     h4 {
+      font-weight: normal;
       margin: 1px 1px 15px 1px;
       font-size: 11pt;
       @include color-white-alpha(0.8);
@@ -149,8 +147,7 @@ export default {
 
   .barra {
     display: flex;
-
-    .barra__item {
+    &__item {
       height: 25px;
       margin: 5px;
       background-color: $verde;

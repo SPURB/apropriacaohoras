@@ -1,5 +1,6 @@
 import Projetos from '@/services/api-projeto'
 import Horas from '@/services/api-horas'
+import moment from 'moment'
 
 export const state = () => ({
   projetos: [],
@@ -71,11 +72,13 @@ export const actions = {
   getHorasProjeto: ({ commit, rootState }) => {
     if (!rootState.usuario.projetos.length) return
 
-    commit('SET', { key: 'fetching', data: true })
+    const inicio = moment().startOf("month").format("YYYY-MM-DD")
+    const fim = moment().endOf("month").format("YYYY-MM-DD")
 
+    commit('SET', { key: 'fetching', data: true })
     const projetos = rootState.usuario.projetos
 
-    Promise.all(projetos.map(id => Projetos.get(`/${id}/acoes/agrupar-horas`)))
+    Promise.all(projetos.map(id => Projetos.get(`/${id}/acoes/agrupar-horas/${inicio}/${fim}`)))
       .then((totais => {
         const data = totais.map(res => {
           return {
@@ -83,7 +86,7 @@ export const actions = {
             extras: res.data.extras,
             total: res.data.total,
             idProjeto: res.data.idProjeto,
-            ultimoMes: res.data.ultimoMes
+            ultimoMes: res.data.totalPeriodo
           }
         })
 

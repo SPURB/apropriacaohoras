@@ -11,35 +11,33 @@ module.exports = {
         where: {
           projeto: idProjeto,
           dataRefInicio: {
-            [ between ]: [inicio, fim]
+            [between]: [inicio, fim]
           }
         },
         attributes: [
-          'id', 
+          'id',
           'projeto',
-           [sequelize.fn('sum', sequelize.col('horas')), 'horas'],
-           [sequelize.fn('sum', sequelize.col('extras')), 'extras'],
-           'dataRefInicio'
+          [sequelize.fn('sum', sequelize.col('horas')), 'horas'],
+          [sequelize.fn('sum', sequelize.col('extras')), 'extras'],
+          'dataRefInicio'
         ]
       })
     }
   },
 
   projetos: {
-    somaHoras: (where) => {
+    somaHoras: where => {
       const { horas, projetos } = db
 
       return horas.findOne({
         where,
         attributes: [
-          'id', 
+          'id',
           'projeto',
           [sequelize.fn('sum', sequelize.col('horas')), 'horas'],
           [sequelize.fn('sum', sequelize.col('extras')), 'extras']
         ],
-        include: [
-          { model: projetos, attributes: ['nome'], as: 'id_projeto' }
-        ]
+        include: [{ model: projetos, attributes: ['nome'], as: 'id_projeto' }]
       })
     }
   }

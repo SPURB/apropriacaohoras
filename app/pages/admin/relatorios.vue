@@ -14,9 +14,13 @@
       </slide>
     </section>
 
-    <filtro :projetos="projetosCardMap" />
+    <section class="admin-relatorios__filtros">
+      <filtro :projetos="projetosCardMap" />
+    </section>
 
-    <tabela-projeto :projetos="projetosCardMap" />
+    <section class="admin-relatorios__tabela">
+      <tabela-projeto :projetos="projetosCardMap" />
+    </section>
   </div>
 </template>
 <script>
@@ -57,6 +61,11 @@ export default {
   &__title {
     max-width: $desktop;
     color: $verde;
+  }
+  &__filtros,
+  &__tabela {
+    max-width: $desktop;
+    margin: auto;
   }
 }
 </style>
