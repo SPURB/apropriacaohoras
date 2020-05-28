@@ -29,19 +29,20 @@ export const getters = {
 
     if (!ready) return []
 
-    return state.horasProjeto.map((horas, index) => {
-      const minhasHoras = state.horasUsuario
-        .filter(hora => hora.projeto === horas.idProjeto)
-        .map(hora => hora.horas + hora.extras)
-        .reduce((horaTotal, hora) => horaTotal + hora, 0)
+    return state.horasProjeto
+      .map((horas, index) => {
+        const minhasHoras = state.horasUsuario
+          .filter(hora => hora.projeto === horas.idProjeto)
+          .map(hora => hora.horas + hora.extras)
+          .reduce((horaTotal, hora) => horaTotal + hora, 0)
 
-      horas.id = index + 1
-      horas.minhasHoras = minhasHoras
-      horas.nome = getters.projetosMap[horas.idProjeto]
-      horas.desdeInicio = horas.total
-
-      return horas
-    })
+        horas.id = index + 1
+        horas.minhasHoras = minhasHoras
+        horas.nome = getters.projetosMap[horas.idProjeto]
+        horas.desdeInicio = horas.total
+        return horas
+      })
+      .sort((a, b) => b.desdeInicio - a.desdeInicio)
   }
 }
 
