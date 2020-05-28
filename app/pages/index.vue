@@ -5,7 +5,7 @@
       <Slide>
         <Card
           :key="index"
-          v-for="(projeto, index) in projetos"
+          v-for="(projeto, index) in projetosCardMap"
           :projeto="projeto"
           :isPerfil="false"
         />
@@ -13,11 +13,11 @@
     </section>
 
     <div class="index-comun__filtro-projetos">
-      <filtro :projetos="projetos" />
+      <filtro :projetos="projetosCardMap" />
     </div>
 
     <div class="index-comun__horas-projetos">
-      <tabela-projeto :projetos="projetos" />
+      <tabela-projeto :projetos="projetosCardMap" />
     </div>
   </div>
 </template>
@@ -40,73 +40,11 @@ export default {
     TabelaProjeto
   },
   computed: {
-    ...mapState('relatorios', ['horasUsuario']),
-    ...mapGetters('relatorios', ['projetosCardMap']),
-    projetosMapped () {
-      if (!this.projetosCardMap.length || !this.horasUsuario.length) return []
-
-      return this.projetosCardMap.map(({ id, nome, total, idProjeto }) => {
-        const minhasHoras = this.horasUsuario
-          .filter(hora => hora.projeto === idProjeto)
-          .map(hora => hora.horas + hora.extras)
-          .reduce((horaTotal, hora) => horaTotal + hora, 0)
-
-        return {
-          id,
-          nome,
-          desdeInicio: total,
-          minhasHoras
-        }
-      })
-    },
-    projetos () {
-      return [
-        {
-          id: 1,
-          nome: 'Estudos de Viabilidade Imobiliária',
-          desdeInicio: '4784',
-          data: '2020-05-15',
-          ultimoMes: '477',
-          minhasHoras: '415'
-        },
-        {
-          id: 2,
-          nome: 'PIU Minhocão',
-          desdeInicio: '3111',
-          data: '2020-05-14',
-          ultimoMes: '1154',
-          minhasHoras: '359'
-        },
-        {
-          id: 3,
-          nome: 'PIU Jockey Club',
-          desdeInicio: '1245',
-          data: '2020-05-13',
-          ultimoMes: '688',
-          minhasHoras: '124'
-        },
-        {
-          id: 4,
-          nome: 'PIU Bairros do Tamanduateí',
-          desdeInicio: '6578',
-          data: '2020-05-12',
-          ultimoMes: '589',
-          minhasHoras: '89'
-        },
-        {
-          id: 5,
-          nome: 'PIU Eixos de Desenvolvimento',
-          desdeInicio: '5124',
-          data: '2020-05-11',
-          ultimoMes: '25',
-          minhasHoras: '12'
-        }
-      ]
-    }
+    ...mapGetters('relatorios', ['projetosCardMap'])
   },
-  created () {
-    this.getRelatorios()
-    this.getHorasProjeto()
+  async created () {
+    await this.getRelatorios()
+    await this.getHorasProjeto()
   },
   methods: {
     ...mapActions('relatorios', ['getRelatorios', 'getHorasProjeto'])

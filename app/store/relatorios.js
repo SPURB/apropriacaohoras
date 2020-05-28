@@ -1,11 +1,6 @@
 import Projetos from '@/services/api-projeto'
 import Horas from '@/services/api-horas'
 
-// http://localhost:5000/projetos/3/acoes/agrupar-horas
-// http://localhost:5000/projetos/3/acoes/agrupar-horas?usuario=4
-// http://localhost:5000/projetos/3/acoes/agrupar-horas?usuario=4?&subatividade=61
-// http://localhost:5000/projetos/3/acoes/agrupar-horas?dataRefInicio=2020-05-05
-
 export const state = () => ({
   projetos: [],
   horasUsuario: [],
@@ -17,7 +12,7 @@ export const state = () => ({
 })
 
 export const getters = {
-  projetosMap: (state, getters) => {
+  projetosMap: (state) => {
     if (state.projetos.length) {
       let mapped = {}
       state.projetos.forEach(projeto => mapped[projeto.id] = projeto.nome)
@@ -32,23 +27,21 @@ export const getters = {
       rootState.usuario.projetos.length ||
       state.horasProjeto.length
 
-      if (!ready) return []
+    if (!ready) return []
 
-    const projetosUsuario = rootState.usuario.projetos
+    return state.horasProjeto.map((horas, index) => {
+      const minhasHoras = state.horasUsuario
+        .filter(hora => hora.projeto === horas.idProjeto)
+        .map(hora => hora.horas + hora.extras)
+        .reduce((horaTotal, hora) => horaTotal + hora, 0)
 
-      return projetosUsuario
-        .map((idProjeto, index) => {
-          const { total, extras, horas } = state.horasProjeto.find(projeto => projeto.idProjeto === idProjeto)
-          return {
-            id: index + 1,
-            idProjeto,
-            nome: getters.projetosMap[idProjeto],
-            total,
-            horas,
-            extras
-          }
-        })
-        // .filter(projeto => projeto.total > 0)
+      horas.id = index + 1
+      horas.minhasHoras = minhasHoras
+      horas.nome = getters.projetosMap[horas.idProjeto]
+      horas.desdeInicio = horas.total
+
+      return horas
+    })
   }
 }
 
@@ -81,14 +74,15 @@ export const actions = {
 
     const projetos = rootState.usuario.projetos
 
-    Promise.all(projetos.map(id =>  Projetos.get(`/${id}/acoes/agrupar-horas`)))
+    Promise.all(projetos.map(id => Projetos.get(`/${id}/acoes/agrupar-horas`)))
       .then((totais => {
         const data = totais.map(res => {
           return {
             horas: res.data.horas,
             extras: res.data.extras,
             total: res.data.total,
-            idProjeto: res.data.idProjeto
+            idProjeto: res.data.idProjeto,
+            ultimoMes: res.data.ultimoMes
           }
         })
 
