@@ -6,18 +6,21 @@
         title="Equipes"
         subtitle-icon-class="icon icon-pessoa-outline"
         subtitle="Definir equipes de projetos"
+        data-cy="card__router__equipe"
       />
       <card-router
         to="/admin/projetos"
         title="Projetos"
         subtitle-icon-class="icon icon-editar"
         subtitle="Criar projetos, etapas e subetapas"
+        data-cy="card__router__projetos"
       />
       <card-router
         to="/admin/relatorios"
         title="Relatórios"
         subtitle-icon-class="icon icon-lista"
         subtitle="Relatórios com dados consolidados"
+        data-cy="card__router__relatorios"
       />
     </div>
   </div>

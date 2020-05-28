@@ -6,6 +6,7 @@
         @keydown="search(list, options)"
         v-model="input"
         :placeholder="placeholder"
+        data-cy="search__usuario"
       />
       <i class="icon icon-buscar" />
     </div>
@@ -27,6 +28,7 @@
           :disabled="checkboxesDisabled"
           @click="setlistItem(listItem.id)"
           v-model="checked"
+          data-cy="inclui__usuario"
         />
         <label :for="`lista--${listItem.id}`"
           ><i class="icon icon-correto"
