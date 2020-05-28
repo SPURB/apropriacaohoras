@@ -28,7 +28,7 @@ import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/elements/TabelaProjetos'
 
-import { mapState, mapActions } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'IndexComum',
@@ -40,11 +40,25 @@ export default {
     TabelaProjeto
   },
   computed: {
-    ...mapState('usuario', {
-      idUsuario: state => state.id,
-      projetosUsuario: state => state.projetos
-    }),
     ...mapState('relatorios', ['horasUsuario']),
+    ...mapGetters('relatorios', ['projetosCardMap']),
+    projetosMapped () {
+      if (!this.projetosCardMap.length || !this.horasUsuario.length) return []
+
+      return this.projetosCardMap.map(({ id, nome, total, idProjeto }) => {
+        const minhasHoras = this.horasUsuario
+          .filter(hora => hora.projeto === idProjeto)
+          .map(hora => hora.horas + hora.extras)
+          .reduce((horaTotal, hora) => horaTotal + hora, 0)
+
+        return {
+          id,
+          nome,
+          desdeInicio: total,
+          minhasHoras
+        }
+      })
+    },
     projetos () {
       return [
         {
@@ -92,9 +106,10 @@ export default {
   },
   created () {
     this.getRelatorios()
+    this.getHorasProjeto()
   },
   methods: {
-    ...mapActions('relatorios', ['getRelatorios'])
+    ...mapActions('relatorios', ['getRelatorios', 'getHorasProjeto'])
   }
 }
 </script>

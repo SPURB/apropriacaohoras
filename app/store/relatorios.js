@@ -1,9 +1,15 @@
 import Projetos from '@/services/api-projeto'
 import Horas from '@/services/api-horas'
 
+// http://localhost:5000/projetos/3/acoes/agrupar-horas
+// http://localhost:5000/projetos/3/acoes/agrupar-horas?usuario=4
+// http://localhost:5000/projetos/3/acoes/agrupar-horas?usuario=4?&subatividade=61
+// http://localhost:5000/projetos/3/acoes/agrupar-horas?dataRefInicio=2020-05-05
+
 export const state = () => ({
   projetos: [],
   horasUsuario: [],
+  horasProjeto: [],
   fetching: false,
   error: false,
   errorStatus: 0,
@@ -21,48 +27,73 @@ export const getters = {
     return {}
   },
   projetosCardMap: (state, getters, rootState) => {
+    const ready = state.horasUsuario.length ||
+      state.projetos.length ||
+      rootState.usuario.projetos.length ||
+      state.horasProjeto.length
+
+      if (!ready) return []
+
     const projetosUsuario = rootState.usuario.projetos
 
-    if (state.projetos.length && projetosUsuario.length) {
-      return projetosUsuario.map((idProjeto, index) => {
-        return {
-          id: index + 1,
-          nome: getters.projetosMap[idProjeto]
-        }
-        // id: 1,
-        // nome: 'Estudos de Viabilidade Imobiliária',
-        // desdeInicio: '4784',
-        // data: '2020-05-15',
-        // ultimoMes: '477',
-        // minhasHoras: '415'
-      })
-    }
-
-    return []
+      return projetosUsuario
+        .map((idProjeto, index) => {
+          const { total, extras, horas } = state.horasProjeto.find(projeto => projeto.idProjeto === idProjeto)
+          return {
+            id: index + 1,
+            idProjeto,
+            nome: getters.projetosMap[idProjeto],
+            total,
+            horas,
+            extras
+          }
+        })
+        // .filter(projeto => projeto.total > 0)
   }
 }
 
 export const actions = {
   getRelatorios: ({ commit, rootState }) => {
-    if (!rootState.usuario.id) {
-      commit('SET', { key: 'error', data: true })
-      commit('SET', { key: 'errorStatus', data: 403 })
-      commit('SET', { key: 'errorMessage', data: 'Usuário inválido. Faça login novamente' })
-      return
-    }
-    else {
-      commit('RESET')
-    }
-
     commit('SET', { key: 'fetching', data: true })
-
-    Promise.all([Projetos.get(), Horas.get(`?usuario=${rootState.usuario.id}`)])
+    Promise.all([
+      Projetos.get(),
+      Horas.get(`?usuario=${rootState.usuario.id}`)
+    ])
       .then(responses => {
         const projetos = responses[0].data.values
         const horas = responses[1].data.values
         commit('SET', { key: 'projetos', data: projetos })
         commit('SET', { key: 'horasUsuario', data: horas })
       })
+      .catch(err => {
+        commit('SET', { key: 'error', data: true })
+        if (err.response && err.message) {
+          commit('SET', { key: 'errorStatus', data: err.response.status })
+          commit('SET', { key: 'errorMessage', data: err.message })
+        }
+      })
+      .finally(() => commit('SET', { key: 'fetching', data: false }))
+  },
+  getHorasProjeto: ({ commit, rootState }) => {
+    if (!rootState.usuario.projetos.length) return
+
+    commit('SET', { key: 'fetching', data: true })
+
+    const projetos = rootState.usuario.projetos
+
+    Promise.all(projetos.map(id =>  Projetos.get(`/${id}/acoes/agrupar-horas`)))
+      .then((totais => {
+        const data = totais.map(res => {
+          return {
+            horas: res.data.horas,
+            extras: res.data.extras,
+            total: res.data.total,
+            idProjeto: res.data.idProjeto
+          }
+        })
+
+        commit('SET', { key: 'horasProjeto', data })
+      }))
       .catch(err => {
         commit('SET', { key: 'error', data: true })
         if (err.response && err.message) {

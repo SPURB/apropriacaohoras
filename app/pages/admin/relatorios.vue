@@ -4,15 +4,19 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'AdminRelatorios',
   layout: 'admin',
+  computed: {
+    ...mapGetters('relatorios', ['projetosCardMap'])
+  },
   created () {
-    this.getRelatorios(this.idUsuario)
+    this.getRelatorios()
+    this.getHorasProjeto()
   },
   methods: {
-    ...mapActions('relatorios', ['getRelatorios'])
+    ...mapActions('relatorios', ['getRelatorios', 'getHorasProjeto'])
   }
 }
 </script>
