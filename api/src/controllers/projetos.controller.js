@@ -1,6 +1,9 @@
+import moment from 'moment'
+
 const db = require('../models')
 const Projeto = db.projetos
 const dao = require('./dao')
+const { horas, projetos } = require('./acoes')
 
 exports.create = (req, res) => {
   if (!req.body.nome) {
@@ -51,4 +54,51 @@ exports.deleteAll = (req, res) => {
     return
   }
   dao.deleteAll(req, res, Projeto)
+}
+
+// ações
+exports.groupHorasProjetos = (req, res) => {
+  const startOfMonth = moment().startOf("month").format("YYYY-MM-DD")
+  const endOfMonth = moment().endOf("month").format("YYYY-MM-DD")
+  const { somaHoras } = projetos
+  const { totalPorPeriodo } = horas
+  const idProjeto = parseInt(req.params.id)
+
+  let where = {}
+
+  if (req.query) {
+    where = req.query
+  }
+
+  where.projeto = idProjeto
+
+  Promise.all([somaHoras(where), totalPorPeriodo(startOfMonth, endOfMonth, idProjeto)])
+    .then(results => {
+      const soma = results[0]
+      const periodo = results[1]
+
+      const horas = parseInt(soma.horas)
+      const extras = parseInt(soma.extras)
+      const ultimoMes = parseInt(periodo.horas) + parseInt(periodo.extras)
+
+      res.send({
+        idProjeto,
+        title: `Horas agrupadas de ${soma.id_projeto.nome}`,
+        horas,
+        extras,
+        total: horas + extras,
+        ultimoMes
+      })
+    })
+  .catch(err => {
+    res.status(203).send({
+      idProjeto: parseInt(req.params.id),
+      title: `Não há horas cadastradas para este projeto`,
+      message: err.message || 'Ocorreu um erro na busca',
+      horas: 0,
+      extras: 0,
+      total: 0,
+      ultimoMes: 0
+    })
+  })
 }
