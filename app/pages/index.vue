@@ -12,11 +12,11 @@
       </Slide>
     </section>
 
-    <div class="index-comun__filtro-projetos">
+    <div class="index-comum__filtro-projetos">
       <filtro :projetos="projetosCardMap" />
     </div>
 
-    <div class="index-comun__horas-projetos">
+    <div class="index-comum__horas-projetos">
       <tabela-projeto :projetos="projetosCardMap" />
     </div>
   </div>
@@ -75,15 +75,8 @@ export default {
 
   &__horas-projetos,
   &__filtro-projetos {
-    display: flex;
-    width: 100%;
-  }
-
-  &__filtro-projetos {
-    flex-direction: column;
-  }
-  &__horas-projetos {
-    justify-content: center;
+    max-width: $desktop;
+    margin: auto;
   }
 }
 </style>

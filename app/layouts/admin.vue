@@ -1,5 +1,5 @@
 <template>
-  <div class="admin">
+  <div class="admin tema">
     <app-header />
     <nuxt style="margin-bottom: 150px" />
     <app-footer style="position: fixed; width: 100%; bottom: 0" />

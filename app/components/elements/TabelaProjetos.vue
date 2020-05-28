@@ -74,7 +74,7 @@ export default {
 }
 
 .tabela__projeto {
-  width: 70%;
+  width: 100%;
   color: #fff !important;
   border-collapse: collapse !important;
 
@@ -97,7 +97,7 @@ export default {
   }
 
   .tabela__linha .tabela__celula span {
-    margin: 2px;
+    margin: 2px 0.5rem;
   }
   .forced-color {
     color: #fff !important;

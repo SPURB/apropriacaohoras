@@ -58,10 +58,13 @@ exports.create = (req, res) => {
 exports.countHoras = (req, res) => {
   const { id, data } = req.params
 
-	const unique = items => items
-		.map(item => item.nome)
-		.filter((val, index, self) => self.indexOf(val) === index)
-		.map(item => { return { nome: item } })
+  const unique = items =>
+    items
+      .map(item => item.nome)
+      .filter((val, index, self) => self.indexOf(val) === index)
+      .map(item => {
+        return { nome: item }
+      })
 
   if (data !== null && id !== null) {
     Hora.findAll({
@@ -84,10 +87,10 @@ exports.countHoras = (req, res) => {
 
         if (dia.horas > 0) horas.projetos.push({ nome: dia.id_projeto.nome })
         if (dia.extras > 0) extras.projetos.push({ nome: dia.id_projeto.nome })
-			})
+      })
 
-			horas.projetos = unique(horas.projetos)
-			extras.projetos = unique(extras.projetos)
+      horas.projetos = unique(horas.projetos)
+      extras.projetos = unique(extras.projetos)
 
       if (totalHoras == 0) {
         return res.status(200).send({
