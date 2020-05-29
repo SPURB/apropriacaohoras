@@ -1,5 +1,8 @@
 <template>
   <div class="index-comum">
+    <section v-if="fetching" class="index-comum__preloader-wrapper">
+      <preloader :color="'#fff'" />
+    </section>
     <section class="index-comum__projetos">
       <h2>Projetos que você trabalhou mais tempo</h2>
       <Slide>
@@ -23,6 +26,7 @@
 </template>
 
 <script>
+import Preloader from '~/components/elements/Preloader'
 import Slide from '~/components/Slide'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
@@ -34,13 +38,15 @@ export default {
   name: 'IndexComum',
   layout: 'usuario',
   components: {
+    Preloader,
     Slide,
     Filtro,
     Card,
     TabelaProjeto
   },
   computed: {
-    ...mapGetters('relatorios', ['projetosCardMap'])
+    ...mapGetters('relatorios', ['projetosCardMap']),
+    ...mapState('relatorios', ['fetching'])
   },
   async created () {
     await this.getRelatorios()
@@ -57,7 +63,9 @@ export default {
   margin: 0;
   padding: 0;
   width: 100%;
-
+  &__preloader-wrapper {
+    margin-top: 1rem;
+  }
   &__projetos {
     background-color: #fff;
     display: flex;

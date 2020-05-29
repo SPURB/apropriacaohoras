@@ -1,5 +1,8 @@
 <template>
   <div class="admin-relatorios">
+    <section v-if="fetching" class="index-comum__preloader-wrapper">
+      <preloader :color="'#fff'" />
+    </section>
     <section class="admin-relatorios__cards">
       <h2 class="admin-relatorios__title">
         Projetos que você trabalhou mais tempo
@@ -24,22 +27,25 @@
   </div>
 </template>
 <script>
+import Preloader from '~/components/elements/Preloader'
 import Slide from '~/components/Slide'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/elements/TabelaProjetos'
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'AdminRelatorios',
   layout: 'admin',
   components: {
+    Preloader,
     Slide,
     Filtro,
     Card,
     TabelaProjeto
   },
   computed: {
+    ...mapState('relatorios', ['fetching']),
     ...mapGetters('relatorios', ['projetosCardMap'])
   },
   async created () {
