@@ -47,10 +47,13 @@
           class="auth pass"
           @submit.prevent="login({ email, password })"
         >
+          <span @click="showPasword = !showPasword">          
+            <visible-icon :visible="!showPasword" />
+          </span>
           <p class="auth__group">
             <label tabindex="1000" for="auth__pass-input">SENHA</label>
             <input
-              type="password"
+              :type="!showPasword ? 'password' : 'text'"
               id="auth__pass-input"
               name="auth__pass-input"
               v-model="password"
@@ -72,6 +75,7 @@ import BtnProgresso from '~/components/elements/BtnProgresso'
 import InputOptions from '~/components/forms/InputOptions'
 import Modal from '~/components/Modal'
 import Preloader from '~/components/elements/Preloader'
+import VisibleIcon from '~/components/elements/VisibleIcon'
 
 import { mapActions, mapMutations, mapState } from 'vuex'
 
@@ -81,7 +85,8 @@ export default {
     BtnProgresso,
     InputOptions,
     Modal,
-    Preloader
+    Preloader,
+    VisibleIcon
   },
   data () {
     return {
@@ -111,7 +116,8 @@ export default {
             'Solicite o acesso para \ndesenvolvimento@spurbanismo.sp.gov.br',
           text: 'Tentar novamente'
         }
-      }
+      },
+      showPasword: false
     }
   },
   computed: {
@@ -230,6 +236,12 @@ input {
 }
 
 .pass {
+  span {
+    cursor: pointer;
+    margin-top: 15px;
+    padding: 10px;
+  }
+
   input {
     min-width: 400px;
     @media (max-width: 450px) {
