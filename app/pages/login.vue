@@ -36,7 +36,12 @@
         </form>
       </section>
       <section v-else class="card__pass">
-        <p class="auth__loader" v-if="fetching">carregando...</p>
+        <preloader
+          class="card-pass__preloader-wrapper"
+          v-if="fetching"
+          :color="'#fff'"
+          :message="'Verificando suas credenciais'"
+        />
         <form
           v-else
           class="auth pass"
@@ -66,6 +71,7 @@
 import BtnProgresso from '~/components/elements/BtnProgresso'
 import InputOptions from '~/components/forms/InputOptions'
 import Modal from '~/components/Modal'
+import Preloader from '~/components/elements/Preloader'
 
 import { mapActions, mapMutations, mapState } from 'vuex'
 
@@ -74,7 +80,8 @@ export default {
   components: {
     BtnProgresso,
     InputOptions,
-    Modal
+    Modal,
+    Preloader
   },
   data () {
     return {
@@ -185,6 +192,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   margin: auto;
   font-family: $grot;
   padding-bottom: 3rem;
@@ -199,9 +207,10 @@ export default {
       margin-top: 7rem;
     }
   }
-  &__loader {
-    color: #fff;
-  }
+}
+
+.card__pass {
+  width: -moz-available;
 }
 
 .separador {
