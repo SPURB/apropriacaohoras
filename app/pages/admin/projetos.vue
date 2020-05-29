@@ -56,16 +56,19 @@
           v-if="currentStep === 'Projetos'"
           :routes="projetosRoutes"
           :action-type="'go'"
+          data-cy="step__projetos"
         />
         <list-horizontal-nav
           v-if="currentStep === 'Fases'"
           :routes="fasesRoutes"
           :action-type="'go'"
+          data-cy="step__fases"
         />
         <list-horizontal-nav
           v-if="currentStep === 'Subatividades'"
           :routes="subatividadesRoutes"
           :action-type="'close'"
+          data-cy="step__subatividades"
         />
         <input-create
           :title="setFormTitle(this.currentStep)"

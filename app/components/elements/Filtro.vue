@@ -17,6 +17,7 @@
         class="barra__item"
         v-for="(projeto, index) in formatProjetos"
         @click.prevent="setProjeto(projeto, $event)"
+        data-cy="pedaco__projeto"
       ></div>
     </section>
 
