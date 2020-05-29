@@ -1,4 +1,4 @@
-describe('Teste unitário para verificar o component InputCreate :: Fase', () => {
+describe('Teste unitário para verificar o component InputCreate :: Subatividades', () => {
   beforeEach(() => {
     cy.login('/admin/projetos') // params: rota que ele vai depois de efetuar login
 
