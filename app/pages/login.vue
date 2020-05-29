@@ -192,6 +192,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   margin: auto;
   font-family: $grot;
   padding-bottom: 3rem;
