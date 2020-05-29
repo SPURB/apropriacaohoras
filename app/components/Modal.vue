@@ -3,7 +3,7 @@
     <div class="modal__container" :class="{ error }">
       <erro-icon v-if="error" style="max-width: 115px; margin: auto" />
       <sucesso-icon v-else style="max-width: 115px; margin: auto" />
-      <h3 class="modal__title">{{ title }}</h3>
+      <h3 class="modal__title" data-cy="modal__title">{{ title }}</h3>
       <p
         v-if="description !== ''"
         class="modal__description"
