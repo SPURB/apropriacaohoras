@@ -102,7 +102,6 @@ export default {
   height: 55px;
   border: 0;
   transition: background-color 0.2s ease-in-out;
-
   .icon {
     font-size: 1.5rem;
     margin-right: 0.5rem;
