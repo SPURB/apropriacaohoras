@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "cypress": "^4.6.0",
     "fuse.js": "^3.2.1",
     "nuxt": "^2.12.2",
     "vuex-persist": "^2.2.0"
@@ -35,6 +34,7 @@
     "husky": "^4.2.3",
     "node-sass": "^4.13.1",
     "prettier-standard": "^16.1.0",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "cypress": "^4.6.0"
   }
 }
