@@ -2,19 +2,19 @@ const db = require('../models')
 const Fase = db.fases
 const dao = require('./dao')
 
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   if (!req.body.nome) {
     res.status(400).send({
       message: 'Inclua um nome na requisição'
     })
     return
   }
-
+  
   const body = {
     nome: req.body.nome
   }
 
-  dao.create(req, res, Fase, body)
+  dao.create(req, res, Fase, body, 'fase')
 }
 
 exports.findAll = (req, res) => dao.findAll(req, res, Fase, 'Fases')
