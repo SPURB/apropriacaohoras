@@ -6,7 +6,8 @@ export const state = () => ({
 	fetching: false,
 	error: false,
 	success: false,
-	message: '',
+  message: '',
+  type: '', // Serve para mudar as paradas
 	fases: [],
 	subatividades: []
 })
@@ -50,12 +51,38 @@ export const actions = {
 		request
 			.then(res => {
 				commit('SET', { data: true, stateKey: 'success' })
+        commit('SET', { data: 'criado', stateKey: 'type'})
 				commit('SET', { data: `${res.data.nome} criado`, stateKey: 'message' })
 				commit('SET_ERROR', { status: false, message: '' })
 			})
 			.catch(({ message }) => commit('SET_ERROR', { status: true, message }))
 			.finally(() => commit('IS_FETCHING', false))
-	},
+  },
+  putTableItem: ({ commit, rootState }, { table, data }) => {
+    const token =  rootState.usuario.token
+    let request
+    
+    if (table === 'step__projetos') {
+			request = Projetos.put({ nome: data.nome }, data.id, token)
+		}
+		else if (table === 'step__fases'){
+			request = Fases.put({ nome: data.nome }, data.id, token)
+		}
+		else if (table === 'step__subatividades') {
+			request = Subatividades.put({ nome: data.nome }, data.id, token)
+		}
+    
+    commit('IS_FETCHING', true)
+		request
+			.then(res => {
+        commit('SET', { data: true, stateKey: 'success' })
+        commit('SET', { data: 'atualizado', stateKey: 'type'})
+				commit('SET', { data: res.data.message, stateKey: 'message'})
+				commit('SET_ERROR', { status: false, message: '' })
+			})
+			.catch(({ message }) => commit('SET_ERROR', { status: true, message }))
+			.finally(() => commit('IS_FETCHING', false))
+  },
 	reset: ({commit}) => commit('RESET')
 }
 

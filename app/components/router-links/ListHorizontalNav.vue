@@ -5,13 +5,18 @@
       v-for="(link, index) in routes"
       :key="index"
     >
-      <linha-horizontal :link="link" :index="index" :actionType="actionType" :step="step" />
+      <linha-horizontal
+        :link="link"
+        :index="index"
+        :actionType="actionType"
+        :step="step"
+      />
     </li>
   </ul>
 </template>
 
 <script>
-import LinhaHorizontal from '~/components/elements/LinhaHorizontal' 
+import LinhaHorizontal from '~/components/elements/LinhaHorizontal'
 export default {
   name: 'List-horizontal-nav',
   components: {
@@ -30,7 +35,7 @@ export default {
     step () {
       return this.$attrs['data-cy']
     }
-  },
+  }
 }
 </script>
 <style lang="scss" scoped>

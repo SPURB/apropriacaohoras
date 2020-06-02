@@ -10,6 +10,13 @@ export default {
 				'authorization': token
 			}
 		})
+  },
+  put: (data, id, token) => {
+    return http.put(`/projetos/${id}`, data, {
+			headers: {
+				'authorization': token
+			}
+		})
   }
 }
 

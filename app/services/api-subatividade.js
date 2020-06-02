@@ -14,5 +14,15 @@ export default {
 				'authorization': token
 			}
 		})
+  },
+  put: (data, id, token) => {
+    return http.put(`/subatividades/${id}`, data, {
+      params: {
+        id
+      },
+			headers: {
+				'authorization': token
+			}
+		})
   }
 }

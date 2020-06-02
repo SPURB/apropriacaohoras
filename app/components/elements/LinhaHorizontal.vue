@@ -1,10 +1,11 @@
 <template>
-  <div>    
-    <section
-      v-if="actionType === 'go'"
-      class="linha-horizontal"
-    >     
-      <div @click="display = !display" class="editar" :class="index%2 === 0 ? 'bg-5CD6C9' : 'bg-008375'">
+  <div>
+    <section v-if="actionType === 'go'" class="linha-horizontal">
+      <div
+        @click="display = !display"
+        class="editar"
+        :class="index % 2 === 0 ? 'bg-5CD6C9' : 'bg-008375'"
+      >
         <i class="icon icon-editar"></i>
       </div>
 
@@ -15,26 +16,31 @@
     </section>
 
     <span v-else class="linha-horizontal disabled">
-      <div @click="display = !display" class="editar" :class="index%2 === 0 ? 'bg-5CD6C9' : 'bg-008375'">
+      <div
+        @click="display = !display"
+        class="editar"
+        :class="index % 2 === 0 ? 'bg-5CD6C9' : 'bg-008375'"
+      >
         <i class="icon icon-editar"></i>
       </div>
 
       {{ link.title }}
     </span>
 
-    
-    <input-update 
+    <input-update
       class="input-update"
       :display="display"
       :description="'Editar'"
-      :value="link.title" 
+      :value="link.title"
       :step="step"
+      @setUpdate="setFormValue"
     />
   </div>
 </template>
 
 <script>
 import InputUpdate from '~/components/forms/InputUpdate'
+import { mapActions } from 'vuex'
 export default {
   components: {
     InputUpdate
@@ -52,7 +58,7 @@ export default {
     index: {
       type: Number,
       required: true
-    },    
+    },
     actionType: {
       validator: value => ['go', 'close'].includes(value)
     },
@@ -72,6 +78,15 @@ export default {
           return this.link.to.query.subatividade
       }
     }
+  },
+  methods: {
+    ...mapActions('admin/projetos', ['putTableItem']),
+    setFormValue (field) {
+      const table = this.step
+      const data = { id: this.id, nome: field }
+      this.putTableItem({ table, data })
+      this.display = false
+    }
   }
 }
 </script>
@@ -87,7 +102,7 @@ export default {
   height: 55px;
   border: 0;
   transition: background-color 0.2s ease-in-out;
-  
+
   .icon {
     font-size: 1.5rem;
     margin-right: 0.5rem;
@@ -108,7 +123,7 @@ export default {
     width: 50px;
     height: 100%;
     &.bg-5CD6C9 {
-      background-color: #5CD6C9;
+      background-color: #5cd6c9;
     }
     &.bg-008375 {
       background-color: #008375;

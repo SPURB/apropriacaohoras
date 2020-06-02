@@ -104,6 +104,7 @@ export default {
     ...mapState('admin/projetos', [
       'subatividades',
       'error',
+      'type',
       'fetching',
       'message',
       'success',
@@ -183,7 +184,7 @@ export default {
         display: this.error || this.success,
         error: this.error,
         title: this.success
-          ? `${this.currentStep.slice(0, -1)} cadastrado`
+          ? `${this.currentStep.slice(0, -1)} ${this.type}`
           : 'Erro!',
         description: this.message,
         actionDescription: this.success
