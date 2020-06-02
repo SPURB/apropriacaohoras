@@ -10,6 +10,7 @@
         :index="index"
         :actionType="actionType"
         :step="step"
+        @setUpdate="getUpdated"
       />
     </li>
   </ul>
@@ -35,7 +36,12 @@ export default {
     step () {
       return this.$attrs['data-cy']
     }
-  }
+  },
+  methods: {
+    getUpdated (data) {
+      this.$emit('updateField', data)
+    }
+  },
 }
 </script>
 <style lang="scss" scoped>

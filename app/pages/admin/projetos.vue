@@ -56,24 +56,27 @@
           v-if="currentStep === 'Projetos'"
           :routes="projetosRoutes"
           :action-type="'go'"
+          @updateField="updateField"
           data-cy="step__projetos"
         />
         <list-horizontal-nav
           v-if="currentStep === 'Fases'"
           :routes="fasesRoutes"
           :action-type="'go'"
+          @updateField="updateField"
           data-cy="step__fases"
         />
         <list-horizontal-nav
           v-if="currentStep === 'Subatividades'"
           :routes="subatividadesRoutes"
           :action-type="'close'"
+          @updateField="updateField"
           data-cy="step__subatividades"
         />
         <input-create
           :title="setFormTitle(this.currentStep)"
           :description="setFormDescription(this.currentStep)"
-          @setValue="setFormValue"
+          @updateField="updateField"
         />
       </div>
     </div>
@@ -233,6 +236,7 @@ export default {
       'getFases',
       'getSubatividades',
       'postTableItem',
+      'putTableItem',
       'reset'
     ]),
     goBack () {
@@ -244,6 +248,9 @@ export default {
       else {
         this.$router.go(-1)
       }
+    },
+    updateField (data) {
+      this.putTableItem(data)
     },
     setFormValue (nome) {
       const table = this.currentStep.toLowerCase()

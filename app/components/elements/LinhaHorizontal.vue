@@ -5,6 +5,7 @@
         @click="display = !display"
         class="editar"
         :class="index % 2 === 0 ? 'bg-5CD6C9' : 'bg-008375'"
+        data-cy="btn__editar"
       >
         <i class="icon icon-editar"></i>
       </div>
@@ -20,6 +21,7 @@
         @click="display = !display"
         class="editar"
         :class="index % 2 === 0 ? 'bg-5CD6C9' : 'bg-008375'"
+        data-cy="btn__editar"
       >
         <i class="icon icon-editar"></i>
       </div>
@@ -40,7 +42,6 @@
 
 <script>
 import InputUpdate from '~/components/forms/InputUpdate'
-import { mapActions } from 'vuex'
 export default {
   components: {
     InputUpdate
@@ -80,11 +81,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions('admin/projetos', ['putTableItem']),
     setFormValue (field) {
       const table = this.step
       const data = { id: this.id, nome: field }
-      this.putTableItem({ table, data })
+      this.$emit('setUpdate', { table, data })
       this.display = false
     }
   }

@@ -13,9 +13,6 @@ export default {
   },
   put: (data, id, token) => {
     return http.put(`/fases/${id}`, data, {
-      params: {
-        id
-      },
 			headers: {
 				'authorization': token
 			}

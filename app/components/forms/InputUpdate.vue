@@ -1,21 +1,21 @@
 <template>
   <div class="botao__editar">
-    <form class="input-create__form" v-if="display">
+    <form class="input-create__form" v-if="show">
       <label class="input-create__label" for="nome">{{ description }}</label>
       <input
         class="input-create__input"
         name="nome"
         type="text"
         v-model="input"
-        data-cy="input__create"
+        data-cy="input__update"
       />
       <div class="input-create__btn-group">
-        <button data-cy="btn__cancel" @click.prevent="cancel">Cancelar</button>
+        <button data-cy="update__cancel" @click.prevent="cancel">Cancelar</button>
         <button
           class="salvar"
           @click.prevent="set"
           :disabled="!valid"
-          data-cy="btn__create"
+          data-cy="btn__update"
         >
           Salvar
         </button>
@@ -29,7 +29,8 @@ export default {
   name: 'InputUpdate',
   data () {
     return {
-      input: ''
+      input: '',
+      show: false
     }
   },
   props: {
@@ -53,7 +54,8 @@ export default {
     }
   },
   watch: {
-    display () {
+    display (val) {
+      this.show = val
       this.input = this.value
     }
   },
@@ -63,8 +65,7 @@ export default {
       this.input = ''
     },
     cancel () {
-      this.input = ''
-      this.display = false
+      this.show = false
     }
   }
 }
