@@ -35,6 +35,21 @@ module.exports = {
 
     const toInsert = projetosE059145.concat(projetosE059153)
 
+    toInsert.concat([
+      {
+        projeto: 1,
+        usuario: 3,
+        createdAt: now,
+        updatedAt: now
+      },
+      {
+        projeto: 1,
+        usuario: 4,
+        createdAt: now,
+        updatedAt: now
+      }
+    ])
+
     return queryInterface.bulkInsert('usuarios_projetos', toInsert, {})
   },
 

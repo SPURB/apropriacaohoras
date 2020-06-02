@@ -12,6 +12,7 @@ cache:
 
 script:
   - bash deploy.api.sh
+  - bash test.e2e.sh
   - bash build.app.sh
 
 branches:
