@@ -3,11 +3,7 @@
     <button
       class="select-options__toggler"
       @click.prevent="open = !open"
-<<<<<<< HEAD
       data-cy="btn__options"
-=======
-      data-cy="btn__projetos"
->>>>>>> feat(app): add ação de update de field
     >
       <div>{{ selected }}</div>
       <i class="icon icon-expandir" :class="{ open }"></i>
@@ -22,11 +18,7 @@
         >
           <button
             @click.prevent="setSelectedValue(option)"
-<<<<<<< HEAD
             data-cy="select__option"
-=======
-            data-cy="select__projeto"
->>>>>>> feat(app): add ação de update de field
           >
             {{ option.title }}
           </button>
