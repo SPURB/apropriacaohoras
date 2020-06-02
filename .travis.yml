@@ -15,9 +15,15 @@ addons:
     packages:
       - libgconf-2-4 # cypress binary dependency
 
+
+install:
+  - cd app
+  - npm install
+  - cd ..
+
 script:
-  - bash deploy.api.sh
-  - bash build.app.sh
+  # - bash deploy.api.sh
+  # - bash build.app.sh
   - bash tests.sh
 
 branches:
@@ -26,13 +32,13 @@ branches:
     - dev/api
     - dev/app
 
-deploy: # spurb.github.io/apropriacaohoras
-  local_dir: app/gh-pages
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  on:
-    branch: master
+# deploy: # spurb.github.io/apropriacaohoras
+#   local_dir: app/gh-pages
+#   provider: pages
+#   skip_cleanup: true
+#   github_token: $GITHUB_TOKEN
+#   on:
+#     branch: master
 
-notifications:
-  webhooks: https://www.travisbuddy.com
+# notifications:
+#   webhooks: https://www.travisbuddy.com
