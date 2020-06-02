@@ -42,7 +42,6 @@
 
 <script>
 import InputUpdate from '~/components/forms/InputUpdate'
-import { mapActions } from 'vuex'
 export default {
   components: {
     InputUpdate
