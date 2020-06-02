@@ -41,6 +41,7 @@
     "node-sass": "^4.13.1",
     "prettier-standard": "^16.1.0",
     "sass-loader": "^8.0.2",
-    "start-server-and-test": "^1.11.0"
+    "start-server-and-test": "^1.11.0",
+    "wait-on": "^5.0.0"
   }
 }
