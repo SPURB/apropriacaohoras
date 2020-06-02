@@ -37,12 +37,13 @@
           />
         </form>
       </section>
-      <section v-else class="card__pass">
+      <section v-else class="card-pass">
         <preloader
           class="card-pass__preloader-wrapper"
           v-if="fetching"
           :color="'#fff'"
           :message="'Verificando suas credenciais'"
+          :width="'200px'"
         />
         <form
           v-else
@@ -219,8 +220,9 @@ export default {
   }
 }
 
-.card__pass {
+.card-pass {
   width: -moz-available;
+
 }
 
 .separador {

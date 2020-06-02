@@ -35,6 +35,7 @@
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/style-resources": "^1.0.0",
     "cypress": "^4.6.0",
+    "cypress-plugin-retries": "^1.5.2",
     "husky": "^4.2.3",
     "node-sass": "^4.13.1",
     "prettier-standard": "^16.1.0",

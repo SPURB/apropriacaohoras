@@ -1,6 +1,6 @@
 <template>
   <div class="select-options">
-    <button class="select-options__toggler" @click.prevent="open = !open" data-cy="btn__projetos">
+    <button class="select-options__toggler" @click.prevent="open = !open" data-cy="btn__options">
       <div>{{ selected }}</div>
       <i class="icon icon-expandir" :class="{ open }"></i>
     </button>
@@ -12,7 +12,7 @@
           :value="option.value"
           :key="index"
         >
-          <button @click.prevent="setSelectedValue(option)" data-cy="select__projeto">
+          <button @click.prevent="setSelectedValue(option)" data-cy="select__option">
             {{ option.title }}
           </button>
         </li>

@@ -1,4 +1,4 @@
-describe('Teste unitário para verificar o component InputCreate :: Subatividades', () => {
+describe('Teste de integração para verificar o component InputCreate :: Subatividades', () => {
   beforeEach(() => {
     cy.login('/admin/projetos') // params: rota que ele vai depois de efetuar login
 
@@ -28,14 +28,13 @@ describe('Teste unitário para verificar o component InputCreate :: Subatividade
 
   it('Teste botão de cancelar registro', () => {
     cy.get('[data-cy=input__create]').type('Subatividade Teste')
-    cy.get('[data-cy=btn__cancel').click()
+      .get('[data-cy=btn__cancel').click()
   })
 
   it('Teste botão de criação de registro', () => {
-    cy.get('[data-cy=input__create]').type('Subatividade Teste')
-    cy.get('[data-cy=btn__create').click()
-
-    cy.get('[data-cy=modal__title]').contains('Subatividade cadastrado')
+    cy.inputRandom('[data-cy=input__create]')
+      .get('[data-cy=btn__create').click()
+      .get('[data-cy=modal__title]').contains('Subatividade cadastrado')
   })
 
 })

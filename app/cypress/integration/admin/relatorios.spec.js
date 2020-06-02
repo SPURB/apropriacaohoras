@@ -1,4 +1,4 @@
-describe('Teste unitário página relatórios', () => {
+describe('Teste de integração página relatórios', () => {
   beforeEach(() => {
     cy.login('/admin/relatorios') // params: rota que ele vai depois de efetuar login
   })
