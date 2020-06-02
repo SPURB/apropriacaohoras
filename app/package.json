@@ -9,8 +9,8 @@
     "lint": "prettier-standard ./{*,/**/*}.vue --format",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "test:e2e": "start-server-and-test dev http://localhost:3000 cy:run",
-    "test:e2e:local": "start-server-and-test dev:local http://localhost:3000 cy:run"
+    "test:server": "http-server dist --cors -p 3000 -a localhost --silent",
+    "test:e2e:ci": "start-server-and-test test:server http-get://localhost:3000 cy:run"
   },
   "husky": {
     "hooks": {
@@ -34,6 +34,7 @@
     "@commitlint/config-conventional": "^8.2.0",
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/style-resources": "^1.0.0",
+    "http-server": "^0.12.3",
     "cypress": "^4.6.0",
     "cypress-plugin-retries": "^1.5.2",
     "husky": "^4.2.3",

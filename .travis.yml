@@ -15,10 +15,10 @@ addons:
     packages:
       - libgconf-2-4 # cypress binary dependency
 
-    script:
+script:
   - bash deploy.api.sh
-  - bash tests.sh
   - bash build.app.sh
+  - bash tests.sh
 
 branches:
   only:
