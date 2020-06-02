@@ -21,6 +21,7 @@ install:
 before_script:
   - cd app
   - npm ci
+  - cd ..
   # - curl https://cli-assets.heroku.com/install.sh | sh # this is for api deploy
 
 script:
