@@ -10,12 +10,12 @@ exports.create = (req, res) => {
     return
   }
 
-  const body = {
+  const where = {
     nome: req.body.nome,
     fase: req.body.fase
   }
 
-  dao.create(req, res, Subatividade, body, 'subatividades')
+  dao.findOrCreate(req, res, Subatividade, where)
 }
 
 exports.findAll = (req, res) =>

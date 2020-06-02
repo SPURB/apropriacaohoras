@@ -1,20 +1,25 @@
 const dataAccessObject = {
-  create: async (req, res, Model, body, nameModel) => {
+  create: (req, res, Model, body) => {
     if (!req.authorized) {
       return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
     }
 
-    if (nameModel !== 'horas' && nameModel !== 'usuarios_projetos') {
-      const isExist = await Model.findAll({ where: { nome: req.body.nome } })
-      if (isExist.length > 0) {
-       return res.status(400).send({
-          message: 'O valor informado já consta cadastrado, por favor verifique!'
-        })
-      }
-    }
-
     Model.create(body)
       .then(data => res.send(data))
+      .catch(err => {
+        res.status(500).send({
+          message: err.message || 'Ocorreu um erro no registro'
+        })
+      })
+  },
+  findOrCreate: (req, res, Model, where) => {
+    if (!req.authorized) {
+      return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
+    }
+    Model.findOrCreate({ where })
+      .then(data => {
+        res.send(data[0])
+      })
       .catch(err => {
         res.status(500).send({
           message: err.message || 'Ocorreu um erro no registro'

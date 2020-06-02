@@ -1,6 +1,9 @@
 <template>
   <div class="input-create">
-    <a class="input-create__switch-display" @click="display = !display" data-cy="open__create"
+    <a
+      class="input-create__switch-display"
+      @click="display = !display"
+      data-cy="open__create"
       ><i class="icon icon-adicionar"></i>{{ title }}</a
     >
     <form class="input-create__form" v-if="display">

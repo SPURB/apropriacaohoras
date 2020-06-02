@@ -16,12 +16,12 @@ exports.create = (req, res) => {
     return
   }
 
-  const body = {
+  const where = {
     nome: req.body.nome,
     ativo: 1
   }
 
-  dao.create(req, res, Projeto, body, 'projetos')
+  dao.findOrCreate(req, res, Projeto, where)
 }
 
 exports.findAll = (req, res) => dao.findAll(req, res, Projeto, 'Projetos')

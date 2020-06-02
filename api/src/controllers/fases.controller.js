@@ -10,11 +10,11 @@ exports.create = async (req, res) => {
     return
   }
   
-  const body = {
+  const where = {
     nome: req.body.nome
   }
 
-  dao.create(req, res, Fase, body, 'fase')
+  dao.findOrCreate(req, res, Fase, where)
 }
 
 exports.findAll = (req, res) => dao.findAll(req, res, Fase, 'Fases')
