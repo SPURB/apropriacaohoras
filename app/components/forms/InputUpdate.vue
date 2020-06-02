@@ -52,8 +52,10 @@ export default {
       return this.input.length > 3
     }
   },
-  updated () {
-    this.input = this.value
+  watch: {
+    display () {
+      this.input = this.value
+    }
   },
   methods: {
     set () {
