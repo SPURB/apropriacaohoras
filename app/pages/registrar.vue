@@ -87,7 +87,7 @@
             </aside>
           </fieldset>
 
-          <custom-select          
+          <custom-select
             data-cy="select__projeto"
             :title="'Projetos'"
             :idInput="'projetos'"
@@ -135,7 +135,9 @@
           </fieldset>
         </div>
 
-        <button type="submit" data-cy="registrar__horas" class="postBtn">Registrar horas</button>
+        <button type="submit" data-cy="registrar__horas" class="postBtn">
+          Registrar horas
+        </button>
       </form>
     </main>
   </div>

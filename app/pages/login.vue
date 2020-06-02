@@ -50,7 +50,7 @@
           class="auth pass"
           @submit.prevent="login({ email, password })"
         >
-          <span @click="showPasword = !showPasword">          
+          <span @click="showPasword = !showPasword">
             <visible-icon :visible="!showPasword" />
           </span>
           <p class="auth__group">
@@ -222,7 +222,6 @@ export default {
 
 .card-pass {
   width: -moz-available;
-
 }
 
 .separador {

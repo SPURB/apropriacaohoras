@@ -22,10 +22,15 @@
     </div>
     <div class="row">
       <div class="column busca">
-        <input-options :options="options" @setOptionValue="setProjeto"/>
+        <input-options :options="options" @setOptionValue="setProjeto" />
         <h4>Equipe deste projeto</h4>
         <transition-group class="equipes__cards" name="list" tag="ul">
-          <li class="card" v-for="usuario in validUsuarios" :key="usuario.id" data-cy="usuario__projeto">
+          <li
+            class="card"
+            v-for="usuario in validUsuarios"
+            :key="usuario.id"
+            data-cy="usuario__projeto"
+          >
             <div class="card__info">
               <user-profile-placeholder
                 class="card__profile-img"
