@@ -10,9 +10,14 @@ cache:
     - ./app/node_modules/
     - ~/.cache
 
-script:
+addons:
+  apt:
+    packages:
+      - libgconf-2-4 # cypress binary dependency
+
+    script:
   - bash deploy.api.sh
-  - bash test.e2e.sh
+  - bash tests.sh
   - bash build.app.sh
 
 branches:
