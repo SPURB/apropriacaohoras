@@ -1,4 +1,4 @@
-describe('Teste unitário para verificar o component InputCreate :: Projeto', () => {
+describe('Teste de integração para verificar o component InputCreate :: Projeto', () => {
   beforeEach(() => {
     cy.login('/admin/projetos') // params: rota que ele vai depois de efetuar login
     /* 
@@ -11,16 +11,16 @@ describe('Teste unitário para verificar o component InputCreate :: Projeto', ()
   })
 
   it('Teste input de texto', () => {
-    cy.get('[data-cy=input__create]').type('Projeto Teste')
+    cy.inputRandom('[data-cy=input__create]')
   })
 
   it('Teste botão de cancelar registro', () => {
-    cy.get('[data-cy=input__create]').type('Projeto Teste')
-    cy.get('[data-cy=btn__cancel').click()
+    cy.inputRandom('[data-cy=input__create]')
+      .get('[data-cy=btn__cancel').click()
   })
 
   it('Teste botão de criação de registro', () => {
-    cy.get('[data-cy=input__create]').type('Projeto Teste')
-    cy.get('[data-cy=btn__create').click()
+    cy.inputRandom('[data-cy=input__create]')
+      .get('[data-cy=btn__create').click()
   })
 })

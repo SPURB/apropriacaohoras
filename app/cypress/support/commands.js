@@ -24,22 +24,23 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("login", (nextPath) => {
-  cy.visit('/login')
+Cypress.Commands.add('login', (nextPath) => {
+  cy.clearLocalStorage()
+    .visit('/login')
+    .wait(1200)
+    .get('[data-cy=input__email]').click()
+    .get('[data-cy=input__email').type('mgiannoni')
+    .get('[data-cy=btn__email]').click()
+    .get('[data-cy=input__pass]').click()
+    .get('[data-cy=input__pass]').type('123456')
+    .get('[data-cy=btn__confirm]').click()
+    .wait(1200)
+    .visit(nextPath)
+})
 
-  cy.get('[data-cy=input__email]').click()
-  cy.get('[data-cy=input__email').type('mgiannoni')
+Cypress.Commands.add('inputRandom', selector => {
+  const randomString = Math.random().toString(36).slice(2)
 
-  cy.get('[data-cy=btn__email]').click()
-
-  // seta password
-  cy.get('[data-cy=input__pass]').click()
-  cy.get('[data-cy=input__pass]').type('123456')
-
-  // confirma o acesso
-  cy.get('[data-cy=btn__confirm]').click()
-
-  cy.wait(2500)
-
-  cy.visit(nextPath)
+  cy.get(selector)
+    .type(`cy__${randomString}`)
 })

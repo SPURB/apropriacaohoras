@@ -2,7 +2,7 @@
   <table class="calendario">
     <thead>
       <tr>
-        <th colspan="7">
+        <th colspan="7" data-cy="mes__atual">
           <button type="button" @click="monthInc(-1)" data-cy="prev__mes">
             <i class="icon icon-seta_esquerda"></i>
           </button>
