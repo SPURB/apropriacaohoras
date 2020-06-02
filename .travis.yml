@@ -13,19 +13,19 @@ addons:
       - libgconf-2-4 # cypress binary dependency
 
 
-# install:
+install:
 #   - npm i http-server
-#   - cd app
-#   - npm ci
+  - cd app
+  - npm ci
 
 before_script:
-  # - npm run build
+  - npm run build
   # - curl https://cli-assets.heroku.com/install.sh | sh # this is for api deploy
 
 script:
   # - bash deploy.api.sh
   # - bash build.app.sh
-  - bash tests.sh
+  - npm run test
   # - npm start & wait-on http://localhost:3000
 
 branches:
