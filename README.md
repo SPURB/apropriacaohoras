@@ -1,6 +1,13 @@
 # Apropriação de horas [![Build Status](https://travis-ci.org/SPURB/apropriacaohoras.svg?branch=master)](https://travis-ci.org/SPURB/apropriacaohoras)
 Sistema de apropriação de horas trabalhadas, gerenciamento de pessoal e relatoria de trabalho da SP Urbanismo.
 
+### testes
+Antes de fazer a pull request rode os testes
+
+```bash
+$ bash tests.sh
+```
+
 ### api
 Veja as instruções para desenvolvimento do backend no [api/README](api/README.md).
 ```
