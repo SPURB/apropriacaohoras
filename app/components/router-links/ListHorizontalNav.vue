@@ -41,7 +41,7 @@ export default {
     getUpdated (data) {
       this.$emit('updateField', data)
     }
-  },
+  }
 }
 </script>
 <style lang="scss" scoped>

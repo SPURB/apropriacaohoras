@@ -10,7 +10,9 @@
         data-cy="input__update"
       />
       <div class="input-create__btn-group">
-        <button data-cy="update__cancel" @click.prevent="cancel">Cancelar</button>
+        <button data-cy="update__cancel" @click.prevent="cancel">
+          Cancelar
+        </button>
         <button
           class="salvar"
           @click.prevent="set"
