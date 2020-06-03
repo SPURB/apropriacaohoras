@@ -56,18 +56,21 @@
           v-if="currentStep === 'Projetos'"
           :routes="projetosRoutes"
           :action-type="'go'"
+          @updateField="updateField"
           data-cy="step__projetos"
         />
         <list-horizontal-nav
           v-if="currentStep === 'Fases'"
           :routes="fasesRoutes"
           :action-type="'go'"
+          @updateField="updateField"
           data-cy="step__fases"
         />
         <list-horizontal-nav
           v-if="currentStep === 'Subatividades'"
           :routes="subatividadesRoutes"
           :action-type="'close'"
+          @updateField="updateField"
           data-cy="step__subatividades"
         />
         <input-create
@@ -104,6 +107,7 @@ export default {
     ...mapState('admin/projetos', [
       'subatividades',
       'error',
+      'type',
       'fetching',
       'message',
       'success',
@@ -183,7 +187,7 @@ export default {
         display: this.error || this.success,
         error: this.error,
         title: this.success
-          ? `${this.currentStep.slice(0, -1)} cadastrado`
+          ? `${this.currentStep.slice(0, -1)} ${this.type}`
           : 'Erro!',
         description: this.message,
         actionDescription: this.success
@@ -232,6 +236,7 @@ export default {
       'getFases',
       'getSubatividades',
       'postTableItem',
+      'putTableItem',
       'reset'
     ]),
     goBack () {
@@ -243,6 +248,9 @@ export default {
       else {
         this.$router.go(-1)
       }
+    },
+    updateField (data) {
+      this.putTableItem(data)
     },
     setFormValue (nome) {
       const table = this.currentStep.toLowerCase()

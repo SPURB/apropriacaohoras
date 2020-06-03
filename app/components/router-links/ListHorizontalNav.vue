@@ -5,23 +5,24 @@
       v-for="(link, index) in routes"
       :key="index"
     >
-      <router-link
-        v-if="actionType === 'go'"
-        class="list-horizontal-nav__link"
-        tag="a"
-        :to="link.to"
-        >{{ link.title }} <i class="icon icon-abrir_direita"></i
-      ></router-link>
-      <span v-else class="list-horizontal-nav__link disabled">{{
-        link.title
-      }}</span>
+      <linha-horizontal
+        :link="link"
+        :index="index"
+        :actionType="actionType"
+        :step="step"
+        @setUpdate="getUpdated"
+      />
     </li>
   </ul>
 </template>
 
 <script>
+import LinhaHorizontal from '~/components/elements/LinhaHorizontal'
 export default {
   name: 'List-horizontal-nav',
+  components: {
+    LinhaHorizontal
+  },
   props: {
     routes: {
       type: Array,
@@ -30,7 +31,17 @@ export default {
     actionType: {
       validator: value => ['go', 'close'].includes(value)
     }
-  }
+  },
+  computed: {
+    step () {
+      return this.$attrs['data-cy']
+    }
+  },
+  methods: {
+    getUpdated (data) {
+      this.$emit('updateField', data)
+    }
+  },
 }
 </script>
 <style lang="scss" scoped>
