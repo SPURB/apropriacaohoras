@@ -70,7 +70,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~/assets/style/form-horas.scss';
+fieldset {
+  padding: 0;
+  border: 0;
+
+  label {
+    display: block;
+    @include color-white-alpha(0.4);
+    font-size: 0.75rem;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  select {
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: 1.5rem;
+    @include bg-white-alpha(0.08);
+    width: 100%;
+    padding: 0 0.75rem;
+    height: 3rem;
+    border-radius: 1.5rem;
+    option {
+      color: $preto;
+    }
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
 .disabled-select {
   background-color: #8a8888 !important;
   cursor: no-drop !important;

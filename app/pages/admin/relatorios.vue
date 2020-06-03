@@ -3,6 +3,12 @@
     <section v-if="fetching" class="index-comum__preloader-wrapper">
       <preloader :color="'#fff'" />
     </section>
+    <section class="admin-relatorios__detalhados">
+      <h2 class="admin-relatorios__title">
+        Relatório detalhado
+      </h2>
+      <relatorio-detalhado />
+    </section>
     <section class="admin-relatorios__cards">
       <h2 class="admin-relatorios__title">
         Projetos que você trabalhou mais tempo
@@ -28,6 +34,7 @@
 </template>
 <script>
 import Preloader from '~/components/elements/Preloader'
+import RelatorioDetalhado from '~/components/RelatorioDetalhado'
 import Slide from '~/components/Slide'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
@@ -39,6 +46,7 @@ export default {
   layout: 'admin',
   components: {
     Preloader,
+    RelatorioDetalhado,
     Slide,
     Filtro,
     Card,
@@ -51,9 +59,14 @@ export default {
   async created () {
     await this.getRelatorios()
     await this.getHorasProjeto()
+    await this.getRelatorioDetalhado()
   },
   methods: {
-    ...mapActions('relatorios', ['getRelatorios', 'getHorasProjeto'])
+    ...mapActions('relatorios', [
+      'getRelatorios',
+      'getHorasProjeto',
+      'getRelatorioDetalhado'
+    ])
   }
 }
 </script>
@@ -68,6 +81,10 @@ export default {
     max-width: $desktop;
     color: $verde;
   }
+  &__detalhados h2 {
+    color: #fff;
+  }
+  &__detalhados,
   &__filtros,
   &__tabela {
     max-width: $desktop;
