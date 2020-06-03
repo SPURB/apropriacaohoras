@@ -54,7 +54,22 @@ npm run build
 npm run start
 ```
 
-### documentação 
+___
+
+**Ambiente de homologação da api**
+Uma versão da API está publicada para desenvolvimento do frontend. As enpoints abaixo equivalem ao último commit das branches `master` ou `dev/api`.
+```
+https://apropriacaohoras.herokuapp.com/
+https://apropriacaohoras.herokuapp.com/horas
+https://apropriacaohoras.herokuapp.com/usuarios
+https://apropriacaohoras.herokuapp.com/projetos
+https://apropriacaohoras.herokuapp.com/fases
+https://apropriacaohoras.herokuapp.com/subatividades
+https://apropriacaohoras.herokuapp.com/usuarios-projetos
+```
+___
+
+### documentação
 Mantenha a atualizada documentação com [postman](https://www.postman.com/) - `apropriacao-de-horas.postman_collection.json`
 
 > veja a documentação do [sequelize](https://sequelize.org/master/manual/) para detalhamento do contexto e detalhamento do ORM utilizado.

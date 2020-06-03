@@ -2,18 +2,13 @@ dist: xenial
 os: linux
 language: generic
 
-before_script:
-  - curl https://cli-assets.heroku.com/install.sh | sh # this is for api deploy
-
 cache:
   directories:
     - ./app/node_modules/
     - ~/.cache
 
-addons:
-  apt:
-    packages:
-      - libgconf-2-4 # cypress binary dependency
+before_script:
+  - curl https://cli-assets.heroku.com/install.sh | sh # this is for api deploy
 
 script:
   - bash deploy.api.sh
