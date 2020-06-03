@@ -76,7 +76,7 @@
         <input-create
           :title="setFormTitle(this.currentStep)"
           :description="setFormDescription(this.currentStep)"
-          @updateField="updateField"
+          @setValue="setFormValue"
         />
       </div>
     </div>

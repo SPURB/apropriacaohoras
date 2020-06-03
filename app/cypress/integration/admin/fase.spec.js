@@ -31,7 +31,7 @@ describe('Teste de integração para verificar o component InputCreate :: Fase',
       .get('[data-cy=btn__create')
       .click()
       .wait(3000)
-      .get('[data-cy=modal__title]').contains('Fase cadastrado')
+      .get('[data-cy=modal__title]').contains('Fase criado')
   })
 })
 
@@ -44,13 +44,10 @@ describe('Teste de integração para verificar o component InputUpdate :: Fase',
       .children('div')
       .children('section')
       .first().click()
-    /* 
-      * Já faz um teste para verificar se o accordion existe 
-      está setado para Criar uma nova fase em todos os testes
-    */
-   cy.get('[data-cy=btn__editar]')
-   .first()
-   .click()
+
+    cy.get('[data-cy=btn__editar]')
+    .first()
+    .click()
   })
 
   it('Teste input de texto :: InputUpdate', () => {
