@@ -1,5 +1,5 @@
 const dataAccessObject = {
-  create: async (req, res, Model, body, nameModel) => {
+  create: (req, res, Model, body) => {
     if (!req.authorized) {
       return res.status(403).send({ message: 'Erro! Usuário não autorizado' })
     }
