@@ -107,22 +107,22 @@ export const actions = {
       .finally(() => commit('SET', { key: 'fetching', data: false }))
   },
   getRelatorioDetalhado: ({ commit, rootState }) => {
-    let projeto
+    let url
     rootState['form-registrar-horas'].horas.projeto !== null ? 
-    projeto = rootState['form-registrar-horas'].horas.projeto :
-    projeto = 1
+    url = `?projeto=${rootState['form-registrar-horas'].horas.projeto}` :
+    url = ''
     Promise.all([
       Usuarios.get(),
       Fases.get(),
       Subatividades.get(),
-      Horas.get(`?projeto=${projeto}`)
+      Horas.get(url)
     ]).then(responses => {
       const usuarios = responses[0].data.data
       const fases = responses[1].data.values
       const subatividades = responses[2].data.values
       const horas = responses[3].data.values
 
-      let mappedValues = []
+      let data = []
       horas.forEach(hora => {
 
          let usuario = {
@@ -131,14 +131,21 @@ export const actions = {
           subatividade: subatividades.find(subatividade => subatividade.id === hora.subatividade).nome,
           fase: fases.find(fase => fase.id === hora.fase).nome
         }        
-        mappedValues.push(usuario)
+        data.push(usuario)
       })
-      commit('SET', { key: 'horasUsuariosByProjetos', mappedValues })
+      commit('SET', { data, key: 'horasUsuariosByProjetos' })
     })
+  },
+  orderBy: ({ commit }, payload) => {
+    commit('ORDER_BY', payload)
   }
 }
 
 export const mutations = {
+  ORDER_BY: (state, payload) => {
+    state.horasUsuariosByProjetos = state.horasUsuariosByProjetos
+                                    .sort((a, b) => (a.payload > b.payload) ? 1 : -1)
+  },
   SET: (state, { data, key }) => { state[key] = data },
   RESET: (state) => {
     state.projetos = []
