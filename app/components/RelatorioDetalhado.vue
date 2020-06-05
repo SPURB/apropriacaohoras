@@ -5,8 +5,11 @@
         :title="'Projetos'"
         :idInput="'projetos'"
         :values="projetos"
+        data-cy="select__option"
       />
-      <button v-if="projeto > 0" @click="RESET">Limpar filtro</button>
+      <button v-if="projeto > 0" @click="RESET" data-cy="btn__limpar">
+        Limpar filtro
+      </button>
     </section>
     <section class="table" v-if="horasUsuariosByProjetos.length > 0">
       <tabela-horas :thead="thead" :projetos="horasUsuariosByProjetos" />
