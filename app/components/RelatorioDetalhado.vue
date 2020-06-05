@@ -6,9 +6,14 @@
         :idInput="'projetos'"
         :values="projetos"
       />
+      <button v-if="projeto > 0" @click="RESET">Limpar filtro</button>
     </section>
-    <section class="table">
+    <section class="table" v-if="horasUsuariosByProjetos.length > 0">
       <tabela-horas :thead="thead" :projetos="horasUsuariosByProjetos" />
+    </section>
+    <section class="table table__null" v-else>
+      <h3>Nenhum registro encontrado para esse projeto.</h3>
+      <h4>Selecione outro projeto.</h4>
     </section>
   </div>
 </template>
@@ -54,11 +59,12 @@ export default {
   },
   watch: {
     projeto (val) {
-      if (val > 0) this.getRelatorioDetalhado()
+      this.getRelatorioDetalhado()
     }
   },
   methods: {
-    ...mapActions('relatorios', ['getRelatorioDetalhado'])
+    ...mapActions('relatorios', ['getRelatorioDetalhado']),
+    ...mapActions('form-registrar-horas', ['RESET'])
   }
 }
 </script>
@@ -69,6 +75,22 @@ export default {
 
   .input__select {
     width: 50%;
+    display: flex;
+
+    button {
+      align-self: flex-end;
+      background-color: $verde;
+      border: 1px solid $verde-claro;
+      border-radius: 50px;
+      color: #fff;
+      cursor: pointer;
+      margin: 10px;
+      height: 30px;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
   }
 
   .table {
