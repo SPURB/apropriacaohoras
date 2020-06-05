@@ -27,6 +27,15 @@
         </transition-group>
       </div>
 
+      <router-link
+        v-if="showPH && routeHidden"
+        class="btn__editar"
+        tag="div"
+        :to="`/editar?data=${this.registro.data}`"
+      >
+        <i class="icon icon-editar"></i>
+      </router-link>
+      <div></div>
       <div class="hora">{{ totalHoras }}h</div>
     </section>
 
@@ -85,6 +94,11 @@ export default {
     },
     projetosExtras () {
       return this.registro.res.extras.projetos
+    },
+    routeHidden () {
+      const route = this.$route.path
+      if (route !== '/registrar') return false
+      return true
     }
   },
   methods: {
@@ -160,7 +174,7 @@ export default {
     }
 
     .bar {
-      margin: 0px 10px;
+      margin-left: 10px;
       cursor: pointer;
 
       ul {
@@ -173,6 +187,26 @@ export default {
         margin-left: 50px;
         width: 100%;
         background-color: $verde-claro;
+      }
+    }
+
+    .hora {
+      margin-left: 10px;
+    }
+    .btn__editar {
+      align-items: center;
+      background-color: #ff9a20;
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      width: 30px;
+
+      .icon {
+        font-size: 1.5rem;
+      }
+
+      &:hover {
+        cursor: pointer;
       }
     }
   }
