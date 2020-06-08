@@ -1,11 +1,16 @@
 import Projetos from '@/services/api-projeto'
 import Horas from '@/services/api-horas'
+import Usuarios from '@/services/api-usuario'
+import Fases from '@/services/api-fase'
+import Subatividades from '@/services/api-subatividade'
+
 import moment from 'moment'
 
 export const state = () => ({
   projetos: [],
   horasUsuario: [],
   horasProjeto: [],
+  horasUsuariosByProjetos: [],
   fetching: false,
   error: false,
   errorStatus: 0,
@@ -100,14 +105,52 @@ export const actions = {
         }
       })
       .finally(() => commit('SET', { key: 'fetching', data: false }))
+  },
+  getRelatorioDetalhado: ({ commit, rootState }) => {
+    let url
+    rootState['form-registrar-horas'].horas.projeto !== null ? 
+    url = `?projeto=${rootState['form-registrar-horas'].horas.projeto}` :
+    url = ''
+    Promise.all([
+      Usuarios.get(),
+      Fases.get(),
+      Subatividades.get(),
+      Horas.get(url)
+    ]).then(responses => {
+      const usuarios = responses[0].data.data
+      const fases = responses[1].data.values
+      const subatividades = responses[2].data.values
+      const horas = responses[3].data.values
+
+      let data = []
+      horas.forEach(hora => {
+
+         let usuario = {
+          nome: usuarios.find(usuario => usuario.id === hora.usuario).nome,
+          registros: hora.horas + hora.extras,
+          subatividade: subatividades.find(subatividade => subatividade.id === hora.subatividade).nome,
+          fase: fases.find(fase => fase.id === hora.fase).nome
+        }        
+        data.push(usuario)
+      })
+      commit('SET', { data, key: 'horasUsuariosByProjetos' })
+    })
+  },
+  orderBy: ({ commit }, payload) => {
+    commit('ORDER_BY', payload)
   }
 }
 
 export const mutations = {
+  ORDER_BY: (state, payload) => {
+    state.horasUsuariosByProjetos = state.horasUsuariosByProjetos
+                                    .sort((a, b) => (a.payload > b.payload) ? 1 : -1)
+  },
   SET: (state, { data, key }) => { state[key] = data },
   RESET: (state) => {
     state.projetos = []
-    state.horasUsuario = []
+    state.horasUsuario = [],
+    state.horasUsuariosByProjetos = []
     state.fetching = false
     state.error = false
     state.errorStatus = 0

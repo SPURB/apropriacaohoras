@@ -104,7 +104,7 @@ export default {
   }
 
   .linha__clara {
-    @include bg-white-alpha(0.2);
+    @include bg-white-alpha(0.1);
   }
 }
 </style>

@@ -9,6 +9,12 @@
 	line-height: 100%;
 }
 
+.icon:after {
+	font-family: 'participe';
+	font-style: normal;
+	vertical-align: -.25rem;
+}
+
 .icon:before {
 	font-family: 'participe';
 	font-style: normal;
