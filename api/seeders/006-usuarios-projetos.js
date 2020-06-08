@@ -18,9 +18,21 @@ module.exports = {
       }
     })
 
+    const usuarioE1234567 = await Usuario.findOne({ // admin de teste
+      where: {
+        nprodam: 'e1234567'
+      }
+    })
+
+    const usuarioE7654321 = await Usuario.findOne({ // usuario de teste
+      where: {
+        nprodam: 'e7654321'
+      }
+    })
+
     const projetos = await Projeto.findAll()
 
-    const setInsertObject = (usuario, projetos) =>
+    const setInsertObject = (usuario, projetos) => 
       projetos.map(projeto => {
         return {
           projeto: projeto.id,
@@ -29,11 +41,20 @@ module.exports = {
           updatedAt: now
         }
       })
-
+    
     const projetosE059145 = setInsertObject(usuarioE059145, projetos)
     const projetosE059153 = setInsertObject(usuarioE059153, projetos)
 
-    const toInsert = projetosE059145.concat(projetosE059153)
+    const projetosE1234567 = setInsertObject(usuarioE1234567, projetos)
+    const projetosE7654321 = setInsertObject(usuarioE7654321, projetos)
+
+    const toInsert = projetosE059145.concat(
+      projetosE059153, 
+      projetosE1234567,
+      projetosE7654321
+    )
+
+    console.log(toInsert)
 
     toInsert.concat([
       {
