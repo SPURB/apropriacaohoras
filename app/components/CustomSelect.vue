@@ -33,7 +33,8 @@ export default {
     },
     idInput: {
       type: String,
-      required: true
+      default: '',
+      required: false
     },
     values: {
       type: Array,

@@ -12,7 +12,12 @@
     </section>
 
     <section class="editar__horas">
-      <editar-horas />
+      <editar-horas
+        :key="index"
+        v-for="(item, index) in registros"
+        :registro="item"
+        :index="index"
+      />
     </section>
   </div>
 </template>
@@ -59,10 +64,10 @@ export default {
 
   &__titulo,
   &__listar,
-  &__horas {    
+  &__horas {
     padding: 15px 30px 5px 50px;
   }
-  
+
   &__titulo {
     align-items: center;
     display: flex;
