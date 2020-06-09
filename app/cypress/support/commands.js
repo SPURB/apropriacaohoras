@@ -29,7 +29,7 @@ Cypress.Commands.add('login', (nextPath) => {
     .visit('/login')
     .wait(1200)
     .get('[data-cy=input__email]').click()
-    .get('[data-cy=input__email').type('mgiannoni')
+    .get('[data-cy=input__email').type('admin')
     .get('[data-cy=btn__email]').click()
     .get('[data-cy=input__pass]').click()
     .get('[data-cy=input__pass]').type('123456')

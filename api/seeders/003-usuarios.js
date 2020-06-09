@@ -44,6 +44,26 @@ module.exports = {
             '$2b$10$4P9ofTvzLRHdVAtWJr4dAunskgYIgT1QAXePqIWKvL0P7IzhdZX0u', // 123456
           createdAt: now,
           updatedAt: now
+        },
+        {
+          nprodam: 'e1234567',
+          admin: true,
+          email: 'admin@spurbanismo.sp.gov.br',
+          nome: 'ADMIN TESTE',
+          password:
+            '$2b$10$4P9ofTvzLRHdVAtWJr4dAunskgYIgT1QAXePqIWKvL0P7IzhdZX0u', // 123456
+          createdAt: now,
+          updatedAt: now
+        },
+        {
+          nprodam: 'e7654321',
+          admin: false,
+          email: 'usuario@spurbanismo.sp.gov.br',
+          nome: 'USUÁRIO TESTE',
+          password:
+            '$2b$10$4P9ofTvzLRHdVAtWJr4dAunskgYIgT1QAXePqIWKvL0P7IzhdZX0u', // 123456
+          createdAt: now,
+          updatedAt: now
         }
       ],
       {}

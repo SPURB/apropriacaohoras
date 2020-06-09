@@ -3,8 +3,8 @@ describe('Teste de integração para verificar se routers-links estão oks', () 
     cy.login('/admin/equipes')
   })
 
-  const id = 2 // id do usuario para teste
-  const nome = 'MAURÍCIO DANTAS' // nome do usuário do id passado
+  const id = 5 // id do usuario para teste
+  const nome = 'ADMIN TESTE' // nome do usuário do id passado
 
   it('Testar seleção da combobox', () => {
     cy.get('[data-cy=btn__options]').click()
