@@ -10,20 +10,26 @@
     <section class="editar__listar">
       <listar-horas :registro="countHoras" />
     </section>
+
+    <section class="editar__horas">
+      <editar-horas />
+    </section>
   </div>
 </template>
 
 <script>
 import AppHeader from '~/components/AppHeader'
 import ListarHoras from '~/components/ListarHoras'
+import EditarHoras from '~/components/EditarHoras'
 import Lib from '~/libs/'
 import { mapState, mapActions } from 'vuex'
 
 export default {
-  name: 'EditarHoras',
+  name: 'Editar',
   components: {
     AppHeader,
-    ListarHoras
+    ListarHoras,
+    EditarHoras
   },
   computed: {
     ...mapState('editar', {
@@ -51,10 +57,15 @@ export default {
   flex-direction: column;
   width: 100%;
 
+  &__titulo,
+  &__listar,
+  &__horas {    
+    padding: 15px 30px 5px 50px;
+  }
+  
   &__titulo {
     align-items: center;
     display: flex;
-    padding: 15px 30px 5px 50px;
     width: 100%;
 
     h2 {
