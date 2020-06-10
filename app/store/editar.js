@@ -1,4 +1,3 @@
-import Projetos from '@/services/api-projeto'
 import Horas from '@/services/api-horas'
 
 export const state = () => ({
@@ -11,6 +10,19 @@ export const state = () => ({
 })
 
 export const getters = {
+  isValid: (state) => {
+    const registros = state.registros
+    let horas = 0
+    let extras = 0
+
+    registros.map(registro => {
+      horas = horas + registro.horas
+      extras = extras + registro.extras
+    })
+    
+    if (horas <= 8 && extras <= 4) return true
+    return false
+  }
 }
 
 export const actions = {
@@ -40,11 +52,18 @@ export const actions = {
           commit('SET', { key: 'errorMessage', data: err.message })
         }
       })
+  },
+  stateArrayOf ({ commit }, payload) {
+    const { data, key, index } = payload
+    commit('STATE_ARRAYOF', { data, key, index })
   }
 }
 
 export const mutations = {
   SET: (state, { data, key }) => { state[key] = data },
+  STATE_ARRAYOF: (state, { data, key, index }) => {
+    state.registros[index][key] = data
+  },
   RESET: (state) => {
     state.registros = [],
     state.countHoras = [],

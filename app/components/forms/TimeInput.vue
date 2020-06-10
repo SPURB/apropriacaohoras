@@ -2,16 +2,16 @@
   <fieldset class="time-input">
     <label for="horas">{{ titulo }}</label>
     <div class="time-input__main">
-      <button :disabled="value == 1" type="button" @click="denc">-</button>
+      <button :disabled="value == min" type="button" @click="denc">-</button>
       <input
         :value="value"
         class="input-horas"
         type="number"
-        min="1"
-        max="12"
+        :min="min"
+        :max="max"
         ref="hours"
       />
-      <button :disabled="value == 12" type="button" @click="inc">+</button>
+      <button :disabled="value == max" type="button" @click="inc">+</button>
     </div>
   </fieldset>
 </template>
@@ -27,6 +27,14 @@ export default {
   props: {
     titulo: {
       type: String,
+      required: true
+    },
+    min: {
+      type: Number,
+      required: true
+    },
+    max: {
+      type: Number,
       required: true
     },
     valueInit: {

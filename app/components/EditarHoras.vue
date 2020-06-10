@@ -1,22 +1,27 @@
 <template>
   <div class="editar-horas">
-    <div class="editar-horas__main">
+    <form class="editar-horas__main">
       <div class="editar-horas__left">
         <section class="editar-horas__above">
           <custom-select
             :title="'Projetos'"
             :values="projetos"
+            @valueOption="setProjeto"
             ref="projetos"
           />
 
           <time-input
-            @timeInput="getHoras"
+            @timeInput="setHoras"
             :valueInit="registro.horas"
+            :min="1"
+            :max="8"
             :titulo="'Horas'"
           />
           <time-input
-            @timeInput="getHorasExtras"
+            @timeInput="setExtras"
             :valueInit="registro.extras"
+            :min="0"
+            :max="4"
             :titulo="'Extras'"
           />
         </section>
@@ -25,40 +30,66 @@
           <custom-select
             :title="fases.title"
             :values="fases.values"
+            @valueOption="setFase"
             ref="fases"
           />
           <custom-select
             v-if="fases"
             :title="subatividades.title"
             :values="subatividades.values"
+            @valueOption="setSubatividade"
             ref="subatividades"
           />
         </section>
       </div>
 
       <div class="editar-horas__right">
-        <button type="button" class="editar-horas__deletar">
+        <button
+          type="button"
+          class="editar-horas__deletar"
+          @click.prevent="handleDelete"
+        >
           Deletar
         </button>
-        <button type="button" class="editar-horas__salvar">
+        <button
+          type="button"
+          :disabled="!isValid"
+          :class="disabledButton"
+          class="editar-horas__salvar"
+          @click.prevent="handleUpdate"
+        >
           Salvar alterações
         </button>
       </div>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
 import CustomSelect from '~/components/CustomSelect'
 import TimeInput from '~/components/forms/TimeInput'
+import Horas from '~/services/api-horas'
 import Subatividades from '~/services/api-subatividade'
-import { mapGetters, mapState } from 'vuex'
+
+import { mapGetters, mapState, mapActions } from 'vuex'
 
 export default {
   name: 'EditarHoras',
   data () {
     return {
-      subatividades: {}
+      subatividades: {
+        title: '',
+        values: []
+      },
+      modal: {
+        show: false,
+        title: '',
+        error: true,
+        errorAPI: false,
+        description: '',
+        descriptionList: [],
+        actionText: ''
+      }
     }
   },
   props: {
@@ -76,12 +107,28 @@ export default {
     TimeInput
   },
   computed: {
-    ...mapState('form-registrar-horas', {
-      dataSelects: state => state.dataSelects
-    }),
+    ...mapState('form-registrar-horas', ['dataSelects']),
+    ...mapState('usuario', ['token']),
     ...mapGetters('form-registrar-horas', ['projetos']),
+    ...mapGetters('editar', ['isValid']),
+    idregistro () {
+      return this.registro.id
+    },
     fases () {
       return this.dataSelects.find(select => select.title === 'Fases')
+    },
+    horas () {
+      return {
+        horas: this.registro.horas,
+        extras: this.registro.extras,
+        projeto: this.registro.projeto,
+        fase: this.registro.fase,
+        subatividade: this.registro.subatividade
+      }
+    },
+    disabledButton () {
+      if (!this.isValid) return 'disabled'
+      return
     }
   },
   async mounted () {
@@ -91,6 +138,27 @@ export default {
     this.selectField('subatividades', this.registro.subatividade)
   },
   methods: {
+    ...mapActions('editar', ['stateArrayOf']),
+    async handleUpdate () {
+      await Horas.put(this.idregistro, this.horas, this.token)
+        .then(res => {
+          console.log('sucesso: ', res)
+          this.$emit('status', true)
+        })
+        .catch(err => {
+          console.log('erro: ', err)
+        })
+    },
+    async handleDelete () {
+      await Horas.delete(this.idregistro, this.token)
+        .then(res => {
+          console.log('sucesso: ', res)
+          this.$emit('status', true)
+        })
+        .catch(err => {
+          console.log('erro: ', err)
+        })
+    },
     selectField (param, val) {
       let select = this.$refs[param].$el.children[1]
       for (const i in select.options) {
@@ -103,11 +171,41 @@ export default {
         this.subatividades = res.data
       })
     },
-    getHoras (horas) {
-      console.log(horas)
+    setHoras (horas) {
+      this.stateArrayOf({
+        key: 'horas',
+        index: this.index,
+        data: horas
+      })
     },
-    getHorasExtras (extras) {
-      console.log(extras)
+    setExtras (extras) {
+      this.stateArrayOf({
+        key: 'extras',
+        index: this.index,
+        data: extras
+      })
+    },
+    setProjeto (projeto) {
+      this.stateArrayOf({
+        key: 'projeto',
+        index: this.index,
+        data: projeto
+      })
+    },
+    setFase (fase) {
+      this.stateArrayOf({
+        key: 'fase',
+        index: this.index,
+        data: fase
+      })
+      this.getSubatividades(fase)
+    },
+    setSubatividade (subatividade) {
+      this.stateArrayOf({
+        key: 'subatividade',
+        index: this.index,
+        data: subatividade
+      })
     }
   }
 }
@@ -178,6 +276,11 @@ export default {
 
   &__salvar {
     background-color: $verde;
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 }
 </style>

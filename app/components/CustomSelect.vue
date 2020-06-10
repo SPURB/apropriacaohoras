@@ -2,7 +2,7 @@
   <fieldset>
     <label>{{ title }}</label>
     <select
-      @change="setValueOption({ title, value: optionValue })"
+      @change="setValues({ title, value: optionValue })"
       v-model="optionValue"
       :id="idInput"
       :disabled="disabled"
@@ -65,7 +65,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('form-registrar-horas', ['setValueOption'])
+    ...mapActions('form-registrar-horas', ['setValueOption']),
+    setValues (param) {
+      this.$emit('valueOption', param.value)
+      this.setValueOption(param)
+    }
   }
 }
 </script>
