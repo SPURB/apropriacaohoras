@@ -4,7 +4,7 @@
 
     <section class="editar__titulo">
       <h2>Registrar horas</h2>
-      <h3>atualizar {{ formateDate }}</h3>
+      <h3>atualizar {{ data }}</h3>
     </section>
 
     <section class="editar__listar">
@@ -17,6 +17,7 @@
         v-for="(item, index) in registros"
         :registro="item"
         :index="index"
+        @status="getStatus"
       />
     </section>
   </div>
@@ -31,6 +32,11 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'Editar',
+  data () {
+    return {
+      data: ''
+    }
+  },
   components: {
     AppHeader,
     ListarHoras,
@@ -40,17 +46,23 @@ export default {
     ...mapState('editar', {
       registros: state => state.registros,
       countHoras: state => state.countHoras
-    }),
-    formateDate () {
-      const date = Lib.splitDate(this.$route.query.data)
-      return `${date.sDay}/${date.sMonth}/${date.sYear}`
-    }
+    })
   },
   created () {
     this.getRegistros(this.$route.query.data)
   },
+  mounted () {
+    this.formateDate()
+  },
   methods: {
-    ...mapActions('editar', ['getRegistros'])
+    ...mapActions('editar', ['getRegistros']),
+    formateDate () {
+      const date = Lib.splitDate(this.$route.query.data)
+      this.data = `${date.sDay}/${date.sMonth}/${date.sYear}`
+    },
+    getStatus (value) {
+      this.getRegistros(this.$route.query.data)
+    }
   }
 }
 </script>

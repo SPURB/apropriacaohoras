@@ -13,5 +13,19 @@ export default {
 				'authorization': token
 			}
 		})
+  },
+  put: (id, data, token) => {
+    return http.put(`/horas/${id}`, data, {
+			headers: {
+				'authorization': token
+			}
+		})
+  },
+  delete: (id, token) => {
+    return http.delete(`/horas/${id}`, {
+      headers: {
+        'authorization': token
+      }
+    })
   }
 }
