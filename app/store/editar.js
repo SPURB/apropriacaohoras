@@ -20,8 +20,15 @@ export const getters = {
       extras = extras + registro.extras
     })
     
-    if (horas <= 8 && extras <= 4) return true
-    return false
+    if (horas > 8 && extras > 4) {
+      return { message: 'Horas totais ultrapassaram o limite', disabled: false }
+    } else if (extras > 4) {
+      return { message: 'Horas `extras` ultrapassaram o limite', disabled: false }
+    } else if (horas > 8) {
+      return { message: 'Horas `comum` ultrapassaram o limite', disabled: false }
+    } else {
+      return { message: '', disabled: true }
+    }
   }
 }
 
