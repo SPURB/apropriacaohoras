@@ -1,4 +1,4 @@
-module.exports = hora => {
+module.exports = (hora, base) => {
   const horas = require('../controllers/horas.controller.js')
   const router = require('express').Router()
 
@@ -12,5 +12,5 @@ module.exports = hora => {
   router.get('/status/:id/:data', horas.countHoras)
   router.post('/where', horas.findAllWhere)
 
-  hora.use(`/horas`, router)
+  hora.use(`${base}/horas`, router)
 }

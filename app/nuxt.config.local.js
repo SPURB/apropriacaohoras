@@ -13,7 +13,7 @@ export default {
 		middleware: [ 'authenticated' ]
 	},
   env:{
-    apiBase: 'http://localhost:5000'
+    apiBase: 'http://localhost:5000/apropricaohoras/0.0.1'
   },
   plugins: [
     { src: '~/plugins/vuex-persist', ssr: false }

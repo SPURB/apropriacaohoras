@@ -4,7 +4,9 @@ import cors from 'cors'
 import middlewares from './middlewares'
 
 const app = express()
-const version = `v${require('../package.json').version}`
+const { name, version, description, bugs } = require('../package.json')
+
+const basePath = `/${name}/${version}`
 const endpoints = [
   'horas',
   'usuarios',
@@ -22,19 +24,20 @@ app.use(middlewares)
 
 // create endpoints
 endpoints.forEach(endpoint =>
-  require(`./routes/${endpoint}.routes`)(app, version)
+  require(`./routes/${endpoint}.routes`)(app, basePath)
 )
 
-// set port, listen for requests
 const PORT = process.env.PORT || 5000
 
-//set base url with api title, version and endpoints
-app.get('/', (req, res) => {
-  const baseUrl = `${req.protocol}://${req.hostname}:${PORT}`
+app.get(`${basePath}`, (req, res) => {
+  const baseEndpoint = `${req.protocol}://${req.hostname}:${PORT}${basePath}`
   res.json({
-    description: 'API da apropriação de horas',
+    name,
+    description,
     version,
-    endpoints: endpoints.map(endpoint => `${baseUrl}/${endpoint}`)
+    bugs,
+    baseEndpoint,
+    endpoints: endpoints.map(endpoint => `/${endpoint}`),
   })
 })
 
