@@ -2,6 +2,7 @@
   "name": "apropricaohoras",
   "version": "0.0.1",
   "description": "API da apropriação de horas da São Paulo Urbanismo",
+  "bugs": "https://github.com/SPURB/apropriahoras/issues",
   "engines": {
     "node": ">=8.10.0"
   },

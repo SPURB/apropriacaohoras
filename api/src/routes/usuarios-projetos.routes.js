@@ -1,4 +1,4 @@
-module.exports = usuarioProjeto => {
+module.exports = (usuarioProjeto, base) => {
   const usuariosProjetos = require('../controllers/usuarios-projetos.controller.js')
   const router = require('express').Router()
   router.post('/', usuariosProjetos.create)
@@ -6,5 +6,5 @@ module.exports = usuarioProjeto => {
   router.get('/:id', usuariosProjetos.findOne)
   router.put('/:id', usuariosProjetos.update)
   router.delete('/:id', usuariosProjetos.delete)
-  usuarioProjeto.use(`/usuarios-projetos`, router)
+  usuarioProjeto.use(`${base}/usuarios-projetos`, router)
 }

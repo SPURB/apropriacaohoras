@@ -1,4 +1,4 @@
-module.exports = projeto => {
+module.exports = (projeto, base) => {
   const projetos = require('../controllers/projetos.controller.js')
   const router = require('express').Router()
 
@@ -22,5 +22,5 @@ module.exports = projeto => {
     projetos.groupHorasProjetos
   )
 
-  projeto.use(`/projetos`, router)
+  projeto.use(`${base}/projetos`, router)
 }

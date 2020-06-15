@@ -1,4 +1,4 @@
-module.exports = subatividade => {
+module.exports = (subatividade, base) => {
   const subatividades = require('../controllers/subatividades.controller.js')
   const router = require('express').Router()
   router.post('/', subatividades.create)
@@ -6,5 +6,5 @@ module.exports = subatividade => {
   router.get('/:id', subatividades.findOne)
   router.put('/:id', subatividades.update)
   router.delete('/:id', subatividades.delete)
-  subatividade.use(`/subatividades`, router)
+  subatividade.use(`${base}/subatividades`, router)
 }
