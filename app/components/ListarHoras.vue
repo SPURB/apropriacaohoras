@@ -30,12 +30,15 @@
       <router-link
         v-if="showPH && routeHidden"
         class="btn__editar"
+        :style="{
+          backgroundColor: backgroundsEdit(registro.res.type)
+        }"
         tag="div"
         :to="`/editar?data=${this.registro.data}`"
       >
         <i class="icon icon-editar"></i>
       </router-link>
-      <div></div>
+
       <div class="hora">{{ totalHoras }}h</div>
     </section>
 
@@ -54,9 +57,20 @@
           </li>
         </ul>
       </div>
-      <div class="hora">
-        {{ totalExtras }}
-      </div>
+
+      <router-link
+        v-if="showPE && routeHidden"
+        class="btn__editar"
+        :style="{
+          backgroundColor: backgroundsEdit(registro.res.type)
+        }"
+        tag="div"
+        :to="`/editar?data=${this.registro.data}`"
+      >
+        <i class="icon icon-editar"></i>
+      </router-link>
+
+      <div class="hora">{{ totalExtras }}h</div>
     </section>
   </div>
 </template>
@@ -135,6 +149,18 @@ export default {
         }
       }
     },
+    backgroundsEdit (classe) {
+      switch (classe) {
+        case 'warning':
+          return '#FF9A20'
+          break
+        case 'success':
+          return '#007165'
+        default:
+          return '#0CAF9E'
+          break
+      }
+    },
     backgrounds (classe) {
       switch (classe) {
         case 'warning':
@@ -156,6 +182,7 @@ export default {
   width: 100%;
   padding: 10px;
   margin-bottom: 5px;
+
   &__projetos-item {
     opacity: 0;
     transition: opacity 0.3s ease-in;
@@ -195,7 +222,6 @@ export default {
     }
     .btn__editar {
       align-items: center;
-      background-color: #ff9a20;
       display: flex;
       justify-content: center;
       height: 100%;

@@ -2,6 +2,16 @@
   <div class="editar">
     <app-header />
 
+    <modal
+      v-if="modal.show"
+      class="registrar__modal"
+      :title="modal.title"
+      :error="modal.error"
+      :description="modal.description"
+      :action-text="modal.actionText"
+      @setModalAction="modal.show = !modal.show"
+    />
+
     <section class="editar__titulo">
       <h2>Registrar horas</h2>
       <h3>atualizar {{ data }}</h3>
@@ -24,6 +34,7 @@
 </template>
 
 <script>
+import Modal from '~/components/Modal'
 import AppHeader from '~/components/AppHeader'
 import ListarHoras from '~/components/ListarHoras'
 import EditarHoras from '~/components/EditarHoras'
@@ -34,10 +45,20 @@ export default {
   name: 'Editar',
   data () {
     return {
-      data: ''
+      data: '',
+      modal: {
+        show: false,
+        title: '',
+        error: true,
+        errorAPI: false,
+        description: '',
+        descriptionList: [],
+        actionText: ''
+      }
     }
   },
   components: {
+    Modal,
     AppHeader,
     ListarHoras,
     EditarHoras
@@ -62,6 +83,11 @@ export default {
     },
     getStatus (value) {
       this.getRegistros(this.$route.query.data)
+      this.modal.title = value.title
+      this.modal.description = value.description
+      this.modal.actionText = value.actionText
+      this.modal.error = value.error
+      this.modal.show = true
     }
   }
 }
@@ -96,6 +122,27 @@ export default {
       margin: 7px 7px -2px 7px;
       height: 20px;
       width: 3px;
+    }
+  }
+
+  @media (max-width: $tablet) {
+    &__titulo,
+    &__listar,
+    &__horas {
+      padding: 15px 10px 5px 10px;
+    }
+
+    &__titulo {
+      flex-direction: column;
+      align-items: flex-start;
+      h2,
+      h3 {
+        margin-bottom: 0;
+      }
+
+      h3 {
+        margin-top: 5px;
+      }
     }
   }
 }

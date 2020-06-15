@@ -53,13 +53,16 @@
         </button>
         <button
           type="button"
-          :disabled="!isValid"
+          :disabled="!valid"
           :class="disabledButton"
           class="editar-horas__salvar"
           @click.prevent="handleUpdate"
         >
           Salvar alterações
         </button>
+        <div class="editar-horas__popover" v-if="!isValid.disabled">
+          {{ isValid.message }}
+        </div>
       </div>
     </form>
   </div>
@@ -80,15 +83,6 @@ export default {
       subatividades: {
         title: '',
         values: []
-      },
-      modal: {
-        show: false,
-        title: '',
-        error: true,
-        errorAPI: false,
-        description: '',
-        descriptionList: [],
-        actionText: ''
       }
     }
   },
@@ -126,8 +120,14 @@ export default {
         subatividade: this.registro.subatividade
       }
     },
+    valid () {
+      if (this.horas.subatividade == 0) return false
+      if (this.horas.subatividade > 0 && this.isValid.disabled) return true
+    },
     disabledButton () {
-      if (!this.isValid) return 'disabled'
+      if (this.horas.subatividade == 0) return 'disabled'
+      if (this.horas.subatividade != 0 && !this.isValid.disabled)
+        return 'disabled'
       return
     }
   },
@@ -142,21 +142,39 @@ export default {
     async handleUpdate () {
       await Horas.put(this.idregistro, this.horas, this.token)
         .then(res => {
-          console.log('sucesso: ', res)
-          this.$emit('status', true)
+          this.$emit('status', {
+            title: 'Sucesso!',
+            description: 'Horas atualizadas',
+            actionText: 'Voltar',
+            error: false
+          })
         })
         .catch(err => {
-          console.log('erro: ', err)
+          this.$emit('status', {
+            title: 'Erro!',
+            description: 'Ocorreu algum erro.',
+            actionText: 'Tente novamente',
+            error: true
+          })
         })
     },
     async handleDelete () {
       await Horas.delete(this.idregistro, this.token)
         .then(res => {
-          console.log('sucesso: ', res)
-          this.$emit('status', true)
+          this.$emit('status', {
+            title: 'Sucesso!',
+            description: 'Horas removidas',
+            actionText: 'Voltar',
+            error: false
+          })
         })
         .catch(err => {
-          console.log('erro: ', err)
+          this.$emit('status', {
+            title: 'Erro!',
+            description: 'Ocorreu algum erro.',
+            actionText: 'Tente novamente',
+            error: true
+          })
         })
     },
     selectField (param, val) {
@@ -198,6 +216,7 @@ export default {
         index: this.index,
         data: fase
       })
+      this.horas.subatividade = 0
       this.getSubatividades(fase)
     },
     setSubatividade (subatividade) {
@@ -219,7 +238,7 @@ export default {
 
   &__main {
     display: flex;
-    widows: 100%;
+    width: 100%;
   }
 
   &::after {
@@ -249,6 +268,8 @@ export default {
     margin-top: 15px;
 
     fieldset {
+      width: 50%;
+
       &:first-child {
         margin-right: 8px;
       }
@@ -280,6 +301,43 @@ export default {
     &.disabled {
       opacity: 0.5;
       cursor: not-allowed;
+    }
+
+    &:hover ~ .editar-horas__popover {
+      transition: ease-in-out;
+      display: block;
+    }
+  }
+
+  &__popover {
+    background-color: #fff;
+    border: 1px solid red;
+    border-radius: 3px;
+    display: none;
+    color: #000;
+    margin-top: 55px;
+    margin-left: 50px;
+    width: 11%;
+    font-size: 10pt;
+    position: absolute;
+    padding: 5px;
+  }
+
+  @media (max-width: $tablet) {
+    &__main {
+      flex-direction: column;
+    }
+    &__above,
+    &__below {
+      flex-direction: column;
+    }
+    &__below fieldset {
+      width: 100% !important;
+    }
+
+    &__right {
+      margin-top: 10px;
+      width: 100%;
     }
   }
 }

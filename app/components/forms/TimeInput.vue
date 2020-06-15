@@ -75,6 +75,8 @@ export default {
   &__main {
     background-color: rgba(255, 255, 255, 0.08);
     border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
     padding: 8px;
 
     button {
