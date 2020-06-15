@@ -62,7 +62,7 @@
         v-if="showPE && routeHidden"
         class="btn__editar"
         :style="{
-          backgroundColor: backgroundsEdit(registro.res.type)
+          backgroundColor: '#0CAF9E'
         }"
         tag="div"
         :to="`/editar?data=${this.registro.data}`"
@@ -157,7 +157,6 @@ export default {
         case 'success':
           return '#007165'
         default:
-          return '#0CAF9E'
           break
       }
     },

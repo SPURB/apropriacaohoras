@@ -251,6 +251,9 @@ export default {
     width: 100%;
   }
 
+  &__left {
+    width: 70%;
+  }
   &__right {
     display: flex;
     align-items: center;
@@ -335,6 +338,9 @@ export default {
       width: 100% !important;
     }
 
+    &__left {
+      width: 100%;
+    }
     &__right {
       margin-top: 10px;
       width: 100%;
