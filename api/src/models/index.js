@@ -22,13 +22,16 @@ const db = {}
 
 db.usuarios = require('./usuarios.model.js')(sequelize, Sequelize)
 db.authtokens = require('./authtokens.model.js')(sequelize, Sequelize)
-db.projetos = require('./projetos.model.js')(sequelize, Sequelize)
+
+db.grupos = require('./grupos.model.js')(sequelize, Sequelize)
+db.projetos = require('./projetos.model.js')(sequelize, Sequelize, db.grupos)
+
 db.usuarios_projetos = require('./usuarios-projetos.model.js')(
   sequelize,
   Sequelize,
   db
 )
-db.fases = require('./fases.model.js')(sequelize, Sequelize)
+db.fases = require('./fases.model.js')(sequelize, Sequelize, db.grupos)
 db.subatividades = require('./subatividades.model.js')(
   sequelize,
   Sequelize,

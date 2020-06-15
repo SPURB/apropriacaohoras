@@ -3,9 +3,9 @@ const Subatividade = db.subatividades
 const dao = require('./dao')
 
 exports.create = (req, res) => {
-  if (!req.body.nome) {
+  if (!req.body.nome || !req.body.fase) {
     res.status(400).send({
-      message: 'Inclua um nome na requisição'
+      message: 'Inclua um nome e/ou fase na requisição'
     })
     return
   }

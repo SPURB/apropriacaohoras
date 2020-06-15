@@ -1,0 +1,448 @@
+[
+  {
+    "name": "apropriacahoras",
+    "folders": [],
+    "requests": [
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1",
+        "method": "GET",
+        "auth": "None",
+        "httpUser": "",
+        "httpPassword": "",
+        "passwordFieldType": "password",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"email\": \"teste@teste.com\", \"password\":\"123456\"}",
+        "rawInput": true,
+        "contentType": "",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "index",
+        "collection": 1,
+        "label": ""
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/grupos",
+        "method": "GET",
+        "auth": "Basic Auth",
+        "httpUser": "authrorization",
+        "httpPassword": "HBEYQgx79FeN0eS",
+        "passwordFieldType": "text",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"nome\": \"teste\", \"descricao\":\"asdqwewee\"}",
+        "rawInput": true,
+        "contentType": "",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "grupos",
+        "collection": 1,
+        "label": ""
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/horas",
+        "method": "GET",
+        "auth": "None",
+        "httpUser": "",
+        "httpPassword": "",
+        "passwordFieldType": "password",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"email\": \"teste@teste.com\", \"password\":\"123456\"}",
+        "rawInput": true,
+        "contentType": "",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "horas",
+        "collection": 1,
+        "label": ""
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/subatividades",
+        "method": "GET",
+        "auth": "None",
+        "httpUser": "",
+        "httpPassword": "",
+        "passwordFieldType": "password",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"email\": \"teste@teste.com\", \"password\":\"123456\"}",
+        "rawInput": true,
+        "contentType": "",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "subatividades",
+        "collection": 1,
+        "label": ""
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/usuarios-projetos",
+        "method": "GET",
+        "auth": "None",
+        "httpUser": "",
+        "httpPassword": "",
+        "passwordFieldType": "password",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"email\": \"teste@teste.com\", \"password\":\"123456\"}",
+        "rawInput": true,
+        "contentType": "",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "usuários-projetos",
+        "collection": 1,
+        "label": ""
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/usuarios/login",
+        "method": "POST",
+        "auth": "None",
+        "httpUser": "",
+        "httpPassword": "",
+        "passwordFieldType": "password",
+        "bearerToken": "",
+        "headers": [],
+        "params": [],
+        "bodyParams": [],
+        "rawParams": "{\"email\": \"admin@spurbanismo.sp.gov.br\", \"password\": \"123456\"}",
+        "rawInput": true,
+        "contentType": "application/json",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "usuários/login",
+        "collection": 0,
+        "label": "usuarios/login"
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/usuarios",
+        "method": "GET",
+        "auth": "None",
+        "httpUser": "",
+        "httpPassword": "",
+        "passwordFieldType": "password",
+        "bearerToken": "",
+        "headers": [],
+        "params": [],
+        "bodyParams": [],
+        "rawParams": "",
+        "rawInput": true,
+        "contentType": "",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "usuários",
+        "collection": 0,
+        "label": ""
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/grupos",
+        "method": "POST",
+        "auth": "None",
+        "httpUser": "authrorization",
+        "httpPassword": "HBEYQgx79FeN0eS",
+        "passwordFieldType": "text",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"nome\": \"teste\", \"descricao\":\"asdqwewee\"}",
+        "rawInput": true,
+        "contentType": "application/json",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "grupos | POST",
+        "collection": 0,
+        "label": "grupos | POST"
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/projetos",
+        "method": "GET",
+        "auth": "None",
+        "httpUser": "authrorization",
+        "httpPassword": "HBEYQgx79FeN0eS",
+        "passwordFieldType": "text",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"nome\": \"teste\", \"descricao\":\"asdqwewee\"}",
+        "rawInput": true,
+        "contentType": "",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "projetos",
+        "collection": 0,
+        "label": "grupos | POST"
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/fases",
+        "method": "GET",
+        "auth": "None",
+        "httpUser": "",
+        "httpPassword": "",
+        "passwordFieldType": "password",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"email\": \"teste@teste.com\", \"password\":\"123456\"}",
+        "rawInput": true,
+        "contentType": "",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "fases",
+        "collection": 0,
+        "label": "fases"
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/fases",
+        "method": "POST",
+        "auth": "None",
+        "httpUser": "",
+        "httpPassword": "",
+        "passwordFieldType": "password",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"nome\": \"teste\", \"grupos\": 3}",
+        "rawInput": true,
+        "contentType": "application/json",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "fases | POST",
+        "collection": 0,
+        "label": "fases | POST"
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/projetos",
+        "method": "POST",
+        "auth": "None",
+        "httpUser": "authrorization",
+        "httpPassword": "HBEYQgx79FeN0eS",
+        "passwordFieldType": "text",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"nome\": \"teste\", \"grupo\": 3, \"ativo\": true }",
+        "rawInput": true,
+        "contentType": "application/json",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "projetos | POST",
+        "collection": 0,
+        "label": "projetos | POST"
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/grupos",
+        "method": "POST",
+        "auth": "None",
+        "httpUser": "authrorization",
+        "httpPassword": "HBEYQgx79FeN0eS",
+        "passwordFieldType": "text",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "sD79Fjl51fNNIlB"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"nome\": \"teste\", \"descricao\":\"asdqwewee\"}",
+        "rawInput": true,
+        "contentType": "application/json",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "grupos | POST",
+        "collection": 0,
+        "label": "grupos | POST"
+      }
+    ]
+  }
+]

@@ -13,7 +13,7 @@ export default {
 		middleware: [ 'authenticated' ]
   },
   env:{
-    apiBase: 'https://apropriacaohoras.herokuapp.com/apropricaohoras/0.0.1'
+    apiBase: 'https://apropriacaohoras.herokuapp.com/apropriacaohoras/0.0.1'
   },
   plugins: [
     { src: '~/plugins/vuex-persist', ssr: false }
