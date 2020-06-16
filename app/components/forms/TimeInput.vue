@@ -1,7 +1,7 @@
 <template>
   <fieldset class="time-input">
     <label for="horas">{{ titulo }}</label>
-    <div class="time-input__main">
+    <div class="time-input__main" :class="disabledClass">
       <button :disabled="value == min" type="button" @click="denc">-</button>
       <input
         :value="value"
@@ -11,7 +11,7 @@
         :max="max"
         ref="hours"
       />
-      <button :disabled="value == max" type="button" @click="inc">+</button>
+      <button :disabled="disabledButtonPlus" type="button" @click="inc">+</button>
     </div>
   </fieldset>
 </template>
@@ -29,6 +29,11 @@ export default {
       type: String,
       required: true
     },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
     min: {
       type: Number,
       required: true
@@ -40,6 +45,21 @@ export default {
     valueInit: {
       type: Number,
       required: true
+    }
+  },
+  computed: {
+    disabledClass () {
+      if (this.disabled) return 'disabled'
+      return ''
+    },
+    disabledButtonPlus () {
+      if (this.value == this.max && this.disabled) {
+        return true
+      } else if (this.value == this.max) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   mounted () {
@@ -78,6 +98,11 @@ export default {
     display: flex;
     justify-content: space-between;
     padding: 8px;
+
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
 
     button {
       background-color: #008375;

@@ -112,8 +112,8 @@ export default {
       return true
     }
   },
-  mounted () {
-    this.formateDate()
+  created () {
+    this.formateDate()    
   },
   methods: {
     formateDate () {

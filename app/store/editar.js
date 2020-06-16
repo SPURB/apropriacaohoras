@@ -29,6 +29,18 @@ export const getters = {
     } else {
       return { message: '', disabled: true }
     }
+  },
+  disabled: (state) => {
+    let registros = state.registros
+    let horas = 0
+
+    registros.map(registro => horas = horas + registro.horas)
+
+    if (horas < 8) {
+      return true
+    } else {
+      return false
+    }
   }
 }
 

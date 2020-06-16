@@ -19,6 +19,7 @@
           />
           <time-input
             @timeInput="setExtras"
+            :disabled="disabled"
             :valueInit="registro.extras"
             :min="0"
             :max="4"
@@ -104,7 +105,7 @@ export default {
     ...mapState('form-registrar-horas', ['dataSelects']),
     ...mapState('usuario', ['token']),
     ...mapGetters('form-registrar-horas', ['projetos']),
-    ...mapGetters('editar', ['isValid']),
+    ...mapGetters('editar', ['isValid', 'disabled']),
     idregistro () {
       return this.registro.id
     },
@@ -126,9 +127,8 @@ export default {
     },
     disabledButton () {
       if (this.horas.subatividade == 0) return 'disabled'
-      if (this.horas.subatividade != 0 && !this.isValid.disabled)
-        return 'disabled'
-      return
+      if (this.horas.subatividade != 0 && !this.isValid.disabled) return 'disabled'
+      return ''
     }
   },
   async mounted () {

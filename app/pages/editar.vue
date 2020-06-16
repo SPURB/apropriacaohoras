@@ -77,6 +77,7 @@ export default {
   },
   mounted () {
     this.getRegistros(this.$route.query.data)
+    console.log(this.registros)
   },
   methods: {
     ...mapActions('editar', ['getRegistros']),
