@@ -1,7 +1,7 @@
 <template>
   <div class="show-horas">
     <section class="grupo__barra horas">
-      <div class="data">{{ formateDate }}</div>
+      <div class="data">{{ data }}</div>
       <div
         class="bar bar__horas"
         @click="showPH = !showPH"
@@ -89,14 +89,11 @@ export default {
     return {
       showPH: false, // Prop que cuida do show dos projetos com horas
       showPE: false, // Prop que cuida do show dos projetos com horas extras
-      valuesDate: []
+      valuesDate: [],
+      data: ''
     }
   },
   computed: {
-    formateDate () {
-      const date = Lib.splitDate(this.registro.data)
-      return `${date.sDay}/${date.sMonth}`
-    },
     totalHoras () {
       return this.registro.res.horas.total
     },
@@ -115,7 +112,14 @@ export default {
       return true
     }
   },
+  created () {
+    this.formateDate()    
+  },
   methods: {
+    formateDate () {
+      const date = Lib.splitDate(this.registro.data)
+      this.data = `${date.sDay}/${date.sMonth}`
+    },
     customWidths (etapa, horas) {
       if (etapa === 1) {
         switch (horas) {

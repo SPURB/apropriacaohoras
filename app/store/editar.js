@@ -11,7 +11,7 @@ export const state = () => ({
 
 export const getters = {
   isValid: (state) => {
-    const registros = state.registros
+    let registros = state.registros
     let horas = 0
     let extras = 0
 

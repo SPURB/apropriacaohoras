@@ -84,11 +84,8 @@ export default {
       this.userMenuState = false
     },
     userMenuState (state) {
-      if (state) {
-        document.body.style.overflow = 'hidden'
-        return
-      }
-      document.body.style.overflow = 'auto'
+      if (state) return true
+      return false
     }
   },
   methods: {

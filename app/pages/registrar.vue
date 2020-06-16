@@ -226,6 +226,7 @@ export default {
   },
   created () {
     this.addData()
+    this.RESET_CALENDARIO()
   },
   methods: {
     ...mapActions('form-registrar-horas', [
@@ -237,7 +238,8 @@ export default {
     ...mapActions('usuario', ['filterProjetos']),
     ...mapMutations('form-registrar-horas', [
       'setValidationForm',
-      'TOGGLE_CALENDARIO_STATUS'
+      'TOGGLE_CALENDARIO_STATUS',      
+      'RESET_CALENDARIO'
     ]),
     resetSelectBox (ref) {
       let select = document.querySelector(`#${ref}`)

@@ -34,11 +34,11 @@
 </template>
 
 <script>
+import Lib from '~/libs/'
 import Modal from '~/components/Modal'
 import AppHeader from '~/components/AppHeader'
 import ListarHoras from '~/components/ListarHoras'
 import EditarHoras from '~/components/EditarHoras'
-import Lib from '~/libs/'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -69,10 +69,10 @@ export default {
       countHoras: state => state.countHoras
     })
   },
-  created () {
+  mounted() {
     this.getRegistros(this.$route.query.data)
   },
-  mounted () {
+  created () {
     this.formateDate()
   },
   methods: {
