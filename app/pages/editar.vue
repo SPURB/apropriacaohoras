@@ -13,7 +13,9 @@
     />
 
     <section class="editar__titulo">
-      <h2>Registrar horas</h2>
+      <router-link tag="h2" to="/registrar">
+        Registrar hora
+      </router-link>
       <h3>atualizar {{ data }}</h3>
     </section>
 
@@ -39,7 +41,7 @@ import Modal from '~/components/Modal'
 import AppHeader from '~/components/AppHeader'
 import ListarHoras from '~/components/ListarHoras'
 import EditarHoras from '~/components/EditarHoras'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'Editar',
@@ -69,14 +71,16 @@ export default {
       countHoras: state => state.countHoras
     })
   },
-  mounted() {
-    this.getRegistros(this.$route.query.data)
-  },
   created () {
+    this.RESET_REGISTROS()
     this.formateDate()
+  },
+  mounted () {
+    this.getRegistros(this.$route.query.data)
   },
   methods: {
     ...mapActions('editar', ['getRegistros']),
+    ...mapMutations('editar', ['RESET_REGISTROS']),
     formateDate () {
       const date = Lib.splitDate(this.$route.query.data)
       this.data = `${date.sDay}/${date.sMonth}/${date.sYear}`
@@ -113,6 +117,11 @@ export default {
 
     h2 {
       @include color-white-alpha(0.8);
+
+      &:hover {
+        @include color-white-alpha(1);
+        cursor: pointer;
+      }
     }
 
     h3:before {

@@ -71,6 +71,9 @@ export const mutations = {
   STATE_ARRAYOF: (state, { data, key, index }) => {
     state.registros[index][key] = data
   },
+  RESET_REGISTROS: (state) => {
+    state.registros = []
+  },
   RESET: (state) => {
     state.registros = [],
     state.countHoras = [],

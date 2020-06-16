@@ -126,7 +126,9 @@ export default {
     },
     disabledButton () {
       if (this.horas.subatividade == 0) return 'disabled'
-      if (this.horas.subatividade != 0 && !this.isValid.disabled) return 'disabled'
+      if (this.horas.subatividade != 0 && !this.isValid.disabled)
+        return 'disabled'
+      return
     }
   },
   async mounted () {
