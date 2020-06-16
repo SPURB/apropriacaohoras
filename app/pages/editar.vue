@@ -9,7 +9,7 @@
       :error="modal.error"
       :description="modal.description"
       :action-text="modal.actionText"
-      @setModalAction="modal.show = !modal.show"
+      @setModalAction="backToRegistrar"
     />
 
     <section class="editar__titulo">
@@ -92,6 +92,9 @@ export default {
       this.modal.actionText = value.actionText
       this.modal.error = value.error
       this.modal.show = true
+    },
+    backToRegistrar () {
+      this.$router.push('/registrar')
     }
   }
 }
