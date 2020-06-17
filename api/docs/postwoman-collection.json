@@ -311,7 +311,7 @@
         "headers": [
           {
             "key": "Authorization",
-            "value": "sD79Fjl51fNNIlB"
+            "value": "q4jjYSnGLdNKOjV"
           }
         ],
         "params": [],
@@ -347,7 +347,7 @@
         "headers": [
           {
             "key": "Authorization",
-            "value": "sD79Fjl51fNNIlB"
+            "value": "q4jjYSnGLdNKOjV"
           }
         ],
         "params": [],
@@ -383,7 +383,7 @@
         "headers": [
           {
             "key": "Authorization",
-            "value": "sD79Fjl51fNNIlB"
+            "value": "q4jjYSnGLdNKOjV"
           }
         ],
         "params": [],
@@ -419,7 +419,7 @@
         "headers": [
           {
             "key": "Authorization",
-            "value": "sD79Fjl51fNNIlB"
+            "value": "bAqc8HlK2cPRnbj"
           }
         ],
         "params": [],
@@ -442,6 +442,42 @@
         "name": "grupos | POST",
         "collection": 0,
         "label": "grupos | POST"
+      },
+      {
+        "url": "http://localhost:5000",
+        "path": "/apropriacaohoras/0.0.1/grupos/4",
+        "method": "PUT",
+        "auth": "None",
+        "httpUser": "authrorization",
+        "httpPassword": "HBEYQgx79FeN0eS",
+        "passwordFieldType": "text",
+        "bearerToken": "",
+        "headers": [
+          {
+            "key": "Authorization",
+            "value": "bAqc8HlK2cPRnbj"
+          }
+        ],
+        "params": [],
+        "bodyParams": [
+          {
+            "key": "email",
+            "value": "teste@teste.com"
+          },
+          {
+            "key": "password",
+            "value": "123456"
+          }
+        ],
+        "rawParams": "{\"nome\": \"RH\", \"descricao\":\"Férias, dias abonados\"}",
+        "rawInput": true,
+        "contentType": "application/json",
+        "requestType": "",
+        "preRequestScript": null,
+        "testScript": null,
+        "name": "grupos | PUT",
+        "collection": 0,
+        "label": "grupos | PUT"
       }
     ]
   }

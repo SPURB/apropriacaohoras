@@ -1,19 +1,42 @@
 <template>
   <div class="admin-grupos">
+    <modal
+      class="admin-grupos__modal"
+      v-if="modal.display"
+      :title="modal.title"
+      :error="modal.error"
+      :description="modal.description"
+      :action-description="modal.actionDescription"
+      :action-text="modal.actionText"
+      @setModalAction="modal.action"
+    />
     <div class="row">
       <div class="column">
         <h3>Grupos de projetos</h3>
         <p>Selecione ou crie um grupo de projetos</p>
-        <voltar :to="'/admin'" />
-        <ul>
-          <li v-for="grupo in grupos" :key="grupo.id">
+        <voltar class="admin-grupos__voltar" :to="'/admin'" />
+        <ul class="admin-grupos__cards">
+          <li
+            v-for="grupo in grupos"
+            class="admin-grupos__card"
+            :key="grupo.id"
+          >
             <card-horizontal
-              :to="`/admin/projetos?grupo=${grupo.id}`"
+              :to="
+                `/admin/projetos?grupo=${grupo.id}&grupoName=${grupo.nome}&grupoDescription=${grupo.descricao}`
+              "
               :title="grupo.nome"
               :subtitle="grupo.descricao"
             />
           </li>
         </ul>
+        <input-create
+          title="Criar grupo de projetos"
+          description="Título"
+          :addMetaDescription="true"
+          metaDescriptioinLabel="Descrição"
+          @setValue="createGrupo"
+        />
       </div>
     </div>
   </div>
@@ -22,18 +45,47 @@
 import { mapActions, mapState } from 'vuex'
 import Voltar from '~/components/router-links/Voltar'
 import CardHorizontal from '~/components/router-links/CardHorizontal'
+import InputCreate from '~/components/forms/InputCreate'
+import Modal from '~/components/Modal'
+
 export default {
   name: 'Grupos',
   layout: 'admin',
   components: {
     Voltar,
-    CardHorizontal
+    CardHorizontal,
+    InputCreate,
+    Modal
   },
   computed: {
-    ...mapState('admin/grupos', [ 'grupos', 'fetching', 'error', 'message' ])
+    ...mapState('admin/grupos', [
+      'grupos',
+      'fetching',
+      'error',
+      'success',
+      'message'
+    ]),
+    modal () {
+      return {
+        display: this.error || this.success,
+        title: this.success ? 'Grupo criado' : 'Erro',
+        error: this.error,
+        description: this.message,
+        actionDescription: this.error ? 'Faça o login novamente' : '',
+        actionText: this.success ? '' : 'Tentar novamente',
+        action: () => {
+          this.error ? this.resetAsync() : this.reset()
+          this.getGrupos()
+        }
+      }
+    }
   },
   methods: {
-    ...mapActions('admin/grupos', ['getGrupos'])
+    ...mapActions('usuario', ['resetAsync']),
+    ...mapActions('admin/grupos', ['getGrupos', 'setGrupo', 'reset']),
+    createGrupo ({ input, meta }) {
+      this.setGrupo({ nome: input, descricao: meta })
+    }
   },
   created () {
     this.getGrupos()
@@ -43,7 +95,34 @@ export default {
 <style lang="scss" scoped>
 p,
 h3 {
-  padding: 0;
+  padding: 0.25rem;
   margin: 0;
+}
+
+.admin-grupos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: $desktop;
+  margin: 3rem auto 0;
+  &__modal {
+    top: 0;
+  }
+  &__voltar {
+    margin: 2rem 0 1rem;
+  }
+  &__cards {
+    text-decoration: none;
+    list-style: none;
+    padding: 0;
+  }
+  &__card {
+    margin-bottom: 1rem;
+  }
+  @media screen {
+    @media (max-width: $desktop) {
+      max-width: 90%;
+    }
+  }
 }
 </style>

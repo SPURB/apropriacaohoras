@@ -39,10 +39,10 @@ export default {
   background: #fff;
   display: flex;
   border-radius: 12px;
-  padding: 1.25rem 1.25rem 1.25rem 1rem;
+  padding: 1.5rem 1.25rem 1.5rem 1rem;
   font-family: $grot;
   text-decoration: none;
-  line-height: 2;
+  line-height: 1.62;
   border-left: $verde solid 12px;
   cursor: pointer;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.24);
@@ -54,16 +54,18 @@ export default {
   &__title {
     color: $preto;
     font-weight: 700;
-    padding-left: 0.42rem;
+    // padding-left: 0.42rem;
   }
   &__subtitle {
     display: flex;
     flex-direction: row;
     align-items: center;
     color: $cinza1;
+
     .icon {
       color: $verde;
       font-size: 26px;
+      margin-left: -0.42rem
     }
   }
   &:hover {

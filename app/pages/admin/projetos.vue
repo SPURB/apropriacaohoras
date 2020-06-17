@@ -13,6 +13,8 @@
 
     <div class="row">
       <div class="column">
+        <h3 class="projetos__group-title">{{ grupoName }}</h3>
+        <p class="projetos__group-description">{{ grupoDescription }}</p>
         <nav class="nav">
           <h2 class="nav__title">
             {{ currentStep }}
@@ -93,7 +95,9 @@ export default {
   data () {
     return {
       goBackHover: false,
-      pageTitle: 'Projetos'
+      pageTitle: 'Projetos',
+      grupoName: '',
+      grupoDescription: ''
     }
   },
   components: {
@@ -214,16 +218,16 @@ export default {
           } else if (this.success && this.currentStep === 'Subatividades') {
             this.getSubatividades(this.idFase)
           }
-
           this.reset()
         }
       }
     },
     goBack () {
-      if (this.currentStep === 'Subatividades')
+      if (this.currentStep === 'Subatividades') {
         return `/admin/projetos?projeto=${this.idProjeto}&grupo=${this.idGrupo}`
-      if (this.currentStep === 'Fases') return `/admin/projetos?grupo=${this.idGrupo}`
-      if (this.currentStep === 'Projetos') {
+      } else if (this.currentStep === 'Fases') {
+        return `/admin/projetos?grupo=${this.idGrupo}`
+      } else if (this.currentStep === 'Projetos') {
         return `/admin/grupos`
       } else {
         this.$router.go(-1)
@@ -263,7 +267,10 @@ export default {
     },
     setFormValue (nome) {
       const table = this.currentStep.toLowerCase()
-      const data = table === 'subatividades' ? { fase: this.idFase, nome } : { nome, grupo: this.idGrupo }
+      const data =
+        table === 'subatividades'
+          ? { fase: this.idFase, nome }
+          : { nome, grupo: this.idGrupo }
 
       this.postTableItem({ table, data })
     },
@@ -275,6 +282,10 @@ export default {
     }
   },
   created () {
+    const { grupoName, grupoDescription } = this.$route.query
+    this.grupoName = grupoName
+    this.grupoDescription = grupoDescription
+
     this.getProjetos(this.idGrupo)
     this.getFases(this.idGrupo)
   }
@@ -288,6 +299,12 @@ export default {
   &__modal {
     top: 0;
   }
+  p,
+  h3 {
+    padding: 0.25rem;
+    margin: 0;
+  }
+
   @media screen {
     @media (max-width: $desktop) {
       max-width: 90%;
@@ -298,7 +315,7 @@ export default {
 
 .row {
   max-width: $desktop;
-  margin: auto;
+  margin: 3rem auto;
 }
 
 .nav {
