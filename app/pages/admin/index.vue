@@ -9,10 +9,10 @@
         data-cy="card__router__equipe"
       />
       <card-router
-        to="/admin/projetos"
+        to="/admin/grupos"
         title="Projetos"
         subtitle-icon-class="icon icon-editar"
-        subtitle="Criar projetos, etapas e subetapas"
+        subtitle="Criar grupos, projetos, etapas e subetapas"
         data-cy="card__router__projetos"
       />
       <card-router
@@ -37,11 +37,6 @@ export default {
     ...mapState({
       admin: state => state.usuario.admin
     })
-  },
-  methods: {
-    closeEvent () {
-      console.log('aoa')
-    }
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <router-link class="voltar" tag='button' :to="to">
+  <router-link class="voltar" tag="button" :to="to">
     <i class="icon icon-abrir_esquerda"></i>
     Voltar
   </router-link>
@@ -15,7 +15,7 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .voltar {
   display: flex;
   align-items: center;

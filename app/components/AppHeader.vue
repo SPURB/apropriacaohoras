@@ -24,7 +24,7 @@
             <span>Equipes</span>
           </nuxt-link>
 
-          <nuxt-link to="/admin/projetos" tag="li" class="class-user-info">
+          <nuxt-link to="/admin/grupos" tag="li" class="class-user-info">
             <i class="icon icon-editar"></i>
             <span>Projetos</span>
           </nuxt-link>

@@ -30,7 +30,7 @@
               <router-link
                 class="nav__breadcrumb--link"
                 :class="{ 'nav__breadcrumb--not-allowed': false }"
-                :to="{ path: '/admin/projetos' }"
+                :to="{ path: '/admin/projetos', query: { grupo: idGrupo } }"
                 >Projetos<i class="icon icon-abrir_direita"></i
               ></router-link>
             </li>
@@ -38,7 +38,7 @@
               <router-link
                 class="nav__breadcrumb--link"
                 :class="{ 'nav__breadcrumb--not-allowed': idFase < 0 }"
-                :to="{ query: { projeto: idProjeto } }"
+                :to="{ query: { projeto: idProjeto, grupo: idGrupo } }"
                 >Fases <i class="icon icon-abrir_direita"></i
               ></router-link>
             </li>
@@ -103,8 +103,8 @@ export default {
     Voltar
   },
   computed: {
-    ...mapGetters('admin/equipes', ['projetos']),
     ...mapState('admin/projetos', [
+      'projetos',
       'subatividades',
       'error',
       'type',
@@ -119,7 +119,7 @@ export default {
     projetosRoutes () {
       return this.projetos.map(projeto => {
         return {
-          to: { query: { projeto: projeto.id } },
+          to: { query: { projeto: projeto.id, grupo: this.idGrupo } },
           title: projeto.nome
         }
       })
@@ -133,7 +133,8 @@ export default {
           to: {
             query: {
               projeto: this.idProjeto,
-              fase: fase.id
+              fase: fase.id,
+              grupo: this.idGrupo
             }
           },
           title: fase.nome
@@ -150,7 +151,8 @@ export default {
             query: {
               projeto: this.idProjeto,
               fase: this.IdFase,
-              subatividade: subatividade.id
+              subatividade: subatividade.id,
+              grupo: this.idGrupo
             }
           },
           title: subatividade.nome
@@ -165,13 +167,19 @@ export default {
       const id = this.$route.query.fase
       return id ? id : 0
     },
+    idGrupo () {
+      const id = parseInt(this.$route.query.grupo)
+      return id ? id : 0
+    },
     selectedFase () {
       if (!this.idFase || !this.fases.length) return {}
       return this.fases.find(fase => fase.id === this.idFase)
     },
     selectedProjeto () {
       if (!this.idProjeto || !this.projetos.length) return { nome: '' }
-      const selected = this.projetos.find(projeto => projeto.id === this.idProjeto)
+      const selected = this.projetos.find(
+        projeto => projeto.id === this.idProjeto
+      )
       return selected ? selected : { nome: '' }
     },
     currentStep () {
@@ -200,9 +208,9 @@ export default {
             this.resetAsync()
             this.$router.push({ path: '/login', query: { email: this.email } })
           } else if (this.success && this.currentStep === 'Projetos') {
-            this.getProjetos()
+            this.getProjetos(this.idGrupo)
           } else if (this.success && this.currentStep === 'Fases') {
-            this.getFases()
+            this.getFases(this.idGrupo)
           } else if (this.success && this.currentStep === 'Subatividades') {
             this.getSubatividades(this.idFase)
           }
@@ -213,13 +221,11 @@ export default {
     },
     goBack () {
       if (this.currentStep === 'Subatividades')
-        return `/admin/projetos?projeto=${this.idProjeto}`
-      if (this.currentStep === 'Fases')
-        return `/admin/projetos`
+        return `/admin/projetos?projeto=${this.idProjeto}&grupo=${this.idGrupo}`
+      if (this.currentStep === 'Fases') return `/admin/projetos?grupo=${this.idGrupo}`
       if (this.currentStep === 'Projetos') {
-        return `/admin`
-      }
-      else {
+        return `/admin/grupos`
+      } else {
         this.$router.go(-1)
       }
     }
@@ -244,8 +250,8 @@ export default {
   },
   methods: {
     ...mapActions('usuario', ['resetAsync']),
-    ...mapActions('admin/equipes', ['getProjetos']),
     ...mapActions('admin/projetos', [
+      'getProjetos',
       'getFases',
       'getSubatividades',
       'postTableItem',
@@ -257,8 +263,7 @@ export default {
     },
     setFormValue (nome) {
       const table = this.currentStep.toLowerCase()
-      const data =
-        table === 'subatividades' ? { fase: this.idFase, nome } : { nome }
+      const data = table === 'subatividades' ? { fase: this.idFase, nome } : { nome, grupo: this.idGrupo }
 
       this.postTableItem({ table, data })
     },
@@ -270,13 +275,8 @@ export default {
     }
   },
   created () {
-    if (!this.projetos.length) {
-      this.getProjetos()
-    }
-
-    if (!this.fases.length) {
-      this.getFases()
-    }
+    this.getProjetos(this.idGrupo)
+    this.getFases(this.idGrupo)
   }
 }
 </script>
