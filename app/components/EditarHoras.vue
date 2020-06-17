@@ -348,7 +348,7 @@ export default {
     padding: 5px;
   }
 
-  @media (max-width: $tablet) {
+  @media (max-width: 874px) {
     &__main {
       flex-direction: column;
     }
