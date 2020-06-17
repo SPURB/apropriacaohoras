@@ -1,6 +1,7 @@
 import Horas from '@/services/api-horas'
 
 export const state = () => ({
+  novaAtividade: [],
   registros: [],
   countHoras: {},
   fetching: false,
@@ -12,12 +13,18 @@ export const state = () => ({
 export const getters = {
   isValid: (state) => {
     let registros = state.registros
+    let novaAtividade = state.novaAtividade
     let horas = 0
     let extras = 0
 
     registros.map(registro => {
       horas = horas + registro.horas
       extras = extras + registro.extras
+    })
+    
+    novaAtividade.map(atividade => {
+      horas = horas + atividade.horas
+      extras = extras + atividade.extras
     })
     
     if (horas > 8 && extras > 4) {
@@ -32,9 +39,11 @@ export const getters = {
   },
   disabled: (state) => {
     let registros = state.registros
+    let novaAtividade = state.novaAtividade
     let horas = 0
 
     registros.map(registro => horas = horas + registro.horas)
+    novaAtividade.map(atividade => horas = horas + atividade.horas)
 
     if (horas < 8) {
       return true
@@ -45,6 +54,9 @@ export const getters = {
 }
 
 export const actions = {
+  addAtividade: ({ commit, rootState }) => {
+    commit('SET_NOVA_ATIVIDADE')
+  },
   getRegistros: ({ commit, dispatch, rootState }, data) => {
     Horas.get(`?usuario=${rootState.usuario.id}&dataRefInicio=${data}`)
       .then(res => {
@@ -73,18 +85,36 @@ export const actions = {
       })
   },
   stateArrayOf ({ commit }, payload) {
-    const { data, key, index } = payload
-    commit('STATE_ARRAYOF', { data, key, index })
+    commit('STATE_ARRAYOF', payload)
   }
 }
 
 export const mutations = {
   SET: (state, { data, key }) => { state[key] = data },
-  STATE_ARRAYOF: (state, { data, key, index }) => {
-    state.registros[index][key] = data
+  SET_NOVA_ATIVIDADE: (state) => {
+    state.novaAtividade.push({
+      horas: 0,
+      extras: 0,
+      projeto: 0,
+      fase: 0,
+      subatividade: 0,
+    })
+  },
+  STATE_ARRAYOF: (state, { data, key, index, type }) => {
+    switch (type) {
+      case 0: 
+        state.registros[index][key] = data
+        break
+      case 1:
+        state.novaAtividade[index][key] = data
+        break
+      default:
+        break
+    }
   },
   RESET_REGISTROS: (state) => {
     state.registros = []
+    state.novaAtividade = []
   },
   RESET: (state) => {
     state.registros = [],

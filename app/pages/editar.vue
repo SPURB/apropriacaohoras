@@ -29,8 +29,25 @@
         v-for="(item, index) in registros"
         :registro="item"
         :index="index"
+        :type="0"
         @status="getStatus"
       />
+
+      <div v-if="novaAtividade.length > 0">
+        <editar-horas
+          :key="`${index}-nova`"
+          v-for="(item, index) in novaAtividade"
+          :registro="item"
+          :index="index"
+          :type="1"
+          @status="getStatus"
+        />
+      </div>
+    </section>
+
+    <section class="editar__nova-atividade" @click="addAtividade">
+      <i class="icon icon-adicionar"></i>
+      Incluir atividade
     </section>
   </div>
 </template>
@@ -68,7 +85,8 @@ export default {
   computed: {
     ...mapState('editar', {
       registros: state => state.registros,
-      countHoras: state => state.countHoras
+      countHoras: state => state.countHoras,
+      novaAtividade: state => state.novaAtividade
     })
   },
   created () {
@@ -77,10 +95,9 @@ export default {
   },
   mounted () {
     this.getRegistros(this.$route.query.data)
-    console.log(this.registros)
   },
   methods: {
-    ...mapActions('editar', ['getRegistros']),
+    ...mapActions('editar', ['getRegistros', 'addAtividade']),
     ...mapMutations('editar', ['RESET_REGISTROS']),
     formateDate () {
       const date = Lib.splitDate(this.$route.query.data)
@@ -106,6 +123,7 @@ export default {
   @include color-white-alpha(1);
   display: flex;
   flex-direction: column;
+  margin-bottom: 30px;
   width: 100%;
 
   &__titulo,
@@ -135,6 +153,32 @@ export default {
       margin: 7px 7px -2px 7px;
       height: 20px;
       width: 3px;
+    }
+  }
+
+  &__nova-atividade {
+    align-self: center;
+    align-items: center;
+    background-color: $verde;
+    color: #fff;
+    display: flex;
+    width: 90%;
+    height: 113px;
+    padding: 1rem;
+    transition: ease-in-out 0.25s all;
+
+    .icon {
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      transition: ease-in-out 0.25s all;
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: #00a896;
+      .icon {
+        transform: rotate(90deg);
+      }
     }
   }
 

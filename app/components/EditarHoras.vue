@@ -57,7 +57,7 @@
           :disabled="!valid"
           :class="disabledButton"
           class="editar-horas__salvar"
-          @click.prevent="handleUpdate"
+          @click.prevent="choiceSubmit"
         >
           Salvar alterações
         </button>
@@ -95,6 +95,10 @@ export default {
     registro: {
       type: Object,
       required: true
+    },
+    type: {
+      type: Number,
+      required: true
     }
   },
   components: {
@@ -103,7 +107,7 @@ export default {
   },
   computed: {
     ...mapState('form-registrar-horas', ['dataSelects']),
-    ...mapState('usuario', ['token']),
+    ...mapState('usuario', ['token', 'id']),
     ...mapGetters('form-registrar-horas', ['projetos']),
     ...mapGetters('editar', ['isValid', 'disabled']),
     idregistro () {
@@ -127,7 +131,8 @@ export default {
     },
     disabledButton () {
       if (this.horas.subatividade == 0) return 'disabled'
-      if (this.horas.subatividade != 0 && !this.isValid.disabled) return 'disabled'
+      if (this.horas.subatividade != 0 && !this.isValid.disabled)
+        return 'disabled'
       return ''
     }
   },
@@ -139,43 +144,55 @@ export default {
   },
   methods: {
     ...mapActions('editar', ['stateArrayOf']),
+    choiceSubmit () {
+      switch (this.type) {
+        case 0:
+          this.handleUpdate()
+          break
+        case 1:
+          this.handlePost()
+        default:
+          break
+      }
+    },
     async handleUpdate () {
       await Horas.put(this.idregistro, this.horas, this.token)
-        .then(res => {
-          this.$emit('status', {
-            title: 'Sucesso!',
-            description: 'Horas atualizadas',
-            actionText: 'Voltar',
-            error: false
-          })
-        })
-        .catch(err => {
-          this.$emit('status', {
-            title: 'Erro!',
-            description: 'Ocorreu algum erro.',
-            actionText: 'Tente novamente',
-            error: true
-          })
-        })
+        .then(res => this.emitirMessage('Horas atualizadas', 0))
+        .catch(err => this.emitirMessage('Ocorreu algum erro', 1))
     },
     async handleDelete () {
       await Horas.delete(this.idregistro, this.token)
-        .then(res => {
+        .then(res => this.emitirMessage('Horas removida.', 0))
+        .catch(err => this.emitirMessage('Ocorreu algum erro.', 1))
+    },
+    async handlePost () {
+      this.horas.usuario = this.id
+      this.horas.dataRefInicio = this.$route.query.data
+      this.horas.descricao = ''
+      await Horas.post(this.horas, this.token)
+        .then(res => this.emitirMessage('Horas adicionadas', 0))
+        .catch(err => this.emitirMessage('Ocorreu algum erro', 1))
+    },
+    emitirMessage (description, action) {
+      switch (action) {
+        case 0:
           this.$emit('status', {
             title: 'Sucesso!',
-            description: 'Horas removidas',
+            description,
             actionText: 'Voltar',
             error: false
           })
-        })
-        .catch(err => {
+          break
+        case 1:
           this.$emit('status', {
             title: 'Erro!',
-            description: 'Ocorreu algum erro.',
+            description,
             actionText: 'Tente novamente',
             error: true
           })
-        })
+        default:
+          break
+      }
     },
     selectField (param, val) {
       let select = this.$refs[param].$el.children[1]
@@ -193,28 +210,32 @@ export default {
       this.stateArrayOf({
         key: 'horas',
         index: this.index,
-        data: horas
+        data: horas,
+        type: this.type
       })
     },
     setExtras (extras) {
       this.stateArrayOf({
         key: 'extras',
         index: this.index,
-        data: extras
+        data: extras,
+        type: this.type
       })
     },
     setProjeto (projeto) {
       this.stateArrayOf({
         key: 'projeto',
         index: this.index,
-        data: projeto
+        data: projeto,
+        type: this.type
       })
     },
     setFase (fase) {
       this.stateArrayOf({
         key: 'fase',
         index: this.index,
-        data: fase
+        data: fase,
+        type: this.type
       })
       this.horas.subatividade = 0
       this.getSubatividades(fase)
@@ -223,7 +244,8 @@ export default {
       this.stateArrayOf({
         key: 'subatividade',
         index: this.index,
-        data: subatividade
+        data: subatividade,
+        type: this.type
       })
     }
   }

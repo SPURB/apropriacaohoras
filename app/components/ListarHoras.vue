@@ -113,7 +113,7 @@ export default {
     }
   },
   created () {
-    this.formateDate()    
+    this.formateDate()
   },
   methods: {
     formateDate () {

@@ -11,7 +11,9 @@
         :max="max"
         ref="hours"
       />
-      <button :disabled="disabledButtonPlus" type="button" @click="inc">+</button>
+      <button :disabled="disabledButtonPlus" type="button" @click="inc">
+        +
+      </button>
     </div>
   </fieldset>
 </template>
