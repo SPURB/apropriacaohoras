@@ -1,7 +1,7 @@
 <template>
   <div class="show-horas">
     <section class="grupo__barra horas">
-      <div class="data">{{ formateDate }}</div>
+      <div class="data">{{ data }}</div>
       <div
         class="bar bar__horas"
         @click="showPH = !showPH"
@@ -27,6 +27,18 @@
         </transition-group>
       </div>
 
+      <router-link
+        v-if="showPH && routeHidden"
+        class="btn__editar"
+        :style="{
+          backgroundColor: backgroundsEdit(registro.res.type)
+        }"
+        tag="div"
+        :to="`/editar?data=${this.registro.data}`"
+      >
+        <i class="icon icon-editar"></i>
+      </router-link>
+
       <div class="hora">{{ totalHoras }}h</div>
     </section>
 
@@ -45,9 +57,20 @@
           </li>
         </ul>
       </div>
-      <div class="hora">
-        {{ totalExtras }}
-      </div>
+
+      <router-link
+        v-if="showPE && routeHidden"
+        class="btn__editar"
+        :style="{
+          backgroundColor: '#0CAF9E'
+        }"
+        tag="div"
+        :to="`/editar?data=${this.registro.data}`"
+      >
+        <i class="icon icon-editar"></i>
+      </router-link>
+
+      <div class="hora">{{ totalExtras }}h</div>
     </section>
   </div>
 </template>
@@ -66,14 +89,11 @@ export default {
     return {
       showPH: false, // Prop que cuida do show dos projetos com horas
       showPE: false, // Prop que cuida do show dos projetos com horas extras
-      valuesDate: []
+      valuesDate: [],
+      data: ''
     }
   },
   computed: {
-    formateDate () {
-      const date = Lib.splitDate(this.registro.data)
-      return `${date.sDay}/${date.sMonth}`
-    },
     totalHoras () {
       return this.registro.res.horas.total
     },
@@ -85,9 +105,21 @@ export default {
     },
     projetosExtras () {
       return this.registro.res.extras.projetos
+    },
+    routeHidden () {
+      const route = this.$route.path
+      if (route !== '/registrar') return false
+      return true
     }
   },
+  created () {
+    this.formateDate()
+  },
   methods: {
+    formateDate () {
+      const date = Lib.splitDate(this.registro.data)
+      this.data = `${date.sDay}/${date.sMonth}`
+    },
     customWidths (etapa, horas) {
       if (etapa === 1) {
         switch (horas) {
@@ -121,6 +153,17 @@ export default {
         }
       }
     },
+    backgroundsEdit (classe) {
+      switch (classe) {
+        case 'warning':
+          return '#FF9A20'
+          break
+        case 'success':
+          return '#007165'
+        default:
+          break
+      }
+    },
     backgrounds (classe) {
       switch (classe) {
         case 'warning':
@@ -142,6 +185,7 @@ export default {
   width: 100%;
   padding: 10px;
   margin-bottom: 5px;
+
   &__projetos-item {
     opacity: 0;
     transition: opacity 0.3s ease-in;
@@ -160,7 +204,7 @@ export default {
     }
 
     .bar {
-      margin: 0px 10px;
+      margin-left: 10px;
       cursor: pointer;
 
       ul {
@@ -173,6 +217,25 @@ export default {
         margin-left: 50px;
         width: 100%;
         background-color: $verde-claro;
+      }
+    }
+
+    .hora {
+      margin-left: 10px;
+    }
+    .btn__editar {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      height: 100%;
+      width: 30px;
+
+      .icon {
+        font-size: 1.5rem;
+      }
+
+      &:hover {
+        cursor: pointer;
       }
     }
   }
