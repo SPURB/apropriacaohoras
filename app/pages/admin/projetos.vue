@@ -31,7 +31,7 @@
                 class="nav__breadcrumb--link"
                 :class="{ 'nav__breadcrumb--not-allowed': false }"
                 :to="{ path: '/admin/projetos' }"
-                >Projetos <i class="icon icon-abrir_direita"></i
+                >Projetos<i class="icon icon-abrir_direita"></i
               ></router-link>
             </li>
             <li class="nav__breadcrumb--item">
@@ -49,9 +49,7 @@
             </li>
           </ol>
         </nav>
-        <button class="projetos__btn voltar" @click.prevent="goBack">
-          <i class="icon icon-abrir_esquerda"></i>Voltar
-        </button>
+        <voltar :to="goBack" />
         <list-horizontal-nav
           v-if="currentStep === 'Projetos'"
           :routes="projetosRoutes"
@@ -87,6 +85,7 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 import ListHorizontalNav from '~/components/router-links/ListHorizontalNav'
 import InputCreate from '~/components/forms/InputCreate'
 import Modal from '~/components/Modal'
+import Voltar from '~/components/router-links/Voltar'
 
 export default {
   name: 'Projetos',
@@ -100,7 +99,8 @@ export default {
   components: {
     ListHorizontalNav,
     InputCreate,
-    Modal
+    Modal,
+    Voltar
   },
   computed: {
     ...mapGetters('admin/equipes', ['projetos']),
@@ -170,8 +170,9 @@ export default {
       return this.fases.find(fase => fase.id === this.idFase)
     },
     selectedProjeto () {
-      if (!this.idProjeto || !this.projetos.length) return {}
-      return this.projetos.find(projeto => projeto.id === this.idProjeto)
+      if (!this.idProjeto || !this.projetos.length) return { nome: '' }
+      const selected = this.projetos.find(projeto => projeto.id === this.idProjeto)
+      return selected ? selected : { nome: '' }
     },
     currentStep () {
       if (this.idProjeto && !this.idFase) {
@@ -209,6 +210,18 @@ export default {
           this.reset()
         }
       }
+    },
+    goBack () {
+      if (this.currentStep === 'Subatividades')
+        return `/admin/projetos?projeto=${this.idProjeto}`
+      if (this.currentStep === 'Fases')
+        return `/admin/projetos`
+      if (this.currentStep === 'Projetos') {
+        return `/admin`
+      }
+      else {
+        this.$router.go(-1)
+      }
     }
   },
   watch: {
@@ -239,16 +252,6 @@ export default {
       'putTableItem',
       'reset'
     ]),
-    goBack () {
-      if (this.currentStep === 'Subatividades')
-        this.$router.push({ query: { projeto: this.idProjeto } })
-      if (this.currentStep === 'Fases')
-        this.$router.push({ path: '/admin/projetos' })
-      if (this.currentStep === 'Projetos') this.$router.push({ path: '/admin' })
-      else {
-        this.$router.go(-1)
-      }
-    },
     updateField (data) {
       this.putTableItem(data)
     },
@@ -284,27 +287,6 @@ export default {
 
   &__modal {
     top: 0;
-  }
-  &__btn {
-    display: flex;
-    align-items: center;
-    text-align: left;
-    font-family: $grot;
-    color: #fff;
-    font-size: 1rem;
-    border: 0;
-    height: 55px;
-    background-color: $verde;
-    transition: background-color 0.2s ease-in-out;
-    &.voltar > i {
-      font-size: 1.5rem;
-      margin-right: 0.5rem;
-      margin-left: 0.1rem;
-    }
-    &:hover {
-      cursor: pointer;
-      background-color: #00a896;
-    }
   }
   @media screen {
     @media (max-width: $desktop) {
