@@ -137,7 +137,6 @@ export default {
       caret-color: transparent;
       padding: 0;
       margin: 0;
-      width: 100px;
 
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {

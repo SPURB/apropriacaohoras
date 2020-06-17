@@ -84,6 +84,9 @@ export const actions = {
         }
       })
   },
+  deleteOfArray ({ commit }, index) {
+    commit('REMOVE_INDEX_ATIVIDADE', index)
+  },
   stateArrayOf ({ commit }, payload) {
     commit('STATE_ARRAYOF', payload)
   }
@@ -110,6 +113,13 @@ export const mutations = {
         break
       default:
         break
+    }
+  },
+  REMOVE_INDEX_ATIVIDADE: (state, index) => {    
+    if (state.novaAtividade.length === 1) {
+      state.novaAtividade = []
+    } else {
+      state.novaAtividade.splice(index, index)
     }
   },
   RESET_REGISTROS: (state) => {

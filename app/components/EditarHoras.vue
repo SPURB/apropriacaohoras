@@ -48,7 +48,7 @@
         <button
           type="button"
           class="editar-horas__deletar"
-          @click.prevent="handleDelete"
+          @click.prevent="choiceDelete"
         >
           Deletar
         </button>
@@ -143,7 +143,7 @@ export default {
     this.selectField('subatividades', this.registro.subatividade)
   },
   methods: {
-    ...mapActions('editar', ['stateArrayOf']),
+    ...mapActions('editar', ['stateArrayOf', 'deleteOfArray']),
     choiceSubmit () {
       switch (this.type) {
         case 0:
@@ -151,6 +151,17 @@ export default {
           break
         case 1:
           this.handlePost()
+        default:
+          break
+      }
+    },
+    choiceDelete () {
+      switch (this.type) {
+        case 0:
+          this.handleDelete()
+          break
+        case 1:
+          this.deleteOfArray(this.index)
         default:
           break
       }
