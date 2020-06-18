@@ -6,16 +6,27 @@ export const state = () => ({
 	fetching: false,
 	error: false,
 	success: false,
-  message: '',
-  type: '', // Serve para mudar as paradas
+	message: '',
+	type: '', // Serve para mudar as paradas
 	fases: [],
-	subatividades: []
+	subatividades: [],
+	projetos: []
 })
 
 export const actions = {
-	getFases: ({ commit }) => {
+	getProjetos: ({ commit }, idGrupo) => {
 		commit('IS_FETCHING', true)
-		Fases.get()
+		Projetos.get(`?grupo=${idGrupo}`)
+			.then(({ data }) => {
+				commit('SET', { data: data.values, stateKey: 'projetos' })
+				commit('SET_ERROR', { status: false, message: '' })
+			})
+			.catch(({ message }) => commit('SET_ERROR', { status: true, message }))
+			.finally(() => commit('IS_FETCHING', false))
+	},
+	getFases: ({ commit }, idGrupo) => {
+		commit('IS_FETCHING', true)
+		Fases.get(`?grupo=${idGrupo}`)
 			.then(({ data }) => {
 				commit('SET', { data: data.values, stateKey: 'fases' })
 				commit('SET_ERROR', { status: false, message: '' })
@@ -38,10 +49,10 @@ export const actions = {
 		let request
 
 		if (table === 'projetos') {
-			request = Projetos.post({ nome: data.nome }, token)
+			request = Projetos.post({ nome: data.nome, grupo: data.grupo }, token)
 		}
 		else if (table === 'fases'){
-			request = Fases.post({ nome: data.nome }, token)
+			request = Fases.post({ nome: data.nome, grupo: data.grupo }, token)
 		}
 		else if (table === 'subatividades') {
 			request = Subatividades.post({ nome: data.nome, fase: data.fase }, token)
@@ -51,18 +62,18 @@ export const actions = {
 		request
 			.then(res => {
 				commit('SET', { data: true, stateKey: 'success' })
-        commit('SET', { data: 'criado', stateKey: 'type'})
+				commit('SET', { data: 'criado', stateKey: 'type'})
 				commit('SET', { data: `${res.data.nome} criado`, stateKey: 'message' })
 				commit('SET_ERROR', { status: false, message: '' })
 			})
 			.catch(({ message }) => commit('SET_ERROR', { status: true, message }))
 			.finally(() => commit('IS_FETCHING', false))
-  },
-  putTableItem: ({ commit, rootState }, { table, data }) => {
-    const token =  rootState.usuario.token
-    let request
-    
-    if (table === 'step__projetos') {
+	},
+	putTableItem: ({ commit, rootState }, { table, data }) => {
+		const token =  rootState.usuario.token
+		let request
+		
+		if (table === 'step__projetos') {
 			request = Projetos.put({ nome: data.nome }, data.id, token)
 		}
 		else if (table === 'step__fases'){
@@ -71,18 +82,18 @@ export const actions = {
 		else if (table === 'step__subatividades') {
 			request = Subatividades.put({ nome: data.nome }, data.id, token)
 		}
-    
-    commit('IS_FETCHING', true)
+		
+		commit('IS_FETCHING', true)
 		request
 			.then(res => {
-        commit('SET', { data: true, stateKey: 'success' })
-        commit('SET', { data: 'atualizado', stateKey: 'type'})
+				commit('SET', { data: true, stateKey: 'success' })
+				commit('SET', { data: 'atualizado', stateKey: 'type'})
 				commit('SET', { data: res.data.message, stateKey: 'message'})
 				commit('SET_ERROR', { status: false, message: '' })
 			})
 			.catch(({ message }) => commit('SET_ERROR', { status: true, message }))
 			.finally(() => commit('IS_FETCHING', false))
-  },
+	},
 	reset: ({commit}) => commit('RESET')
 }
 

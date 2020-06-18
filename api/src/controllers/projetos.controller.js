@@ -4,9 +4,9 @@ const dao = require('./dao')
 const { horas, projetos } = require('./acoes')
 
 exports.create = (req, res) => {
-  if (!req.body.nome) {
+  if (!req.body.nome || !req.body.grupo) {
     res.status(400).send({
-      message: 'Inclua um nome na requisição'
+      message: 'Inclua um nome e um grupo na requisição'
     })
     return
   } else if (!req.admin) {
@@ -18,6 +18,7 @@ exports.create = (req, res) => {
 
   const where = {
     nome: req.body.nome,
+    grupo: req.body.grupo,
     ativo: 1
   }
 

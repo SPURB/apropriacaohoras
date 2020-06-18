@@ -13,6 +13,8 @@
 
     <div class="row">
       <div class="column">
+        <h3 class="projetos__group-title">{{ grupoName }}</h3>
+        <p class="projetos__group-description">{{ grupoDescription }}</p>
         <nav class="nav">
           <h2 class="nav__title">
             {{ currentStep }}
@@ -30,15 +32,15 @@
               <router-link
                 class="nav__breadcrumb--link"
                 :class="{ 'nav__breadcrumb--not-allowed': false }"
-                :to="{ path: '/admin/projetos' }"
-                >Projetos <i class="icon icon-abrir_direita"></i
+                :to="{ path: '/admin/projetos', query: { grupo: idGrupo } }"
+                >Projetos<i class="icon icon-abrir_direita"></i
               ></router-link>
             </li>
             <li class="nav__breadcrumb--item">
               <router-link
                 class="nav__breadcrumb--link"
                 :class="{ 'nav__breadcrumb--not-allowed': idFase < 0 }"
-                :to="{ query: { projeto: idProjeto } }"
+                :to="{ query: { projeto: idProjeto, grupo: idGrupo } }"
                 >Fases <i class="icon icon-abrir_direita"></i
               ></router-link>
             </li>
@@ -49,9 +51,7 @@
             </li>
           </ol>
         </nav>
-        <button class="projetos__btn voltar" @click.prevent="goBack">
-          <i class="icon icon-abrir_esquerda"></i>Voltar
-        </button>
+        <voltar :to="goBack" />
         <list-horizontal-nav
           v-if="currentStep === 'Projetos'"
           :routes="projetosRoutes"
@@ -87,6 +87,7 @@ import { mapState, mapGetters, mapActions } from 'vuex'
 import ListHorizontalNav from '~/components/router-links/ListHorizontalNav'
 import InputCreate from '~/components/forms/InputCreate'
 import Modal from '~/components/Modal'
+import Voltar from '~/components/router-links/Voltar'
 
 export default {
   name: 'Projetos',
@@ -94,17 +95,20 @@ export default {
   data () {
     return {
       goBackHover: false,
-      pageTitle: 'Projetos'
+      pageTitle: 'Projetos',
+      grupoName: '',
+      grupoDescription: ''
     }
   },
   components: {
     ListHorizontalNav,
     InputCreate,
-    Modal
+    Modal,
+    Voltar
   },
   computed: {
-    ...mapGetters('admin/equipes', ['projetos']),
     ...mapState('admin/projetos', [
+      'projetos',
       'subatividades',
       'error',
       'type',
@@ -119,7 +123,7 @@ export default {
     projetosRoutes () {
       return this.projetos.map(projeto => {
         return {
-          to: { query: { projeto: projeto.id } },
+          to: { query: { projeto: projeto.id, grupo: this.idGrupo } },
           title: projeto.nome
         }
       })
@@ -133,7 +137,8 @@ export default {
           to: {
             query: {
               projeto: this.idProjeto,
-              fase: fase.id
+              fase: fase.id,
+              grupo: this.idGrupo
             }
           },
           title: fase.nome
@@ -150,7 +155,8 @@ export default {
             query: {
               projeto: this.idProjeto,
               fase: this.IdFase,
-              subatividade: subatividade.id
+              subatividade: subatividade.id,
+              grupo: this.idGrupo
             }
           },
           title: subatividade.nome
@@ -165,13 +171,20 @@ export default {
       const id = this.$route.query.fase
       return id ? id : 0
     },
+    idGrupo () {
+      const id = parseInt(this.$route.query.grupo)
+      return id ? id : 0
+    },
     selectedFase () {
       if (!this.idFase || !this.fases.length) return {}
       return this.fases.find(fase => fase.id === this.idFase)
     },
     selectedProjeto () {
-      if (!this.idProjeto || !this.projetos.length) return {}
-      return this.projetos.find(projeto => projeto.id === this.idProjeto)
+      if (!this.idProjeto || !this.projetos.length) return { nome: '' }
+      const selected = this.projetos.find(
+        projeto => projeto.id === this.idProjeto
+      )
+      return selected ? selected : { nome: '' }
     },
     currentStep () {
       if (this.idProjeto && !this.idFase) {
@@ -199,15 +212,25 @@ export default {
             this.resetAsync()
             this.$router.push({ path: '/login', query: { email: this.email } })
           } else if (this.success && this.currentStep === 'Projetos') {
-            this.getProjetos()
+            this.getProjetos(this.idGrupo)
           } else if (this.success && this.currentStep === 'Fases') {
-            this.getFases()
+            this.getFases(this.idGrupo)
           } else if (this.success && this.currentStep === 'Subatividades') {
             this.getSubatividades(this.idFase)
           }
-
           this.reset()
         }
+      }
+    },
+    goBack () {
+      if (this.currentStep === 'Subatividades') {
+        return `/admin/projetos?projeto=${this.idProjeto}&grupo=${this.idGrupo}`
+      } else if (this.currentStep === 'Fases') {
+        return `/admin/projetos?grupo=${this.idGrupo}`
+      } else if (this.currentStep === 'Projetos') {
+        return `/admin/grupos`
+      } else {
+        this.$router.go(-1)
       }
     }
   },
@@ -231,31 +254,23 @@ export default {
   },
   methods: {
     ...mapActions('usuario', ['resetAsync']),
-    ...mapActions('admin/equipes', ['getProjetos']),
     ...mapActions('admin/projetos', [
+      'getProjetos',
       'getFases',
       'getSubatividades',
       'postTableItem',
       'putTableItem',
       'reset'
     ]),
-    goBack () {
-      if (this.currentStep === 'Subatividades')
-        this.$router.push({ query: { projeto: this.idProjeto } })
-      if (this.currentStep === 'Fases')
-        this.$router.push({ path: '/admin/projetos' })
-      if (this.currentStep === 'Projetos') this.$router.push({ path: '/admin' })
-      else {
-        this.$router.go(-1)
-      }
-    },
     updateField (data) {
       this.putTableItem(data)
     },
     setFormValue (nome) {
       const table = this.currentStep.toLowerCase()
       const data =
-        table === 'subatividades' ? { fase: this.idFase, nome } : { nome }
+        table === 'subatividades'
+          ? { fase: this.idFase, nome }
+          : { nome, grupo: this.idGrupo }
 
       this.postTableItem({ table, data })
     },
@@ -267,13 +282,12 @@ export default {
     }
   },
   created () {
-    if (!this.projetos.length) {
-      this.getProjetos()
-    }
+    const { grupoName, grupoDescription } = this.$route.query
+    this.grupoName = grupoName
+    this.grupoDescription = grupoDescription
 
-    if (!this.fases.length) {
-      this.getFases()
-    }
+    this.getProjetos(this.idGrupo)
+    this.getFases(this.idGrupo)
   }
 }
 </script>
@@ -285,27 +299,12 @@ export default {
   &__modal {
     top: 0;
   }
-  &__btn {
-    display: flex;
-    align-items: center;
-    text-align: left;
-    font-family: $grot;
-    color: #fff;
-    font-size: 1rem;
-    border: 0;
-    height: 55px;
-    background-color: $verde;
-    transition: background-color 0.2s ease-in-out;
-    &.voltar > i {
-      font-size: 1.5rem;
-      margin-right: 0.5rem;
-      margin-left: 0.1rem;
-    }
-    &:hover {
-      cursor: pointer;
-      background-color: #00a896;
-    }
+  p,
+  h3 {
+    padding: 0.25rem;
+    margin: 0;
   }
+
   @media screen {
     @media (max-width: $desktop) {
       max-width: 90%;
@@ -316,7 +315,7 @@ export default {
 
 .row {
   max-width: $desktop;
-  margin: auto;
+  margin: 3rem auto;
 }
 
 .nav {

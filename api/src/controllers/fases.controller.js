@@ -3,15 +3,16 @@ const Fase = db.fases
 const dao = require('./dao')
 
 exports.create = async (req, res) => {
-  if (!req.body.nome) {
+  if (!req.body.nome || !req.body.grupo) {
     res.status(400).send({
-      message: 'Inclua um nome na requisição'
+      message: 'Inclua um nome e um grupo na requisição'
     })
     return
   }
   
   const where = {
-    nome: req.body.nome
+    nome: req.body.nome,
+    grupo: req.body.grupo
   }
 
   dao.findOrCreate(req, res, Fase, where)

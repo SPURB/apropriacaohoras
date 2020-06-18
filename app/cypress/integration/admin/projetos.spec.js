@@ -1,6 +1,6 @@
 describe('Teste de integração para verificar o component InputCreate :: Projeto', () => {
   beforeEach(() => {
-    cy.login('/admin/projetos') // params: rota que ele vai depois de efetuar login
+    cy.login('/admin/projetos?grupo=3&grupoName=Projetos de Intervenção Urbana&grupoDescription=Decreto nº 56.901%2F2016') // params: rota que ele vai depois de efetuar login
     /* 
       * Já faz um teste para verificar se o accordion existe 
       está setado para Criar uma nova fase em todos os testes
@@ -27,7 +27,7 @@ describe('Teste de integração para verificar o component InputCreate :: Projet
 
 describe('Teste de integração para verificar o component InputUpdate :: Projeto', () => {
   beforeEach(() => {
-    cy.login('/admin/projetos') // params: rota que ele vai depois de efetuar login
+    cy.login('/admin/projetos?grupo=3&grupoName=Projetos de Intervenção Urbana&grupoDescription=Decreto nº 56.901%2F2016') // params: rota que ele vai depois de efetuar login
     /* 
       * Já faz um teste para verificar se o accordion existe 
       está setado para Criar uma nova fase em todos os testes

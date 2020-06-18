@@ -14,6 +14,13 @@ module.exports = {
       ativo: {
         type: Sequelize.BOOLEAN
       },
+      grupo: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'grupos',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

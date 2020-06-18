@@ -11,6 +11,13 @@ module.exports = {
       nome: {
         type: Sequelize.STRING(128)
       },
+      grupo: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'grupos',
+          key: 'id'
+        }
+      },
       createdAt: {
         type: Sequelize.DATE
       },

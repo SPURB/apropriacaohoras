@@ -24,7 +24,7 @@
             <span>Equipes</span>
           </nuxt-link>
 
-          <nuxt-link to="/admin/projetos" tag="li" class="class-user-info">
+          <nuxt-link to="/admin/grupos" tag="li" class="class-user-info">
             <i class="icon icon-editar"></i>
             <span>Projetos</span>
           </nuxt-link>
@@ -85,10 +85,11 @@ export default {
     },
     userMenuState (state) {
       if (state) {
-        document.body.style.overflow = 'hidden'
-        return
+        document.body.style.overflowY = 'hidden'
+        return true
       }
-      document.body.style.overflow = 'auto'
+      document.body.style.overflowY = 'auto'
+      return false
     }
   },
   methods: {

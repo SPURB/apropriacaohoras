@@ -33,7 +33,10 @@ const dataAccessObject = {
       where = req.query
     }
 
-    Model.findAll({ where })
+    Model.findAll({
+      where,
+      attributes: { exclude: ['createdAt', 'updatedAt'] }
+    })
       .then(values => res.send({ values, title }))
       .catch(err => {
         res.status(500).send({

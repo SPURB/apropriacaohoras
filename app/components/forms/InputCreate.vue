@@ -15,6 +15,17 @@
         v-model="input"
         data-cy="input__create"
       />
+      <template v-if="addMetaDescription">
+        <label class="input-create__label" for="meta">{{
+          metaDescriptioinLabel
+        }}</label>
+        <input
+          class="input-create__input"
+          name="meta"
+          type="text"
+          v-model="meta"
+        />
+      </template>
       <div class="input-create__btn-group">
         <button @click.prevent="cancel" data-cy="btn__cancel">Cancelar</button>
         <button
@@ -32,11 +43,12 @@
 </template>
 <script>
 export default {
-  name: 'AdminProjetosCriar',
+  name: 'InputCreate',
   data () {
     return {
       display: false,
-      input: ''
+      input: '',
+      meta: ''
     }
   },
   props: {
@@ -45,6 +57,14 @@ export default {
       required: true
     },
     description: {
+      type: String,
+      default: ''
+    },
+    addMetaDescription: {
+      type: Boolean,
+      default: false
+    },
+    metaDescriptioinLabel: {
       type: String,
       default: ''
     }
@@ -56,11 +76,15 @@ export default {
   },
   methods: {
     set () {
-      this.$emit('setValue', this.input)
+      !this.addMetaDescription
+        ? this.$emit('setValue', this.input)
+        : this.$emit('setValue', { input: this.input, meta: this.meta })
       this.input = ''
+      this.meta = ''
     },
     cancel () {
       this.input = ''
+      this.meta = ''
       this.display = false
     }
   }
