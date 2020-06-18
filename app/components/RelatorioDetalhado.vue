@@ -1,6 +1,6 @@
 <template>
-  <div class="relatorio__detalhado">
-    <section class="input__select">
+  <div class="relatorio-detalhado">
+    <section class="relatorio-detalhado__select">
       <custom-select
         :title="'Projetos'"
         :idInput="'projetos'"
@@ -11,12 +11,21 @@
         Limpar filtro
       </button>
     </section>
-    <section class="table" v-if="horasUsuariosByProjetos.length > 0">
-      <tabela-horas :thead="thead" :projetos="horasUsuariosByProjetos" />
+
+    <section
+      class="relatorio-detalhado__table"
+      v-if="horasUsuariosByProjetos.length > 0"
+    >
+      <tabela-horas :thead="thead" :projetos="paginatedData" />
     </section>
-    <section class="table table__null" v-else>
+
+    <section class="relatorio-detalhado__table table__null" v-else>
       <h3>Nenhum registro encontrado para esse projeto.</h3>
       <h4>Selecione outro projeto.</h4>
+    </section>
+
+    <section class="relatorio-detalhado__pagination">
+      <pagination :pageCount="pageCount" @pageNumber="setPageNumber" />
     </section>
   </div>
 </template>
@@ -24,12 +33,20 @@
 <script>
 import CustomSelect from '~/components/CustomSelect'
 import TabelaHoras from '~/components/elements/TabelaHoras'
+import Pagination from '~/components/elements/Pagination'
 import { mapState, mapActions } from 'vuex'
 export default {
   name: 'RelatorioDetalhado',
+  data () {
+    return {
+      pageNumber: 0,
+      size: 2
+    }
+  },
   components: {
     CustomSelect,
-    TabelaHoras
+    TabelaHoras,
+    Pagination
   },
   computed: {
     ...mapState('relatorios', {
@@ -58,6 +75,16 @@ export default {
           nameOrder: 'subatividade'
         }
       ]
+    },
+    pageCount () {
+      let l = this.horasUsuariosByProjetos.length,
+        s = this.size
+      return Math.ceil(l / s) // s = size :: l = length
+    },
+    paginatedData () {
+      const start = this.pageNumber * this.size,
+        end = start + this.size
+      return this.horasUsuariosByProjetos.slice(start, end)
     }
   },
   watch: {
@@ -67,16 +94,19 @@ export default {
   },
   methods: {
     ...mapActions('relatorios', ['getRelatorioDetalhado']),
-    ...mapActions('form-registrar-horas', ['RESET'])
+    ...mapActions('form-registrar-horas', ['RESET']),
+    setPageNumber (val) {
+      this.pageNumber = val
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.relatorio__detalhado {
+.relatorio-detalhado {
   width: 100%;
 
-  .input__select {
+  &__select {
     width: 50%;
     display: flex;
 
@@ -96,8 +126,24 @@ export default {
     }
   }
 
-  .table {
+  &__table {
     margin: 15px;
+    overflow-x: hidden;
+  }
+
+  &__pagination {
+    margin: 7px;
+  }
+
+  @media (max-width: 874px) {
+    &__select {
+      width: 100%;
+      flex-direction: column;
+    }
+
+    &__table {
+      overflow-x: scroll;
+    }
   }
 }
 </style>
