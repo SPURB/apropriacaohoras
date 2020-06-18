@@ -1,6 +1,6 @@
 describe('Teste de integração para verificar o component InputCreate :: Fase', () => {
   beforeEach(() => {
-    cy.login('/admin/projetos') // params: rota que ele vai depois de efetuar login
+    cy.login('/admin/projetos?grupo=3&grupoName=Projetos de Intervenção Urbana&grupoDescription=Decreto nº 56.901%2F2016') // params: rota que ele vai depois de efetuar login
       .wait(100)
       .get('[data-cy=step__projetos]') // Para ir pro NavLinkLateral :: Fase tem que clicar em 1 projeto
       .children('li')
@@ -37,7 +37,7 @@ describe('Teste de integração para verificar o component InputCreate :: Fase',
 
 describe('Teste de integração para verificar o component InputUpdate :: Fase', () => {
   beforeEach(() => {
-    cy.login('/admin/projetos') // params: rota que ele vai depois de efetuar login
+    cy.login('/admin/projetos?grupo=3&grupoName=Projetos de Intervenção Urbana&grupoDescription=Decreto nº 56.901%2F2016') // params: rota que ele vai depois de efetuar login
       .wait(100)
       .get('[data-cy=step__projetos]') // Para ir pro NavLinkLateral :: Fase tem que clicar em 1 projeto
       .children('li')
