@@ -46,7 +46,7 @@ export default {
   transform: translate3d(0px, 0px, 0px) scale(1);
   min-height: 100%;
   transform-origin: left top 0px;
-  overflow: hidden;
+  overflow-x: hidden;
   margin: 0 -50px;
   user-select: none;
 
@@ -71,6 +71,10 @@ export default {
     padding-bottom: 20px;
     grid-gap: 30px;
     justify-content: space-around;
+  }
+
+  @media (max-width: 874px) {
+    overflow-x: auto;
   }
 }
 </style>

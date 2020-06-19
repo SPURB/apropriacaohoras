@@ -65,7 +65,7 @@ export default {
     .icon {
       color: $verde;
       font-size: 26px;
-      margin-left: -0.42rem
+      margin-left: -0.42rem;
     }
   }
   &:hover {
