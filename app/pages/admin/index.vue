@@ -7,6 +7,7 @@
         subtitle-icon-class="icon icon-pessoa-outline"
         subtitle="Definir equipes de projetos"
         data-cy="card__router__equipe"
+        class="admin-index__card"
       />
       <card-router
         to="/admin/grupos"
@@ -14,6 +15,7 @@
         subtitle-icon-class="icon icon-editar"
         subtitle="Criar grupos, projetos, etapas e subetapas"
         data-cy="card__router__projetos"
+        class="admin-index__card"
       />
       <card-router
         to="/admin/relatorios"
@@ -21,6 +23,7 @@
         subtitle-icon-class="icon icon-lista"
         subtitle="Relatórios com dados consolidados"
         data-cy="card__router__relatorios"
+        class="admin-index__card"
       />
     </div>
   </div>
@@ -47,6 +50,7 @@ export default {
   align-items: center;
   max-width: $desktop;
   margin: auto;
+  margin-bottom: 0px !important;
   &__container {
     width: 100%;
     margin: auto;
@@ -60,6 +64,10 @@ export default {
     @media (max-width: $tablet) {
       margin-top: 0;
     }
+  }
+
+  &__card {
+    margin: 1.5rem 0;
   }
 }
 </style>
