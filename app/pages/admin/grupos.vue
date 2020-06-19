@@ -27,6 +27,8 @@
               "
               :title="grupo.nome"
               :subtitle="grupo.descricao"
+              :isEditable="{ editable: true, entidade: 'grupos', id: grupo.id }"
+              @updateCard="updateGrupo"
             />
           </li>
         </ul>
@@ -62,13 +64,14 @@ export default {
       'grupos',
       'fetching',
       'error',
+      'title',
       'success',
       'message'
     ]),
     modal () {
       return {
         display: this.error || this.success,
-        title: this.success ? 'Grupo criado' : 'Erro',
+        title: this.title,
         error: this.error,
         description: this.message,
         actionDescription: this.error ? 'Faça o login novamente' : '',
@@ -82,9 +85,17 @@ export default {
   },
   methods: {
     ...mapActions('usuario', ['resetAsync']),
-    ...mapActions('admin/grupos', ['getGrupos', 'setGrupo', 'reset']),
+    ...mapActions('admin/grupos', [
+      'getGrupos',
+      'setGrupo',
+      'putGroup',
+      'reset'
+    ]),
     createGrupo ({ input, meta }) {
       this.setGrupo({ nome: input, descricao: meta })
+    },
+    updateGrupo (value) {
+      this.putGroup(value)
     }
   },
   created () {
