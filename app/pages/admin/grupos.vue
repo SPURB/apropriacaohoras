@@ -68,6 +68,7 @@ export default {
       'success',
       'message'
     ]),
+    ...mapState('usuario', ['token']),
     modal () {
       return {
         display: this.error || this.success,
