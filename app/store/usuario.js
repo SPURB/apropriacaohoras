@@ -58,7 +58,10 @@ export const mutations = {
 		state.error = false
 		state.errorResponse = {}
 		state.fetching = false
-		state.usuario = {}
+    state.usuario = {}
+    state.token = ''
+    state.nome = ''
+    state.projetos = []
 		state.admin = false
 	}
 }
