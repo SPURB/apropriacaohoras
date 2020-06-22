@@ -44,6 +44,10 @@
           <i class="icon icon-tempo"></i>
           <span>Registrar horas</span>
         </nuxt-link>
+        <nuxt-link to="/confirmar-senha" tag="li" class="class-user-info">         
+          <Key class="icon" />
+          <span>Redefinir senha</span>
+        </nuxt-link>
         <li @click="sair" class="class-user-info">
           <span>Sair</span>
         </li>
@@ -61,6 +65,7 @@
 
 <script>
 import LogoSpurb from '~/components/elements/LogoSpurb'
+import Key from '~/components/elements/Key'
 import UserProfilePlaceholder from '~/components/elements/UserProfilePlaceholder'
 import { mapState, mapActions } from 'vuex'
 
@@ -71,7 +76,7 @@ export default {
       userMenuState: false
     }
   },
-  components: { LogoSpurb, UserProfilePlaceholder },
+  components: { LogoSpurb, UserProfilePlaceholder, Key },
   computed: {
     ...mapState({
       admin: state => state.usuario.admin,
