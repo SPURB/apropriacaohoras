@@ -77,14 +77,20 @@ export default {
         actionDescription: this.error ? 'Faça o login novamente' : '',
         actionText: this.success ? '' : 'Tentar novamente',
         action: () => {
-          this.error ? this.resetAsync() : this.reset()
-          this.getGrupos()
+          if (this.error) {
+            this.logout(this.token)
+            this.resetAsync()
+            this.$router.push('/login')
+          } else {
+            this.reset()
+            this.getGrupos()
+          }
         }
       }
     }
   },
   methods: {
-    ...mapActions('usuario', ['resetAsync']),
+    ...mapActions('usuario', ['logout', 'resetAsync']),
     ...mapActions('admin/grupos', [
       'getGrupos',
       'setGrupo',
