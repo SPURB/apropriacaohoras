@@ -11,6 +11,7 @@
       <div
         class="card-horizontal__right"
         v-if="isEditable.editable"
+        data-cy="btn__editar"
         @click="showEditable = !showEditable"
       >
         <i class="icon icon-editar"></i>
