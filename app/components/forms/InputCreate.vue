@@ -23,6 +23,7 @@
           class="input-create__input"
           name="meta"
           type="text"
+          data-cy="input__meta"
           v-model="meta"
         />
       </template>

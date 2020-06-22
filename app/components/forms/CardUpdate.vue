@@ -6,6 +6,7 @@
         class="card-update__input"
         name="titulo"
         type="text"
+        data-cy="input__titulo"
         v-model="inputTitulo"
       />
       <label class="card-update__label" for="name">Descrição</label>
@@ -13,6 +14,7 @@
         class="card-update__input"
         name="titulo"
         type="text"
+        data-cy="input__descricao"
         v-model="inputDescricao"
       />
       <div class="card-update__btn-group">
@@ -24,6 +26,7 @@
           :class="{ valid }"
           @click.prevent="set"
           :disabled="!valid"
+          data-cy="btn__update"
         >
           Salvar
         </button>
