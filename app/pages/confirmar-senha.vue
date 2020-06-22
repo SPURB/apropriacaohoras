@@ -13,13 +13,14 @@
           </span>
           <input 
             :type="!showPassword ? 'password' : 'text'" 
-            name="current__password" 
+            name="current__password"
+            data-cy="current__password"
             v-model="password" 
           />
         </div>
         <btn-progresso
           class="auth__btn"
-          data-cy="btn__email"
+          data-cy="btn__toReset"
           @click="toReset()"
           v-on:keyup.enter="toReset()"
           :disabled="password === ''"

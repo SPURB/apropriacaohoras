@@ -34,13 +34,19 @@
             v-model="form.fpass"
             ref="fpass"
             autofocus
+            data-cy="input__fpass"
           />
         </p>
         <p class="reset__password">
           <label for="second__password">CONFIRME SUA SENHA</label>
-          <input type="password" name="second__password" v-model="form.spass" />
+          <input 
+            type="password" 
+            name="second__password" 
+            v-model="form.spass" 
+            data-cy="input__spass"
+          />
         </p>
-        <btn-progresso class="btn__reset" />
+        <btn-progresso class="btn__reset" data-cy="btn__reset" />
       </form>
     </section>
   </div>
