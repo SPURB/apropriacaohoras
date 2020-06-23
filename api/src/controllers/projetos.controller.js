@@ -60,49 +60,58 @@ exports.groupHorasProjetos = async (req, res) => {
   const { somaHoras } = projetos
   const { totalPorPeriodo } = horas
   const { inicio, fim } = req.params
-  const idProjeto = JSON.parse(req.params.id)
+  const ids = JSON.parse(req.params.ids)
 
   let where = {}
 
   if (req.query) {
     where = req.query
   }
-
-  where.projetos = idProjeto
   
   let arrayHoras = []
 
   try {
-    const countForPeriod = await Promise.all(totalPorPeriodo(inicio, fim, idProjeto))
-    const countHours = await Promise.all(somaHoras(where))
+    for (const id of ids) {
+      where.projeto = id
+      await Promise.all([somaHoras(where), totalPorPeriodo(inicio, fim, id)])
+        .then(results => { 
+          const soma = results[0]
+          const periodo = results[1]
 
-    countForPeriod.map((periodo, index) => {
-      const soma = countHours[index]
-      let horas = 0
-      let extras = 0
-      const totalPeriodo = parseInt(periodo.horas) + parseInt(periodo.extras)
+          const horas = parseInt(soma.horas)
+          const extras = parseInt(soma.extras)
+          const totalPeriodo = parseInt(periodo.horas) + parseInt(periodo.extras)
+          
+          if (soma.projeto === null) throw new Error('Projeto sem horas')
 
-      if (soma.id !== null) {
-        horas = parseInt(soma.horas)
-        extras = parseInt(soma.extras)
-      } else {
-        horas = 0
-        extras = 0
-      }
-
-      arrayHoras.push({
-        id: periodo.projeto,
-        title: `Horas agrupadas de ${periodo.id_projeto.nome}`,
-        horas,
-        extras,
-        total: horas + extras,
-        totalPeriodo
-      })
-    })
+          arrayHoras.push({
+            idProjeto: soma.projeto,
+            title: `Horas agrupadas de ${soma.id_projeto.nome}`,
+            horas,
+            extras,
+            total: horas + extras,
+            totalPeriodo
+          })
+        })
+        .catch(err => {
+          if (err.message === 'Projeto sem horas') {
+            arrayHoras.push({
+              idProjeto: id,
+              title: `Não há horas cadastradas para este projeto`,
+              message: err.message || 'Ocorreu um erro na busca',
+              horas: 0,
+              extras: 0,
+              total: 0,
+              totalPeriodo: 0
+            })
+          } else {
+            throw new Error(err)
+          }
+        })
+    }
     return res.send(arrayHoras)
   } catch (err) {
-    res.status(203).send({
-      title: `Não há horas cadastradas para estes projetos`,
+    return res.status(203).send({
       message: err.message || 'Ocorreu um erro na busca',
     })
   }

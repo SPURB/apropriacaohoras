@@ -18,7 +18,7 @@ module.exports = (projeto, base) => {
   http://localhost:5000/projetos/3/acoes/agrupar-horas/2020-05-01/2020-05-31?usuario=4?&subatividade=61
   */
   router.get(
-    '/:id/acoes/agrupar-horas/:inicio/:fim',
+    '/:ids/acoes/agrupar-horas/:inicio/:fim',
     projetos.groupHorasProjetos
   )
 
