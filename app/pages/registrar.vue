@@ -146,7 +146,7 @@
 <script>
 import Modal from '~/components/sections/Modal'
 import Calendario from '~/components/sections/Calendario'
-import CustomSelect from '~/components/elements/CustomSelect'
+import CustomSelect from '~/components/forms/CustomSelect'
 import ListarHoras from '~/components/sections/ListarHoras'
 import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 import Horas from '@/services/api-horas'

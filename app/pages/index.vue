@@ -5,14 +5,14 @@
     </section>
     <section class="index-comum__projetos">
       <h2>Projetos que você trabalhou mais tempo</h2>
-      <Slide>
+      <slider>
         <Card
           :key="index"
           v-for="(projeto, index) in projetosCardMap"
           :projeto="projeto"
           :isPerfil="false"
         />
-      </Slide>
+      </slider>
     </section>
 
     <div class="index-comum__filtro-projetos">
@@ -27,10 +27,10 @@
 
 <script>
 import Preloader from '~/components/elements/Preloader'
-import Slide from '~/components/elements/Slide'
+import Slider from '~/components/sections/Slider'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
-import TabelaProjeto from '~/components/elements/TabelaProjetos'
+import TabelaProjeto from '~/components/sections/TabelaProjetos'
 
 import { mapActions, mapGetters, mapState } from 'vuex'
 
@@ -39,7 +39,7 @@ export default {
   layout: 'usuario',
   components: {
     Preloader,
-    Slide,
+    Slider,
     Filtro,
     Card,
     TabelaProjeto

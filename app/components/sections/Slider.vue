@@ -1,5 +1,5 @@
 <template>
-  <div class="slide" @click="scrollDiv" ref="slide">
+  <div class="slider" @click="scrollDiv" ref="slide">
     <section class="elements">
       <slot></slot>
     </section>
@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'Slide',
+  name: 'Slider',
   methods: {
     scrollDiv () {
       let slider = this.$refs.slide
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.slide {
+.slider {
   cursor: grab;
   position: relative;
   padding: 5px;

@@ -13,14 +13,14 @@
       <h2 class="admin-relatorios__title">
         Projetos que você trabalhou mais tempo
       </h2>
-      <slide>
+      <slider>
         <card
           :key="index"
           v-for="(projeto, index) in projetosCardMap"
           :projeto="projeto"
           :isPerfil="false"
         />
-      </slide>
+      </slider>
     </section>
 
     <section class="admin-relatorios__filtros">
@@ -35,10 +35,10 @@
 <script>
 import Preloader from '~/components/elements/Preloader'
 import RelatorioDetalhado from '~/components/sections/RelatorioDetalhado'
-import Slide from '~/components/elements/Slide'
+import Slider from '~/components/sections/Slider'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
-import TabelaProjeto from '~/components/elements/TabelaProjetos'
+import TabelaProjeto from '~/components/sections/TabelaProjetos'
 import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
@@ -47,7 +47,7 @@ export default {
   components: {
     Preloader,
     RelatorioDetalhado,
-    Slide,
+    Slider,
     Filtro,
     Card,
     TabelaProjeto

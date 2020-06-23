@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import CustomSelect from '~/components/elements/CustomSelect'
-import TabelaHoras from '~/components/elements/TabelaHoras'
+import CustomSelect from '~/components/forms/CustomSelect'
+import TabelaHoras from '~/components/sections/TabelaHoras'
 import Pagination from '~/components/elements/Pagination'
 import { mapState, mapActions } from 'vuex'
 export default {
