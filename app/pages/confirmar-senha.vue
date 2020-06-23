@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import AppHeader from '~/components/AppHeader'
+import AppHeader from '~/components/sections/AppHeader'
 import BoxEmail from '~/components/elements/BoxEmail'
 import VisibleIcon from '~/components/elements/VisibleIcon'
 import BtnProgresso from '~/components/elements/BtnProgresso'

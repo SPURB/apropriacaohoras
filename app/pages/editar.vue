@@ -54,10 +54,10 @@
 
 <script>
 import Lib from '~/libs/'
-import Modal from '~/components/Modal'
-import AppHeader from '~/components/AppHeader'
-import ListarHoras from '~/components/ListarHoras'
-import EditarHoras from '~/components/EditarHoras'
+import Modal from '~/components/sections/Modal'
+import AppHeader from '~/components/sections/AppHeader'
+import ListarHoras from '~/components/sections/ListarHoras'
+import EditarHoras from '~/components/sections/EditarHoras'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {

@@ -74,7 +74,7 @@ import { mapGetters, mapActions, mapState } from 'vuex'
 import InputOptions from '~/components/forms/InputOptions'
 import InputSearch from '~/components/forms/InputSearch'
 import UserProfilePlaceholder from '~/components/elements/UserProfilePlaceholder'
-import Modal from '~/components/Modal'
+import Modal from '~/components/sections/Modal'
 
 export default {
   name: 'equipes',

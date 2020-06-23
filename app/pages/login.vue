@@ -78,7 +78,7 @@
 <script>
 import BtnProgresso from '~/components/elements/BtnProgresso'
 import InputOptions from '~/components/forms/InputOptions'
-import Modal from '~/components/Modal'
+import Modal from '~/components/sections/Modal'
 import Preloader from '~/components/elements/Preloader'
 import VisibleIcon from '~/components/elements/VisibleIcon'
 

@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import CustomSelect from '~/components/CustomSelect'
+import CustomSelect from '~/components/elements/CustomSelect'
 import TimeInput from '~/components/forms/TimeInput'
 import Horas from '~/services/api-horas'
 import Subatividades from '~/services/api-subatividade'

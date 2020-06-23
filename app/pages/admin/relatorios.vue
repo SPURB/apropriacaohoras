@@ -34,8 +34,8 @@
 </template>
 <script>
 import Preloader from '~/components/elements/Preloader'
-import RelatorioDetalhado from '~/components/RelatorioDetalhado'
-import Slide from '~/components/Slide'
+import RelatorioDetalhado from '~/components/sections/RelatorioDetalhado'
+import Slide from '~/components/elements/Slide'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/elements/TabelaProjetos'

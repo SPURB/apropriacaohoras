@@ -55,8 +55,8 @@
 <script>
 import BoxEmail from '~/components/elements/BoxEmail'
 import BtnProgresso from '~/components/elements/BtnProgresso'
-import Modal from '~/components/Modal'
-import AppFooter from '~/components/AppFooter'
+import Modal from '~/components/sections/Modal'
+import AppFooter from '~/components/sections/AppFooter'
 import Usuario from '~/services/api-usuario'
 
 import { mapActions, mapState, mapMutations } from 'vuex'
