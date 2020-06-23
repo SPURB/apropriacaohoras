@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'Filtro',
   props: {
@@ -77,11 +78,13 @@ export default {
     formatProjetos () {
       let projetos = []
       this.projetos.forEach(projeto => {
-        const porcentagem = (projeto.desdeInicio / this.totalHoras) * 100
-        projeto.porcentagem = porcentagem.toFixed(1)
-        projetos.push(projeto)
+        if (projeto.total > 0) {
+          const porcentagem = (projeto.desdeInicio / this.totalHoras) * 100
+          projeto.porcentagem = porcentagem.toFixed(1)
+          projetos.push(projeto)
+        }        
       })
-
+ 
       return projetos //.sort((a, b) => b.porcentagem - a.porcentagem)
     }
   },
