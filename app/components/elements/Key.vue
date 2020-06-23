@@ -1,5 +1,11 @@
 <template>
-  <svg width="20" height="10" viewBox="0 0 17 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    width="20"
+    height="10"
+    viewBox="0 0 17 11"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M15.5833 10.4583H11.3333V7.62501H9.435C8.6275 9.33917 6.885 10.4583 4.95833 10.4583C2.22417 
         10.4583 0 8.23417 0 5.50001C0 2.76584 2.22417 0.541672 4.95833 0.541672C6.885 0.541672 8.62042 
@@ -20,8 +26,6 @@
 export default {
   name: 'Key'
 }
-
 </script>
 
-<style>
-</style>
+<style></style>

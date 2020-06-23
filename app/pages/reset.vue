@@ -39,10 +39,10 @@
         </p>
         <p class="reset__password">
           <label for="second__password">CONFIRME SUA SENHA</label>
-          <input 
-            type="password" 
-            name="second__password" 
-            v-model="form.spass" 
+          <input
+            type="password"
+            name="second__password"
+            v-model="form.spass"
             data-cy="input__spass"
           />
         </p>

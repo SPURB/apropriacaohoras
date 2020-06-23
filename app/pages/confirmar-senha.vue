@@ -1,7 +1,7 @@
 <template>
   <div class="confirm-pass">
     <AppHeader />
-    
+
     <section class="confirm-pass__main">
       <BoxEmail titulo="REDEFINIR SENHA PARA" :email="email" />
 
@@ -11,11 +11,11 @@
           <span @click="showPassword = !showPassword">
             <visible-icon :visible="!showPassword" />
           </span>
-          <input 
-            :type="!showPassword ? 'password' : 'text'" 
+          <input
+            :type="!showPassword ? 'password' : 'text'"
             name="current__password"
             data-cy="current__password"
-            v-model="password" 
+            v-model="password"
           />
         </div>
         <btn-progresso
@@ -63,7 +63,7 @@ export default {
       await this.resetAsync()
       this.$router.push(`/reset?email=${email}&reset=${this.password}`)
     }
-  },
+  }
 }
 </script>
 
@@ -81,7 +81,7 @@ export default {
     margin-top: 2rem;
     width: 100%;
   }
-  
+
   &__form {
     display: flex;
     flex-direction: column;
@@ -94,8 +94,10 @@ export default {
         margin-left: 2rem;
       }
     }
-  
-    .auth__btn { align-self: flex-end; }
+
+    .auth__btn {
+      align-self: flex-end;
+    }
 
     @media (max-width: $phone) {
       width: 80%;
@@ -115,7 +117,7 @@ export default {
       height: 3rem;
       outline: none;
       width: 100%;
-      margin-top: 0.30rem;
+      margin-top: 0.3rem;
     }
 
     span {
@@ -127,7 +129,7 @@ export default {
       width: 10%;
 
       @media (max-width: $phone) {
-        width: 15%
+        width: 15%;
       }
     }
   }
