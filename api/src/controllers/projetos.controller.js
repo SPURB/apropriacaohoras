@@ -56,11 +56,11 @@ exports.deleteAll = (req, res) => {
 }
 
 // ações
-exports.groupHorasProjetos = (req, res) => {
+exports.groupHorasProjetos = async (req, res) => {
   const { somaHoras } = projetos
   const { totalPorPeriodo } = horas
   const { inicio, fim } = req.params
-  const idProjeto = parseInt(req.params.id)
+  const idProjeto = JSON.parse(req.params.id)
 
   let where = {}
 
@@ -68,35 +68,42 @@ exports.groupHorasProjetos = (req, res) => {
     where = req.query
   }
 
-  where.projeto = idProjeto
+  where.projetos = idProjeto
+  
+  let arrayHoras = []
 
-  Promise.all([somaHoras(where), totalPorPeriodo(inicio, fim, idProjeto)])
-    .then(results => {
-      const soma = results[0]
-      const periodo = results[1]
+  try {
+    const countForPeriod = await Promise.all(totalPorPeriodo(inicio, fim, idProjeto))
+    const countHours = await Promise.all(somaHoras(where))
 
-      const horas = parseInt(soma.horas)
-      const extras = parseInt(soma.extras)
+    countForPeriod.map((periodo, index) => {
+      const soma = countHours[index]
+      let horas = 0
+      let extras = 0
       const totalPeriodo = parseInt(periodo.horas) + parseInt(periodo.extras)
 
-      res.send({
-        idProjeto,
-        title: `Horas agrupadas de ${soma.id_projeto.nome}`,
+      if (soma.id !== null) {
+        horas = parseInt(soma.horas)
+        extras = parseInt(soma.extras)
+      } else {
+        horas = 0
+        extras = 0
+      }
+
+      arrayHoras.push({
+        id: periodo.projeto,
+        title: `Horas agrupadas de ${periodo.id_projeto.nome}`,
         horas,
         extras,
         total: horas + extras,
         totalPeriodo
       })
     })
-    .catch(err => {
-      res.status(203).send({
-        idProjeto: parseInt(req.params.id),
-        title: `Não há horas cadastradas para este projeto`,
-        message: err.message || 'Ocorreu um erro na busca',
-        horas: 0,
-        extras: 0,
-        total: 0,
-        totalPeriodo: 0
-      })
+    return res.send(arrayHoras)
+  } catch (err) {
+    res.status(203).send({
+      title: `Não há horas cadastradas para estes projetos`,
+      message: err.message || 'Ocorreu um erro na busca',
     })
+  }
 }
