@@ -44,7 +44,7 @@
           <i class="icon icon-tempo"></i>
           <span>Registrar horas</span>
         </nuxt-link>
-        <nuxt-link to="/confirmar-senha" tag="li" class="class-user-info">         
+        <nuxt-link to="/confirmar-senha" tag="li" class="class-user-info">
           <Key class="icon" />
           <span>Redefinir senha</span>
         </nuxt-link>

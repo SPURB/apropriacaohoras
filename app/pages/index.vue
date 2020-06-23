@@ -27,7 +27,7 @@
 
 <script>
 import Preloader from '~/components/elements/Preloader'
-import Slide from '~/components/Slide'
+import Slide from '~/components/elements/Slide'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/elements/TabelaProjetos'

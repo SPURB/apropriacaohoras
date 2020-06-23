@@ -86,7 +86,7 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
 import ListHorizontalNav from '~/components/router-links/ListHorizontalNav'
 import InputCreate from '~/components/forms/InputCreate'
-import Modal from '~/components/Modal'
+import Modal from '~/components/sections/Modal'
 import Voltar from '~/components/router-links/Voltar'
 
 export default {

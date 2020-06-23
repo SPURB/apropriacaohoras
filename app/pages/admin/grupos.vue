@@ -48,7 +48,7 @@ import { mapActions, mapState } from 'vuex'
 import Voltar from '~/components/router-links/Voltar'
 import CardHorizontal from '~/components/router-links/CardHorizontal'
 import InputCreate from '~/components/forms/InputCreate'
-import Modal from '~/components/Modal'
+import Modal from '~/components/sections/Modal'
 
 export default {
   name: 'Grupos',

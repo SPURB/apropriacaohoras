@@ -144,10 +144,10 @@
 </template>
 
 <script>
-import Modal from '~/components/Modal'
-import Calendario from '~/components/Calendario'
-import CustomSelect from '~/components/CustomSelect'
-import ListarHoras from '~/components/ListarHoras'
+import Modal from '~/components/sections/Modal'
+import Calendario from '~/components/sections/Calendario'
+import CustomSelect from '~/components/elements/CustomSelect'
+import ListarHoras from '~/components/sections/ListarHoras'
 import { mapActions, mapState, mapGetters, mapMutations } from 'vuex'
 import Horas from '@/services/api-horas'
 

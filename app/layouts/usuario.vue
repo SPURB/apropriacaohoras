@@ -6,8 +6,8 @@
   </div>
 </template>
 <script>
-import AppHeader from '~/components/AppHeader'
-import AppFooter from '~/components/AppFooter'
+import AppHeader from '~/components/sections/AppHeader'
+import AppFooter from '~/components/sections/AppFooter'
 export default {
   name: 'usuario',
   components: {
