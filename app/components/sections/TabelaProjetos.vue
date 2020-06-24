@@ -28,8 +28,6 @@
         </tr>
       </tbody>
     </table>
-
-    <button type="button" class="gerar__pdf">Gerar PDF</button>
   </div>
 </template>
 
@@ -56,21 +54,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  .gerar__pdf {
-    border: 2px solid rgba(255, 255, 255, 0.24);
-    background-color: #008375;
-    font-size: inherit;
-    font-family: inherit;
-    border-radius: 2rem;
-    color: #fff;
-    padding: 1rem;
-    margin: 2rem 0 0;
-    width: 30%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.48);
-    cursor: pointer;
-    transition: all ease-in 0.2s;
-  }
 }
 
 .tabela__projeto {

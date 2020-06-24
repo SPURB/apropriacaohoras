@@ -1,7 +1,5 @@
 <template>
   <div class="confirm-pass">
-    <AppHeader />
-
     <section class="confirm-pass__main">
       <BoxEmail titulo="REDEFINIR SENHA PARA" :email="email" />
 
@@ -31,7 +29,6 @@
 </template>
 
 <script>
-import AppHeader from '~/components/sections/AppHeader'
 import BoxEmail from '~/components/elements/BoxEmail'
 import VisibleIcon from '~/components/elements/VisibleIcon'
 import BtnProgresso from '~/components/elements/BtnProgresso'
@@ -39,6 +36,7 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'ConfirmPass',
+  layout: 'usuario',
   data () {
     return {
       password: '',
@@ -46,7 +44,6 @@ export default {
     }
   },
   components: {
-    AppHeader,
     BoxEmail,
     VisibleIcon,
     BtnProgresso
