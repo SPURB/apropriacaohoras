@@ -111,7 +111,7 @@ exports.groupHorasProjetos = async (req, res) => {
     }
     return res.send(arrayHoras)
   } catch (err) {
-    return res.status(203).send({
+    return res.status(400).send({
       message: err.message || 'Ocorreu um erro na busca',
     })
   }
