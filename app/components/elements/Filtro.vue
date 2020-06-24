@@ -3,9 +3,15 @@
     <section class="actions">
       <h3>
         Projetos mais trabalhados:
-        <span>na última semana</span> · <span>por mês</span> ·
-        <span>por ano</span> ·
-        <span class="active">no total</span>
+        <span @click="filtrar(todayMinus7, today, $event)">na última semana</span> · 
+        <span @click="filtrar(todayMinus30, today, $event)">por mês</span> ·
+        <span @click="filtrar(todayMinus365, today, $event)">por ano</span> ·
+        <span 
+          ref="default"          
+          @click="formatProjetos(projetos, $event)"
+        >
+          no total
+        </span>
       </h3>
       <h4>Clique sobre um pedaço para ver mais detalhes do projeto</h4>
     </section>
@@ -15,7 +21,7 @@
         :key="index"
         :style="{ width: `${projeto.porcentagem}%` }"
         class="barra__item"
-        v-for="(projeto, index) in formatProjetos"
+        v-for="(projeto, index) in formatedProjects"
         @click.prevent="setProjeto(projeto, $event)"
         data-cy="pedaco__projeto"
       ></div>
@@ -28,7 +34,7 @@
         <i class="icon icon-seta_esquerda"></i>
         <p>
           <span>{{ projeto.ultimoMes }}</span>
-          horas trabalhadas no último mês
+          horas trabalhadas no período
         </p>
       </div>
 
@@ -52,7 +58,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
+import moment from 'moment'
+import Acoes from '@/services/api-acoes'
+
 export default {
   name: 'Filtro',
   props: {
@@ -64,29 +73,34 @@ export default {
   data () {
     return {
       showProjeto: false,
-      projeto: {}
+      projeto: {},
+      formatedProjects: []
     }
   },
   computed: {
-    totalHoras () {
-      let total = 0
-      this.projetos.map(projeto => {
-        total = total + +projeto.desdeInicio
-      })
-      return total
+    ...mapState('relatorios', {
+      horasProjeto: state => state.horasProjeto,
+      horasUsuario: state => state.horasUsuario
+    }),
+    ...mapGetters('relatorios', ['projetosMap']),
+    idsProjetos () {
+      return this.projetos.map(projeto => projeto.id)
     },
-    formatProjetos () {
-      let projetos = []
-      this.projetos.forEach(projeto => {
-        if (projeto.total > 0) {
-          const porcentagem = (projeto.desdeInicio / this.totalHoras) * 100
-          projeto.porcentagem = porcentagem.toFixed(1)
-          projetos.push(projeto)
-        }        
-      })
- 
-      return projetos //.sort((a, b) => b.porcentagem - a.porcentagem)
+    today () {
+      return moment().format('YYYY-MM-DD')
+    },
+    todayMinus365 () {
+      return moment().subtract('year', 1).format('YYYY-MM-DD')
+    },
+    todayMinus30 () {
+      return moment().subtract('day', 30).format('YYYY-MM-DD')
+    },
+    todayMinus7 () {
+      return moment().subtract('day', 7).format('YYYY-MM-DD')
     }
+  },
+  mounted() {
+    this.formatProjetos(this.projetos, undefined)
   },
   methods: {
     clearActive (classe) {
@@ -96,6 +110,63 @@ export default {
           elemento.classList.remove('active')
         }
       })
+    },
+    async filtrar(inicio, fim, event) {
+      let data = []
+      await Acoes.agruparHoras(this.idsProjetos, inicio, fim)
+        .then(totais => {
+         data = totais.data.map(res => {
+           return {
+            horas: res.horas,
+            extras: res.extras,
+            total: res.total,
+            idProjeto: res.idProjeto,
+            ultimoMes: res.totalPeriodo != null ? res.totalPeriodo : 0
+           }
+         })
+         const array =
+            data.map((horas, index) => {
+              const minhasHoras = this.horasUsuario
+                .filter(hora => hora.projeto === horas.idProjeto)
+                .map(hora => hora.horas + hora.extras)
+                .reduce((horaTotal, hora) => horaTotal + hora, 0)
+
+              horas.id = index + 1
+              horas.minhasHoras = minhasHoras
+              horas.nome = this.projetosMap[horas.idProjeto]
+              horas.desdeInicio = horas.total
+              return horas
+            })
+            this.formatProjetos(array, event)
+        })
+        .catch(err => {
+          console.log(err)
+        })       
+    },
+    formatProjetos (array, event) {
+      event != undefined ? this.setActiveFilter(event) : this.initValue() 
+
+      this.showProjeto = false
+      let projetos = []
+      let total = 0
+
+      array.forEach(projeto => {
+        if (projeto.ultimoMes > 0) {
+          total = total + +projeto.desdeInicio
+          const porcentagem = (projeto.desdeInicio / total) * 100
+          projeto.porcentagem = porcentagem.toFixed(1)
+          projetos.push(projeto)
+        }        
+      }) 
+      this.formatedProjects = projetos
+    },
+    initValue () {
+      const df = this.$refs.default
+      df.classList.add('active')
+    },
+    setActiveFilter (event) {
+      this.clearActive('active')
+      event.target.classList.add('active')
     },
     setProjeto (projeto, event) {
       this.clearActive('barra__item')

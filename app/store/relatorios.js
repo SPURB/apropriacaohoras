@@ -84,22 +84,21 @@ export const actions = {
     commit('SET', { key: 'fetching', data: true })
     const projetos = rootState.usuario.projetos
 
-    console.log(projetos)
     Acoes.agruparHoras(projetos, inicio, fim)
       .then((totais => {
-        const data = totais.map(res => {
-          console.log(res)
-          /* return {
-            horas: res.data.horas,
-            extras: res.data.extras,
-            total: res.data.total,
-            idProjeto: res.data.id,
-            ultimoMes: res.data.totalPeriodo
-          } */
+        const data = totais.data.map(res => {
+          return {
+            horas: res.horas,
+            extras: res.extras,
+            total: res.total,
+            idProjeto: res.idProjeto,
+            ultimoMes: res.totalPeriodo != null ? res.totalPeriodo : 0
+          }
         })
         commit('SET', { key: 'horasProjeto', data })
       }))
       .catch(err => {
+        console.log(err)
         commit('SET', { key: 'error', data: true })
         if (err.response && err.message) {
           commit('SET', { key: 'errorStatus', data: err.response.status })
