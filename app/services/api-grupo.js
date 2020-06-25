@@ -1,8 +1,8 @@
 import { http } from './http'
 
 export default {
-  get: () => {
-    return http.get('/grupos')
+  get: (query = '') => {
+    return http.get(`/grupos${query}`)
   },
   post: (data, token) => {
     return http.post('/grupos', data, {

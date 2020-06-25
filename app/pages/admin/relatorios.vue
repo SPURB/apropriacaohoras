@@ -29,6 +29,18 @@
 
     <section class="admin-relatorios__tabela">
       <tabela-projeto :projetos="projetosCardMap" />
+      <btn-action
+        class="index-comum__action"
+        title="Visualizar relatório detalhado"
+        @action="
+          $router.push({
+            path: 'pre-impressao',
+            query: {
+              from: '/admin/relatorios'
+            }
+          })
+        "
+      />
     </section>
   </div>
 </template>
@@ -39,6 +51,7 @@ import Slider from '~/components/sections/Slider'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/sections/TabelaProjetos'
+import BtnAction from '~/components/elements/BtnAction'
 import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
@@ -50,7 +63,8 @@ export default {
     Slider,
     Filtro,
     Card,
-    TabelaProjeto
+    TabelaProjeto,
+    BtnAction
   },
   computed: {
     ...mapState('relatorios', ['fetching']),

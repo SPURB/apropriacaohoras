@@ -9,7 +9,7 @@
     :disabled="reallyDisabled"
     @click="action"
   >
-    <template v-if="loading">Carregando</template>
+    <template v-if="loading">{{ loadingMessage }}</template>
     <template v-else>{{ title }}</template>
   </button>
 </template>
@@ -45,6 +45,10 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    loadingMessage: {
+      type: String,
+      default: 'Carregando'
     },
     disabled: {
       type: Boolean,
