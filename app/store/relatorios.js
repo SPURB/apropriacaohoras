@@ -3,6 +3,7 @@ import Horas from '@/services/api-horas'
 import Usuarios from '@/services/api-usuario'
 import Fases from '@/services/api-fase'
 import Subatividades from '@/services/api-subatividade'
+import Acoes from '@/services/api-acoes'
 
 import moment from 'moment'
 
@@ -83,21 +84,21 @@ export const actions = {
     commit('SET', { key: 'fetching', data: true })
     const projetos = rootState.usuario.projetos
 
-    Promise.all(projetos.map(id => Projetos.get(`/${id}/acoes/agrupar-horas/${inicio}/${fim}`)))
+    Acoes.agruparHoras(projetos, inicio, fim)
       .then((totais => {
-        const data = totais.map(res => {
+        const data = totais.data.map(res => {
           return {
-            horas: res.data.horas,
-            extras: res.data.extras,
-            total: res.data.total,
-            idProjeto: res.data.idProjeto,
-            ultimoMes: res.data.totalPeriodo
+            horas: res.horas,
+            extras: res.extras,
+            total: res.total,
+            idProjeto: res.idProjeto,
+            ultimoMes: res.totalPeriodo != null ? res.totalPeriodo : 0
           }
         })
-
         commit('SET', { key: 'horasProjeto', data })
       }))
       .catch(err => {
+        console.log(err)
         commit('SET', { key: 'error', data: true })
         if (err.response && err.message) {
           commit('SET', { key: 'errorStatus', data: err.response.status })

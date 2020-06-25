@@ -26,26 +26,38 @@
     <box-email :email="email" :titulo="`DEFINA UMA SENHA PARA`" />
     <section class="card__password">
       <form class="form__password" @submit.prevent="checkPassword">
-        <p class="reset__password">
+        <section class="reset__password">
           <label for="first__password">DEFINA UMA SENHA</label>
-          <input
-            type="password"
-            name="first__password"
-            v-model="form.fpass"
-            ref="fpass"
-            autofocus
-            data-cy="input__fpass"
-          />
-        </p>
-        <p class="reset__password">
+
+          <div class="input__pass">
+            <span @click="showInput.fpass = !showInput.fpass">
+              <visible-icon :visible="!showInput.fpass" />
+            </span>
+            <input
+              :type="showInput.fpass ? 'text' : 'password'"
+              name="first__password"
+              v-model="form.fpass"
+              ref="fpass"
+              autofocus
+              data-cy="input__fpass"
+            />
+          </div>
+        </section>
+        <section class="reset__password">
           <label for="second__password">CONFIRME SUA SENHA</label>
-          <input
-            type="password"
-            name="second__password"
-            v-model="form.spass"
-            data-cy="input__spass"
-          />
-        </p>
+
+          <div class="input__pass">
+            <span @click="showInput.spass = !showInput.spass">
+              <visible-icon :visible="!showInput.spass" />
+            </span>
+            <input
+              :type="showInput.spass ? 'text' : 'password'"
+              name="second__password"
+              v-model="form.spass"
+              data-cy="input__spass"
+            />
+          </div>
+        </section>
         <btn-progresso class="btn__reset" data-cy="btn__reset" />
       </form>
     </section>
@@ -57,8 +69,8 @@ import BoxEmail from '~/components/elements/BoxEmail'
 import BtnProgresso from '~/components/elements/BtnProgresso'
 import Modal from '~/components/sections/Modal'
 import AppFooter from '~/components/sections/AppFooter'
+import VisibleIcon from '~/components/elements/VisibleIcon'
 import Usuario from '~/services/api-usuario'
-
 import { mapActions, mapState, mapMutations } from 'vuex'
 
 export default {
@@ -67,10 +79,15 @@ export default {
     BoxEmail,
     BtnProgresso,
     Modal,
-    AppFooter
+    AppFooter,
+    VisibleIcon
   },
   data () {
     return {
+      showInput: {
+        fpass: false,
+        spass: false
+      },
       form: {
         fpass: '',
         spass: ''
@@ -195,20 +212,43 @@ export default {
       flex-direction: column;
       width: 100%;
 
-      input {
-        border: none;
-        color: inherit;
-        background-color: rgba(255, 255, 255, 0.08);
-        padding: 0 0.75rem;
-        height: 3rem;
-        border-radius: 24px;
-        font-size: inherit;
-        outline: none;
-        width: 100%;
+      .input__pass {
+        display: flex;
+        margin-bottom: 1rem;
+
+        input {
+          border: none;
+          color: inherit;
+          background-color: rgba(255, 255, 255, 0.08);
+          padding: 0 0.75rem;
+          height: 3rem;
+          border-radius: 24px;
+          font-size: inherit;
+          outline: none;
+          width: 100%;
+        }
+
+        span {
+          align-items: center;
+          justify-content: flex-end;
+          padding-right: 0.5rem;
+          cursor: pointer;
+          display: flex;
+          width: 10%;
+
+          @media (max-width: $phone) {
+            width: 15%;
+          }
+        }
       }
 
       label {
-        margin-bottom: 0.25rem;
+        margin-left: 3rem;
+        margin-bottom: 0.5rem;
+
+        @media (max-width: $phone) {
+          margin-left: 1.5rem;
+        }
       }
     }
 
