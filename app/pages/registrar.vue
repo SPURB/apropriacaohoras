@@ -327,14 +327,231 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import '@/assets/style/form-horas.scss';
-
+<style lang="scss" scoped>
 .registrar {
   &__modal {
     top: 0;
   }
+  h2 {
+    max-width: 1200px;
+    font-size: 1.5rem;
+    color: #fff;
+    line-height: 3rem;
+    margin: 4rem auto 1rem;
+  }
+  #form-registrar-horas {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    color: #fff;
+    & > * {
+      border-radius: 1.5rem;
+    }
+    & > .calendario {
+      width: calc(50% - 2rem);
+      margin-right: 2rem;
+      @include bg-white-alpha(0.08);
+    }
+    * > fieldset {
+      padding: 0;
+      border: 0;
+      label {
+        display: block;
+        @include color-white-alpha(0.4);
+        font-size: 0.75rem;
+        line-height: 1;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+      input,
+      select {
+        border: none;
+        color: inherit;
+        font-family: inherit;
+        font-size: 1.5rem;
+        @include bg-white-alpha(0.08);
+        width: 100%;
+        option {
+          color: $preto;
+        }
+        padding: 0 0.75rem;
+        height: 3rem;
+        border-radius: 1.5rem;
+      }
+      // sumindo com os controles de input number no firefox, chrome...
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type='number'] {
+        -moz-appearance: textfield;
+        caret-color: transparent;
+      }
+
+      select:hover {
+        cursor: pointer;
+      }
+    }
+    & > .formtop {
+      display: flex;
+      flex-flow: column nowrap;
+      justify-content: space-between;
+      width: calc(50% - 2rem);
+      margin-left: 2rem;
+      fieldset {
+        &.timeInput {
+          .main {
+            display: inline-block;
+            width: 30%;
+            label {
+              display: inline-block;
+            }
+            & > div {
+              position: relative;
+              button {
+                position: absolute;
+                top: 0.5rem;
+                height: calc(100% - 1rem);
+                width: 20%;
+                color: inherit;
+                font-size: inherit;
+                background-color: $verde;
+                text-align: center;
+                cursor: pointer;
+                border: 2px solid rgba(255, 255, 255, 0.12);
+                box-shadow: $s-1-2-48;
+                &:first-child {
+                  left: 0.5rem;
+                  border-radius: 1.5rem 0 0 1.5rem;
+                  padding-left: 0.65rem;
+                }
+                &:last-child {
+                  right: 0.5rem;
+                  border-radius: 0 1.5rem 1.5rem 0;
+                  padding-right: 1rem;
+                }
+              }
+              input {
+                text-align: center;
+              }
+            }
+          }
+          aside {
+            display: inline-block;
+            height: 100%;
+            width: calc(74.5% - 2rem);
+            vertical-align: top;
+            padding-left: 2rem;
+            label {
+              display: inline-block;
+              margin-right: 0.75rem;
+            }
+            .bar {
+              @include bg-white-alpha(0.08);
+              padding: 0.5rem;
+              width: 100%;
+              height: 3rem;
+              border-radius: 1.5rem;
+              display: flex;
+              position: relative;
+
+              .normal-hours,
+              .extra-hours {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                display: flex;
+
+                .count-hours {
+                  background-color: $verde;
+                  border: 2px solid rgba(255, 255, 255, 0.2);
+                  height: 100%;
+                  width: 12%;
+                  margin-left: 0.5%;
+
+                  &:nth-child(1) {
+                    border-radius: 1.5rem 0 0 1.5rem;
+                  }
+                  &:nth-child(8) {
+                    border-radius: 0 1.5rem 1.5rem 0;
+                  }
+                }
+              }
+
+              .extra-hours {
+                .count-hours {
+                  background-color: $verde-claro;
+                  width: 25%;
+
+                  &:nth-child(4) {
+                    border-radius: 0 1.5rem 1.5rem 0;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    & > .formbtm {
+      width: 100%;
+      margin-top: 2rem;
+    }
+    & > .postBtn {
+      border: 2px solid rgba(255, 255, 255, 0.24);
+      background-color: $verde;
+      font-size: inherit;
+      font-family: inherit;
+      border-radius: 2rem;
+      color: inherit;
+      padding: 1rem;
+      margin: 2rem 0 0;
+      width: 100%;
+      box-shadow: $s-2-4-48;
+      cursor: pointer;
+      transition: all ease-in 0.2s;
+      &:hover {
+        box-shadow: $s-4-8-24;
+      }
+    }
+  }
 }
+
+@media (max-width: 850px) {
+  .registrar {
+    h2 {
+      margin-left: 15px;
+    }
+    #form-registrar-horas {
+      flex-direction: column;
+      padding: 15px;
+
+      .calendario,
+      .formtop {
+        margin: 0 !important;
+        width: 100%;
+
+        fieldset {
+          margin: 15px 0px 15px 0px;
+        }
+        .timeInput {
+          .main,
+          aside {
+            margin: 0px;
+            width: 100% !important;
+          }
+          aside {
+            padding-left: 0rem !important;
+          }
+        }
+      }
+    }
+  }
+}
+
 .list_horas {
   margin-top: 7px;
   width: 100%;
