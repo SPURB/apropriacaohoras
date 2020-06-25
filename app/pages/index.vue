@@ -6,7 +6,7 @@
     <section class="index-comum__projetos">
       <h2>Projetos que você trabalhou mais tempo</h2>
       <slider>
-        <Card
+        <card
           :key="index"
           v-for="(projeto, index) in projetosCardMap"
           :projeto="projeto"
@@ -21,6 +21,18 @@
 
     <div class="index-comum__horas-projetos">
       <tabela-projeto :projetos="projetosCardMap" />
+      <btn-action
+        class="index-comum__action"
+        title="Visualizar relatório detalhado"
+        @action="
+          goTo({
+            path: '/pre-impressao',
+            query: {
+              from: '/'
+            }
+          })
+        "
+      />
     </div>
   </div>
 </template>
@@ -31,6 +43,7 @@ import Slider from '~/components/sections/Slider'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/sections/TabelaProjetos'
+import BtnAction from '~/components/elements/BtnAction'
 
 import { mapActions, mapGetters, mapState } from 'vuex'
 
@@ -42,7 +55,8 @@ export default {
     Slider,
     Filtro,
     Card,
-    TabelaProjeto
+    TabelaProjeto,
+    BtnAction
   },
   computed: {
     ...mapGetters('relatorios', ['projetosCardMap']),
@@ -53,7 +67,10 @@ export default {
     await this.getHorasProjeto()
   },
   methods: {
-    ...mapActions('relatorios', ['getRelatorios', 'getHorasProjeto'])
+    ...mapActions('relatorios', ['getRelatorios', 'getHorasProjeto']),
+    goTo (to) {
+      this.$router.push(to)
+    }
   }
 }
 </script>
@@ -85,6 +102,13 @@ export default {
   &__filtro-projetos {
     max-width: $desktop;
     margin: auto;
+  }
+  &__horas-projetos {
+    display: flex;
+    flex-direction: column;
+  }
+  &__action {
+    margin: 3rem auto 0;
   }
 }
 </style>

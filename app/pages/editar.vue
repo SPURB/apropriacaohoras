@@ -1,7 +1,5 @@
 <template>
   <div class="editar">
-    <app-header />
-
     <modal
       v-if="modal.show"
       class="registrar__modal"
@@ -55,13 +53,13 @@
 <script>
 import Lib from '~/libs/'
 import Modal from '~/components/sections/Modal'
-import AppHeader from '~/components/sections/AppHeader'
 import ListarHoras from '~/components/sections/ListarHoras'
 import EditarHoras from '~/components/sections/EditarHoras'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: 'Editar',
+  layout: 'usuario',
   data () {
     return {
       data: '',
@@ -78,7 +76,6 @@ export default {
   },
   components: {
     Modal,
-    AppHeader,
     ListarHoras,
     EditarHoras
   },
