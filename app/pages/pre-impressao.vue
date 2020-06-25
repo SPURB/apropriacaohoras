@@ -9,7 +9,7 @@
         </p>
       </div>
       <div class="pre-impressao-usuario__main">
-        <div class="projetos">
+        <div id="projetos" class="projetos">
           <div
             class="projeto"
             v-for="projeto in projetosFases"
@@ -17,7 +17,7 @@
           >
             <h3>{{ projeto.nome }}</h3>
             <p>{{ gruposHashTable[projeto.grupo] }}</p>
-            <table>
+            <table class="projetos__table">
               <thead>
                 <tr>
                   <th>Fases</th>
@@ -190,12 +190,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-th,
-td {
-  border: solid 1px grey;
-}
-table {
-  color: #000;
+// table {
+//   color: #000;
+// }
+#projetos.projetos {
+  &__tabela {
+    th,
+    td {
+      border: solid 1px grey;
+      padding: 0;
+      margin: 0
+    };
+    color: #000
+  }
 }
 .pre-impressao-usuario {
   &__header {

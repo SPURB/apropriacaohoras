@@ -1,6 +1,6 @@
 <template>
   <div class="filtro">
-    <div v-if="error !==''" class="filtro__error">
+    <div v-if="error !== ''" class="filtro__error">
       <p>{{ error }}</p>
     </div>
     <section v-else class="actions">

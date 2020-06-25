@@ -58,8 +58,8 @@ export default {
 
 .tabela__projeto {
   width: 100%;
-  color: #fff !important;
-  border-collapse: collapse !important;
+  line-height: 2.4;
+  border-collapse: collapse;
 
   .icon-tempo {
     font-size: 1.3rem;
@@ -73,7 +73,6 @@ export default {
   tr,
   td {
     border-radius: 0;
-    color: #fff !important;
     display: flex;
     width: 100%;
     justify-content: space-between;
