@@ -3,13 +3,12 @@
     <section class="actions">
       <h3>
         Projetos mais trabalhados:
-        <span @click="filtrar(todayMinus7, today, $event)">na última semana</span> · 
-        <span @click="filtrar(todayMinus30, today, $event)">por mês</span> ·
-        <span @click="filtrar(todayMinus365, today, $event)">por ano</span> ·
-        <span 
-          ref="default"          
-          @click="formatProjetos(projetos, $event)"
+        <span @click="filtrar(todayMinus7, today, $event)"
+          >na última semana</span
         >
+        · <span @click="filtrar(todayMinus30, today, $event)">por mês</span> ·
+        <span @click="filtrar(todayMinus365, today, $event)">por ano</span> ·
+        <span ref="default" @click="formatProjetos(projetos, $event)">
           no total
         </span>
       </h3>
@@ -90,16 +89,22 @@ export default {
       return moment().format('YYYY-MM-DD')
     },
     todayMinus365 () {
-      return moment().subtract('year', 1).format('YYYY-MM-DD')
+      return moment()
+        .subtract('year', 1)
+        .format('YYYY-MM-DD')
     },
     todayMinus30 () {
-      return moment().subtract('day', 30).format('YYYY-MM-DD')
+      return moment()
+        .subtract('day', 30)
+        .format('YYYY-MM-DD')
     },
     todayMinus7 () {
-      return moment().subtract('day', 7).format('YYYY-MM-DD')
+      return moment()
+        .subtract('day', 7)
+        .format('YYYY-MM-DD')
     }
   },
-  mounted() {
+  mounted () {
     this.formatProjetos(this.projetos, undefined)
   },
   methods: {
@@ -111,40 +116,39 @@ export default {
         }
       })
     },
-    async filtrar(inicio, fim, event) {
+    async filtrar (inicio, fim, event) {
       let data = []
       await Acoes.agruparHoras(this.idsProjetos, inicio, fim)
         .then(totais => {
-         data = totais.data.map(res => {
-           return {
-            horas: res.horas,
-            extras: res.extras,
-            total: res.total,
-            idProjeto: res.idProjeto,
-            ultimoMes: res.totalPeriodo != null ? res.totalPeriodo : 0
-           }
-         })
-         const array =
-            data.map((horas, index) => {
-              const minhasHoras = this.horasUsuario
-                .filter(hora => hora.projeto === horas.idProjeto)
-                .map(hora => hora.horas + hora.extras)
-                .reduce((horaTotal, hora) => horaTotal + hora, 0)
+          data = totais.data.map(res => {
+            return {
+              horas: res.horas,
+              extras: res.extras,
+              total: res.total,
+              idProjeto: res.idProjeto,
+              ultimoMes: res.totalPeriodo != null ? res.totalPeriodo : 0
+            }
+          })
+          const array = data.map((horas, index) => {
+            const minhasHoras = this.horasUsuario
+              .filter(hora => hora.projeto === horas.idProjeto)
+              .map(hora => hora.horas + hora.extras)
+              .reduce((horaTotal, hora) => horaTotal + hora, 0)
 
-              horas.id = index + 1
-              horas.minhasHoras = minhasHoras
-              horas.nome = this.projetosMap[horas.idProjeto]
-              horas.desdeInicio = horas.total
-              return horas
-            })
-            this.formatProjetos(array, event)
+            horas.id = index + 1
+            horas.minhasHoras = minhasHoras
+            horas.nome = this.projetosMap[horas.idProjeto]
+            horas.desdeInicio = horas.total
+            return horas
+          })
+          this.formatProjetos(array, event)
         })
         .catch(err => {
           console.log(err)
-        })       
+        })
     },
     formatProjetos (array, event) {
-      event != undefined ? this.setActiveFilter(event) : this.initValue() 
+      event != undefined ? this.setActiveFilter(event) : this.initValue()
 
       this.showProjeto = false
       let projetos = []
@@ -156,8 +160,8 @@ export default {
           const porcentagem = (projeto.desdeInicio / total) * 100
           projeto.porcentagem = porcentagem.toFixed(1)
           projetos.push(projeto)
-        }        
-      }) 
+        }
+      })
       this.formatedProjects = projetos
     },
     initValue () {

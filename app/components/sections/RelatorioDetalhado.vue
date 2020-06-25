@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       pageNumber: 0,
-      size: 2
+      size: 9
     }
   },
   components: {
