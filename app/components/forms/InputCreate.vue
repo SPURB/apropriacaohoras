@@ -121,6 +121,10 @@ export default {
     flex-direction: column;
     color: black;
     padding: 0.8rem 2.4rem;
+
+    @media (max-width: $tablet) {
+      padding: 0.8rem 1rem;
+    }
   }
   &__label {
     margin: 1rem 0;
