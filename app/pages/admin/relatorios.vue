@@ -104,5 +104,11 @@ export default {
     max-width: $desktop;
     margin: auto;
   }
+
+  &__filtros, &__tabela {
+    @media (max-width: $tablet) {
+      padding: 1rem;
+    }
+  }
 }
 </style>
