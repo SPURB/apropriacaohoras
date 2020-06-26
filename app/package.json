@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "file-saver": "^2.0.2",
     "fuse.js": "^3.2.1",
     "nuxt": "^2.12.2",
     "vuex-persist": "^2.2.0"

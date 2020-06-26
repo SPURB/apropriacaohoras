@@ -228,7 +228,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 table {
   border-spacing: 1rem;
   table-layout: fixed;

@@ -1,6 +1,9 @@
 <template>
   <div class="filtro">
-    <section class="actions">
+    <div v-if="error !== ''" class="filtro__error">
+      <p>{{ error }}</p>
+    </div>
+    <section v-else class="actions">
       <h3>
         Projetos mais trabalhados:
         <span @click="filtrar(todayMinus7, today, $event)"
@@ -73,7 +76,8 @@ export default {
     return {
       showProjeto: false,
       projeto: {},
-      formatedProjects: []
+      formatedProjects: [],
+      error: ''
     }
   },
   computed: {
@@ -104,8 +108,11 @@ export default {
         .format('YYYY-MM-DD')
     }
   },
-  mounted () {
-    this.formatProjetos(this.projetos, undefined)
+  watch: {
+    projetos (itens) {
+      if (!itens.length) return
+      this.formatProjetos(itens, undefined)
+    }
   },
   methods: {
     clearActive (classe) {
@@ -116,9 +123,9 @@ export default {
         }
       })
     },
-    async filtrar (inicio, fim, event) {
+    filtrar (inicio, fim, event) {
       let data = []
-      await Acoes.agruparHoras(this.idsProjetos, inicio, fim)
+      Acoes.agruparHoras(this.idsProjetos, inicio, fim)
         .then(totais => {
           data = totais.data.map(res => {
             return {
@@ -143,12 +150,12 @@ export default {
           })
           this.formatProjetos(array, event)
         })
-        .catch(err => {
-          console.log(err)
+        .catch(({ message }) => {
+          this.error = message
         })
     },
     formatProjetos (array, event) {
-      event != undefined ? this.setActiveFilter(event) : this.initValue()
+      event ? this.setActiveFilter(event) : this.initValue()
 
       this.showProjeto = false
       let projetos = []
@@ -273,6 +280,14 @@ export default {
         font-weight: bold;
       }
     }
+  }
+  &__error {
+    background-color: $vermelho;
+    width: 100%;
+    padding: 1rem;
+    margin: 2rem auto;
+    text-align: center;
+    border-radius: 10px;
   }
 }
 </style>

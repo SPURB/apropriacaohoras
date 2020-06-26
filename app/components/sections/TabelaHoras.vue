@@ -38,7 +38,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
-  name: 'TabelaUsuariosProjetos',
+  name: 'TabelaHoras',
   props: {
     projetos: {
       type: Array,
@@ -72,8 +72,8 @@ export default {
 <style lang="scss" scoped>
 .tabela-projeto {
   width: 100%;
-  color: #fff !important;
-  border-collapse: collapse !important;
+  border-collapse: collapse;
+  line-height: 2.4;
 
   .icon-tempo {
     font-size: 1.3rem;
@@ -110,16 +110,6 @@ export default {
 
   &__body {
     tr,
-    td {
-      border-radius: 0;
-      color: #fff !important;
-      width: 100%;
-      text-align: left;
-
-      &:hover {
-        background-color: rgba(255, 255, 255, 0.04);
-      }
-    }
     td {
       padding: 5px;
     }
