@@ -12,18 +12,20 @@
     <div class="auth-card">
       <section v-if="!validEmail" class="card__email">
         <form class="auth email" @submit.prevent="checkInputEmail">
-          <p class="auth__group">
-            <label for="auth__email-alias">SEU EMAIL</label>
-            <input
-              type="text"
-              name="auth__email-alias"
-              id="auth__email-alias"
-              v-model="alias"
-              data-cy="input__email"
-              autofocus
-            />
-          </p>
-          <p class="auth__group separador">@</p>
+          <div class="auth__group">
+            <div class="auth__input">
+              <label for="auth__email-alias">SEU EMAIL</label>
+              <input
+                type="text"
+                name="auth__email-alias"
+                id="auth__email-alias"
+                v-model="alias"
+                data-cy="input__email"
+                autofocus
+              />
+            </div>
+            <div class="auth__group separador">@</div>
+          </div>
           <input-options
             style="margin-top:1rem"
             :options="hostOptions"
@@ -53,16 +55,18 @@
           <span @click="showPasword = !showPasword">
             <visible-icon :visible="!showPasword" />
           </span>
-          <p class="auth__group">
-            <label tabindex="1000" for="auth__pass-input">SENHA</label>
-            <input
-              :type="!showPasword ? 'password' : 'text'"
-              id="auth__pass-input"
-              name="auth__pass-input"
-              v-model="password"
-              data-cy="input__pass"
-            />
-          </p>
+          <div class="auth__group">
+            <div class="auth__input">
+              <label tabindex="1000" for="auth__pass-input">SENHA</label>
+              <input
+                :type="!showPasword ? 'password' : 'text'"
+                id="auth__pass-input"
+                name="auth__pass-input"
+                v-model="password"
+                data-cy="input__pass"
+              />
+            </div>
+          </div>
           <btn-progresso
             class="auth__btn"
             data-cy="btn__confirm"
@@ -207,11 +211,21 @@ export default {
   margin: auto;
   font-family: $grot;
   padding-bottom: 3rem;
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+  }
+
   &__group {
     display: flex;
-    flex-direction: column;
     color: #fff;
     margin-top: 0;
+  }
+  &__input {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem;
   }
   &__btn {
     @media (max-width: $phone) {
@@ -227,6 +241,8 @@ export default {
 .separador {
   padding-top: 0.5rem;
   margin: 0.5rem;
+  align-self: center;
+  font-size: 1rem;
 }
 
 input {

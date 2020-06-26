@@ -322,6 +322,12 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   &__title > span {
     font-size: 1rem;
     font-weight: normal;
@@ -330,6 +336,10 @@ export default {
   &__breadcrumb {
     display: flex;
     list-style-type: none;
+
+    @media (max-width: $tablet) {
+      padding: 0;
+    }
   }
   &__breadcrumb--item {
     font-weight: 700;

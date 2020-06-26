@@ -2,7 +2,7 @@
   <div class="admin tema">
     <app-header />
     <nuxt style="margin-bottom: 150px" />
-    <app-footer style="position: fixed; width: 100%; bottom: 0" />
+    <app-footer style="width: 100%; bottom: 0" />
   </div>
 </template>
 <script>
