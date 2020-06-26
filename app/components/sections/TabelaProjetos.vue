@@ -3,10 +3,10 @@
     <table class="tabela__projeto">
       <thead class="tabela__header">
         <tr>
-          <th class="tabela__celula forced-color">
+          <th class="tabela__celula">
             Todos os projetos
           </th>
-          <th class="tabela__celula forced-color">
+          <th class="tabela__celula">
             <span>
               <i class="icon icon-tempo"></i>
               Horas trabalhadas totais
@@ -60,6 +60,7 @@ export default {
   width: 100%;
   line-height: 2.4;
   border-collapse: collapse;
+  color: #fff;
 
   .icon-tempo {
     font-size: 1.3rem;
@@ -80,9 +81,6 @@ export default {
 
   .tabela__linha .tabela__celula span {
     margin: 2px 0.5rem;
-  }
-  .forced-color {
-    color: #fff !important;
   }
 
   .linha__clara {

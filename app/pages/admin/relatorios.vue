@@ -34,7 +34,7 @@
         title="Visualizar relatório detalhado"
         @action="
           $router.push({
-            path: 'pre-impressao',
+            path: '/pre-impressao',
             query: {
               from: '/admin/relatorios'
             }

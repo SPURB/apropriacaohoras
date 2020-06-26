@@ -85,6 +85,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-bottom: 2rem;
   padding: 1rem 1.5rem;
   font-size: small;
   border: 1px solid #ebe6e6;
@@ -102,6 +103,10 @@ export default {
       margin-top: 24px;
       margin-bottom: 0;
     }
+  }
+  &__main {
+    display: flex;
+    flex-direction: column;
   }
   &__footer {
     border-top: 1px solid $cinza1;
