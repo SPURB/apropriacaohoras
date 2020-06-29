@@ -1,5 +1,11 @@
+const apiBase = {
+  prod: 'https://servicos.spurbanismo.sp.gov.br/apropriacaohoras/0.0.1',
+  local: 'http://localhost:5000/apropriacaohoras/0.0.1',
+  homolog: 'https://apropriacaohoras.herokuapp.com/apropriacaohoras/0.0.1'
+}
+
 export default {
-	head: {
+  head: {
     htmlAttrs: { lang: 'pt-br' },
     title: "SPUrbanismo | Apropriação de horas",
     meta: [
@@ -7,27 +13,25 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
-	},
+  },
   router: {
     base: process.env.CI ? '/apropriacaohoras/' : '/', // https://spurb.github.io/apropriacaohoras/
-		middleware: [ 'authenticated' ]
+    middleware: [ 'authenticated' ]
   },
-  env:{
-    apiBase: 'https://apropriacaohoras.herokuapp.com/apropriacaohoras/0.0.1'
-  },
+  env:{ apiBase: apiBase[process.env.NODE_ENV] },
   plugins: [
     { src: '~/plugins/vuex-persist', ssr: false }
   ],
-	mode: 'spa',
+  mode: 'spa',
   buildModules: [
-		'@nuxtjs/style-resources',
-		'@nuxtjs/moment'
-	],
+    '@nuxtjs/style-resources',
+    '@nuxtjs/moment'
+  ],
   styleResources: {
     scss: [
-			'@/assets/style/variables.scss',
-			'@/assets/style/theme.scss'
-		]
+      '@/assets/style/variables.scss',
+      '@/assets/style/theme.scss'
+    ]
   },
   css: [ '@/assets/style/icones/participe.css' ],
   generate: {
