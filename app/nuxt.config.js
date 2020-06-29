@@ -15,7 +15,7 @@ export default {
     ],
   },
   router: {
-    base: process.env.CI ? '/apropriacaohoras/' : '/', // https://spurb.github.io/apropriacaohoras/
+    base: process.env.CI || process.env.NODE_ENV === 'prod' ? '/apropriacaohoras/' : '/',
     middleware: [ 'authenticated' ]
   },
   env:{ apiBase: apiBase[process.env.NODE_ENV] },
