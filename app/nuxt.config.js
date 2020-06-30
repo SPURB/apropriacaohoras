@@ -1,7 +1,7 @@
 const apiBase = {
-  prod: 'https://servicos.spurbanismo.sp.gov.br/apropriacaohoras/0.0.1',
-  local: 'http://localhost:5000/apropriacaohoras/0.0.1',
-  homolog: 'https://apropriacaohoras.herokuapp.com/apropriacaohoras/0.0.1'
+  prod: 'https://servicos.spurbanismo.sp.gov.br/apropriacaohoras/api/0.0.1',
+  local: 'http://localhost:5000/apropriacaohoras/api/0.0.1',
+  homolog: 'https://apropriacaohoras.herokuapp.com/apropriacaohoras/api/0.0.1'
 }
 
 export default {
