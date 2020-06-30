@@ -3,15 +3,17 @@
   "description": "Sistema de apropriação de horas trabalhadas, gerenciamento de pessoal e relatoria de trabalho da São Paulo Urbanismo",
   "private": true,
   "scripts": {
-    "dev:local": "cross-env NODE_ENV=local nuxt",
     "dev": "cross-env NODE_ENV=homolog nuxt",
-    "build": "cross-env NODE_ENV=prod nuxt generate",
-    "generate": "cross-env NODE_ENV=homolog nuxt generate",
+    "dev:local": "cross-env NODE_ENV=local nuxt",
+    "build": "cross-env NODE_ENV=prod nuxt build && nuxt export",
+    "build:local": "cross-env NODE_ENV=local nuxt build && nuxt export",
+    "build:homolog": "cross-env NODE_ENV=homolog nuxt build && nuxt export",
+    "serve": "nuxt serve",
     "lint": "prettier-standard ./{*,/**/*}.vue --format",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test:e2e": "start-server-and-test dev http://localhost:3000 cy:run",
-    "test:e2e:local": "start-server-and-test dev:local http://localhost:3000 cy:run"
+    "test:e2e:local": "start-server-and-test serve http://localhost:3000 cy:run"
   },
   "husky": {
     "hooks": {
@@ -28,7 +30,7 @@
     "axios": "^0.19.2",
     "file-saver": "^2.0.2",
     "fuse.js": "^3.2.1",
-    "nuxt": "^2.12.2",
+    "nuxt": "^2.13.2",
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {

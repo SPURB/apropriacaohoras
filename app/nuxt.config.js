@@ -5,6 +5,7 @@ const apiBase = {
 }
 
 export default {
+  target: 'static',
   head: {
     htmlAttrs: { lang: 'pt-br' },
     title: "SPUrbanismo | Apropriação de horas",
