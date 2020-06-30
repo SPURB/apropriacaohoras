@@ -6,7 +6,7 @@ import middlewares from './middlewares'
 const app = express()
 const { name, version, description, bugs } = require('../package.json')
 
-const basePath = `/${name}/${version}`
+const basePath = `/${name}/api/${version}`
 const endpoints = [
   'horas',
   'usuarios',
