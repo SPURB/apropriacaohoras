@@ -50,7 +50,7 @@ export default {
   align-items: center;
   max-width: $desktop;
   margin: auto;
-  margin-bottom: 0px !important;
+  min-height: calc(100vh - 138px);
   &__container {
     width: 100%;
     margin: auto;

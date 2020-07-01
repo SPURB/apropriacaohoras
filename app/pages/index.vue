@@ -47,33 +47,35 @@
           :message="'Verificando suas credenciais'"
           :width="'200px'"
         />
-        <form
-          v-else
-          class="auth pass"
-          @submit.prevent="login({ email, password })"
-        >
-          <span @click="showPasword = !showPasword">
-            <visible-icon :visible="!showPasword" />
-          </span>
-          <div class="auth__group">
-            <div class="auth__input">
-              <label tabindex="1000" for="auth__pass-input">SENHA</label>
-              <input
-                :type="!showPasword ? 'password' : 'text'"
-                id="auth__pass-input"
-                name="auth__pass-input"
-                v-model="password"
-                data-cy="input__pass"
-              />
-            </div>
-          </div>
+        <template v-else>
           <btn-progresso
-            class="auth__btn"
-            data-cy="btn__confirm"
-            v-on:keyup.enter="login({ email, password })"
-            :disabled="password === ''"
+            class="card-pass__btn-voltar"
+            @btnPrograssoAction="goBack"
           />
-        </form>
+          <form class="auth pass" @submit.prevent="login({ email, password })">
+            <span @click="showPasword = !showPasword">
+              <visible-icon :visible="!showPasword" />
+            </span>
+            <div class="auth__group">
+              <div class="auth__input">
+                <label tabindex="1000" for="auth__pass-input">SENHA</label>
+                <input
+                  :type="!showPasword ? 'password' : 'text'"
+                  id="auth__pass-input"
+                  name="auth__pass-input"
+                  v-model="password"
+                  data-cy="input__pass"
+                />
+              </div>
+            </div>
+            <btn-progresso
+              class="auth__btn"
+              data-cy="btn__confirm"
+              v-on:keyup.enter="login({ email, password })"
+              :disabled="password === ''"
+            />
+          </form>
+        </template>
       </section>
     </div>
   </div>
@@ -179,6 +181,9 @@ export default {
       return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@spurbanismo.sp.gov.br|[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@prefeitura.sp.gov.br/gim.test(
         email
       )
+    },
+    goBack () {
+      this.validEmail = false
     }
   },
   created () {
@@ -230,12 +235,23 @@ export default {
   &__btn {
     @media (max-width: $phone) {
       margin-top: 7rem;
+      margin-left: auto;
     }
   }
 }
 
 .card-pass {
   width: -moz-available;
+  &__btn-voltar {
+    transform: rotate(180deg);
+    z-index: 10;
+    position: absolute;
+    margin: 0;
+    @media (max-width: $tablet) {
+      bottom: 10px;
+      left: 10px;
+    }
+  }
 }
 
 .separador {
@@ -271,6 +287,9 @@ input {
   }
   .auth__btn {
     margin: 0;
+    @media (max-width: $tablet) {
+      margin-left: auto;
+    }
   }
 }
 

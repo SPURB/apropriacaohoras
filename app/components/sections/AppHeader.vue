@@ -87,14 +87,13 @@ export default {
   watch: {
     $route (to, from) {
       this.userMenuState = false
+      document.body.style.overflowY = 'auto'
     },
     userMenuState (state) {
       if (state) {
         document.body.style.overflowY = 'hidden'
-        return true
       }
       document.body.style.overflowY = 'auto'
-      return false
     }
   },
   methods: {

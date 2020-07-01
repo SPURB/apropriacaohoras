@@ -1,3 +1,6 @@
+# service-worker
+sw.*
+
 # Logs
 logs
 *.log

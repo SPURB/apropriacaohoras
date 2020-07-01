@@ -332,6 +332,7 @@ export default {
   &__modal {
     top: 0;
   }
+  margin-bottom: 10vh;
   h2 {
     max-width: 1200px;
     font-size: 1.5rem;

@@ -26,7 +26,8 @@ export default {
   mode: 'spa',
   buildModules: [
     '@nuxtjs/style-resources',
-    '@nuxtjs/moment'
+    '@nuxtjs/moment',
+    '@nuxtjs/pwa'
   ],
   styleResources: {
     scss: [

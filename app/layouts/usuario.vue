@@ -1,8 +1,8 @@
 <template>
   <div class="usuario tema">
     <app-header />
-    <nuxt style="margin-bottom: 150px" />
-    <app-footer style="width: 100%; bottom: 0" />
+    <nuxt />
+    <app-footer />
   </div>
 </template>
 <script>
