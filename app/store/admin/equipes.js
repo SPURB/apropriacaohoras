@@ -126,6 +126,20 @@ export const actions = {
 			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
+	createUsuario: ({ commit, dispatch, rootState }, payload) => {
+		const token = rootState.usuario.token
+		Usuarios.create(payload, token)
+			.then(({ data }) => {				
+				commit('SET_USUARIOS', data)
+				commit('SET_API_MESSAGE', { message: data.message })
+				commit('SET_ERROR', { error: false })
+			})
+			.catch(err => {
+				console.log(err)
+				commit('SET_ERROR', { error: true })
+				commit('SET_API_MESSAGE', { message: err.message })
+			})
+	},
 	reset: ({ commit }) => { commit('RESET') }
 }
 

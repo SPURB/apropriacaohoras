@@ -164,6 +164,7 @@ export default {
       'getUsuariosProjetos',
       'removeUsuario',
       'createUsuariosProjetos',
+      'createUsuario',
       'reset'
     ]),
     setProjeto (idProjeto) {
@@ -191,7 +192,7 @@ export default {
       }
     },
     handleUsuarioPost (param) {
-      this.usuario = param
+      this.createUsuario(param)
     }
   },
   created () {
