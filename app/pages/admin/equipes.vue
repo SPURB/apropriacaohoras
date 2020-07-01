@@ -64,6 +64,13 @@
             :checks="checks"
             @setCheckedItem="setUsuario"
           />
+          <input-create
+            title="Incluir usuário"
+            description="Nome"
+            :checkAndEmail="true"
+            style="margin-top: 2rem;"
+            @setValue="handleUsuarioPost"
+          />
         </div>
       </div>
     </div>
@@ -73,18 +80,26 @@
 import { mapGetters, mapActions, mapState } from 'vuex'
 import InputOptions from '~/components/forms/InputOptions'
 import InputSearch from '~/components/forms/InputSearch'
+import InputCreate from '~/components/forms/InputCreate'
 import UserProfilePlaceholder from '~/components/elements/UserProfilePlaceholder'
 import Modal from '~/components/sections/Modal'
 
 export default {
   name: 'equipes',
   layout: 'admin',
-  components: { InputOptions, InputSearch, UserProfilePlaceholder, Modal },
+  components: {
+    InputOptions,
+    InputSearch,
+    InputCreate,
+    UserProfilePlaceholder,
+    Modal
+  },
   data () {
     return {
       checkboxesDisabled: true,
       usuariosOfSelectedProjeto: [],
-      projeto: 0
+      projeto: 0,
+      usuario: {}
     }
   },
   computed: {
@@ -174,6 +189,9 @@ export default {
       } else {
         this.$router.go()
       }
+    },
+    handleUsuarioPost (param) {
+      this.usuario = param
     }
   },
   created () {
