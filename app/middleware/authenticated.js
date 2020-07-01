@@ -3,9 +3,9 @@ export default async ({ store, route }) => {
 
   if (!isLogged || !isLogged.usuario.token) {
     if (route.path === '/reset') return
-    if (route.path !== '/login') store.app.router.replace('/login')
+    if (route.path !== '/') store.app.router.replace('/')
   } else {
     const isAdmin = isLogged.usuario.admin
-    if (!isAdmin && route.path === '/admin') store.app.router.replace('/login')
+    if (!isAdmin && route.path === '/admin') store.app.router.replace('/')
   }
 }

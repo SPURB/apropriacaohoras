@@ -35,7 +35,7 @@
           </nuxt-link>
         </template>
         <template v-else>
-          <nuxt-link to="/" tag="li" class="class-user-info">
+          <nuxt-link to="/relatorios" tag="li" class="class-user-info">
             <i class="icon icon-lista"></i>
             <span>Relatórios</span>
           </nuxt-link>
@@ -101,7 +101,7 @@ export default {
     ...mapActions('usuario', ['logout']),
     sair () {
       this.logout(this.token)
-      this.$router.push('/login')
+      this.$router.push('/')
     }
   }
 }
