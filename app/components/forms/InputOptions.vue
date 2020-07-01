@@ -2,6 +2,7 @@
   <div class="select-options">
     <button
       class="select-options__toggler"
+      :class="typeBackground"
       @click.prevent="open = !open"
       data-cy="btn__options"
     >
@@ -40,6 +41,19 @@ export default {
     options: {
       type: Array,
       required: true
+    },
+    type: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    typeBackground () {
+      if (!this.type) {
+        return 'default'
+      } else {
+        return 'forms'
+      }
     }
   },
   created () {
@@ -72,15 +86,27 @@ export default {
     text-align: left;
     cursor: pointer;
     border: 0;
-    background-color: rgba(255, 255, 255, 0.05);
     font-family: $grot;
-    color: #fff;
     font-size: 1rem;
     padding-left: 1.75rem;
     transition: background-color ease-in-out 0.35s;
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.15);
+
+    &.default {
+      background-color: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+      }
     }
+
+    &.forms {
+      background-color: rgba(0, 0, 0, 0.08);
+      color: #000;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
     &:focus {
       outline: none;
     }
