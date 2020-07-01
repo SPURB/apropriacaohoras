@@ -1,3 +1,4 @@
+### Desenvolvimento
 ```sh
 # instalar dependencias
 npm i
@@ -9,9 +10,15 @@ npm run dev
 npm run dev:local
 ```
 
-### testes
+### Produção
+```sh
+npm run build
+```
+> Publicar os assets crados em `/dist`. O app está configurado para ser publicado na path `/apropriacaohoras`
 
-pode-se rodar os testes de duas formas: 
+
+### Testes
+Pode-se rodar os testes de duas formas: 
 1. Com api local (melhor)
 
 ```sh
