@@ -12,5 +12,10 @@ export default {
 		headers: {
 			Authorization: token
 		}
-	})
+  }),
+  create: (body, token) => http.post('/usuarios', body, {
+    headers: {
+      Authorization: token
+    }
+  })
 }
