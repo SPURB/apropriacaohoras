@@ -1,18 +1,10 @@
 <template>
-  <div class="admin-relatorios">
+  <div class="index-comum">
     <section v-if="fetching" class="index-comum__preloader-wrapper">
       <preloader :color="'#fff'" />
     </section>
-    <section class="admin-relatorios__detalhados">
-      <h2 class="admin-relatorios__title">
-        Relatório detalhado
-      </h2>
-      <relatorio-detalhado />
-    </section>
-    <section class="admin-relatorios__cards">
-      <h2 class="admin-relatorios__title">
-        Projetos que você trabalhou mais tempo
-      </h2>
+    <section class="index-comum__projetos">
+      <h2>Projetos que você trabalhou mais tempo</h2>
       <slider>
         <card
           :key="index"
@@ -23,43 +15,43 @@
       </slider>
     </section>
 
-    <section class="admin-relatorios__filtros">
+    <div class="index-comum__filtro-projetos">
       <filtro :projetos="projetosCardMap" />
-    </section>
+    </div>
 
-    <section class="admin-relatorios__tabela">
+    <div class="index-comum__horas-projetos">
       <tabela-projeto :projetos="projetosCardMap" />
       <btn-action
         class="index-comum__action"
         title="Visualizar relatório detalhado"
         @action="
-          $router.push({
+          goTo({
             path: '/pre-impressao',
             query: {
-              from: '/admin/relatorios'
+              from: '/relatorios'
             }
           })
         "
       />
-    </section>
+    </div>
   </div>
 </template>
+
 <script>
 import Preloader from '~/components/elements/Preloader'
-import RelatorioDetalhado from '~/components/sections/RelatorioDetalhado'
 import Slider from '~/components/sections/Slider'
 import Card from '~/components/elements/Card'
 import Filtro from '~/components/elements/Filtro'
 import TabelaProjeto from '~/components/sections/TabelaProjetos'
 import BtnAction from '~/components/elements/BtnAction'
+
 import { mapActions, mapGetters, mapState } from 'vuex'
 
 export default {
-  name: 'AdminRelatorios',
-  layout: 'admin',
+  name: 'IndexComum',
+  layout: 'usuario',
   components: {
     Preloader,
-    RelatorioDetalhado,
     Slider,
     Filtro,
     Card,
@@ -67,49 +59,56 @@ export default {
     BtnAction
   },
   computed: {
-    ...mapState('relatorios', ['fetching']),
-    ...mapGetters('relatorios', ['projetosCardMap'])
+    ...mapGetters('relatorios', ['projetosCardMap']),
+    ...mapState('relatorios', ['fetching'])
   },
   async created () {
     await this.getRelatorios()
     await this.getHorasProjeto()
-    await this.getRelatorioDetalhado()
   },
   methods: {
-    ...mapActions('relatorios', [
-      'getRelatorios',
-      'getHorasProjeto',
-      'getRelatorioDetalhado'
-    ])
+    ...mapActions('relatorios', ['getRelatorios', 'getHorasProjeto']),
+    goTo (to) {
+      this.$router.push(to)
+    }
   }
 }
 </script>
+
 <style lang="scss" scoped>
-.admin-relatorios {
-  &__cards {
+.index-comum {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  &__preloader-wrapper {
+    margin-top: 1rem;
+  }
+  &__projetos {
     background-color: #fff;
-    border-top: 1px solid rgb(240, 240, 240);
+    display: flex;
+    flex-direction: column;
     padding: 50px;
+    width: 100%;
+
+    h2 {
+      color: $verde-escuro;
+      font-size: 15pt;
+      margin-left: 30px;
+      margin-bottom: 0px;
+    }
   }
-  &__title {
-    max-width: $desktop;
-    color: $verde;
-  }
-  &__detalhados h2 {
-    color: #fff;
-  }
-  &__detalhados,
-  &__filtros,
-  &__tabela {
+
+  &__horas-projetos,
+  &__filtro-projetos {
     max-width: $desktop;
     margin: auto;
   }
-
-  &__filtros,
-  &__tabela {
-    @media (max-width: $tablet) {
-      padding: 1rem;
-    }
+  &__horas-projetos {
+    display: flex;
+    flex-direction: column;
+  }
+  &__action {
+    margin: 3rem auto 0;
   }
 }
 </style>

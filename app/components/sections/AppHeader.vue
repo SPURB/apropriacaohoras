@@ -35,7 +35,7 @@
           </nuxt-link>
         </template>
         <template v-else>
-          <nuxt-link to="/" tag="li" class="class-user-info">
+          <nuxt-link to="/relatorios" tag="li" class="class-user-info">
             <i class="icon icon-lista"></i>
             <span>Relatórios</span>
           </nuxt-link>
@@ -87,21 +87,20 @@ export default {
   watch: {
     $route (to, from) {
       this.userMenuState = false
+      document.body.style.overflowY = 'auto'
     },
     userMenuState (state) {
       if (state) {
         document.body.style.overflowY = 'hidden'
-        return true
       }
       document.body.style.overflowY = 'auto'
-      return false
     }
   },
   methods: {
     ...mapActions('usuario', ['logout']),
     sair () {
       this.logout(this.token)
-      this.$router.push('/login')
+      this.$router.push('/')
     }
   }
 }

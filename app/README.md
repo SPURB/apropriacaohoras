@@ -1,20 +1,40 @@
+### Desenvolvimento
 ```sh
-# install dependencies
+# instalar dependencias
 npm i
 
-# develop
+# desevolver o app usando a api de homologação rodando no heroku
 npm run dev
 
-# develop com api local (api em localhost:5000)
+# desenvolver com api local (veja as instruções para iniciar a api localmente api/README.md)
 npm run dev:local
 ```
 
-### testes
+### Produção
 ```sh
-# testes e2e
+npm run build
+```
+> Publicar os assets crados em `/dist`. O app está configurado para ser publicado na path `/apropriacaohoras`
+
+
+### Testes
+Pode-se rodar os testes de duas formas: 
+1. Com api local (melhor)
+
+```sh
+# cria build com requisições apontando para localhost:5000 (veja as instruções para iniciar a api localmente api/README.md)
+npm run build:local
+
+# inicia app e testes e2e
 npm run test:e2e
 
-# testes e2e com api local (api em localhost:5000)
-npm run test:e2e:local
+```
 
+2. Com api de Homologação
+```sh
+# cria build com requisições apontando para heroku
+npm run build:homolog
+
+# inicia app e testes e2e
+npm run test:e2e
 ```

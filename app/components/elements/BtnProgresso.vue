@@ -1,5 +1,9 @@
 <template>
-  <button class="btn-progresso" :disabled="disabled">
+  <button
+    class="btn-progresso"
+    :disabled="disabled"
+    @click="btnPrograssoAction"
+  >
     <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
       <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2" />
       <path d="M17 33H47.5" stroke="white" stroke-width="2" />
@@ -15,6 +19,11 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    btnPrograssoAction (e) {
+      this.$emit('btnPrograssoAction', e)
     }
   }
 }

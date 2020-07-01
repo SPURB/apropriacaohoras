@@ -69,7 +69,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-
+  min-height: calc(100vh - 150px);
   &__main {
     color: #fff;
     display: flex;

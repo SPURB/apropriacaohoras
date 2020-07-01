@@ -1,8 +1,8 @@
 <template>
   <div class="admin tema">
     <app-header />
-    <nuxt style="margin-bottom: 150px" />
-    <app-footer style="width: 100%; bottom: 0" />
+    <nuxt />
+    <app-footer />
   </div>
 </template>
 <script>
@@ -26,5 +26,6 @@ export default {
   height: 100%;
   background: $verde-escuro;
   color: #fff;
+  min-height: 100vh;
 }
 </style>
