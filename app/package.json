@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=homolog nuxt",
     "dev:local": "cross-env NODE_ENV=local nuxt",
+    "dev:prod": "cross-env NODE_ENV=prod nuxt",
     "build": "cross-env NODE_ENV=prod nuxt build && nuxt export",
     "build:local": "cross-env NODE_ENV=local nuxt build && nuxt export",
     "build:homolog": "cross-env NODE_ENV=homolog nuxt build && nuxt export",
@@ -12,8 +13,7 @@
     "lint": "prettier-standard ./{*,/**/*}.vue --format",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "test:e2e": "start-server-and-test dev http://localhost:3000 cy:run",
-    "test:e2e:local": "start-server-and-test serve http://localhost:3000 cy:run"
+    "test:e2e": "start-server-and-test serve http://localhost:3000 cy:run"
   },
   "husky": {
     "hooks": {

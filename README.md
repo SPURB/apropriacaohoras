@@ -1,12 +1,9 @@
 # Apropriação de horas [![Build Status](https://travis-ci.org/SPURB/apropriacaohoras.svg?branch=master)](https://travis-ci.org/SPURB/apropriacaohoras)
 Sistema de apropriação de horas trabalhadas, gerenciamento de pessoal e relatoria de trabalho da SP Urbanismo.
 
-### testes
-Antes de fazer a pull request rode os testes localmente
-
-```sh
-bash tests.sh
-```
+## pré-requisitos para desenvolvimento
+ - mysql
+ - node^12
 
 ### api
 Veja as instruções completas para desenvolvimento do backend no [api/README](api/README.md).
@@ -23,6 +20,26 @@ cd app
 npm i
 npm run dev
 ```
+
+
+### testes
+1. Rode localmente a api
+```
+cd api
+npm run dev
+```
+
+2. Crie um build do app usando a api local
+```
+cd app
+npm run build:local
+```
+
+3. Rode os testes e2e do app
+```
+npm run test:e2e
+```
+
 
 ### ci
 

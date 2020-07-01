@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "nodemon --exec babel-node ./src/index.js",
     "build": "npm run clean && npm run babel-build",
+    "build:homolog": "npm run clean && npm run babel-build && npm run db:reset",
     "start": "node ./dist/index.js",
     "babel-build": "babel --out-dir ./dist ./src --minified --compact --source-maps false",
     "clean": "babel-node ./prebuild",

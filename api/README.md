@@ -25,6 +25,7 @@ DB_HOST=localhost
 DB_USER=root
 DB_PASS=
 DB_NAME=apropriacaohoras
+SERVICE_EMAIL=http://url/do/servico/de/envio/email
 ```
 
 4. Inicie o banco de dados. Este comando irá criar o banco, iniciar a migration e incluir dados no diretório `seeders/`
@@ -38,7 +39,7 @@ npm run db:init
 npm run dev
 ```
 
-2. Acesse a base da api [localhost:5000/](http://localhost:5000/)
+2. Acesse a base da api [localhost:5000/aproriacaohoras/api/0.0.1](http://localhost:5000/aproriacaohoras/api/0.0.1)
 
 Para reiniciar o servidor com alterações no model rode o comando  `npm run db:reset`.
 > Antes de alterar o modelo atualize também os arquivos de `/migrations` e o `/seeders`
@@ -59,13 +60,14 @@ ___
 **Ambiente de homologação da api**
 Uma versão da API está publicada para desenvolvimento do frontend. As enpoints abaixo equivalem ao último commit das branches `master` ou `dev/api`.
 ```
-https://apropriacaohoras.herokuapp.com/
-https://apropriacaohoras.herokuapp.com/horas
-https://apropriacaohoras.herokuapp.com/usuarios
-https://apropriacaohoras.herokuapp.com/projetos
-https://apropriacaohoras.herokuapp.com/fases
-https://apropriacaohoras.herokuapp.com/subatividades
-https://apropriacaohoras.herokuapp.com/usuarios-projetos
+https://apropriacaohoras.herokuapp.com/aproriacaohoras/api/0.0.1
+https://apropriacaohoras.herokuapp.com/aproriacaohoras/api/0.0.1/horas
+https://apropriacaohoras.herokuapp.com/aproriacaohoras/api/0.0.1/usuarios
+https://apropriacaohoras.herokuapp.com/aproriacaohoras/api/0.0.1/projetos
+https://apropriacaohoras.herokuapp.com/aproriacaohoras/api/0.0.1/fases
+https://apropriacaohoras.herokuapp.com/aproriacaohoras/api/0.0.1/grupos
+https://apropriacaohoras.herokuapp.com/aproriacaohoras/api/0.0.1/subatividades
+https://apropriacaohoras.herokuapp.com/aproriacaohoras/api/0.0.1/usuarios-projetos
 ```
 ___
 
