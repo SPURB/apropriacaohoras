@@ -49,9 +49,9 @@ module.exports = {
         <h3>Olá ${nome},</h3>
         <p>A sua senha do sistema de registro de horas é:</p>
         <p><strong>${senha}</strong></p>
-        <p>Faça o login para acessar o sistema: <a href="https://servicos.spurbanismo.gov.sp.br/apropriacaohoras/login?email=${email}">login</a></p>
+        <p>Faça o login para acessar o sistema: <a href="https://servicos.spurbanismo.sp.gov.br/apropriacaohoras/login?email=${email}">login</a></p>
         <p>Se preferir defina uma nova senha pelo link abaixo:</p>
-        <p><a href="https://servicos.spurbanismo.gov.sp.br/apropriacaohoras/reset?email=${email}&reset=${senha}">Redefinir senha</a></p>
+        <p><a href="https://servicos.spurbanismo.sp.gov.br/apropriacaohoras/reset?email=${email}&reset=${senha}">Redefinir senha</a></p>
       `
     }
   },
