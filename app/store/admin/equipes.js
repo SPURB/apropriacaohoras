@@ -5,6 +5,7 @@ import UsuariosProjetos from '@/services/api-usuarios-projetos'
 export const state = () => ({
 	fetching: false,
 	error: false,
+	showModal: false,
 	apiMessage: '',
 	status: 0,
 	projetos: [],//this is a fallback if getter.projetos is not ready, if is not ready just populate this state callign 'getProjetos',
@@ -43,7 +44,8 @@ export const actions = {
 				} else {
 					commit('SET_ERROR', { error: true })
 				}
-				commit('SET_API_MESSAGE', { message: err.message })
+				commit('SET_API_MESSAGE', { message: err.message })				
+				commit('SET_SHOW_MODAL', true)
 			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
@@ -62,6 +64,7 @@ export const actions = {
 					commit('SET_ERROR', { error: true })
 				}
 				commit('SET_API_MESSAGE', { message: err.message })
+				commit('SET_SHOW_MODAL', true)
 			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
@@ -80,6 +83,7 @@ export const actions = {
 					commit('SET_ERROR', { error: true })
 				}
 				commit('SET_API_MESSAGE', { message: err.message })
+				commit('SET_SHOW_MODAL', true)
 			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
@@ -106,6 +110,7 @@ export const actions = {
 				}
 				commit('SET_ERROR', { error: true })
 				commit('SET_API_MESSAGE', { message: err.message })
+				commit('SET_SHOW_MODAL', true)
 			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
@@ -123,21 +128,23 @@ export const actions = {
 			.catch(err => {
 				commit('SET_ERROR', { error: true })
 				commit('SET_API_MESSAGE', { message: err.message })
+				commit('SET_SHOW_MODAL', true)
 			})
 			.finally(() => commit('IS_FETCHING', false))
 	},
 	createUsuario: ({ commit, dispatch, rootState }, payload) => {
 		const token = rootState.usuario.token
 		Usuarios.create(payload, token)
-			.then(({ data }) => {				
-				commit('SET_USUARIOS', data)
+			.then(({ data }) => {
 				commit('SET_API_MESSAGE', { message: data.message })
-				commit('SET_ERROR', { error: false })
+				commit('SET_ERROR', { error: false, status: 200 })
+				commit('SET_SHOW_MODAL', true)
+				dispatch('getUsuarios')
 			})
 			.catch(err => {
-				console.log(err)
 				commit('SET_ERROR', { error: true })
 				commit('SET_API_MESSAGE', { message: err.message })
+				commit('SET_SHOW_MODAL', true)
 			})
 	},
 	reset: ({ commit }) => { commit('RESET') }
@@ -147,7 +154,8 @@ export const mutations = {
 	SET_USUARIOS: (state, { data }) => { state.usuarios = data },
 	SET_PROJETOS: (state, { values }) => { state.projetos = values },
 	SET_USUARIOS_PROJETOS: (state, { values }) => { state.usuariosProjeto = values },
-	SET_API_MESSAGE: (state, { message }) => { state.apiMessage = message }, 
+	SET_API_MESSAGE: (state, { message }) => { state.apiMessage = message },
+	SET_SHOW_MODAL: (state, value) => { state.showModal = value },
 	ADD_USUARIOS_PROJETOS: (state, item) => state.usuariosProjeto.push(item),
 	SET_ERROR: (state, { error, status }) => {
 		state.error = error
