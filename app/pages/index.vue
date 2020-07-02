@@ -247,6 +247,7 @@ export default {
     z-index: 10;
     position: absolute;
     margin: 0;
+    left: 0;
     @media (max-width: $tablet) {
       bottom: 10px;
       left: 10px;
