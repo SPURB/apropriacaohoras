@@ -155,12 +155,13 @@ export default {
         this.$emit('setValue', this.input)
       }
 
+      this.display = false
       this.input = ''
       this.meta = ''
-      this.usuario.nome = ''
-      ;(this.usuario.email = ''),
-        (this.usuario.arroba = '@spurbanismo.sp.gov.br')
-      ;(this.usuario.nprodam = ''), (this.usuario.admin = '')
+      this.usuario.email = ''
+      this.usuario.arroba = '@spurbanismo.sp.gov.br'
+      this.usuario.nprodam = ''
+      this.usuario.admin = ''
     },
     cancel () {
       this.input = ''

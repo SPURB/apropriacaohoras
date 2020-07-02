@@ -1,9 +1,9 @@
 <template>
   <div class="equipes">
     <modal
-      v-if="error"
+      v-if="showModal"
       :title="errorTitle"
-      :error="true"
+      :error="error"
       :description="apiMessage"
       :action-description="errorDescription"
       :action-text="actionText"
@@ -104,13 +104,14 @@ export default {
   },
   computed: {
     ...mapGetters('admin/equipes', ['projetos', 'validUsuarios']),
-    ...mapState('admin/equipes', ['usuarios', 'error', 'apiMessage', 'status']),
+    ...mapState('admin/equipes', ['usuarios', 'error', 'showModal','apiMessage', 'status']),
     ...mapState('usuario', ['token']),
     errorTitle () {
       const errors = {
         400: 'Erro na requisição',
         403: 'Erro na autenticação',
-        500: 'Erro no servidor'
+        500: 'Erro no servidor',
+        200: 'Sucesso'
       }
       const title = errors[this.status]
 
@@ -118,7 +119,8 @@ export default {
     },
     errorDescription () {
       const errors = {
-        403: 'Faça o login novamente'
+        403: 'Faça o login novamente',
+        200: 'Registro realizado.'
       }
       const description = errors[this.status]
       return description
@@ -127,7 +129,8 @@ export default {
     },
     actionText () {
       const errors = {
-        403: 'Voltar para login'
+        403: 'Voltar para login',
+        200: 'Voltar'
       }
       const text = errors[this.status]
       return text ? text : 'Tentar novamente'
