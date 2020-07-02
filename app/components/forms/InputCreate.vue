@@ -34,7 +34,7 @@
             class="input-create__input"
             name="email"
             type="text"
-            data-cy="input__meta"
+            data-cy="input__email"
             v-model="usuario.email"
           />
           <span>@</span>
@@ -50,7 +50,7 @@
           class="input-create__input"
           name="nprodam"
           type="text"
-          data-cy="input__meta"
+          data-cy="input__nprodam"
           v-model="usuario.nprodam"
         />
         <section class="input-create__usuario not__between">
@@ -60,6 +60,7 @@
             name="admin"
             @click="usuario.admin = !usuario.admin"
             v-model="usuario.admin"
+            data-cy="input__checkbox"
           />
           <label class="input-create__label" for="admin">Administrador</label>
         </section>

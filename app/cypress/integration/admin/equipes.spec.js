@@ -30,3 +30,39 @@ describe('Teste de integração para verificar se routers-links estão oks', () 
       .get(`input#lista--${id}`).click({ force: true })
   })
 })
+
+describe('Registro de novo usuário', () => {
+  beforeEach(() => {
+    cy.login('/admin/equipes')
+  })
+
+  it('Testar open formulario', () => {
+    cy.get('[data-cy=open__create]').click()
+  })
+
+  it('Testar botão de cancelar', () => {
+    cy.get('[data-cy=open__create]').click()
+    cy.get('[data-cy=btn__cancel]').click()
+  })
+
+  it('Teste inputs', () => {
+    cy.get('[data-cy=open__create]').click()
+      .wait(300)
+      .inputRandom('[data-cy=input__create]') // nome
+      .inputRandom('[data-cy=input__email]')
+      .inputRandom('[data-cy=input__nprodam]')
+      .get('[data-cy=input__checkbox]').check()
+  })
+
+  it('Teste registro', () => {
+    cy.get('[data-cy=open__create]').click()
+      .wait(300)
+      .inputRandom('[data-cy=input__create]') // nome
+      .inputRandom('[data-cy=input__email]')
+      .inputRandom('[data-cy=input__nprodam]')
+      .get('[data-cy=input__checkbox]').check()
+      .get('[data-cy=btn__create]').click()
+      .wait(700)
+      .get('[data-cy=modal__title]').contains('Sucesso')
+  })
+})
