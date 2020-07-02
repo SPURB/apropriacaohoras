@@ -104,7 +104,13 @@ export default {
   },
   computed: {
     ...mapGetters('admin/equipes', ['projetos', 'validUsuarios']),
-    ...mapState('admin/equipes', ['usuarios', 'error', 'showModal','apiMessage', 'status']),
+    ...mapState('admin/equipes', [
+      'usuarios',
+      'error',
+      'showModal',
+      'apiMessage',
+      'status'
+    ]),
     ...mapState('usuario', ['token']),
     errorTitle () {
       const errors = {
