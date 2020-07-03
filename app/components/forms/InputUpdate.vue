@@ -1,15 +1,51 @@
 <template>
   <div class="botao__editar">
-    <form class="input-create__form" v-if="show">
-      <label class="input-create__label" for="nome">{{ description }}</label>
+    <form class="input-update__form" v-if="show">
+      <label class="input-update__label" for="nome">{{ description }}</label>
       <input
-        class="input-create__input"
+        class="input-update__input"
         name="nome"
         type="text"
         v-model="input"
         data-cy="input__update"
       />
-      <div class="input-create__btn-group">
+      <template v-if="checkAndEmail">
+        <section class="input-update__group">
+          <div class="input-update__usuario">
+            <label class="input-update__label" for="nprodam">NPRODAM</label>
+            <div class="input-update__inputs">
+              <input
+                class="input-update__input input-update__text-input"
+                name="nprodam"
+                type="text"
+                data-cy="input__nprodam"
+                v-model="usuario.nprodam"
+              />
+            </div>
+          </div>
+
+          <div class="input-update__usuario">
+            <label class="input-update__label" for="email">Email</label>
+            <div class="input-update__inputs">
+              <input
+                class="input-update__input input-update__text-input"
+                name="email"
+                type="text"
+                style="width: 100%"
+                data-cy="input__email"
+                v-model="usuario.email"
+              />
+              <span style="margin-right: 0.3rem">@</span>
+              <input-options
+                :type="true"
+                :options="hostOptions"
+                @setOptionValue="setOptionValue"
+              />
+            </div>
+          </div>
+        </section>
+      </template>
+      <div class="input-update__btn-group">
         <button data-cy="update__cancel" @click.prevent="cancel">
           Cancelar
         </button>
@@ -19,7 +55,7 @@
           :disabled="!valid"
           data-cy="btn__update"
         >
-          Salvar
+          Atualizar
         </button>
       </div>
     </form>
@@ -27,11 +63,20 @@
 </template>
 
 <script>
+import InputOptions from '~/components/forms/InputOptions'
 export default {
   name: 'InputUpdate',
+  components: {
+    InputOptions
+  },
   data () {
     return {
       input: '',
+      usuario: {
+        email: '',
+        arroba: '@spurbanismo.sp.gov.br',
+        nprodam: ''
+      },
       show: false
     }
   },
@@ -48,11 +93,31 @@ export default {
     value: {
       type: String,
       required: true
+    },
+    checkAndEmail: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     valid () {
       return this.input.length > 3
+    },
+    hostOptions () {
+      return [
+        {
+          title: 'spurbanismo.sp.gov.br',
+          value: 'spurbanismo.sp.gov.br'
+        },
+        {
+          title: 'prefeitura.sp.gov.br',
+          value: 'prefeitura.sp.gov.br'
+        },
+        {
+          title: 'spurbanismo.sp.gov.br',
+          value: 'spurbanismo.sp.gov.br'
+        }
+      ]
     }
   },
   watch: {
@@ -68,6 +133,9 @@ export default {
     },
     cancel () {
       this.show = false
+    },
+    setOptionValue (param) {
+      this.usuario.arroba = '@' + param
     }
   }
 }
@@ -78,7 +146,40 @@ export default {
   width: 100%;
   height: 100%;
 }
-.input-create {
+
+.input-update {
+  &__group {
+    display: flex;
+    @media (max-width: $tablet) {
+      flex-direction: column;
+    }
+  }
+
+  &__usuario {
+    margin-top: 1rem;
+    width: 100%;
+
+    @media (max-width: $tablet) {
+      flex-direction: column;
+    }
+  }
+
+  &__inputs {
+    display: flex;
+    align-items: center;
+
+    @media (max-width: $tablet) {
+      flex-direction: column;
+      align-items: initial;
+    }
+  }
+
+  &__text-input {
+    margin-top: 0.7rem;
+    width: 100%;
+    margin-right: 0.5rem;
+  }
+
   &__form {
     background: #fff;
     display: flex;
