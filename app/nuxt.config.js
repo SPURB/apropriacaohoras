@@ -37,15 +37,16 @@ export default {
     '@nuxtjs/style-resources',
     '@nuxtjs/moment',
     '@nuxtjs/pwa',
-    '@nuxtjs/google-analytics', {
-      id: 'UA-113737634-10'
-    }
+    '@nuxtjs/google-analytics'
   ],
   styleResources: {
     scss: [
       '@/assets/style/variables.scss',
       '@/assets/style/theme.scss'
     ]
+  },
+  googleAnalytics: {
+    id: 'UA-113737634-10'
   },
   css: [ '@/assets/style/icones/participe.css' ],
   generate: {
