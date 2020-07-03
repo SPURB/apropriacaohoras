@@ -1,9 +1,9 @@
 <template>
   <div class="equipes">
     <modal
-      v-if="error"
+      v-if="showModal"
       :title="errorTitle"
-      :error="true"
+      :error="error"
       :description="apiMessage"
       :action-description="errorDescription"
       :action-text="actionText"
@@ -64,6 +64,13 @@
             :checks="checks"
             @setCheckedItem="setUsuario"
           />
+          <input-create
+            title="Incluir usuário"
+            description="Nome"
+            :checkAndEmail="true"
+            style="margin-top: 2rem;"
+            @setValue="handleUsuarioPost"
+          />
         </div>
       </div>
     </div>
@@ -73,29 +80,44 @@
 import { mapGetters, mapActions, mapState } from 'vuex'
 import InputOptions from '~/components/forms/InputOptions'
 import InputSearch from '~/components/forms/InputSearch'
+import InputCreate from '~/components/forms/InputCreate'
 import UserProfilePlaceholder from '~/components/elements/UserProfilePlaceholder'
 import Modal from '~/components/sections/Modal'
 
 export default {
   name: 'equipes',
   layout: 'admin',
-  components: { InputOptions, InputSearch, UserProfilePlaceholder, Modal },
+  components: {
+    InputOptions,
+    InputSearch,
+    InputCreate,
+    UserProfilePlaceholder,
+    Modal
+  },
   data () {
     return {
       checkboxesDisabled: true,
       usuariosOfSelectedProjeto: [],
-      projeto: 0
+      projeto: 0,
+      usuario: {}
     }
   },
   computed: {
     ...mapGetters('admin/equipes', ['projetos', 'validUsuarios']),
-    ...mapState('admin/equipes', ['usuarios', 'error', 'apiMessage', 'status']),
+    ...mapState('admin/equipes', [
+      'usuarios',
+      'error',
+      'showModal',
+      'apiMessage',
+      'status'
+    ]),
     ...mapState('usuario', ['token']),
     errorTitle () {
       const errors = {
         400: 'Erro na requisição',
         403: 'Erro na autenticação',
-        500: 'Erro no servidor'
+        500: 'Erro no servidor',
+        200: 'Sucesso'
       }
       const title = errors[this.status]
 
@@ -103,7 +125,8 @@ export default {
     },
     errorDescription () {
       const errors = {
-        403: 'Faça o login novamente'
+        403: 'Faça o login novamente',
+        200: 'Registro realizado.'
       }
       const description = errors[this.status]
       return description
@@ -112,7 +135,8 @@ export default {
     },
     actionText () {
       const errors = {
-        403: 'Voltar para login'
+        403: 'Voltar para login',
+        200: 'Voltar'
       }
       const text = errors[this.status]
       return text ? text : 'Tentar novamente'
@@ -149,6 +173,7 @@ export default {
       'getUsuariosProjetos',
       'removeUsuario',
       'createUsuariosProjetos',
+      'createUsuario',
       'reset'
     ]),
     setProjeto (idProjeto) {
@@ -174,6 +199,9 @@ export default {
       } else {
         this.$router.go()
       }
+    },
+    handleUsuarioPost (param) {
+      this.createUsuario(param)
     }
   },
   created () {

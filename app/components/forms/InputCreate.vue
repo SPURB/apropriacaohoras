@@ -27,6 +27,44 @@
           v-model="meta"
         />
       </template>
+      <template v-if="checkAndEmail">
+        <label class="input-create__label" for="email">Email</label>
+        <section class="input-create__usuario">
+          <input
+            class="input-create__input"
+            name="email"
+            type="text"
+            data-cy="input__email"
+            v-model="usuario.email"
+          />
+          <span>@</span>
+          <input-options
+            style="margin-top:1rem"
+            :type="true"
+            :options="hostOptions"
+            @setOptionValue="setOptionValue"
+          />
+        </section>
+        <label class="input-create__label" for="nprodam">NPRODAM</label>
+        <input
+          class="input-create__input"
+          name="nprodam"
+          type="text"
+          data-cy="input__nprodam"
+          v-model="usuario.nprodam"
+        />
+        <section class="input-create__usuario not__between">
+          <input
+            class="input-create__checkbox"
+            type="checkbox"
+            name="admin"
+            @click="usuario.admin = !usuario.admin"
+            v-model="usuario.admin"
+            data-cy="input__checkbox"
+          />
+          <label class="input-create__label" for="admin">Administrador</label>
+        </section>
+      </template>
       <div class="input-create__btn-group">
         <button @click.prevent="cancel" data-cy="btn__cancel">Cancelar</button>
         <button
@@ -43,12 +81,20 @@
   </div>
 </template>
 <script>
+import InputOptions from '~/components/forms/InputOptions'
 export default {
   name: 'InputCreate',
+  components: { InputOptions },
   data () {
     return {
       display: false,
       input: '',
+      usuario: {
+        email: '',
+        arroba: '@spurbanismo.sp.gov.br',
+        nprodam: '',
+        admin: false
+      },
       meta: ''
     }
   },
@@ -68,25 +114,63 @@ export default {
     metaDescriptioinLabel: {
       type: String,
       default: ''
+    },
+    checkAndEmail: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     valid () {
       return this.input.length > 3
+    },
+    hostOptions () {
+      return [
+        {
+          title: 'spurbanismo.sp.gov.br',
+          value: 'spurbanismo.sp.gov.br'
+        },
+        {
+          title: 'prefeitura.sp.gov.br',
+          value: 'prefeitura.sp.gov.br'
+        },
+        {
+          title: 'spurbanismo.sp.gov.br',
+          value: 'spurbanismo.sp.gov.br'
+        }
+      ]
     }
   },
   methods: {
     set () {
-      !this.addMetaDescription
-        ? this.$emit('setValue', this.input)
-        : this.$emit('setValue', { input: this.input, meta: this.meta })
+      if (this.addMetaDescription) {
+        this.$emit('setValue', { input: this.input, meta: this.meta })
+      } else if (this.checkAndEmail) {
+        this.$emit('setValue', {
+          nome: this.input,
+          email: this.usuario.email + this.usuario.arroba,
+          nprodam: this.usuario.nprodam,
+          admin: this.usuario.admin
+        })
+      } else {
+        this.$emit('setValue', this.input)
+      }
+
+      this.display = false
       this.input = ''
       this.meta = ''
+      this.usuario.email = ''
+      this.usuario.arroba = '@spurbanismo.sp.gov.br'
+      this.usuario.nprodam = ''
+      this.usuario.admin = ''
     },
     cancel () {
       this.input = ''
       this.meta = ''
       this.display = false
+    },
+    setOptionValue (param) {
+      this.usuario.arroba = '@' + param
     }
   }
 }
@@ -115,6 +199,21 @@ export default {
       }
     }
   }
+
+  &__usuario {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.not__between {
+      justify-content: inherit;
+    }
+  }
+
+  &__checkbox {
+    cursor: pointer;
+  }
+
   &__form {
     background: #fff;
     display: flex;

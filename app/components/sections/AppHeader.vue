@@ -10,9 +10,16 @@
           <h1>Apropriação de horas</h1>
         </nuxt-link>
       </span>
-      <ul class="user-menu" id="user-menu" :class="{ opened: userMenuState }">
+      <ul
+        class="user-menu"
+        id="user-menu"
+        data-cy="user-menu"
+        :class="{ opened: userMenuState }"
+      >
         <li class="user-info" @click="userMenuState = !userMenuState">
-          <span class="user-info__name">{{ nome }}</span>
+          <span class="user-info__name" data-cy="user-info__name">{{
+            nome
+          }}</span>
           <div class="profile-placeholder">
             <user-profile-placeholder :opacity="1" />
           </div>
@@ -46,7 +53,7 @@
         </nuxt-link>
         <nuxt-link to="/confirmar-senha" tag="li" class="class-user-info">
           <Key class="icon" />
-          <span>Redefinir senha</span>
+          <span data-cy="reset-pass">Redefinir senha</span>
         </nuxt-link>
         <li @click="sair" class="class-user-info">
           <span>Sair</span>
