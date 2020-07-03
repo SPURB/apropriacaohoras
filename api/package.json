@@ -18,6 +18,18 @@
     "db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
     "lint": "prettier-standard src/{*,/**/*}.js seeders/{*,/**/*}.js migrations/{*,/**/*}.js"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "**/*.*(js|json)": [
+      "npm run lint",
+      "git add --all"
+    ]
+  },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.9.0",
     "@babel/runtime": "^7.9.2",
