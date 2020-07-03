@@ -21,7 +21,13 @@
       </div>
       <div class="row">
         <div class="column busca">
-          <input-options :options="options" @setOptionValue="setProjeto" />
+          <input-options :options="optionsGroups" @setOptionValue="setGrupo" />
+          <input-options
+            :options="options"
+            :disabled="this.grupo > 0 && this.options.length > 1 ? false : true"
+            @setOptionValue="setProjeto"
+          />
+
           <h4>Equipe deste projeto</h4>
           <transition-group class="equipes__cards" name="list" tag="ul">
             <li
@@ -99,6 +105,7 @@ export default {
       checkboxesDisabled: true,
       usuariosOfSelectedProjeto: [],
       projeto: 0,
+      grupo: 0,
       usuario: {}
     }
   },
@@ -112,6 +119,7 @@ export default {
       'status'
     ]),
     ...mapState('usuario', ['token']),
+    ...mapState('admin/grupos', ['grupos']),
     errorTitle () {
       const errors = {
         400: 'Erro na requisição',
@@ -151,13 +159,39 @@ export default {
       if (!this.projetos.length) {
         return placeholder
       }
-      const projetos = this.projetos.map(projeto => {
+
+      let projetos = []
+
+      if (this.grupo > 0) {
+        this.projetos.filter(projeto => {
+          if (projeto.grupo === this.grupo) {
+            projetos.push({
+              title: projeto.nome,
+              value: projeto.id
+            })
+          }
+        })
+      }
+
+      return placeholder.concat(projetos)
+    },
+    optionsGroups () {
+      const placeholder = [
+        {
+          title: 'Filtrar por um grupo',
+          value: 0
+        }
+      ]
+      if (!this.grupos.length) {
+        return placeholder
+      }
+      const grupos = this.grupos.map(grupo => {
         return {
-          title: projeto.nome,
-          value: projeto.id
+          title: grupo.nome,
+          value: grupo.id
         }
       })
-      return placeholder.concat(projetos)
+      return placeholder.concat(grupos)
     },
     checks: {
       get () {
@@ -165,8 +199,16 @@ export default {
       }
     }
   },
+  watch: {
+    grupo () {
+      if (this.options.length <= 1) {
+        this.reset_usuariosProjetos()
+      }
+    }
+  },
   methods: {
     ...mapActions('usuario', ['logout']),
+    ...mapActions('admin/grupos', ['getGrupos']),
     ...mapActions('admin/equipes', [
       'getProjetos',
       'getUsuarios',
@@ -174,6 +216,7 @@ export default {
       'removeUsuario',
       'createUsuariosProjetos',
       'createUsuario',
+      'reset_usuariosProjetos',
       'reset'
     ]),
     setProjeto (idProjeto) {
@@ -191,6 +234,9 @@ export default {
         this.createUsuariosProjetos({ idUsuario: id, idProjeto: this.projeto })
       }
     },
+    setGrupo (grupo) {
+      this.grupo = grupo
+    },
     sair () {
       if (this.status === 403) {
         this.logout(this.token)
@@ -205,6 +251,10 @@ export default {
     }
   },
   created () {
+    if (!this.grupos.length) {
+      this.getGrupos()
+    }
+
     if (!this.projetos.length) {
       this.getProjetos()
     }
