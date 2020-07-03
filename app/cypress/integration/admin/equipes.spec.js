@@ -7,15 +7,28 @@ describe('Teste de integração para verificar se routers-links estão oks', () 
   const nome = 'ADMIN TESTE' // nome do usuário do id passado
 
   it('Testar seleção da combobox', () => {
-    cy.get('[data-cy=btn__options]').click()
+    cy.get('[data-cy=btn__options]')
+      .then(dropdown => dropdown[0].click())
       .wait(500) // espera mostrar a box
-      .get('[data-cy=select__option]').then(btn => btn[1].click())
+      .get('[data-cy=select__option]').then(btn => btn[3].click())
+      .wait(500)
+      .get('[data-cy=btn__options]')
+      .then(dropdown => dropdown[1].click())
+      .wait(500) // espera mostrar a box
+      .get('[data-cy=select__option]').then(btn => btn[6].click())
   })
 
   it('Testar remoção de usuário cadastrado no projeto', () => {
-    cy.get('[data-cy=btn__options]').click()
+    cy.get('[data-cy=btn__options]')
+      .then(dropdown => dropdown[0].click())
       .wait(500) // espera mostrar a box
-      .get('[data-cy=select__option]').then(btn => btn[1].click())
+      .get('[data-cy=select__option]').then(btn => btn[3].click())
+      .wait(500)
+      .get('[data-cy=btn__options]')
+      .then(dropdown => dropdown[1].click())
+      .wait(500) // espera mostrar a box
+      .get('[data-cy=select__option]').then(btn => btn[6].click())
+      .wait(200)
       .get('[data-cy=usuario__projeto]')
       .wait(1000)
       .get(`[type=checkbox]#lista--${id}`).click({ force: true })
@@ -23,9 +36,16 @@ describe('Teste de integração para verificar se routers-links estão oks', () 
   })
 
   it('Testar busca e seleção de usuário para cadastrar no projeto', () => {
-    cy.get('[data-cy=btn__options]').click()
+    cy.get('[data-cy=btn__options]')
+      .then(dropdown => dropdown[0].click())
       .wait(500) // espera mostrar a box
-      .get('[data-cy=select__option]').then(btn => btn[1].click())
+      .get('[data-cy=select__option]').then(btn => btn[3].click())
+      .wait(500)
+      .get('[data-cy=btn__options]')
+      .then(dropdown => dropdown[1].click())
+      .wait(500) // espera mostrar a box
+      .get('[data-cy=select__option]').then(btn => btn[6].click())
+      .wait(200)
       .get('[data-cy=search__usuario]').type(nome)
       .get(`input#lista--${id}`).click({ force: true })
   })
