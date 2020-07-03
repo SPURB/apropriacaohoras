@@ -36,7 +36,10 @@ export default {
   buildModules: [
     '@nuxtjs/style-resources',
     '@nuxtjs/moment',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/google-analytics', {
+      id: 'UA-113737634-10'
+    }
   ],
   styleResources: {
     scss: [
