@@ -6,24 +6,33 @@ const apiBase = {
 
 export default {
   target: 'static',
+  mode: 'spa',
   head: {
     htmlAttrs: { lang: 'pt-br' },
     title: "SPUrbanismo | Apropriação de horas",
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1'
+      },
+      {
+        hid: 'description',
+        name: 'description',
+        content: process.env.npm_package_description || ''
+      }
     ],
   },
   router: {
     base: process.env.CI || process.env.NODE_ENV === 'prod' ? '/apropriacaohoras/' : '/',
     middleware: [ 'authenticated' ]
   },
-  env:{ apiBase: apiBase[process.env.NODE_ENV] },
+  env:{
+    apiBase: apiBase[process.env.NODE_ENV]
+  },
   plugins: [
     { src: '~/plugins/vuex-persist', ssr: false }
   ],
-  mode: 'spa',
   buildModules: [
     '@nuxtjs/style-resources',
     '@nuxtjs/moment',

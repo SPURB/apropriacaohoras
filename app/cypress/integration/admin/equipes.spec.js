@@ -55,14 +55,16 @@ describe('Registro de novo usuário', () => {
   })
 
   it('Teste registro', () => {
+    const apiUrl = `${Cypress.env('API_BASE_URL')}/usuarios`
     cy.get('[data-cy=open__create]').click()
       .wait(300)
       .inputRandom('[data-cy=input__create]') // nome
       .inputRandom('[data-cy=input__email]')
       .inputRandom('[data-cy=input__nprodam]')
       .get('[data-cy=input__checkbox]').check()
+      .server()
+      .route('POST', apiUrl, 'fixture:usuario.post').as('usuario')
       .get('[data-cy=btn__create]').click()
-      .wait(700)
       .get('[data-cy=modal__title]').contains('Sucesso')
   })
 })

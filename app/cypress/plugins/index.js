@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+
 // ***********************************************************
 // This example plugins/index.js can be used to load plugins
 //
@@ -16,6 +17,14 @@
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+
+  const apiBaseURl = {
+    'local': config.env['local'],
+    'homolog': config.env['homolog'],
+    'prod': config.env['prod']
+  }
+
+  config.env.API_BASE_URL = apiBaseURl[process.env.NODE_ENV]
+
+  return config
 }

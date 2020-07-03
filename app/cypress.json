@@ -5,5 +5,9 @@
 	"pluginsFile": "cypress/plugins/index.js",
 	"screenshotsFolder": "cypress/screenshots",
 	"supportFile": "cypress/support/index.js",
-	"video": false
+	"video": false,
+	"env": {
+		"local": "http://localhost:5000/apropriacaohoras/api/0.0.1",
+		"homolog": "https://apropriacaohoras.herokuapp.com/apropriacaohoras/api/0.0.1"
+	}
 }

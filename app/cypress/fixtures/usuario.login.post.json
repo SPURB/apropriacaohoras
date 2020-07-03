@@ -1,0 +1,19 @@
+{
+  "usuario": {
+    "id": 5,
+    "nprodam": "e1234567",
+    "email": "admin@spurbanismo.sp.gov.br",
+    "admin": true,
+    "password": "$2b$10$4P9ofTvzLRHdVAtWJr4dAunskgYIgT1QAXePqIWKvL0P7IzhdZX0u",
+    "nome": "ADMIN TESTE (cy_fixture)",
+    "createdAt": "2020-07-02T20:01:11.000Z",
+    "updatedAt": "2020-07-02T20:01:11.000Z"
+  },
+  "auth": {
+    "id": 58,
+    "token": "4qGhDDgb02TXQqa",
+    "idusuario": 5,
+    "updatedAt": "2020-07-02T21:29:47.407Z",
+    "createdAt": "2020-07-02T21:29:47.407Z"
+  }
+}

@@ -3,17 +3,19 @@
   "description": "Sistema de apropriação de horas trabalhadas, gerenciamento de pessoal e relatoria de trabalho da São Paulo Urbanismo",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=homolog nuxt",
-    "dev:local": "cross-env NODE_ENV=local nuxt",
-    "dev:prod": "cross-env NODE_ENV=prod nuxt",
+    "serve": "nuxt serve",
+    "lint": "prettier-standard ./{*,/**/*}.vue --format",
     "build": "cross-env NODE_ENV=prod nuxt build && nuxt export",
     "build:local": "cross-env NODE_ENV=local nuxt build && nuxt export",
     "build:homolog": "cross-env NODE_ENV=homolog nuxt build && nuxt export",
-    "serve": "nuxt serve",
-    "lint": "prettier-standard ./{*,/**/*}.vue --format",
-    "cy:open": "cypress open",
-    "cy:run": "cypress run",
-    "test:e2e": "start-server-and-test serve http://localhost:3000 cy:run"
+    "dev": "cross-env NODE_ENV=homolog nuxt",
+    "dev:local": "cross-env NODE_ENV=local nuxt",
+    "cy:open": "cross-env NODE_ENV=homolog cypress open",
+    "cy:open:local": "cross-env NODE_ENV=local cypress open",
+    "cy:run": "cross-env NODE_ENV=homolog cypress run",
+    "cy:run:local": "cross-env NODE_ENV=local cypress run",
+    "test:e2e": "start-server-and-test dev http://localhost:3000 cy:run",
+    "test:e2e:local": "start-server-and-test dev:local http://localhost:3000 cy:run:local"
   },
   "husky": {
     "hooks": {
@@ -22,8 +24,9 @@
     }
   },
   "lint-staged": {
-    "*.vue": [
-      "npm run lint"
+    "**/*.*(html|js|json|vue)": [
+      "npm run lint",
+      "git add --all"
     ]
   },
   "dependencies": {
