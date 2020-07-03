@@ -36,13 +36,17 @@ export default {
   buildModules: [
     '@nuxtjs/style-resources',
     '@nuxtjs/moment',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/google-analytics'
   ],
   styleResources: {
     scss: [
       '@/assets/style/variables.scss',
       '@/assets/style/theme.scss'
     ]
+  },
+  googleAnalytics: {
+    id: 'UA-113737634-10'
   },
   css: [ '@/assets/style/icones/participe.css' ],
   generate: {
