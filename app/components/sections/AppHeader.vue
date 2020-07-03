@@ -55,6 +55,10 @@
           <Key class="icon" />
           <span data-cy="reset-pass">Redefinir senha</span>
         </nuxt-link>
+        <nuxt-link to="/perfil" tag="li" class="class-user-info">
+          <i class="icon icon-pessoa-outline"></i>
+          <span>Perfil</span>
+        </nuxt-link>
         <li @click="sair" class="class-user-info">
           <span>Sair</span>
         </li>
