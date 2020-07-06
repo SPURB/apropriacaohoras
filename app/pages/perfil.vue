@@ -1,33 +1,109 @@
 <template>
-  <div class="perfil">
-    <h1>Perfil</h1>
+  <div>
+    <modal
+      v-if="showModal"
+      :title="errorTitle"
+      :error="error"
+      :description="apiMessage"
+      :action-description="errorDescription"
+      :action-text="actionText"
+      @setModalAction="sair"
+    />
 
-    <section class="perfil__forms">
-      <a class="perfil__switch-display" @click="display = !display">
-        <i class="icon icon-adicionar"></i>
-        Atualizar dados cadastrais
-      </a>
-      <input-update
-        description="Nome"
-        value="Teste"
-        :display="display"
-        :checkAndEmail="true"
-      />
-    </section>
+    <div class="perfil">
+      <h1>Perfil</h1>
+
+      <section class="perfil__forms">
+        <a class="perfil__switch-display" @click="display = !display">
+          <i class="icon icon-adicionar"></i>
+          Atualizar dados cadastrais
+        </a>
+        <input-update
+          description="Nome"
+          :value="nome"
+          :display="display"
+          :checkAndEmail="true"
+          :values="{ email, nprodam }"
+          @setUpdate="handleUpdate"
+        />
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
 import InputUpdate from '~/components/forms/InputUpdate'
+import Modal from '~/components/sections/Modal'
+import { mapState, mapActions, mapMutations } from 'vuex'
+
 export default {
   name: 'Perfil',
   layout: 'usuario',
   components: {
-    InputUpdate
+    InputUpdate,
+    Modal
   },
   data () {
     return {
       display: false
+    }
+  },
+  computed: {
+    ...mapState('usuario', {
+      nome: state => state.usuario.nome,
+      email: state => state.usuario.email,
+      nprodam: state => state.usuario.nprodam,
+      status: state => state.status,
+      showModal: state => state.showModal,
+      error: state => state.error,
+      apiMessage: state => state.apiMessage,
+      token: state => state.token
+    }),
+    errorTitle () {
+      const errors = {
+        400: 'Erro na requisição',
+        403: 'Erro na autenticação',
+        500: 'Erro no servidor',
+        200: 'Sucesso'
+      }
+      const title = errors[this.status]
+
+      return title ? title : 'Erro'
+    },
+    errorDescription () {
+      const errors = {
+        403: 'Faça o login novamente',
+        200: 'Registro realizado.'
+      }
+      const description = errors[this.status]
+      return description
+        ? description
+        : 'Entre em contato com o desenvolvedor: \ndesenvolvimento@spurbanismo.sp.gov.br'
+    },
+    actionText () {
+      const errors = {
+        403: 'Voltar para login',
+        200: 'Voltar'
+      }
+      const text = errors[this.status]
+      return text ? text : 'Tentar novamente'
+    }
+  },
+  methods: {
+    ...mapActions('usuario', ['updateUsuario', 'logout']),
+    ...mapMutations('usuario', ['SET_SHOW_MODAL']),
+    handleUpdate (param) {
+      this.updateUsuario(param)
+    },
+    sair () {
+      if (this.status === 403) {
+        this.logout(this.token)
+        this.reset()
+        this.$router.push('/login')
+      } else {
+        this.$router.go()
+        this.SET_SHOW_MODAL(false)
+      }
     }
   }
 }

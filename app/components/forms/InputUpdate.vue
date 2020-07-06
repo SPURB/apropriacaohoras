@@ -74,7 +74,7 @@ export default {
       input: '',
       usuario: {
         email: '',
-        arroba: '@spurbanismo.sp.gov.br',
+        arroba: '',
         nprodam: ''
       },
       show: false
@@ -97,6 +97,13 @@ export default {
     checkAndEmail: {
       type: Boolean,
       default: false
+    },
+    values: {
+      type: Object,
+      default: () => ({
+        email: '',
+        nprodam: ''
+      })
     }
   },
   computed: {
@@ -106,8 +113,8 @@ export default {
     hostOptions () {
       return [
         {
-          title: 'spurbanismo.sp.gov.br',
-          value: 'spurbanismo.sp.gov.br'
+          title: this.values.email.split('@')[1],
+          value: this.values.email.split('@')[1]
         },
         {
           title: 'prefeitura.sp.gov.br',
@@ -124,12 +131,25 @@ export default {
     display (val) {
       this.show = val
       this.input = this.value
+
+      if (this.checkAndEmail) {
+        this.usuario.email = this.values.email.split('@')[0]
+        this.usuario.nprodam = this.values.nprodam
+      }
     }
   },
   methods: {
     set () {
-      this.$emit('setUpdate', this.input)
-      this.input = ''
+      if (this.checkAndEmail) {
+        this.$emit('setUpdate', {
+          nome: this.input,
+          email: this.usuario.email + this.usuario.arroba,
+          nprodam: this.usuario.nprodam
+        })
+      } else {
+        this.$emit('setUpdate', this.input)
+        this.input = ''
+      }
     },
     cancel () {
       this.show = false
