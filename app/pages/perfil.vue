@@ -73,7 +73,7 @@ export default {
     errorDescription () {
       const errors = {
         403: 'Faça o login novamente',
-        200: 'Registro realizado.'
+        200: 'Registro atualizado.'
       }
       const description = errors[this.status]
       return description

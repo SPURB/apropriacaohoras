@@ -44,6 +44,7 @@ export const actions = {
       .then(data => {
         commit('SET_API_MESSAGE', { message: data.message })
         commit('SET_STATUS', data.status)
+        commit('SET_UPDATE_USUARIO', body)
         commit('SET_SHOW_MODAL', true)
       })
       .catch(err => commit('SET_ERROR', err))
@@ -76,6 +77,12 @@ export const mutations = {
   },
   SET_SHOW_MODAL: (state, value) => {
     state.showModal = value
+  },
+  SET_UPDATE_USUARIO: (state, { email, nprodam, nome }) => {
+    state.nome = nome
+    state.usuario.nome = nome
+    state.usuario.email = email
+    state.usuario.nprodam = nprodam
   },
   SET_STATUS: (state, value) => {
     state.status = value
