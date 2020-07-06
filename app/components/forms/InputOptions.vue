@@ -2,9 +2,10 @@
   <div class="select-options">
     <button
       class="select-options__toggler"
-      :class="typeBackground"
+      :class="[typeBackground, typeDisabled]"
       @click.prevent="open = !open"
       data-cy="btn__options"
+      :disabled="disabled"
     >
       <div>{{ selected }}</div>
       <i class="icon icon-expandir" :class="{ open }"></i>
@@ -45,6 +46,10 @@ export default {
     type: {
       type: Boolean,
       default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -53,6 +58,14 @@ export default {
         return 'default'
       } else {
         return 'forms'
+      }
+    },
+    typeDisabled () {
+      if (!this.disabled) {
+        return ''
+      } else {
+        this.selected = this.options[0].title
+        return 'disabled'
       }
     }
   },
@@ -96,6 +109,15 @@ export default {
       color: #fff;
       &:hover {
         background-color: rgba(255, 255, 255, 0.15);
+      }
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      background-color: #ccc;
+
+      &:hover {
+        background-color: #ccc;
       }
     }
 
