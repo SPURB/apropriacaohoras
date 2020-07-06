@@ -14,13 +14,13 @@
         <div class="column">
           <h3>Gerenciar equipes de projeto</h3>
           <p class="equipes__subtitle">
-            Selecione um projeto e arraste os membros entre as colunas para
-            inserir ou remover na equipe de projeto
+            Associe um membro da equipe a um projeto
           </p>
         </div>
       </div>
       <div class="row">
-        <div class="column busca">
+        <div class="column projetos">
+          <h4 class="projetos__title">Selecione um projeto</h4>
           <input-options :options="optionsGroups" @setOptionValue="setGrupo" />
           <input-options
             :options="options"
@@ -28,36 +28,40 @@
             @setOptionValue="setProjeto"
           />
 
-          <h4>Equipe deste projeto</h4>
-          <transition-group class="equipes__cards" name="list" tag="ul">
-            <li
-              class="card"
-              v-for="usuario in validUsuarios"
-              :key="usuario.id"
-              data-cy="usuario__projeto"
-            >
-              <div class="card__info">
-                <user-profile-placeholder
-                  class="card__profile-img"
-                  :opacity="1"
-                  :width="'60px'"
-                />
-                <label class="card__label" :for="`card__btn--${usuario.id}`">{{
-                  usuario.nome
-                }}</label>
-              </div>
-              <button
-                :id="`card__btn--${usuario.id}`"
-                class="card__btn"
-                @click="removeUsuario({ idUsuario: usuario.id })"
+          <template v-if="projeto">
+            <h4>Equipe deste projeto</h4>
+            <transition-group class="equipes__cards" name="list" tag="ul">
+              <li
+                class="card"
+                v-for="usuario in validUsuarios"
+                :key="usuario.id"
+                data-cy="usuario__projeto"
               >
-                <i class="icon icon-incorreto"></i>
-              </button>
-            </li>
-          </transition-group>
+                <div class="card__info">
+                  <user-profile-placeholder
+                    class="card__profile-img"
+                    :opacity="1"
+                    :width="'60px'"
+                  />
+                  <label
+                    class="card__label"
+                    :for="`card__btn--${usuario.id}`"
+                    >{{ usuario.nome }}</label
+                  >
+                </div>
+                <button
+                  :id="`card__btn--${usuario.id}`"
+                  class="card__btn"
+                  @click="removeUsuario({ idUsuario: usuario.id })"
+                >
+                  <i class="icon icon-incorreto"></i>
+                </button>
+              </li>
+            </transition-group>
+          </template>
         </div>
         <div class="column gutter"></div>
-        <div class="column">
+        <div class="column busca">
           <h4>Equipe disponível</h4>
           <input-search
             :list="usuarios"
@@ -178,7 +182,7 @@ export default {
     optionsGroups () {
       const placeholder = [
         {
-          title: 'Filtrar por um grupo',
+          title: 'Filtre por um grupo',
           value: 0
         }
       ]
@@ -298,6 +302,12 @@ export default {
   }
   h4 {
     font-weight: normal;
+  }
+}
+
+.projetos {
+  &__title {
+    margin-bottom: 2.3rem;
   }
 }
 
