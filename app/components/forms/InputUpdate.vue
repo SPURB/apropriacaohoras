@@ -35,7 +35,7 @@
                 data-cy="input__email"
                 v-model="usuario.email"
               />
-              <span style="margin-right: 0.3rem">@</span>
+              <span class="input-update__arroba">@</span>
               <input-options
                 :type="true"
                 :options="hostOptions"
@@ -134,6 +134,7 @@ export default {
 
       if (this.checkAndEmail) {
         this.usuario.email = this.values.email.split('@')[0]
+        this.usuario.arroba = '@' + this.values.email.split('@')[1]
         this.usuario.nprodam = this.values.nprodam
       }
     }
@@ -181,6 +182,15 @@ export default {
 
     @media (max-width: $tablet) {
       flex-direction: column;
+    }
+  }
+
+  &__arroba {
+    margin-right: 0.3rem;
+
+    @media (max-width: $tablet) {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
     }
   }
 
