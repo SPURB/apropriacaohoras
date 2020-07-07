@@ -14,7 +14,11 @@
       <h1>Perfil</h1>
 
       <section class="perfil__forms">
-        <a class="perfil__switch-display" @click="display = !display">
+        <a
+          class="perfil__switch-display"
+          data-cy="open__update"
+          @click="display = !display"
+        >
           <i class="icon icon-adicionar"></i>
           Atualizar dados cadastrais
         </a>
@@ -90,8 +94,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('usuario', ['updateUsuario', 'logout']),
-    ...mapMutations('usuario', ['SET_SHOW_MODAL']),
+    ...mapActions('usuario', ['updateUsuario', 'closeModal', 'logout']),
     handleUpdate (param) {
       this.updateUsuario(param)
     },
@@ -101,8 +104,8 @@ export default {
         this.reset()
         this.$router.push('/login')
       } else {
+        this.closeModal()
         this.$router.go()
-        this.SET_SHOW_MODAL(false)
       }
     }
   }

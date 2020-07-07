@@ -41,15 +41,16 @@ export const actions = {
     const id = state.id
 
     Usuario.put(body, id, token)
-      .then(data => {
-        commit('SET_API_MESSAGE', { message: data.message })
-        commit('SET_STATUS', data.status)
+      .then(({ status }) => {
+        commit('SET_API_MESSAGE', { message: 'Seus dados foram atualizados.' })
+        commit('SET_STATUS', status)
         commit('SET_UPDATE_USUARIO', body)
         commit('SET_SHOW_MODAL', true)
       })
       .catch(err => commit('SET_ERROR', err))
       .finally(() => commit('IS_FETCHING', false))
   },
+  closeModal: ({ commit }) => commit('SET_SHOW_MODAL', false),
   resetAsync: ({ commit }) => {
     commit('RESET')
   }
