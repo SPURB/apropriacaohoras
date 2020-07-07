@@ -1,5 +1,5 @@
 const now = new Date()
-const { hashSync } = require('bcrypt')
+const { hashSync } = require('bcryptjs')
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
