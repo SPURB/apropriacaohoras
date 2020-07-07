@@ -1,62 +1,71 @@
 <template>
   <div class="botao__editar">
-    <form class="input-update__form" v-if="show">
-      <label class="input-update__label" for="nome">{{ description }}</label>
-      <input
-        class="input-update__input"
-        name="nome"
-        type="text"
-        v-model="input"
-        data-cy="input__update"
-      />
-      <template v-if="checkAndEmail">
-        <section class="input-update__group">
-          <div class="input-update__usuario">
-            <label class="input-update__label" for="nprodam">NPRODAM</label>
-            <div class="input-update__inputs">
-              <input
-                class="input-update__input input-update__text-input"
-                name="nprodam"
-                type="text"
-                data-cy="input__nprodam"
-                v-model="usuario.nprodam"
-              />
-            </div>
+    <form class="input-update__form" v-if="display">
+      <div class="row">
+        <div class="column">
+          <label class="input-update__label" for="nome">{{
+            description
+          }}</label>
+          <input
+            class="input-update__input"
+            name="nome"
+            type="text"
+            v-model="input"
+            data-cy="input__update"
+          />
+        </div>
+        <div class="column gutter"></div>
+        <div class="column">
+          <label class="input-update__label" for="nprodam">NPRODAM</label>
+          <div class="input-update__inputs">
+            <input
+              class="input-update__input input-update__text-input"
+              name="nprodam"
+              type="text"
+              data-cy="input__nprodam"
+              v-model="usuario.nprodam"
+            />
           </div>
-
-          <div class="input-update__usuario">
-            <label class="input-update__label" for="email">Email</label>
-            <div class="input-update__inputs">
-              <input
-                class="input-update__input input-update__text-input"
-                name="email"
-                type="text"
-                style="width: 100%"
-                data-cy="input__email"
-                v-model="usuario.email"
-              />
-              <span class="input-update__arroba">@</span>
-              <input-options
-                :type="true"
-                :options="hostOptions"
-                @setOptionValue="setOptionValue"
-              />
-            </div>
+        </div>
+      </div>
+      <div class="row" v-if="checkAndEmail">
+        <div class="column input-update__email">
+          <label class="input-update__label" for="email">Email</label>
+          <div class="input-update__inputs">
+            <input
+              class="input-update__input input-update__text-input"
+              name="email"
+              type="text"
+              style="width: 100%"
+              data-cy="input__email"
+              v-model="usuario.email"
+            />
+            <span class="input-update__arroba">@</span>
+            <input-options
+              class="input-update__options"
+              :type="true"
+              :options="hostOptions"
+              @setOptionValue="setOptionValue"
+            />
           </div>
-        </section>
-      </template>
+        </div>
+      </div>
       <div class="input-update__btn-group">
-        <button data-cy="update__cancel" @click.prevent="cancel">
-          Cancelar
-        </button>
-        <button
-          class="salvar"
-          @click.prevent="set"
-          :disabled="!valid"
+        <btn-action
+          data-cy="update__cancel"
+          title="Cancelar"
+          @action.prevent="cancel"
+          danger
+          compact
+        />
+        <btn-action
           data-cy="btn__update"
-        >
-          Atualizar
-        </button>
+          title="Atualizar"
+          @action.prevent="set"
+          :disabled="!valid"
+          fetching
+          compact
+        />
       </div>
     </form>
   </div>
@@ -64,10 +73,13 @@
 
 <script>
 import InputOptions from '~/components/forms/InputOptions'
+import BtnAction from '~/components/elements/BtnAction'
+
 export default {
   name: 'InputUpdate',
   components: {
-    InputOptions
+    InputOptions,
+    BtnAction
   },
   data () {
     return {
@@ -76,15 +88,13 @@ export default {
         email: '',
         arroba: '',
         nprodam: ''
-      },
-      show: false
+      }
     }
   },
   props: {
     display: {
       type: Boolean,
-      required: true,
-      default: false
+      required: true
     },
     description: {
       type: String,
@@ -98,6 +108,10 @@ export default {
       type: Boolean,
       default: false
     },
+    fetching: {
+      type: Boolean,
+      default: false
+    },
     values: {
       type: Object,
       default: () => ({
@@ -108,7 +122,11 @@ export default {
   },
   computed: {
     valid () {
-      return this.input.length > 3
+      return (
+        this.input.length > 3 &&
+        this.usuario.nprodam.length > 3 &&
+        this.usuario.email.length > 2
+      )
     },
     hostOptions () {
       return [
@@ -129,7 +147,6 @@ export default {
   },
   watch: {
     display (val) {
-      this.show = val
       this.input = this.value
 
       if (this.checkAndEmail) {
@@ -153,7 +170,7 @@ export default {
       }
     },
     cancel () {
-      this.show = false
+      this.$emit('setUpdateCancel', true)
     },
     setOptionValue (param) {
       this.usuario.arroba = '@' + param
@@ -163,51 +180,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.botao__editar {
-  width: 100%;
-  height: 100%;
-}
-
 .input-update {
-  &__group {
-    display: flex;
-    @media (max-width: $tablet) {
-      flex-direction: column;
-    }
-  }
-
-  &__usuario {
-    margin-top: 1rem;
-    width: 100%;
-
-    @media (max-width: $tablet) {
-      flex-direction: column;
-    }
-  }
-
-  &__arroba {
-    margin-right: 0.3rem;
-
-    @media (max-width: $tablet) {
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-    }
-  }
-
   &__inputs {
     display: flex;
     align-items: center;
-
     @media (max-width: $tablet) {
       flex-direction: column;
       align-items: initial;
     }
-  }
-
-  &__text-input {
-    margin-top: 0.7rem;
-    width: 100%;
-    margin-right: 0.5rem;
   }
 
   &__form {
@@ -215,17 +195,27 @@ export default {
     display: flex;
     flex-direction: column;
     color: black;
-    padding: 0.8rem 2.4rem;
+    padding: 0.8rem 2rem;
 
     @media (max-width: $tablet) {
       padding: 0.8rem 1rem;
     }
   }
+  &__email {
+    max-width: 650px;
+  }
   &__label {
-    margin: 1rem 0;
+    margin: 1rem 0 0.25rem;
     font-size: 1rem;
   }
+  &__options {
+    margin-top: 5px;
+  }
+  &__arroba {
+    margin: 10px;
+  }
   &__input {
+    width: 100%;
     font-size: 1rem;
     height: 3rem;
     border-radius: 4px;
@@ -242,33 +232,9 @@ export default {
   }
   &__btn-group {
     display: flex;
-    margin: 2rem 0;
-    button {
-      border: 0;
-      padding: 1rem;
-      margin-right: 2rem;
-      border-radius: 30px;
-      font-size: 1rem;
-      font-family: $grot;
-      font-weight: 700;
-      color: #fff;
-      background-color: $vermelho;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.24);
-      border: 2px solid rgba(255, 255, 255, 0.24);
-      transition: ease-in-out 0.25s all;
-      &.salvar {
-        background-color: $verde;
-        &:disabled {
-          cursor: not-allowed;
-          background-color: $cinza1;
-          opacity: 0.45;
-        }
-      }
-      &:hover {
-        cursor: pointer;
-        box-shadow: 1px 5px 9px rgba(0, 0, 0, 0.36);
-      }
-    }
+    margin-bottom: 1rem;
+    max-width: 180px;
+    justify-content: space-between;
   }
 }
 </style>

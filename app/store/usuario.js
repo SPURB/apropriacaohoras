@@ -39,6 +39,7 @@ export const actions = {
   updateUsuario: ({ commit, state }, body) => {
     const token = state.token
     const id = state.id
+    commit('IS_FETCHING', true)
 
     Usuario.put(body, id, token)
       .then(({ status }) => {
@@ -48,7 +49,9 @@ export const actions = {
         commit('SET_SHOW_MODAL', true)
       })
       .catch(err => commit('SET_ERROR', err))
-      .finally(() => commit('IS_FETCHING', false))
+      .finally(() => {
+        commit('IS_FETCHING', false)
+      })
   },
   closeModal: ({ commit }) => commit('SET_SHOW_MODAL', false),
   resetAsync: ({ commit }) => {
@@ -84,6 +87,7 @@ export const mutations = {
     state.usuario.nome = nome
     state.usuario.email = email
     state.usuario.nprodam = nprodam
+    state.error = false
   },
   SET_STATUS: (state, value) => {
     state.status = value

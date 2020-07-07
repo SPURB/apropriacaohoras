@@ -12,7 +12,6 @@
 
     <div class="perfil">
       <h1>Perfil</h1>
-
       <section class="perfil__forms">
         <a
           class="perfil__switch-display"
@@ -24,11 +23,13 @@
         </a>
         <input-update
           description="Nome"
-          :value="nome"
+          :value="nomeUsuario"
           :display="display"
           :checkAndEmail="true"
           :values="{ email, nprodam }"
           @setUpdate="handleUpdate"
+          @setUpdateCancel="handleUpdateCancel"
+          :fetching="fetching"
         />
       </section>
     </div>
@@ -54,6 +55,7 @@ export default {
   },
   computed: {
     ...mapState('usuario', {
+      id: state => state.usuario.id,
       nome: state => state.usuario.nome,
       email: state => state.usuario.email,
       nprodam: state => state.usuario.nprodam,
@@ -61,8 +63,13 @@ export default {
       showModal: state => state.showModal,
       error: state => state.error,
       apiMessage: state => state.apiMessage,
-      token: state => state.token
+      token: state => state.token,
+      fetching: state => state.fetching
     }),
+    nomeUsuario () {
+      return this.nome ? this.nome : 'Carregando nome'
+    },
+
     errorTitle () {
       const errors = {
         400: 'Erro na requisição',
@@ -98,6 +105,9 @@ export default {
     handleUpdate (param) {
       this.updateUsuario(param)
     },
+    handleUpdateCancel (canceled) {
+      this.display = false
+    },
     sair () {
       if (this.status === 403) {
         this.logout(this.token)
@@ -105,7 +115,6 @@ export default {
         this.$router.push('/login')
       } else {
         this.closeModal()
-        this.$router.go()
       }
     }
   }
@@ -114,8 +123,10 @@ export default {
 
 <style lang="scss" scoped>
 .perfil {
+  max-width: $desktop;
+  min-height: calc(100vh - 166px);
+  margin: 0 auto;
   padding: 2rem;
-
   h1 {
     color: #fff;
   }
@@ -126,7 +137,6 @@ export default {
 
   &__switch-display {
     background-color: $verde;
-    width: 100%;
     height: 70px;
     display: flex;
     align-items: center;
