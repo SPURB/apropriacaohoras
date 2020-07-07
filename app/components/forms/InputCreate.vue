@@ -37,7 +37,7 @@
             data-cy="input__email"
             v-model="usuario.email"
           />
-          <span>@</span>
+          <span class="input-create__arroba">@</span>
           <input-options
             style="margin-top:1rem"
             :type="true"
@@ -205,8 +205,20 @@ export default {
     align-items: center;
     justify-content: space-between;
 
+    @media (max-width: $tablet) {
+      flex-direction: column;
+      align-items: initial;
+    }
     &.not__between {
       justify-content: inherit;
+      align-items: center;
+      flex-direction: row;
+    }
+  }
+
+  &__arroba {
+    @media (max-width: $tablet) {
+      margin-top: 1rem;
     }
   }
 

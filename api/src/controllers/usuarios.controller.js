@@ -3,7 +3,7 @@ const Usuario = db.usuarios
 const dao = require('./dao')
 
 import { generate } from 'generate-password'
-import { hashSync } from 'bcrypt'
+import { hashSync } from 'bcryptjs'
 import { notAuthorized, badRequest, internalError } from './exceptions'
 import { enviarEmail, usuarios } from './acoes'
 

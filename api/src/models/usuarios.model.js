@@ -1,4 +1,4 @@
-const { compareSync } = require('bcrypt')
+const { compareSync } = require('bcryptjs')
 
 // http://spurbsp198/estagiario/apiestagio.php/user/ -> autentição nprodam intranet. Retorna NM_PRODAM
 // http://spurbsp04/usuario/ws/localizacao?NM_PRODAM=e059153 -> dados completos de usuários
