@@ -2,6 +2,8 @@ import db from '../models'
 import sequelize from 'sequelize'
 import fetch from 'node-fetch'
 
+const logo = '/static/spurbanismo-mono-negativo.png'
+
 module.exports = {
   horas: {
     totalPorPeriodo: (inicio, fim, idProjeto) => {
@@ -64,7 +66,7 @@ module.exports = {
               <table width="600" cellpadding="15" cellspacing="0" border="0" class="container">
                 <tr>
                   <td align="center" valign="top" bgcolor="#048874">
-                    <img src="https://i.ibb.co/vZfRmL9/SPUrbanismo-mono-negativo.png" width="200" height="50" style="margin:0; 
+                    <img src="${logo}" width="200" height="50" style="margin:0; 
                           padding:0; 
                           border: none; 
                           display:block;" border="0" alt="" />
