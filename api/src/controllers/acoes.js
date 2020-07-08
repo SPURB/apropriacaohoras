@@ -2,7 +2,7 @@ import db from '../models'
 import sequelize from 'sequelize'
 import fetch from 'node-fetch'
 
-const logo = '/static/spurbanismo-mono-negativo.png'
+const logo = `/static/spurbanismo-mono-negativo.png`
 
 module.exports = {
   horas: {
@@ -46,7 +46,7 @@ module.exports = {
   },
 
   usuarios: {
-    criarMensagem: (nome, email, senha) => {
+    criarMensagem: (nome, email, senha, host) => {
       return `
       <!DOCTYPE html>
       <html lang="en">
@@ -66,7 +66,7 @@ module.exports = {
               <table width="600" cellpadding="15" cellspacing="0" border="0" class="container">
                 <tr>
                   <td align="center" valign="top" bgcolor="#048874">
-                    <img src="${logo}" width="200" height="50" style="margin:0; 
+                    <img src="${host + logo}" width="200" height="50" style="margin:0; 
                           padding:0; 
                           border: none; 
                           display:block;" border="0" alt="" />

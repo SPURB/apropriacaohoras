@@ -7,6 +7,8 @@ import { hashSync } from 'bcryptjs'
 import { notAuthorized, badRequest, internalError } from './exceptions'
 import { enviarEmail, usuarios } from './acoes'
 
+const { name, version } = require('../../package.json')
+
 exports.create = (req, res) => {
   if (!req.admin) {
     return notAuthorized(res, 'Usuário não autorizado')
@@ -25,7 +27,8 @@ exports.create = (req, res) => {
   })
 
   const hash = hashSync(password, 10)
-  const emailBody = usuarios.criarMensagem(nome, email, password)
+  const host = `${req.protocol}://${req.hostname}/${name}/api/${version}`
+  const emailBody = usuarios.criarMensagem(nome, email, password, host)
 
   enviarEmail(email, 'Registro de horas | São Paulo Urbanismo', emailBody)
     .then(async () => {
