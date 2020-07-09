@@ -1,94 +1,117 @@
 <template>
   <div class="pre-impressao-usuario">
     <preloader v-if="fetching" />
-    <div v-if="isReady" class="pre-impressao-usuario__projetos">
-      <div v-for="(projeto, index) in projetosFases" :key="projeto.id">
-        <pre-impressao-a4
-          v-if="projeto.totalHorasProjeto"
-          :paginationIndex="index + 1"
-          :paginationTotal="pageCount"
-        >
-          <div class="pre-impressao-usuario__header">
-            <h2>{{ nome }}</h2>
-            <p class="pre-impressao-usuario--align-right">
-              Horas totais registradas<br /><span>{{
-                horasTotaisUsuario
-              }}</span>
-            </p>
-          </div>
-          <div class="pre-impressao-usuario__main">
-            <div class="projeto">
-              <div class="projeto__title">
-                <h3>{{ projeto.nome }}</h3>
-                <p>{{ gruposHashTable[projeto.grupo] }}</p>
-              </div>
-              <table class="projeto__table">
-                <thead>
-                  <tr>
-                    <th>Fases</th>
-                    <th>Suas horas</th>
-                    <th>Horas da equipe</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    class="projeto__fase"
-                    v-for="fase in projeto.fases"
-                    :key="fase.id"
-                  >
-                    <td>{{ fase.nome }}</td>
-                    <td>{{ fase.horasUsuario }}</td>
-                    <td>{{ fase.horasEquipe }}</td>
-                    <td>
-                      <graf-bar
-                        :base="fase.horasEquipe"
-                        :current="fase.horasUsuario"
-                        :total="projeto.totalHorasProjeto"
-                        :height="32"
-                        :width="200"
-                      />
-                    </td>
-                  </tr>
-                  <tr class="projeto__soma">
-                    <td>total</td>
-                    <td>{{ projeto.totalHorasProjetoUsuario }}</td>
-                    <td>{{ projeto.totalHorasProjeto }}</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+    <div class="pre-impressao-usuario__container">
+      <btn-progresso
+        class="pre-impressao-usuario__navigation rotate"
+        :disabled="page <= 1"
+        @btnPrograssoAction="prevPage"
+      />
+
+      <div v-if="isReady" class="pre-impressao-usuario__projetos" id="printer">
+        <div v-for="projeto in projetosFases" :key="projeto.id">
+          <pre-impressao-a4
+            v-if="projeto.totalHorasProjeto"
+            :paginationIndex="page"
+            :paginationTotal="pageCount"
+          >
+            <div class="pre-impressao-usuario__header">
+              <h2>{{ nome }}</h2>
+              <p class="pre-impressao-usuario--align-right">
+                Horas totais registradas<br /><span>{{
+                  horasTotaisUsuario
+                }}</span>
+              </p>
             </div>
-          </div>
-          <div class="pre-impressao-usuario__footer">
-            <p
-              class="pre-impressao-usuario__legenda"
-              style="border-color: #434343"
-            >
-              {{ nome }}
-            </p>
-            <p
-              class="pre-impressao-usuario__legenda"
-              style="border-color: #DFDFDF"
-            >
-              Equipe
-            </p>
-          </div>
-        </pre-impressao-a4>
+            <div class="pre-impressao-usuario__main">
+              <div class="projeto">
+                <div class="projeto__title">
+                  <h3>{{ projeto.nome }}</h3>
+                  <p>{{ gruposHashTable[projeto.grupo] }}</p>
+                </div>
+                <table class="projeto__table">
+                  <thead>
+                    <tr>
+                      <th>Fases</th>
+                      <th>Suas horas</th>
+                      <th>Horas da equipe</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="projeto__fase"
+                      v-for="fase in projeto.fases"
+                      :key="fase.id"
+                    >
+                      <td>{{ fase.nome }}</td>
+                      <td>{{ fase.horasUsuario }}</td>
+                      <td>{{ fase.horasEquipe }}</td>
+                      <td>
+                        <graf-bar
+                          :base="fase.horasEquipe"
+                          :current="fase.horasUsuario"
+                          :total="projeto.totalHorasProjeto"
+                          :height="32"
+                          :width="200"
+                        />
+                      </td>
+                    </tr>
+                    <tr class="projeto__soma">
+                      <td>total</td>
+                      <td>{{ projeto.totalHorasProjetoUsuario }}</td>
+                      <td>{{ projeto.totalHorasProjeto }}</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="pre-impressao-usuario__footer">
+              <p
+                class="pre-impressao-usuario__legenda"
+                style="border-color: #434343"
+              >
+                {{ nome }}
+              </p>
+              <p
+                class="pre-impressao-usuario__legenda"
+                style="border-color: #DFDFDF"
+              >
+                Equipe
+              </p>
+            </div>
+          </pre-impressao-a4>
+        </div>
       </div>
+
+      <btn-progresso
+        class="pre-impressao-usuario__navigation"
+        :disabled="page === pageCount"
+        @btnPrograssoAction="nextPage"
+      />
     </div>
   </div>
 </template>
+
 <script>
 import { mapState, mapActions } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
+import BtnProgresso from '~/components/elements/BtnProgresso'
 import Preloader from '~/components/elements/Preloader'
 import GrafBar from '~/components/elements/GrafBar'
 export default {
   name: 'PreImpressaoUsuario',
   layout: 'pre-impressao',
+  data () {
+    return {
+      page: 1
+      // projeto: {}
+    }
+  },
   components: {
     PreImpressaoA4,
+    BtnProgresso,
     Preloader,
     GrafBar
   },
@@ -225,6 +248,9 @@ export default {
   created () {
     this.setupHorasProjetos()
   },
+  mounted () {
+    // if (this.fetching) this.projeto = this.projetosFases[0]
+  },
   methods: {
     ...mapActions('pre-impressao', [
       'getHorasProjetos',
@@ -250,10 +276,22 @@ export default {
       })
 
       return combined
+    },
+    currentProjeto () {
+      this.projeto = this.projetosFases[this.page - 1]
+    },
+    nextPage () {
+      this.page = this.page + 1
+      this.currentProjeto()
+    },
+    prevPage () {
+      this.page = this.page - 1
+      this.currentProjeto()
     }
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .pre-impressao-usuario {
   &__header {
@@ -280,6 +318,19 @@ export default {
     margin-right: 1rem;
     border-left: 1rem solid;
     padding-left: 0.25rem;
+  }
+
+  &__container {
+    display: flex;
+  }
+
+  &__navigation {
+    background: transparent;
+    align-self: center;
+
+    &.rotate {
+      transform: rotate(180deg);
+    }
   }
 }
 .projeto {

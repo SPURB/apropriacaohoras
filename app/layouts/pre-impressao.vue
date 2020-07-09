@@ -14,7 +14,7 @@
 
       <div class="row">
         <div class="column">
-          <nuxt />
+          <nuxt ref="childrenImpressao" />
         </div>
       </div>
       <div class="row pre-impressao__btns">
@@ -29,7 +29,7 @@
         <div class="column column--center">
           <btn-action
             title="Gerar pdf"
-            @action="createPdf({ content: ['first', 'second'] }, 'teste.pdf')"
+            @action="print"
             :loading="pdf.loading"
             loading-message="Gerando pdf"
           />
@@ -62,7 +62,8 @@ export default {
       },
       pdf: {
         loading: false
-      }
+      },
+      p: undefined
     }
   },
   computed: {
@@ -83,8 +84,31 @@ export default {
       }
     }
   },
+  mounted () {},
   methods: {
     ...mapActions('pre-impressao', 'reset'),
+    async print () {
+      await this.loadExternalLib(
+        'https://unpkg.com/printd@1.3.0/printd.umd.min.js'
+      )
+
+      const printer = document.getElementById('printer')
+
+      const { Printd } = window.printd
+      this.p = new Printd()
+
+      const { contentWindow } = this.p.getIFrame()
+
+      contentWindow.addEventListener('beforeprint', () =>
+        console.log('before print event!')
+      )
+      contentWindow.addEventListener('afterprint', () =>
+        console.log('after print event!')
+      )
+
+      console.log(printer)
+      this.p.print(printer)
+    },
     loadExternalLib (url) {
       return new Promise((resolve, reject) => {
         const script = document.createElement('script')

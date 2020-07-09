@@ -70,7 +70,7 @@ export default {
   },
   mounted () {
     this.width = this.$refs.a4.offsetWidth
-    this.height = this.width * 1.41
+    this.height = this.width * 1.51
     this.origin = `${window.location.host}/apropriacaohoras/`
 
     const now = this.$moment()
