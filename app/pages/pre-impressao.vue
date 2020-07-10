@@ -9,10 +9,10 @@
       />
 
       <div v-if="isReady" class="pre-impressao-usuario__projetos" id="printer">
-        <div v-for="projeto in projetosFases" :key="projeto.id">
+        <div v-for="(projeto, index) in projetosFases" :key="projeto.id">
           <pre-impressao-a4
             v-if="projeto.totalHorasProjeto"
-            :paginationIndex="page"
+            :paginationIndex="index + 1"
             :paginationTotal="pageCount"
           >
             <div class="pre-impressao-usuario__header">

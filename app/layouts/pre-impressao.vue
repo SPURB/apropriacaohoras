@@ -29,7 +29,7 @@
         <div class="column column--center">
           <btn-action
             title="Gerar pdf"
-            @action="print"
+            @action="createPdf"
             :loading="pdf.loading"
             loading-message="Gerando pdf"
           />
@@ -63,7 +63,110 @@ export default {
       pdf: {
         loading: false
       },
-      p: undefined
+      cssPDF: `
+        .pre-impressao-a4 {
+            display: flex;
+            flex-direction: column;
+            font-family: 'Roboto', 'Segoe UI', 'Helvetica', Arial, sans-serif;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 1rem 1.5rem;
+            font-size: small;
+        }
+        .pre-impressao-a4__header,
+        .pre-impressao-a4__footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .pre-impressao-a4__header {
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #777;    
+        }
+        .pre-impressao-a4__header p {
+            margin-top: 24px;
+            margin-bottom: 0;
+        }
+        .pre-impressao-a4__main {
+            display: flex;
+            flex-direction: column;
+        }
+        .pre-impressao-a4__footer {
+            border-top: 1px solid #777;    
+        }
+        .pre-impressao-a4__footer--right {
+            text-align: right;
+        }
+        .pre-impressao-usuario__header {
+          display: flex;
+          justify-content: space-between;
+          flex-direction: row;    
+        }
+        .pre-impressao-usuario__header h2 {
+          font-weight: normal;
+          font-size: 1.52rem;
+        }
+        .pre-impressao-usuario__header span {
+          font-size: 1rem;
+        }
+        .pre-impressao-usuario__header--align-right {
+          text-align: right;
+        }
+        .pre-impressao-usuario__footer {
+          border-top: solid 1px #777;
+          margin-top: auto;
+          display: flex;
+        }
+        .pre-impressao-usuario__legenda {
+          margin-right: 1rem;
+          border-left: 1rem solid;
+          padding-left: 0.25rem;
+        }
+
+        .pre-impressao-usuario__container {
+          display: flex;
+        }
+        .projeto {
+          margin-top: 2rem;
+        }
+        .projeto__title {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            border-top: 1px solid #777;
+        }
+        .projeto__title h3 {
+          font-size: 1rem;
+          font-weight: normal;
+        }
+        .projeto__table {
+          border-collapse: collapse;
+        }
+        .projeto__table th, .projeto__table td {
+          text-align: right;
+          height: 32px;
+          padding-right: 1rem;   
+        }
+        .projeto__table th:first-child, .projeto__table td:first-child {
+          text-align: left !important;
+        }
+        .projeto__table th:last-child, .projeto__table td:last-child {
+            display: flex;
+            align-items: center;
+            padding-right: 0;
+        }
+        .projeto__fase {
+          border-top: 1px solid #d2d2d2;
+        }
+        .projeto__soma {
+          background-color: #777;
+          font-weight: bold;
+          border-top: 2px grey solid;
+        }
+        .projeto__soma td:first-child {
+          padding-left: 0.5rem;
+        }
+      `
     }
   },
   computed: {
@@ -84,30 +187,29 @@ export default {
       }
     }
   },
-  mounted () {},
   methods: {
     ...mapActions('pre-impressao', 'reset'),
-    async print () {
+    async createPdf () {
       await this.loadExternalLib(
         'https://unpkg.com/printd@1.3.0/printd.umd.min.js'
       )
 
+      const now = this.$moment()
       const printer = document.getElementById('printer')
-
       const { Printd } = window.printd
-      this.p = new Printd()
+      const p = new Printd()
 
-      const { contentWindow } = this.p.getIFrame()
+      const iframe = p.getIFrame()
+      const { contentWindow } = iframe
 
-      contentWindow.addEventListener('beforeprint', () =>
-        console.log('before print event!')
-      )
-      contentWindow.addEventListener('afterprint', () =>
-        console.log('after print event!')
-      )
+      p.print(printer, [this.cssPDF])
 
-      console.log(printer)
-      this.p.print(printer)
+      contentWindow.addEventListener('beforeprint', () => {
+        document.title = `Relatorio__${now.format('DD-MM-YYYY_HH:MM:SS')}`
+      })
+      contentWindow.addEventListener('afterprint', () => {
+        document.title = 'SPUrbanismo | Apropriação de Horas'
+      })
     },
     loadExternalLib (url) {
       return new Promise((resolve, reject) => {
@@ -128,17 +230,6 @@ export default {
       })
       saveAs(csvBlob, name)
       this.csv.loading = false
-    },
-    async createPdf (content, name) {
-      this.pdf.loading = true
-      await this.loadExternalLib(
-        'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/pdfmake.min.js'
-      )
-      await this.loadExternalLib(
-        'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/vfs_fonts.js'
-      )
-      window.pdfMake.createPdf(content).download(name)
-      this.pdf.loading = false
     },
     goBack (route) {
       this.$router.push(route)
