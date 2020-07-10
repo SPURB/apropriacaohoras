@@ -22,6 +22,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(middlewares)
+app.use(basePath + '/static', express.static(__dirname + '../../public')) // static files
 
 // create endpoints
 endpoints.forEach(endpoint =>
