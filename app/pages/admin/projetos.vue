@@ -298,6 +298,7 @@ export default {
 
   &__modal {
     top: 0;
+    left: 0;
   }
   p,
   h3 {

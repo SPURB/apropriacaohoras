@@ -15,7 +15,7 @@
           />
         </div>
         <div class="column gutter"></div>
-        <div class="column">
+        <div class="column" v-if="checkAndEmail">
           <label class="input-update__label" for="nprodam">NPRODAM</label>
           <div class="input-update__inputs">
             <input
@@ -122,11 +122,16 @@ export default {
   },
   computed: {
     valid () {
-      return (
-        this.input.length > 3 &&
+      if (this.input.length > 3) {
+        return true
+      } else if (
         this.usuario.nprodam.length > 3 &&
         this.usuario.email.length > 2
-      )
+      ) {
+        return true
+      } else {
+        return false
+      }
     },
     hostOptions () {
       return [
