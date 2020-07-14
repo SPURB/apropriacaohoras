@@ -9,7 +9,7 @@ export default {
   mode: 'spa',
   head: {
     htmlAttrs: { lang: 'pt-br' },
-    title: "SPUrbanismo | Apropriação de horas",
+    title: 'SPUrbanismo | Apropriação de horas',
     meta: [
       { charset: 'utf-8' },
       {
@@ -21,34 +21,33 @@ export default {
         name: 'description',
         content: process.env.npm_package_description || ''
       }
-    ],
+    ]
   },
   router: {
-    base: process.env.CI || process.env.NODE_ENV === 'prod' ? '/apropriacaohoras/' : '/',
-    middleware: [ 'authenticated' ]
+    base:
+      process.env.CI || process.env.NODE_ENV === 'prod'
+        ? '/apropriacaohoras/'
+        : '/',
+    middleware: ['authenticated']
   },
-  env:{
+  env: {
     apiBase: apiBase[process.env.NODE_ENV]
   },
-  plugins: [
-    { src: '~/plugins/vuex-persist', ssr: false }
-  ],
+  plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
   buildModules: [
     '@nuxtjs/style-resources',
     '@nuxtjs/moment',
     '@nuxtjs/pwa',
-    '@nuxtjs/google-analytics'
+    '@nuxtjs/google-analytics',
+    '@nuxt/content'
   ],
   styleResources: {
-    scss: [
-      '@/assets/style/variables.scss',
-      '@/assets/style/theme.scss'
-    ]
+    scss: ['@/assets/style/variables.scss', '@/assets/style/theme.scss']
   },
   googleAnalytics: {
     id: 'UA-113737634-10'
   },
-  css: [ '@/assets/style/icones/participe.css' ],
+  css: ['@/assets/style/icones/participe.css'],
   generate: {
     dir: process.env.CI ? 'gh-pages' : 'dist'
   }
