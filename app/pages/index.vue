@@ -244,7 +244,7 @@ export default {
   width: -moz-available;
   &__btn-voltar {
     transform: rotate(180deg);
-    z-index: 10;
+    z-index: 8;
     position: absolute;
     margin: 0;
     left: 0;
