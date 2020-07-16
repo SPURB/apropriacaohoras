@@ -4,11 +4,8 @@ const apiBase = {
   homolog: 'https://apropriacaohoras.herokuapp.com/apropriacaohoras/api/0.0.1'
 }
 
-const { CI, NODE_ENV, npm_package_description } = process.env
-const appBase = CI || NODE_ENV === 'prod' ? '/apropriacaohoras/' : '/'
+const appBase = process.env.TRAVIS || process.env.NODE_ENV === 'prod' ? '/apropriacaohoras/' : '/'
 
-console.log(`NODE_ENV: ${NODE_ENV}`)
-console.log(`appBase: ${appBase}`)
 export default {
   target: 'static',
   components: true,
@@ -25,7 +22,7 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: npm_package_description || ''
+        content: process.env.npm_package_description || ''
       }
     ]
   },
@@ -34,7 +31,7 @@ export default {
     middleware: ['authenticated']
   },
   env: {
-    apiBase: apiBase[NODE_ENV],
+    apiBase: apiBase[process.env.NODE_ENV],
     appBase
   },
   plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
