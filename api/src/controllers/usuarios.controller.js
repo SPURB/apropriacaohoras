@@ -90,7 +90,14 @@ exports.logout = async (req, res) => {
 }
 
 exports.findAll = (req, res) => {
-  return Usuario.findAll()
+
+  let where = {}
+
+  if (req.query) {
+    where = req.query
+  }
+
+  return Usuario.findAll({ where })
     .then(usuarios => {
       const usuariosSemDadosSensiveis = usuarios.map(usuario => {
         return {

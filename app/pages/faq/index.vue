@@ -4,7 +4,11 @@
     <p>Qual a sua dúvida?</p>
     <ul class="faq-index__cards">
       <li v-for="({ to, title, subtitle }, index) in doubts" :key="index">
-        <card-horizontal :to="to" :title="title" :subtitle="subtitle" />
+        <card-horizontal
+          :to="`${to}?from=/faq`"
+          :title="title"
+          :subtitle="subtitle"
+        />
       </li>
     </ul>
     <h3 class="faq-index__title">Não encontrou o que precisava?</h3>
@@ -28,14 +32,38 @@ import CardHorizontal from '~/components/router-links/CardHorizontal'
 
 export default {
   name: 'FaqIndex',
+  data () {
+    return {
+      doubts: [],
+      res: null
+    }
+  },
   layout: 'faq',
   components: {
     CardHorizontal
   },
-  async asyncData ({ $content }) {
-    const { doubts } = await $content('/faq/index').fetch()
-    return {
-      doubts
+  async fetch () {
+    const { doubts } = await this.$content('/faq/index').fetch()
+    this.doubts = doubts
+  },
+  created () {
+    process.env.NODE_ENV === 'development'
+      ? this.$fetch()
+      : this.productionFetch()
+  },
+  methods: {
+    async productionFetch () {
+      const { get } = require('axios')
+      try {
+        const { data } = await get('/_nuxt/content/db.json')
+        const content = data._collections[0]._data
+
+        console.log(data)
+        console.log(data._collections)
+        console.log(content)
+      } catch (err) {
+        throw new Error(err)
+      }
     }
   }
 }

@@ -6,6 +6,7 @@ const apiBase = {
 
 export default {
   target: 'static',
+  components: true,
   mode: 'spa',
   head: {
     htmlAttrs: { lang: 'pt-br' },
@@ -34,13 +35,8 @@ export default {
     apiBase: apiBase[process.env.NODE_ENV]
   },
   plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
-  buildModules: [
-    '@nuxtjs/style-resources',
-    '@nuxtjs/moment',
-    '@nuxtjs/pwa',
-    '@nuxtjs/google-analytics',
-    '@nuxt/content'
-  ],
+  modules: [, '@nuxtjs/style-resources', '@nuxt/content'],
+  buildModules: ['@nuxtjs/moment', '@nuxtjs/pwa', '@nuxtjs/google-analytics'],
   styleResources: {
     scss: ['@/assets/style/variables.scss', '@/assets/style/theme.scss']
   },
@@ -49,6 +45,7 @@ export default {
   },
   css: ['@/assets/style/icones/participe.css'],
   generate: {
-    dir: process.env.CI ? 'gh-pages' : 'dist'
+    devtools: true,
+    routes: ['/faq/cadastro']
   }
 }
