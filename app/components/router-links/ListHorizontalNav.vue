@@ -10,6 +10,7 @@
         :index="index"
         :actionType="actionType"
         :step="step"
+        :fetching="fetching"
         @setUpdate="getUpdated"
       />
     </li>
@@ -30,6 +31,10 @@ export default {
     },
     actionType: {
       validator: value => ['go', 'close'].includes(value)
+    },
+    fetching: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

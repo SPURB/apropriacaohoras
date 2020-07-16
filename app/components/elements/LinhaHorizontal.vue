@@ -36,6 +36,7 @@
       :value="link.title"
       :step="step"
       @setUpdate="setFormValue"
+      @setUpdateCancel="display = false"
     />
   </div>
 </template>
@@ -66,6 +67,10 @@ export default {
     step: {
       type: String,
       required: true
+    },
+    fetching: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {

@@ -14,9 +14,11 @@
             data-cy="input__update"
           />
         </div>
-        <div class="column gutter"></div>
-        <div class="column">
-          <label class="input-update__label" for="nprodam">NPRODAM</label>
+        <div v-if="noStep" class="column gutter"></div>
+        <div v-if="noStep" class="column">
+          <label v-if="noStep" class="input-update__label" for="nprodam"
+            >NPRODAM</label
+          >
           <div class="input-update__inputs">
             <input
               class="input-update__input input-update__text-input"
@@ -63,7 +65,8 @@
           title="Atualizar"
           @action.prevent="set"
           :disabled="!valid"
-          fetching
+          :loading="fetching"
+          loadingMessage="Atualizando"
           compact
         />
       </div>
@@ -112,6 +115,10 @@ export default {
       type: Boolean,
       default: false
     },
+    step: {
+      type: String,
+      default: ''
+    },
     values: {
       type: Object,
       default: () => ({
@@ -121,12 +128,19 @@ export default {
     }
   },
   computed: {
+    noStep () {
+      return this.step === ''
+    },
     valid () {
-      return (
-        this.input.length > 3 &&
-        this.usuario.nprodam.length > 3 &&
-        this.usuario.email.length > 2
-      )
+      if (this.noStep) {
+        return (
+          this.input.length > 3 &&
+          this.usuario.nprodam.length > 3 &&
+          this.usuario.email.length > 2
+        )
+      } else {
+        return this.input.length > 3
+      }
     },
     hostOptions () {
       return [
