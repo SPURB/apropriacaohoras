@@ -31,10 +31,22 @@
       <tabela-projeto :projetos="projetosCardMap" />
       <btn-action
         class="index-comum__action"
-        title="Visualizar relatório detalhado"
+        title="Visualizar meu relatório detalhado"
         @action="
           $router.push({
             path: '/pre-impressao',
+            query: {
+              from: '/admin/relatorios'
+            }
+          })
+        "
+      />
+      <btn-action
+        class="index-comum__action"
+        title="Visualizar relatório detalhado da equipe"
+        @action="
+          $router.push({
+            path: '/admin/pre-impressao',
             query: {
               from: '/admin/relatorios'
             }

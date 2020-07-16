@@ -243,6 +243,12 @@ export default {
 
       this.getGruposUsuario({ ids: uniqueGrupos })
     },
+    projetosForPdf () {
+      if (this.projetosFases.length > 0) {
+        this.projeto = this.projetosFases[0]
+        this.setContentForPdf(Lib.pdfContent(this.projetosForPdf, this.nome))
+      }
+    },
     gruposUsuario (grupos) {
       const ids = grupos.map(grupo => grupo.id)
       this.getFasesUsuario({ ids })
@@ -250,12 +256,6 @@ export default {
   },
   created () {
     this.setupHorasProjetos()
-  },
-  mounted () {
-    if (this.projetosFases.length > 0) {
-      this.projeto = this.projetosFases[0]
-      this.setContentForPdf(Lib.pdfContent(this.projetosForPdf, this.nome))
-    }
   },
   methods: {
     ...mapActions('pre-impressao', [
