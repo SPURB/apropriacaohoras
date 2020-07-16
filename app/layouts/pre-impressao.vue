@@ -86,9 +86,6 @@ export default {
         this.csv.loading = false
         this.pdf.loading = false
       }
-    },
-    content (value) {
-      console.log(content)
     }
   },
   methods: {
