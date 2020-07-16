@@ -28,43 +28,30 @@
   </div>
 </template>
 <script>
+import { mapActions, mapMutations, mapState } from 'vuex'
 import CardHorizontal from '~/components/router-links/CardHorizontal'
 
 export default {
   name: 'FaqIndex',
-  data () {
-    return {
-      doubts: [],
-      res: null
-    }
-  },
   layout: 'faq',
   components: {
     CardHorizontal
   },
+  computed: {
+    ...mapState('faq', ['doubts'])
+  },
   async fetch () {
     const { doubts } = await this.$content('/faq/index').fetch()
-    this.doubts = doubts
+    this.SET({ data: doubts, key: 'doubts' })
   },
   created () {
     process.env.NODE_ENV === 'development'
       ? this.$fetch()
-      : this.productionFetch()
+      : this.fetchLocalDoubts(`${process.env.appBase}_nuxt/content/db.json`)
   },
   methods: {
-    async productionFetch () {
-      const { get } = require('axios')
-      try {
-        const { data } = await get('/_nuxt/content/db.json')
-        const content = data._collections[0]._data
-
-        console.log(data)
-        console.log(data._collections)
-        console.log(content)
-      } catch (err) {
-        throw new Error(err)
-      }
-    }
+    ...mapActions('faq', ['fetchLocalDoubts']),
+    ...mapMutations('faq', ['SET'])
   }
 }
 </script>

@@ -4,14 +4,36 @@
   </div>
 </template>
 <script>
+import { get } from 'axios'
 export default {
   name: 'FaqContent',
   layout: 'faq',
-  async asyncData ({ $content, params }) {
-    const { content } = params
-    const page = await $content(`/faq/${content}`).fetch()
+  data () {
     return {
-      page
+      page: {}
+    }
+  },
+  async fetch () {
+    const { content } = this.$route.params
+    this.page = await this.$content(`/faq/${content}`).fetch()
+  },
+  created () {
+    process.env.NODE_ENV === 'development'
+      ? this.$fetch()
+      : this.fetchLocalPage()
+  },
+  methods: {
+    async fetchLocalPage () {
+      const { content } = this.$route.params
+      try {
+        const { data } = await get(
+          `${process.env.appBase}_nuxt/content/db.json`
+        )
+        const { _data } = data._collections[0]
+        this.page = _data.find(item => item.slug === content)
+      } catch (err) {
+        throw new Error(err) // https://github.com/nuxt/content/issues?q=is%3Aissue+static
+      }
     }
   }
 }
@@ -20,13 +42,29 @@ export default {
 .faq-content {
   padding-bottom: 10rem;
   .danger {
-    border-top: 3px solid $vermelho;
-    border-bottom: 3px solid $vermelho;
-    margin-top: 2rem;
+    border-left: 5px solid $vermelho;
+    // border-bottom: 5px solid $vermelho;
+    background-color: $cinza1;
+    border-radius: 8px;
+    margin: 2rem 0;
     padding: 1.5rem 0;
     h3 {
       padding: 0 0 0.5rem;
     }
+    @media (max-width: $tablet) {
+      padding: 2rem 3rem;
+    }
+  }
+  .task-list-item {
+    list-style: none;
+    input {
+      margin-left: -1rem;
+    }
+  }
+  .section-border {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: solid 5px white;
   }
   max-width: $desktop;
   margin: 3rem auto 0;
@@ -34,11 +72,10 @@ export default {
   h1,
   h2,
   h3,
+  h4,
   ul {
-    max-width: 750px;
+    max-width: 680px;
     margin: auto;
-    font-family: $grot;
-    line-height: 1.62;
   }
   h2,
   h3,
@@ -54,7 +91,7 @@ export default {
   p,
   ul {
     margin-bottom: 1rem;
-    font-size: 19px;
+    font-size: 18px;
     font-family: Georgia, 'Times New Roman', Times, serif;
   }
   ul {
@@ -66,6 +103,13 @@ export default {
   }
   img {
     max-width: 100%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.24);
+  }
+  figure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
   figcaption {
     font-style: italic;

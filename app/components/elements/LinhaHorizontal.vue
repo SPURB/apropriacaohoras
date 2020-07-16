@@ -10,9 +10,9 @@
         <i class="icon icon-editar"></i>
       </div>
 
-      <router-link :to="link.to" class="linha-horizontal" tag="a">
+      <nuxt-link :to="link.to" class="linha-horizontal" tag="a">
         {{ link.title }}
-      </router-link>
+      </nuxt-link>
       <i class="icon icon-abrir_direita"></i>
     </section>
 

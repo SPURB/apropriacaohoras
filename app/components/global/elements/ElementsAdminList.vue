@@ -1,7 +1,7 @@
 <template>
   <div class="admin-list">
     <ul class="admins-list__list">
-      <li>1</li>
+      <li v-for="(admin, index) in admins" :key="index">{{ admin }}</li>
     </ul>
   </div>
 </template>
@@ -17,11 +17,9 @@ export default {
   },
   async created () {
     try {
-      const { data } = await Usuario.get('admin=true')
-      this.admins = data
-    } catch (err) {
-      console.log(err)
-    }
+      const { data } = await Usuario.get('admin=1')
+      this.admins = data.data.map(admin => admin.nome).sort()
+    } catch (err) {}
   }
 }
 </script>

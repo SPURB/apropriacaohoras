@@ -1,8 +1,8 @@
 name: 'doubts'
 doubts: 
   -
-    to: '/faq/objetivo'
-    title: 'Objetivo'
+    to: '/faq/objetivos'
+    title: 'Objetivos'
     subtitle: 'Por quê é importante registrar horas neste site?'
   -
     to: '/faq/cadastro'

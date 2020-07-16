@@ -8,6 +8,7 @@
 <script>
 import AppFooter from '~/components/sections/AppFooter'
 import Voltar from '~/components/router-links/Voltar'
+import { mapState } from 'vuex'
 
 export default {
   name: 'faq',
@@ -17,9 +18,14 @@ export default {
     Voltar
   },
   computed: {
+    ...mapState('usuario', ['admin']),
     from () {
       const { from } = this.$route.query
-      return from ? from : '/'
+      if (from) {
+        return from
+      } else {
+        return this.admin ? '/admin' : '/registrar'
+      }
     }
   }
 }
@@ -28,15 +34,18 @@ export default {
 .faq {
   min-height: 100vh;
   margin: auto;
-  color: white;
+  color: #f4f4f4;
+  line-height: 1.62;
   &__voltar {
     width: 100%;
-    margin-bottom: 5rem;
   }
   &__content {
     min-height: 100vh;
-    @media (max-width: $tablet) {
-      padding: 1rem;
+    @media (max-width: $desktop) {
+      padding: 1rem 2rem;
+    }
+    @media (max-width: $phone) {
+      padding: 1rem 2rem;
     }
   }
   &__footer {
