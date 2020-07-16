@@ -12,7 +12,8 @@ export const state = () => ({
   token: '',
   projetos: [],
   status: 0,
-  apiMessage: ''
+  apiMessage: '',
+  showModal: false
 })
 
 export const actions = {

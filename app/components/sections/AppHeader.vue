@@ -59,6 +59,9 @@
           <i class="icon icon-pessoa-outline"></i>
           <span>Perfil</span>
         </nuxt-link>
+        <nuxt-link :to="`/faq?from=${from}`" tag="li" class="class-user-info">
+          <span>Me ajuda!</span>
+        </nuxt-link>
         <li @click="sair" class="class-user-info">
           <span>Sair</span>
         </li>
@@ -93,7 +96,10 @@ export default {
       admin: state => state.usuario.admin,
       nome: state => state.usuario.nome,
       token: state => state.usuario.token
-    })
+    }),
+    from () {
+      return this.$route.path
+    }
   },
   watch: {
     $route (to, from) {

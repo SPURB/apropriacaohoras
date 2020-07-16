@@ -1,0 +1,22 @@
+name: 'doubts'
+doubts: 
+  -
+    to: '/faq/objetivos'
+    title: 'Objetivos'
+    subtitle: 'Por quê é importante registrar horas neste site?'
+  -
+    to: '/faq/cadastro'
+    title: 'Cadastro'
+    subtitle: 'Não tenho acesso ao sistema? Veja como solicitar o acesso'
+  -
+    to: '/faq/login'
+    title: 'Login'
+    subtitle: 'Não consegue acessar o sistema? Veja como corrigir este problema'
+  -
+    to: '/faq/instalar'
+    title: 'Instalar'
+    subtitle: 'Veja como instalar a aplicação no seu computador ou smartphone'
+  -
+    to: '/faq/piu'
+    title: 'Glossário PIUs'
+    subtitle: 'Glossário de fases e atividades relacionados aos PIUs (Projetos de Intervenção Urbana)'

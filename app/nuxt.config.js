@@ -4,12 +4,18 @@ const apiBase = {
   homolog: 'https://apropriacaohoras.herokuapp.com/apropriacaohoras/api/0.0.1'
 }
 
+const { CI, NODE_ENV, npm_package_description } = process.env
+const appBase = CI || NODE_ENV === 'prod' ? '/apropriacaohoras/' : '/'
+
+console.log(`NODE_ENV: ${NODE_ENV}`)
+console.log(`appBase: ${appBase}`)
 export default {
   target: 'static',
+  components: true,
   mode: 'spa',
   head: {
     htmlAttrs: { lang: 'pt-br' },
-    title: "SPUrbanismo | Apropriação de horas",
+    title: 'SPUrbanismo | Apropriação de horas',
     meta: [
       { charset: 'utf-8' },
       {
@@ -19,37 +25,30 @@ export default {
       {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: npm_package_description || ''
       }
-    ],
+    ]
   },
   router: {
-    base: process.env.CI || process.env.NODE_ENV === 'prod' ? '/apropriacaohoras/' : '/',
-    middleware: [ 'authenticated' ]
+    base: appBase,
+    middleware: ['authenticated']
   },
-  env:{
-    apiBase: apiBase[process.env.NODE_ENV]
+  env: {
+    apiBase: apiBase[NODE_ENV],
+    appBase
   },
-  plugins: [
-    { src: '~/plugins/vuex-persist', ssr: false }
-  ],
-  buildModules: [
-    '@nuxtjs/style-resources',
-    '@nuxtjs/moment',
-    '@nuxtjs/pwa',
-    '@nuxtjs/google-analytics'
-  ],
+  plugins: [{ src: '~/plugins/vuex-persist', ssr: false }],
+  modules: [, '@nuxtjs/style-resources', '@nuxt/content'],
+  buildModules: ['@nuxtjs/moment', '@nuxtjs/pwa', '@nuxtjs/google-analytics'],
   styleResources: {
-    scss: [
-      '@/assets/style/variables.scss',
-      '@/assets/style/theme.scss'
-    ]
+    scss: ['@/assets/style/variables.scss', '@/assets/style/theme.scss']
   },
   googleAnalytics: {
     id: 'UA-113737634-10'
   },
-  css: [ '@/assets/style/icones/participe.css' ],
+  css: ['@/assets/style/icones/participe.css'],
   generate: {
-    dir: process.env.CI ? 'gh-pages' : 'dist'
+    devtools: true,
+    routes: ['/faq/cadastro']
   }
 }

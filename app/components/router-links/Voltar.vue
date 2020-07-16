@@ -1,8 +1,8 @@
 <template>
-  <router-link class="voltar" tag="button" :to="to">
+  <nuxt-link class="voltar" tag="button" :to="to">
     <i class="icon icon-abrir_esquerda"></i>
     Voltar
-  </router-link>
+  </nuxt-link>
 </template>
 <script>
 export default {

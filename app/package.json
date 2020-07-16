@@ -5,9 +5,9 @@
   "scripts": {
     "serve": "nuxt serve",
     "lint": "prettier-standard ./{*,/**/*}.vue --format",
-    "build": "cross-env NODE_ENV=prod nuxt build && nuxt export",
-    "build:local": "cross-env NODE_ENV=local nuxt build && nuxt export",
-    "build:homolog": "cross-env NODE_ENV=homolog nuxt build && nuxt export",
+    "build": "cross-env NODE_ENV=prod nuxt build && cross-env NODE_ENV=prod nuxt export",
+    "build:local": "cross-env NODE_ENV=local nuxt build && cross-env NODE_ENV=local nuxt export",
+    "build:homolog": "cross-env NODE_ENV=homolog nuxt build && cross-env NODE_ENV=homolog nuxt export",
     "dev": "cross-env NODE_ENV=homolog nuxt",
     "dev:local": "cross-env NODE_ENV=local nuxt",
     "cy:open": "cross-env NODE_ENV=homolog cypress open",
@@ -39,6 +39,7 @@
   "devDependencies": {
     "@commitlint/cli": "^8.2.0",
     "@commitlint/config-conventional": "^8.2.0",
+    "@nuxt/content": "^1.4.1",
     "@nuxtjs/google-analytics": "^2.3.0",
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/pwa": "^3.0.0-beta.20",

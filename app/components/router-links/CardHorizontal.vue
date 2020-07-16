@@ -1,13 +1,13 @@
 <template>
   <div>
     <section class="card-horizontal" :class="showEditable ? 'elevated' : ''">
-      <router-link :to="to" tag="a" class="card-horizontal__left">
+      <nuxt-link :to="to" tag="a" class="card-horizontal__left">
         <h3 class="card-horizontal__title">{{ title }}</h3>
         <p class="card-horizontal__subtitle" v-if="subtitle">
           <i v-if="subtitleIconClass" :class="subtitleIconClass"></i>
           {{ subtitle }}
         </p>
-      </router-link>
+      </nuxt-link>
       <div
         class="card-horizontal__right"
         v-if="isEditable.editable"

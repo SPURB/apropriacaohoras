@@ -56,6 +56,7 @@
           v-if="currentStep === 'Projetos'"
           :routes="projetosRoutes"
           :action-type="'go'"
+          :fetching="fetching"
           @updateField="updateField"
           data-cy="step__projetos"
         />
@@ -63,6 +64,7 @@
           v-if="currentStep === 'Fases'"
           :routes="fasesRoutes"
           :action-type="'go'"
+          :fetching="fetching"
           @updateField="updateField"
           data-cy="step__fases"
         />
@@ -70,6 +72,7 @@
           v-if="currentStep === 'Subatividades'"
           :routes="subatividadesRoutes"
           :action-type="'close'"
+          :fetching="fetching"
           @updateField="updateField"
           data-cy="step__subatividades"
         />
@@ -298,6 +301,7 @@ export default {
 
   &__modal {
     top: 0;
+    left: 0;
   }
   p,
   h3 {
