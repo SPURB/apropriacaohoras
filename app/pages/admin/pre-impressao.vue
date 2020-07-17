@@ -1,13 +1,17 @@
 <template>
   <div class="pre-impressao-admin">
     <preloader v-if="fetching" />
-    <btn-progresso class="pre-impressao-admin__navigation rotate" />
+    <btn-progresso
+      class="pre-impressao-admin__navigation rotate"
+      :disabled="page <= 1"
+      @btnPrograssoAction="prevPage"
+    />
 
     <div class="pre-impressao-admin__container">
       <div v-if="isReady" class="pre-impressao-admin__projetos" id="printer">
-        <pre-impressao-a4 :paginationIndex="1" :paginationTotal="13">
+        <pre-impressao-a4 :paginationIndex="page" :paginationTotal="pageCount">
           <div class="pre-impressao-admin__header">
-            <h2>PIU Jóquey Club</h2>
+            <h2>{{ projeto.nomeProjeto }}</h2>
           </div>
           <div class="pre-impressao-admin__subheader">
             <p>
@@ -16,33 +20,17 @@
             </p>
             <p>
               Horas totais:<br />
-              7239
+              {{ projeto.totalHoras }}
             </p>
           </div>
           <div class="pre-impressao-admin__equipe">
             <h3>Equipe</h3>
             <section class="pre-impressao-admin__equipe--nomes">
-              <p>
-                <span> Adalberto Villela </span>
-                <span> Ajuricaba Bernardes </span>
-                <span> Alarico Botica </span>
-                <span> Aleixo Carlos </span>
-                <span> Angelina Botica </span>
-                <span> Antônia Mendoça </span>
-              </p>
-              <p>
-                <span> Luzia Furquim </span>
-                <span> Lázaro Vega </span>
-                <span> Martinho Botelho </span>
-                <span> Micael Fitas </span>
-                <span> Nicolau Graça </span>
-                <span> Otília Freyre </span>
-              </p>
-              <p>
-                <span> Patrícia Canejo </span>
-                <span> Paulina Ipiranga </span>
-                <span> Quirina Vilhena </span>
-                <span> Quitéria Meira </span>
+              <p
+                :key="`equipe-${index}`"
+                v-for="(nome, index) in projeto.equipe"
+              >
+                {{ nome }}
               </p>
             </section>
           </div>
@@ -60,14 +48,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="projeto__fase">
-                    <td>Elementos prévios</td>
-                    <td>3</td>
+                  <tr
+                    :key="`fase-${index}`"
+                    class="projeto__fase"
+                    v-for="(fase, index) in projeto.fases"
+                  >
+                    <td>{{ fase.nome }}</td>
+                    <td>{{ fase.totalHorasFase }}</td>
                     <td>
                       <graf-bar
-                        :base="5"
-                        :current="0"
-                        :total="8"
+                        :base="0"
+                        :current="fase.totalHorasFase"
+                        :total="projeto.totalHoras"
                         :height="32"
                         :width="200"
                       />
@@ -75,32 +67,22 @@
                   </tr>
                   <tr class="projeto__soma">
                     <td>total</td>
-                    <td>8</td>
+                    <td>{{ projeto.totalHoras }}</td>
                     <td></td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-          <div class="pre-impressao-admin__footer">
-            <p
-              class="pre-impressao-admin__legenda"
-              style="border-color: #434343"
-            >
-              {{ nome }}
-            </p>
-            <p
-              class="pre-impressao-admin__legenda"
-              style="border-color: #DFDFDF"
-            >
-              Equipe
-            </p>
-          </div>
         </pre-impressao-a4>
       </div>
     </div>
 
-    <btn-progresso class="pre-impressao-admin__navigation" />
+    <btn-progresso
+      class="pre-impressao-admin__navigation"
+      :disabled="page === pageCount"
+      @btnPrograssoAction="nextPage"
+    />
   </div>
 </template>
 
@@ -129,17 +111,17 @@ export default {
   },
   computed: {
     ...mapState('usuario', ['nome', 'projetos', 'id']),
-    ...mapState('admin/pre-impressao', [
-      'projetos',
-      'usuarios',
-      'usuariosProjetos',
-      'fetching',
-      'error',
-      'err'
-    ]),
-    ...mapGetters('admin/pre-impressao', ['usuariosByProjetos']),
+    ...mapState('admin/pre-impressao', {
+      fetching: state => state.fetching,
+      error: state => state.error,
+      err: state => state.err
+    }),
+    ...mapGetters('admin/pre-impressao', ['pdfContent']),
     isReady () {
       return !this.error && !this.fetching
+    },
+    pageCount () {
+      return this.pdfContent.length
     }
   },
   created () {
@@ -150,13 +132,26 @@ export default {
       'getFases',
       'getProjetos',
       'getUsuarios',
-      'getUsuariosProjetos'
+      'getUsuariosProjetos',
+      'usuariosByProjetos'
     ]),
     setupOn () {
-      this.getFases()
       this.getProjetos()
       this.getUsuarios()
       this.getUsuariosProjetos()
+      this.usuariosByProjetos()
+      this.currentProjeto()
+    },
+    currentProjeto () {
+      this.projeto = this.pdfContent[this.page - 1]
+    },
+    nextPage () {
+      this.page = this.page + 1
+      this.currentProjeto()
+    },
+    prevPage () {
+      this.page = this.page - 1
+      this.currentProjeto()
     }
   }
 }
@@ -197,11 +192,14 @@ export default {
     }
 
     &--nomes {
-      display: flex;
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 1px 1px;
+      margin-top: 5px;
+
       p {
-        display: flex;
-        flex-direction: column;
+        margin: 0;
+        text-align: left;
       }
     }
   }
