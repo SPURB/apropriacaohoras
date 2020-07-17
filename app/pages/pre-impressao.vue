@@ -1,13 +1,12 @@
 <template>
   <div class="pre-impressao-usuario">
     <preloader v-if="fetching" />
+    <btn-progresso
+      class="pre-impressao-usuario__navigation rotate"
+      :disabled="page <= 1"
+      @btnPrograssoAction="prevPage"
+    />
     <div class="pre-impressao-usuario__container">
-      <btn-progresso
-        class="pre-impressao-usuario__navigation rotate"
-        :disabled="page <= 1"
-        @btnPrograssoAction="prevPage"
-      />
-
       <div v-if="isReady" class="pre-impressao-usuario__projetos" id="printer">
         <pre-impressao-a4
           v-if="projeto.totalHorasProjeto"
