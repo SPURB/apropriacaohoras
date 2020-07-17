@@ -43,7 +43,6 @@ export default {
   padding-bottom: 10rem;
   .danger {
     border-left: 5px solid $vermelho;
-    // border-bottom: 5px solid $vermelho;
     background-color: $cinza1;
     border-radius: 8px;
     margin: 2rem 0;
@@ -65,6 +64,15 @@ export default {
     margin-top: 5rem;
     padding-top: 2rem;
     border-top: solid 5px white;
+  }
+  .admin-list {
+    ul {
+      font-family: $grot;
+      font-size: small;
+      padding: 1rem 0 1rem 2rem;
+      background-color: $cinza1;
+      border-radius: 8px;
+    }
   }
   max-width: $desktop;
   margin: 3rem auto 0;
@@ -100,6 +108,9 @@ export default {
   }
   li {
     margin-bottom: 0.5rem;
+  }
+  a {
+    color: white;
   }
   img {
     max-width: 100%;

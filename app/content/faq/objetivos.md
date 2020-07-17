@@ -4,7 +4,7 @@ title: Objetivos
 
 # Objetivos
  - Criar uma ferramenta de gestão de projetos, equipes e custos
- - Sistematizar a expertise da empresa em banco de dados
+ - Sistematizar a expertise da empresa
  - Criar base de dados para precificação dos projetos
  - Promover melhoria na gestão do tempo e equipes
  - Garantir aos colaboradores ferramenta pessoal de controle de horas dedicadas aos projetos
@@ -78,14 +78,51 @@ Com um formulário web no qual o colaborador _necessariamente_ atribui uma fase 
 
 <figure>
     <img src="https://user-images.githubusercontent.com/4117768/87710726-83d70380-c77c-11ea-8950-cd9de84553f8.gif">
-    <figcaption>Na interação acima o fomulário traz uma visualização automática do projeto ao selecionar o dia para inclusão da hora trabalhada.
-</figcaption>
+    <figcaption>Na interação acima o fomulário traz uma visualização automática do projeto ao selecionar o dia para inclusão da hora trabalhada</figcaption>
 </figure>
 
 <h3 class="section-border">Gerenciamento</h3>
 
 _Quais problemas isso resolve?_
- - Os dados hoje obtidos são pouco detalhados. Não é possível separar horas por fases e subatividades
+ - Os dados obtidos são pouco detalhados
+ - Não é possível separar horas por fases e subatividades
 
 _Como resolve?_<br>
-O gerente de projeto tem acesso a um formulário para criar, alterar e deletar as atividades das equipes.
+O gerente de projeto tem acesso a formulários para criar, alterar e deletar as atividades e equipes. Veja abaixo cada uma delas:
+
+#### Criando projetos
+O administrador deve criar projetos
+<figure>
+    <img src="https://user-images.githubusercontent.com/4117768/87814539-4e90eb00-c83a-11ea-9b98-e7d11eca9d75.gif">
+    <figcaption>Fluxo do admin para criar um projeto</figcaption>
+</figure>
+
+#### Gerenciamento dos colaboradores por projetos
+O gerente de projeto terá acesso a um formulário para determinar as equipes de cada projeto.
+<figure>
+    <img src="https://user-images.githubusercontent.com/4117768/87814524-4933a080-c83a-11ea-879e-ddc33cf9cce8.gif">
+    <figcaption>Fluxo do admin para incluir um membro em um projeto</figcaption>
+</figure>
+
+#### Criando fases e subatividades
+O administrador deve definir as fases e subatividades de cada **grupo** de projeto
+<figure>
+    <img src="https://user-images.githubusercontent.com/4117768/87814553-52bd0880-c83a-11ea-93ef-42f91cc07bbb.gif">
+    <figcaption>A animação acima simula o fluxo de deleção de uma subatividade para criar fases e subatividades</figcaption>
+</figure>
+
+
+<h3 class="section-border">Relatórios</h3>
+
+_Quais problemas isso resolve?_
+ - A geração de relatórios é feito a partir de extração manual dos dados que pode ocasionar erros e imprecisões
+ - Comparação entre projetos e fases apenas é possível manualmente, através de dados parciais.
+ - Dados das gerências não são integrados.
+
+_Como resolve?_<br>
+O sistema cria relatórios com dados em páginas web e pdfs pré-formatados com dados dinâmicos
+
+<figure>
+    <img src="https://user-images.githubusercontent.com/4117768/87817978-4176fa80-c840-11ea-98cb-c50ca72b1906.png">
+    <figcaption>Exemplos de relatórios (pdf) gerados automaticamente pelo sistema</figcaption>
+</figure>
