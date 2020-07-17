@@ -45,6 +45,13 @@ export default {
   },
   css: ['@/assets/style/icones/participe.css'],
   generate: {
-    dir: process.env.CI ? 'gh-pages' : 'dist'
+    dir: process.env.CI ? 'gh-pages' : 'dist',
+    routes: [
+      '/faq/objetivos',
+      '/faq/cadastro',
+      '/faq/cadastro',
+      '/faq/instalar',
+      '/faq/piu'
+    ]
   }
 }
