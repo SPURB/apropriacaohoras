@@ -1,5 +1,6 @@
 {
   "name": "apropriacaohoras",
+  "version": "0.0.1",
   "description": "Sistema de apropriação de horas trabalhadas, gerenciamento de pessoal e relatoria de trabalho da São Paulo Urbanismo",
   "private": true,
   "scripts": {
