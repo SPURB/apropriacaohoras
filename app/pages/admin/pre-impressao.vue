@@ -9,72 +9,132 @@
 
     <div class="pre-impressao-admin__container">
       <div v-if="isReady" class="pre-impressao-admin__projetos" id="printer">
-        <pre-impressao-a4 :paginationIndex="page" :paginationTotal="pageCount">
-          <div class="pre-impressao-admin__header">
-            <h2>{{ projeto.nomeProjeto }}</h2>
-          </div>
-          <div class="pre-impressao-admin__subheader">
-            <p>
-              Data da última atualização:<br />
-              2020 06 13 às 13h42
-            </p>
-            <p>
-              Horas totais:<br />
-              {{ projeto.totalHoras }}
-            </p>
-          </div>
-          <div class="pre-impressao-admin__equipe">
-            <h3>Equipe</h3>
-            <section class="pre-impressao-admin__equipe--nomes">
-              <p
-                :key="`equipe-${index}`"
-                v-for="(nome, index) in projeto.equipe"
-              >
-                {{ nome }}
-              </p>
-            </section>
-          </div>
-          <div class="pre-impressao-admin__main">
-            <div class="projeto">
-              <div class="projeto__title">
-                <h3>Horas totais por fases</h3>
-              </div>
-              <table class="projeto__table">
-                <thead>
-                  <tr>
-                    <th>Fases</th>
-                    <th>Horas</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    :key="`fase-${index}`"
-                    class="projeto__fase"
-                    v-for="(fase, index) in projeto.fases"
-                  >
-                    <td>{{ fase.nome }}</td>
-                    <td>{{ fase.totalHorasFase }}</td>
-                    <td>
-                      <graf-bar
-                        :base="0"
-                        :current="fase.totalHorasFase"
-                        :total="projeto.totalHoras"
-                        :height="32"
-                        :width="200"
-                      />
-                    </td>
-                  </tr>
-                  <tr class="projeto__soma">
-                    <td>total</td>
-                    <td>{{ projeto.totalHoras }}</td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+        <template v-if="projeto.ind === 0">
+          <pre-impressao-a4
+            :paginationIndex="page"
+            :paginationTotal="pageCount"
+          >
+            <div class="pre-impressao-admin__header">
+              <h2>{{ projeto.values.nomeProjeto }}</h2>
             </div>
-          </div>
-        </pre-impressao-a4>
+            <div class="pre-impressao-admin__subheader">
+              <p>
+                Data da última atualização:<br />
+                2020 06 13 às 13h42
+              </p>
+              <p>
+                Horas totais:<br />
+                {{ projeto.values.totalHoras }}
+              </p>
+            </div>
+            <div class="pre-impressao-admin__equipe">
+              <h3>Equipe</h3>
+              <section class="pre-impressao-admin__equipe--nomes">
+                <p
+                  :key="`equipe-${index}`"
+                  v-for="(nome, index) in projeto.values.equipe"
+                >
+                  {{ nome }}
+                </p>
+              </section>
+            </div>
+            <div class="pre-impressao-admin__main">
+              <div class="projeto">
+                <div class="projeto__title">
+                  <h3>Horas totais por fases</h3>
+                </div>
+                <table class="projeto__table">
+                  <thead>
+                    <tr>
+                      <th>Fases</th>
+                      <th>Horas</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      :key="`fase-${index}`"
+                      class="projeto__fase"
+                      v-for="(fase, index) in projeto.values.fases"
+                    >
+                      <td>{{ fase.nome }}</td>
+                      <td>{{ fase.totalHorasFase }}</td>
+                      <td>
+                        <graf-bar
+                          :base="0"
+                          :current="fase.totalHorasFase"
+                          :total="projeto.values.totalHoras"
+                          :height="32"
+                          :width="200"
+                        />
+                      </td>
+                    </tr>
+                    <tr class="projeto__soma">
+                      <td>total</td>
+                      <td>{{ projeto.values.totalHoras }}</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </pre-impressao-a4>
+        </template>
+        <template v-if="projeto.ind === 1">
+          <pre-impressao-a4
+            :paginationIndex="page"
+            :paginationTotal="pageCount"
+          >
+            <div class="pre-impressao-admin__header--fases">
+              <h2>{{ projeto.values.nomeProjeto }}</h2>
+
+              <p>
+                Horas totais registradas:<br />
+                <span>{{ projeto.values.totalHoras }}</span>
+              </p>
+            </div>
+
+            <div class="pre-impressao-admin__main">
+              <div class="projeto">
+                <div class="projeto__title">
+                  <h3>Horas totais por Subatividades</h3>
+                </div>
+                <table
+                  :key="`fases-${index}`"
+                  class="projeto__table"
+                  v-for="(fase, index) in projeto.values.fases"
+                >
+                  <thead>
+                    <tr>
+                      <th>{{ fase.nome }}</th>
+                      <th>Horas</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      :key="`fase-${index}`"
+                      class="projeto__fase"
+                      v-for="(subatividade, index) in fase.subatividades"
+                    >
+                      <td>{{ subatividade.nome }}</td>
+                      <td>{{ subatividade.totalHoras }}</td>
+                      <td>
+                        <graf-bar
+                          :base="0"
+                          :current="subatividade.totalHoras"
+                          :total="projeto.totalHoras"
+                          :height="32"
+                          :width="200"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </pre-impressao-a4>
+        </template>
       </div>
     </div>
 
@@ -116,12 +176,12 @@ export default {
       error: state => state.error,
       err: state => state.err
     }),
-    ...mapGetters('admin/pre-impressao', ['pdfContent']),
+    ...mapGetters('admin/pre-impressao', ['joinProjetos']),
     isReady () {
       return !this.error && !this.fetching
     },
     pageCount () {
-      return this.pdfContent.length
+      return this.joinProjetos.length
     }
   },
   created () {
@@ -133,17 +193,19 @@ export default {
       'getProjetos',
       'getUsuarios',
       'getUsuariosProjetos',
-      'usuariosByProjetos'
+      'usuariosByProjetos',
+      'usuariosBySubatividades'
     ]),
     setupOn () {
       this.getProjetos()
       this.getUsuarios()
       this.getUsuariosProjetos()
       this.usuariosByProjetos()
+      this.usuariosBySubatividades()
       this.currentProjeto()
     },
     currentProjeto () {
-      this.projeto = this.pdfContent[this.page - 1]
+      this.projeto = this.joinProjetos[this.page - 1]
     },
     nextPage () {
       this.page = this.page + 1
@@ -172,6 +234,22 @@ export default {
     }
     span {
       font-size: 1rem;
+    }
+
+    &--fases {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 5px;
+
+      p span {
+        font-weight: 600;
+      }
+
+      h2 {
+        font-weight: normal;
+        font-size: 1.5rem;
+      }
     }
   }
 
