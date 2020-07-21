@@ -10,6 +10,7 @@ export const state = () => ({
   projetos: [],
   usuarios: [],
   usuariosProjetos: [],
+  joinArrays: [],
   horasFase: [],
   pdfContent: [],
   fetching: false,
@@ -17,18 +18,6 @@ export const state = () => ({
   err: ''
 })
 
-function promiseAllTable (commit, { promises, table }) {
-  Promise.all(promises)
-    .then(res => {
-      const datas = res.map(({ data }) => data)
-      commit('SET', { data: datas, key: table })
-    })
-    .catch(err => {
-      commit('SET', { data: err, key: 'err' })
-      commit('SET', { data: true, key: 'error' })
-    })
-    .finally(() => commit('SET', { data: false, key: 'fetching' }))
-}
 const groupBy = (xs, key) => {
   return xs.reduce((rv, x) => {
     ;(rv[x[key]] = rv[x[key]] || []).push(x)
@@ -50,26 +39,6 @@ const arrayIntersect = (obj1, obj2 /*, array3 */) => {
       return arr_join
     })
   return arr[0]
-}
-
-export const getters = {
-  filterProjetos: state => {
-    // remove projetos que horas não existem.
-    return state.pdfContent.filter(p => p.horas.length > 0)
-  },
-  joinProjetos: (state, getters) => {
-    const filterProjetos = {
-      ind: 0,
-      values: getters.filterProjetos
-    }
-
-    const horasFase = {
-      ind: 1,
-      values: state.horasFase
-    }
-
-    return arrayIntersect(filterProjetos, horasFase)
-  }
 }
 
 export const actions = {
@@ -126,8 +95,6 @@ export const actions = {
       const agrupado = groupBy(state.usuariosProjetos, 'projeto')
 
       let objs = state.projetos.map(projeto => {
-        commit('SET', { data: true, key: 'fetching' })
-
         const nomeProjeto = projeto.nome
         const equipe = agrupado[projeto.id].map(agUsuario => {
           return state.usuarios.filter(
@@ -144,8 +111,6 @@ export const actions = {
       })
 
       for (const item of objs) {
-        commit('SET', { data: true, key: 'fetching' })
-
         const horas = await Horas.get(`?projeto=${item.projeto}`)
         const fases = await Fases.get(`?grupo=${item.grupo}`)
 
@@ -154,8 +119,6 @@ export const actions = {
       }
 
       objs = objs.map(obj => {
-        commit('SET', { data: true, key: 'fetching' })
-
         let totalHoras = 0
         obj.horas.forEach(hora => {
           totalHoras = totalHoras + hora.horas + hora.extras
@@ -188,6 +151,9 @@ export const actions = {
         })
         return obj
       })
+      // remove projetos que horas não existem.
+      objs = objs.filter(p => p.horas.length > 0)
+
       commit('SET', { data: objs, key: 'pdfContent' })
     } catch (err) {
       commit('SET', { data: err, key: 'err' })
@@ -195,14 +161,12 @@ export const actions = {
     }
     commit('SET', { data: false, key: 'fetching' })
   },
-  usuariosBySubatividades: async ({ commit, getters }) => {
+  usuariosBySubatividades: async ({ commit, state }) => {
     commit('SET', { data: true, key: 'fetching' })
-    let usuariosProjetos = getters.filterProjetos
-
+    let usuariosProjetos = state.pdfContent
     try {
       // pega as subatividades pela fase
       for (const item of usuariosProjetos) {
-        commit('SET', { data: true, key: 'fetching' })
         let fases = item.fases
 
         for (const fase of fases) {
@@ -215,9 +179,7 @@ export const actions = {
 
       // pegando horas por subatividade
       const data = usuariosProjetos.map(obj => {
-        commit('SET', { data: true, key: 'fetching' })
-
-        const fases = obj.fases.map(fase => {
+        let fases = obj.fases.map(fase => {
           const subatividades = fase.subatividades.map(s => {
             let totalHoras = 0
             let horas = obj.horas.filter(hora => hora.subatividade === s.id)
@@ -234,23 +196,56 @@ export const actions = {
 
           return {
             nome: fase.nome,
+            totalRows: subatividades.length + 1,
             subatividades
           }
         })
 
-        return {
-          nomeProjeto: obj.nomeProjeto,
-          projeto: obj.projeto,
-          totalHoras: obj.totalHoras,
-          fases
-        }
+        /* fases.forEach(fase => {
+          countRows = countRows + fase.totalRows
+          
+          if (countRows <= 21) {
+            massas.push({
+              nomeProjeto: obj.nomeProjeto,
+              projeto: obj.projeto,
+              totalHoras: obj.totalHoras,
+              fases
+            })
+            massas2.push(massas)
+          } else {
+            console.log(countRows)
+          }
+        }) */
+
+        console.log(fases)
       })
-      commit('SET', { data, key: 'horasFase' })
-      commit('SET', { data: false, key: 'fetching' })
+      // commit('SET', { data, key: 'horasFase' })
     } catch (err) {
       commit('SET', { data: err, key: 'err' })
       commit('SET', { data: true, key: 'error' })
     }
+    commit('SET', { data: false, key: 'fetching' })
+  },
+  joinArrays: ({ state, commit }) => {
+    commit('SET', { data: true, key: 'fetching' })
+    try {
+      const pdfContent = {
+        ind: 0,
+        values: state.pdfContent
+      }
+
+      const horasFase = {
+        ind: 1,
+        values: state.horasFase
+      }
+      const data = arrayIntersect(pdfContent, horasFase)
+
+      commit('SET', { data, key: 'joinArrays' })
+    } catch (err) {
+      commit('SET', { data: err, key: 'err' })
+      commit('SET', { data: true, key: 'error' })
+    }
+    commit('SET', { data: false, key: 'fetching' })
   },
   reset: ({ commit }) => commit('RESET')
 }
