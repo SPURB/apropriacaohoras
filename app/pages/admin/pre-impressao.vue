@@ -160,6 +160,8 @@ export default {
   data () {
     return {
       page: 1,
+      pageCount: 0,
+      joinProjetos: [],
       projeto: {}
     }
   },
@@ -174,15 +176,28 @@ export default {
     ...mapState('admin/pre-impressao', {
       fetching: state => state.fetching,
       error: state => state.error,
-      err: state => state.err
+      err: state => state.err,
+      usuariosProjetos: state => state.usuariosProjetos,
+      pdfContent: state => state.pdfContent,
+      horasFase: state => state.horasFase
     }),
-    ...mapGetters('admin/pre-impressao', ['joinProjetos']),
     isReady () {
       return !this.error && !this.fetching
-    },
-    pageCount () {
-      return this.joinProjetos.length
     }
+  },
+  watch: {
+    usuariosProjetos () {
+      this.usuariosByProjetos()
+    },
+    pdfContent () {
+      this.usuariosBySubatividades()
+    }
+    /*  horasFase () {
+      this.joinArrays()
+      this.joinProjetos = this.$store.state['admin']['pre-impressao']['joinArrays']
+      this.pageCount = this.joinProjetos.length
+      this.currentProjeto() 
+    } */
   },
   created () {
     this.setupOn()
@@ -194,15 +209,13 @@ export default {
       'getUsuarios',
       'getUsuariosProjetos',
       'usuariosByProjetos',
-      'usuariosBySubatividades'
+      'usuariosBySubatividades',
+      'joinArrays'
     ]),
     setupOn () {
       this.getProjetos()
       this.getUsuarios()
       this.getUsuariosProjetos()
-      this.usuariosByProjetos()
-      this.usuariosBySubatividades()
-      this.currentProjeto()
     },
     currentProjeto () {
       this.projeto = this.joinProjetos[this.page - 1]
