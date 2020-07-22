@@ -9,11 +9,11 @@
       :action-text="modal.actionText"
       @setModalAction="backToRegistrar"
     />
-
+    <voltar class="edicao__voltar" :to="'/registrar'" />
     <section class="editar__titulo">
-      <router-link tag="h2" to="/registrar">
+      <nuxt-link tag="h2" to="/registrar">
         Registrar hora
-      </router-link>
+      </nuxt-link>
       <h3>atualizar {{ data }}</h3>
     </section>
     <template v-if="fetching">
@@ -61,6 +61,7 @@ import Preloader from '~/components/elements/Preloader'
 import ListarHoras from '~/components/sections/ListarHoras'
 import EditarHoras from '~/components/sections/EditarHoras'
 import { mapState, mapActions, mapMutations } from 'vuex'
+import Voltar from '~/components/router-links/Voltar'
 
 export default {
   name: 'Editar',
@@ -128,7 +129,7 @@ export default {
   flex-direction: column;
   margin-bottom: 30px;
   width: 100%;
-
+  min-height: calc(100vh - 180px);
   &__titulo,
   &__listar,
   &__horas {

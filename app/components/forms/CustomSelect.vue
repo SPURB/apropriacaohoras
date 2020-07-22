@@ -91,12 +91,12 @@ fieldset {
     border: none;
     color: inherit;
     font-family: inherit;
-    font-size: 1.5rem;
+    font-size: 1rem;
     @include bg-white-alpha(0.08);
     width: 100%;
     padding: 0 0.75rem;
     height: 3rem;
-    border-radius: 1.5rem;
+    border-radius: 24px;
     option {
       color: $preto;
     }

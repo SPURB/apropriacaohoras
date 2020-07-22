@@ -84,6 +84,7 @@ export default {
 .time-input {
   padding: 0;
   border: 0;
+  max-width: 183px;
 
   label {
     display: block;
@@ -113,8 +114,7 @@ export default {
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.48);
       cursor: pointer;
       color: inherit;
-      font-size: 15pt;
-      width: 30px;
+      font-size: 24px;
 
       &:first-child {
         border-radius: 1.5rem 0 0 1.5rem;
@@ -131,13 +131,13 @@ export default {
       border: none;
       color: inherit;
       font-family: inherit;
-      font-size: 1.5rem;
+      font-size: 1rem;
       text-align: center;
       -moz-appearance: textfield;
       caret-color: transparent;
       padding: 0;
       margin: 0;
-
+      width: 41px;
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
         -webkit-appearance: none;

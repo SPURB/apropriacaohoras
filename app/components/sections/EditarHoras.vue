@@ -297,7 +297,6 @@ export default {
   &__above,
   &__below {
     display: flex;
-    justify-content: space-between;
   }
 
   &__below {
