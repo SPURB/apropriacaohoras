@@ -9,39 +9,43 @@
       :action-text="modal.actionText"
       @setModalAction="backToRegistrar"
     />
-
+    <voltar class="edicao__voltar" :to="'/registrar'" />
     <section class="editar__titulo">
-      <router-link tag="h2" to="/registrar">
+      <nuxt-link tag="h2" to="/registrar">
         Registrar hora
-      </router-link>
+      </nuxt-link>
       <h3>atualizar {{ data }}</h3>
     </section>
+    <template v-if="fetching">
+      <preloader :color="'#fff'" />
+    </template>
+    <template v-else>
+      <section class="editar__listar">
+        <listar-horas :registro="countHoras" />
+      </section>
 
-    <section class="editar__listar">
-      <listar-horas :registro="countHoras" />
-    </section>
-
-    <section class="editar__horas">
-      <editar-horas
-        :key="index"
-        v-for="(item, index) in registros"
-        :registro="item"
-        :index="index"
-        :type="0"
-        @status="getStatus"
-      />
-
-      <div v-if="novaAtividade.length > 0">
+      <section class="editar__horas">
         <editar-horas
-          :key="`${index}-nova`"
-          v-for="(item, index) in novaAtividade"
+          :key="index"
+          v-for="(item, index) in registros"
           :registro="item"
           :index="index"
-          :type="1"
+          :type="0"
           @status="getStatus"
         />
-      </div>
-    </section>
+
+        <div v-if="novaAtividade.length > 0">
+          <editar-horas
+            :key="`${index}-nova`"
+            v-for="(item, index) in novaAtividade"
+            :registro="item"
+            :index="index"
+            :type="1"
+            @status="getStatus"
+          />
+        </div>
+      </section>
+    </template>
 
     <section class="editar__nova-atividade" @click="addAtividade">
       <i class="icon icon-adicionar"></i>
@@ -53,9 +57,11 @@
 <script>
 import Lib from '~/libs/'
 import Modal from '~/components/sections/Modal'
+import Preloader from '~/components/elements/Preloader'
 import ListarHoras from '~/components/sections/ListarHoras'
 import EditarHoras from '~/components/sections/EditarHoras'
 import { mapState, mapActions, mapMutations } from 'vuex'
+import Voltar from '~/components/router-links/Voltar'
 
 export default {
   name: 'Editar',
@@ -76,28 +82,29 @@ export default {
   },
   components: {
     Modal,
+    Preloader,
     ListarHoras,
     EditarHoras
   },
   computed: {
     ...mapState('editar', {
+      fetching: state => state.fetching,
       registros: state => state.registros,
       countHoras: state => state.countHoras,
       novaAtividade: state => state.novaAtividade
     })
   },
+  watch: {},
   created () {
     this.RESET_REGISTROS()
-    this.formateDate()
-  },
-  mounted () {
+    this.formateDate(this.$route.query.data)
     this.getRegistros(this.$route.query.data)
   },
   methods: {
     ...mapActions('editar', ['getRegistros', 'addAtividade']),
     ...mapMutations('editar', ['RESET_REGISTROS']),
-    formateDate () {
-      const date = Lib.splitDate(this.$route.query.data)
+    formateDate (param) {
+      const date = Lib.splitDate(param)
       this.data = `${date.sDay}/${date.sMonth}/${date.sYear}`
     },
     getStatus (value) {
@@ -122,7 +129,7 @@ export default {
   flex-direction: column;
   margin-bottom: 30px;
   width: 100%;
-
+  min-height: calc(100vh - 180px);
   &__titulo,
   &__listar,
   &__horas {
