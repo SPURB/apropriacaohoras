@@ -85,6 +85,9 @@ export default {
   padding: 0;
   border: 0;
   max-width: 183px;
+  @media (max-width: $tablet) {
+    max-width: 100%;
+  }
 
   label {
     display: block;

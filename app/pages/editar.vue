@@ -10,47 +10,47 @@
       @setModalAction="backToRegistrar"
     />
     <voltar class="edicao__voltar" :to="'/registrar'" />
-    <section class="editar__titulo">
-      <nuxt-link tag="h2" to="/registrar">
-        Registrar hora
-      </nuxt-link>
-      <h3>atualizar {{ data }}</h3>
-    </section>
-    <template v-if="fetching">
-      <preloader :color="'#fff'" />
-    </template>
-    <template v-else>
-      <section class="editar__listar">
-        <listar-horas :registro="countHoras" />
+    <div class="editar__main-container">
+      <section class="editar__titulo">
+        <nuxt-link tag="h2" to="/registrar">
+          Registrar hora
+        </nuxt-link>
+        <h3>atualizar {{ data }}</h3>
       </section>
-
-      <section class="editar__horas">
-        <editar-horas
-          :key="index"
-          v-for="(item, index) in registros"
-          :registro="item"
-          :index="index"
-          :type="0"
-          @status="getStatus"
-        />
-
-        <div v-if="novaAtividade.length > 0">
+      <template v-if="fetching">
+        <preloader :color="'#fff'" />
+      </template>
+      <template v-else>
+        <section class="editar__listar">
+          <listar-horas :registro="countHoras" />
+        </section>
+        <section class="editar__horas">
           <editar-horas
-            :key="`${index}-nova`"
-            v-for="(item, index) in novaAtividade"
+            :key="index"
+            v-for="(item, index) in registros"
             :registro="item"
             :index="index"
-            :type="1"
+            :type="0"
             @status="getStatus"
           />
-        </div>
-      </section>
-    </template>
 
-    <section class="editar__nova-atividade" @click="addAtividade">
-      <i class="icon icon-adicionar"></i>
-      Incluir atividade
-    </section>
+          <div v-if="novaAtividade.length > 0">
+            <editar-horas
+              :key="`${index}-nova`"
+              v-for="(item, index) in novaAtividade"
+              :registro="item"
+              :index="index"
+              :type="1"
+              @status="getStatus"
+            />
+          </div>
+        </section>
+      </template>
+      <section class="editar__nova-atividade" @click="addAtividade">
+        <i class="icon icon-adicionar"></i>
+        Incluir atividade
+      </section>
+    </div>
   </div>
 </template>
 
@@ -127,20 +127,15 @@ export default {
   @include color-white-alpha(1);
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
-  width: 100%;
-  min-height: calc(100vh - 180px);
-  &__titulo,
-  &__listar,
-  &__horas {
-    padding: 15px 30px 5px 50px;
+  min-height: calc(100vh - 166px);
+  &__main-container {
+    max-width: 90%;
+    margin: 1rem 5%;
   }
-
   &__titulo {
     align-items: center;
     display: flex;
     width: 100%;
-
     h2 {
       @include color-white-alpha(0.8);
 
@@ -166,7 +161,6 @@ export default {
     background-color: $verde;
     color: #fff;
     display: flex;
-    width: 90%;
     height: 113px;
     padding: 1rem;
     transition: ease-in-out 0.25s all;

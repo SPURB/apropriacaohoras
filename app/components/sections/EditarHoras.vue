@@ -1,38 +1,40 @@
 <template>
   <div class="editar-horas">
     <form class="editar-horas__main">
-      <div class="editar-horas__left">
-        <section class="editar-horas__above">
+      <div class="editar-horas__left container">
+        <section class="editar-horas__above row">
           <custom-select
             :title="'Projetos'"
             :values="projetos"
             @valueOption="setProjeto"
             ref="projetos"
+            class="column"
           />
-
-          <time-input
-            @timeInput="setHoras"
-            :valueInit="registro.horas"
-            :min="1"
-            :max="8"
-            :titulo="'Horas'"
-          />
-          <time-input
-            @timeInput="setExtras"
-            :disabled="disabled"
-            :valueInit="registro.extras"
-            :min="0"
-            :max="4"
-            :titulo="'Extras'"
-          />
+          <div class="editar-horas__time-inputs column">
+            <time-input
+              @timeInput="setHoras"
+              :valueInit="registro.horas"
+              :min="1"
+              :max="8"
+              :titulo="'Horas'"
+            />
+            <time-input
+              @timeInput="setExtras"
+              :disabled="disabled"
+              :valueInit="registro.extras"
+              :min="0"
+              :max="4"
+              :titulo="'Extras'"
+            />
+          </div>
         </section>
-
-        <section class="editar-horas__below">
+        <section class="editar-horas__below row">
           <custom-select
             :title="fases.title"
             :values="fases.values"
             @valueOption="setFase"
             ref="fases"
+            class="column"
           />
           <custom-select
             v-if="fases"
@@ -40,6 +42,7 @@
             :values="subatividades.values"
             @valueOption="setSubatividade"
             ref="subatividades"
+            class="column"
           />
         </section>
       </div>
@@ -273,7 +276,12 @@ export default {
     display: flex;
     width: 100%;
   }
-
+  &__time-inputs {
+    flex-direction: row;
+    @media (max-width: $tablet) {
+      flex-direction: column;
+    }
+  }
   &::after {
     background-color: $verde;
     content: '';
@@ -358,7 +366,7 @@ export default {
     padding: 5px;
   }
 
-  @media (max-width: 874px) {
+  @media (max-width: $tablet) {
     &__main {
       flex-direction: column;
     }
