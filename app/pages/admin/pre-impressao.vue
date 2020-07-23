@@ -32,9 +32,9 @@
               <section class="pre-impressao-admin__equipe--nomes">
                 <p
                   :key="`equipe-${index}`"
-                  v-for="(nome, index) in projeto.values.equipe"
+                  v-for="(membro, index) in projeto.values.equipe"
                 >
-                  {{ nome }}
+                  {{ membro.nome }}
                 </p>
               </section>
             </div>
@@ -135,6 +135,57 @@
             </div>
           </pre-impressao-a4>
         </template>
+        <template v-if="projeto.ind === 2">
+          <pre-impressao-a4
+            :paginationIndex="page"
+            :paginationTotal="pageCount"
+          >
+            <div class="pre-impressao-admin__header--fases">
+              <h2>{{ projeto.values.nomeProjeto }}</h2>
+
+              <p>
+                Horas totais registradas:<br />
+                <span>{{ projeto.values.totalHoras }}</span>
+              </p>
+            </div>
+
+            <div class="pre-impressao-admin__main">
+              <div class="projeto">
+                <div class="projeto__title">
+                  <h3>Horas totais por Funcionário</h3>
+                </div>
+                <table class="projeto__table">
+                  <thead>
+                    <tr>
+                      <th>Funcionário</th>
+                      <th>Horas</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      :key="`usuarios-${index}`"
+                      class="projeto__fase"
+                      v-for="(membro, index) in projeto.values.equipe"
+                    >
+                      <td>{{ membro.nome }}</td>
+                      <td>{{ membro.totalHoras }}</td>
+                      <td>
+                        <graf-bar
+                          :base="0"
+                          :current="membro.totalHoras"
+                          :total="projeto.values.totalHoras"
+                          :height="32"
+                          :width="200"
+                        />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </pre-impressao-a4>
+        </template>
       </div>
     </div>
 
@@ -179,7 +230,8 @@ export default {
       err: state => state.err,
       usuariosProjetos: state => state.usuariosProjetos,
       pdfContent: state => state.pdfContent,
-      horasFase: state => state.horasFase
+      horasFase: state => state.horasFase,
+      horasUsuarios: state => state.horasUsuarios
     }),
     isReady () {
       return !this.error && !this.fetching
@@ -191,13 +243,18 @@ export default {
     },
     pdfContent () {
       this.usuariosBySubatividades()
-    }
-    /*  horasFase () {
+    },
+    horasFase () {
+      this.usuariosHoras()
+    },
+    horasUsuarios () {
       this.joinArrays()
-      this.joinProjetos = this.$store.state['admin']['pre-impressao']['joinArrays']
+      this.joinProjetos = this.$store.state['admin']['pre-impressao'][
+        'joinArrays'
+      ]
       this.pageCount = this.joinProjetos.length
-      this.currentProjeto() 
-    } */
+      this.currentProjeto()
+    }
   },
   created () {
     this.setupOn()
@@ -210,6 +267,7 @@ export default {
       'getUsuariosProjetos',
       'usuariosByProjetos',
       'usuariosBySubatividades',
+      'usuariosHoras',
       'joinArrays'
     ]),
     setupOn () {

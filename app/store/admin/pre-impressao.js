@@ -12,6 +12,7 @@ export const state = () => ({
   usuariosProjetos: [],
   joinArrays: [],
   horasFase: [],
+  horasUsuarios: [],
   pdfContent: [],
   fetching: false,
   error: false,
@@ -25,16 +26,16 @@ const groupBy = (xs, key) => {
   }, {})
 }
 
-const arrayIntersect = (obj1, obj2 /*, array3 */) => {
+const arrayIntersect = (obj1, obj2, obj3) => {
   var arr_join = [],
     arr = obj1.values.map((res, i) => {
       arr_join.push({ ind: obj1.ind, values: res })
       if (obj2.values[i]) {
         arr_join.push({ ind: obj2.ind, values: obj2.values[i] })
       }
-      /* if (array3[i]) {
-      	arr_join.push(array3[i]);
-      } */
+      if (obj3.values[i]) {
+        arr_join.push({ ind: obj3.ind, values: obj3.values[i] })
+      }
 
       return arr_join
     })
@@ -99,7 +100,7 @@ export const actions = {
         const equipe = agrupado[projeto.id].map(agUsuario => {
           return state.usuarios.filter(
             usuario => agUsuario.usuario === usuario.id
-          )[0].nome
+          )[0]
         })
 
         return {
@@ -175,11 +176,9 @@ export const actions = {
         }
       }
 
-      //let data = []
-
       // pegando horas por subatividade
       const data = usuariosProjetos.map(obj => {
-        let fases = obj.fases.map(fase => {
+        const fases = obj.fases.map(fase => {
           const subatividades = fase.subatividades.map(s => {
             let totalHoras = 0
             let horas = obj.horas.filter(hora => hora.subatividade === s.id)
@@ -201,25 +200,47 @@ export const actions = {
           }
         })
 
-        /* fases.forEach(fase => {
-          countRows = countRows + fase.totalRows
-          
-          if (countRows <= 21) {
-            massas.push({
-              nomeProjeto: obj.nomeProjeto,
-              projeto: obj.projeto,
-              totalHoras: obj.totalHoras,
-              fases
-            })
-            massas2.push(massas)
-          } else {
-            console.log(countRows)
-          }
-        }) */
-
-        console.log(fases)
+        return {
+          nomeProjeto: obj.nomeProjeto,
+          totalHoras: obj.totalHoras,
+          fases
+        }
       })
-      // commit('SET', { data, key: 'horasFase' })
+      commit('SET', { data, key: 'horasFase' })
+    } catch (err) {
+      commit('SET', { data: err, key: 'err' })
+      commit('SET', { data: true, key: 'error' })
+    }
+    commit('SET', { data: false, key: 'fetching' })
+  },
+  usuariosHoras: ({ commit, state }) => {
+    commit('SET', { data: true, key: 'fetching' })
+    const usuariosProjetos = state.pdfContent
+    const usuarios = state.usuarios
+
+    try {
+      const data = usuariosProjetos.map(obj => {
+        const equipe = usuarios.map(usuario => {
+          let horas = obj.horas.filter(hora => hora.usuario === usuario.id)
+          let totalHoras = horas.reduce(
+            (acc, { horas, extras }) => (acc += horas + extras),
+            0
+          )
+
+          return {
+            id: usuario.id,
+            nome: usuario.nome,
+            totalHoras
+          }
+        })
+
+        return {
+          nomeProjeto: obj.nomeProjeto,
+          totalHoras: obj.totalHoras,
+          equipe
+        }
+      })
+      commit('SET', { data, key: 'horasUsuarios' })
     } catch (err) {
       commit('SET', { data: err, key: 'err' })
       commit('SET', { data: true, key: 'error' })
@@ -238,7 +259,12 @@ export const actions = {
         ind: 1,
         values: state.horasFase
       }
-      const data = arrayIntersect(pdfContent, horasFase)
+      const horasUsuarios = {
+        ind: 2,
+        values: state.horasUsuarios
+      }
+
+      const data = arrayIntersect(pdfContent, horasFase, horasUsuarios)
 
       commit('SET', { data, key: 'joinArrays' })
     } catch (err) {
