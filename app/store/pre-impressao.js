@@ -73,9 +73,6 @@ export const actions = {
     const horas = ids.map(id => Horas.get(`?projeto=${id}`))
     promiseAllTable(commit, { promises: horas, table: 'horas' })
   },
-  setContentForPdf: ({ commit }, payload) => {
-    commit('SET', { data: payload, key: 'contentForPdf' })
-  },
   reset: ({ commit }) => commit('RESET')
 }
 

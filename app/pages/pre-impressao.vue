@@ -17,7 +17,7 @@
             <h2>{{ nome }}</h2>
             <p class="pre-impressao-usuario--align-right">
               Horas totais registradas<br /><span>{{
-                horasTotaisUsuario
+                projeto.totalHorasProjetoUsuario
               }}</span>
             </p>
           </div>
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import Lib from '~/libs/'
+import Pdf from '~/libs/pdf'
 import { mapState, mapActions } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
 import BtnProgresso from '~/components/elements/BtnProgresso'
@@ -245,7 +245,13 @@ export default {
     projetosForPdf () {
       if (this.projetosFases.length > 0) {
         this.projeto = this.projetosFases[0]
-        this.setContentForPdf(Lib.pdfContent(this.projetosForPdf, this.nome))
+
+        // seta no meta para pegar o valor
+        // tentei com emit porém não funcionou
+        this.$route.meta.pdfContent = Pdf.pdfUsuario(
+          this.projetosForPdf,
+          this.nome
+        )
       }
     },
     gruposUsuario (grupos) {
@@ -258,7 +264,6 @@ export default {
   },
   methods: {
     ...mapActions('pre-impressao', [
-      'setContentForPdf',
       'getHorasProjetos',
       'getProjetosUsuario',
       'getGruposUsuario',
