@@ -29,7 +29,7 @@
         <div class="column column--center">
           <btn-action
             title="Gerar pdf"
-            @action="createPdf(content)"
+            @action="createPdf"
             :loading="pdf.loading"
             loading-message="Gerando pdf"
           />
@@ -110,66 +110,23 @@ export default {
       saveAs(csvBlob, name)
       this.csv.loading = false
     },
-    async createPdf (content) {
+    async createPdf () {
       this.pdf.loading = true
+      let content = this.$route.meta.pdfContent
+
       const now = this.$moment()
       const dia = now.format('YYYY-MM-DD')
       const horario = now.format('hh-mm').replace(':', 'h')
       const name = `relatorio-${dia}-${horario}.pdf`
+
       try {
-        let dd = {
-          content,
-          styles: {
-            header: {
-              fontSize: 25,
-              alignment: 'left',
-              bold: true
-            },
-            footer: {
-              fontSize: 10,
-              margin: [0, 15, 0, 150]
-            },
-            subheader: {
-              fontSize: 12
-            },
-            margin: {
-              margin: [0, 15, 0, 30]
-            },
-            leftText: {
-              fontSize: 13,
-              alignment: 'left'
-            },
-            rightText: {
-              fontSize: 13,
-              alignment: 'right'
-            },
-            tableFirst: {
-              bold: true
-            },
-            tableHeader: {
-              bold: true,
-              alignment: 'right'
-            },
-            textTable: {
-              margin: [0, 4, 5, 4],
-              fontSize: 13
-            },
-            total: {
-              bold: true,
-              fillColor: '#c3c3c3'
-            }
-          },
-          defaultStyle: {
-            columnGap: 20
-          }
-        }
         await this.loadExternalLib(
           'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/pdfmake.min.js'
         )
         await this.loadExternalLib(
           'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/vfs_fonts.js'
         )
-        window.pdfMake.createPdf(dd).download(name)
+        window.pdfMake.createPdf(content).download(name)
       } catch (err) {
         console.log(err)
       }

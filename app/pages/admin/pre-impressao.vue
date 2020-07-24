@@ -198,7 +198,7 @@
 </template>
 
 <script>
-import Lib from '~/libs/'
+import Pdf from '~/libs/pdf'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
 import BtnProgresso from '~/components/elements/BtnProgresso'
@@ -254,6 +254,11 @@ export default {
       ]
       this.pageCount = this.joinProjetos.length
       this.currentProjeto()
+    },
+    joinProjetos () {
+      // seta no meta para pegar o valor
+      // tentei com emit porém não funcionou
+      this.$route.meta.pdfContent = Pdf.pdfAdmin(this.joinProjetos)
     }
   },
   created () {
