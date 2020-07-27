@@ -62,7 +62,7 @@ npm run db:dump
 ```
 Este comando irá criar um arquivo comprimido do banco especificado em `.env` (equivalente ao comando [myslqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html)):
 
-<img src="https://user-images.githubusercontent.com/4117768/88560876-10978200-d005-11ea-8518-dbeb408ae657.gif" style="border: 1px solid grey">
+<img src="https://user-images.githubusercontent.com/4117768/88562331-f199ef80-d006-11ea-90c0-4f88f26a2136.gif" style="border: 1px solid grey">
 
 
 ___
