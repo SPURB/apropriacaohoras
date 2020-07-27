@@ -340,16 +340,17 @@ export const mutations = {
     state[key] = data
   },
   RESET: state => {
-    ;(state.fases = []),
-      (state.projetos = []),
-      (state.usuarios = []),
-      (state.usuariosProjetos = [])
+    state.fases = []
+    state.projetos = []
+    state.usuarios = []
+    state.usuariosProjetos = []
     state.usuariosIndividual = []
     state.joinArrays = []
     state.horasFase = []
     state.horasUsuarios = []
     state.pdfContent = []
     state.fetching = false
-    ;(state.error = false), (state.err = '')
+    state.error = false
+    state.err = ''
   }
 }

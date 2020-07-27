@@ -4,7 +4,6 @@
     :style="{ display: fetching ? 'block' : 'flex' }"
   >
     <preloader v-if="fetching" />
-
     <btn-progresso
       class="pre-impressao-usuario__navigation rotate"
       :disabled="page <= 1"
@@ -311,6 +310,8 @@ export default {
 
 <style lang="scss" scoped>
 .pre-impressao-usuario {
+  display: flex;
+
   &__header {
     display: flex;
     justify-content: space-between;

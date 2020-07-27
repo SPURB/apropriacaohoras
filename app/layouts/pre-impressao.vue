@@ -62,7 +62,8 @@ export default {
       },
       pdf: {
         loading: false
-      }
+      },
+      content: this.$store.state['pre-impressao'].contentForPdf
     }
   },
   computed: {
