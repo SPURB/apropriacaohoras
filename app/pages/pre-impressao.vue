@@ -1,10 +1,15 @@
 <template>
-  <div class="pre-impressao-usuario">
+  <div
+    class="pre-impressao-usuario"
+    :style="{ display: fetching ? 'block' : 'flex' }"
+  >
     <preloader v-if="fetching" />
+
     <btn-progresso
       class="pre-impressao-usuario__navigation rotate"
       :disabled="page <= 1"
       @btnPrograssoAction="prevPage"
+      v-if="!fetching"
     />
     <div class="pre-impressao-usuario__container">
       <div v-if="isReady" class="pre-impressao-usuario__projetos" id="printer">
@@ -87,6 +92,7 @@
       class="pre-impressao-usuario__navigation"
       :disabled="page === pageCount"
       @btnPrograssoAction="nextPage"
+      v-if="!fetching"
     />
   </div>
 </template>
@@ -305,8 +311,6 @@ export default {
 
 <style lang="scss" scoped>
 .pre-impressao-usuario {
-  display: flex;
-
   &__header {
     display: flex;
     justify-content: space-between;

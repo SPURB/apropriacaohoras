@@ -4,16 +4,19 @@ import UsuariosProjetos from '@/services/api-usuarios-projetos'
 import Fases from '@/services/api-fase'
 import Horas from '@/services/api-horas'
 import Subatividades from '@/services/api-subatividade'
+import Grupos from '@/services/api-grupo'
 
 export const state = () => ({
-  fases: [],
-  projetos: [],
-  usuarios: [],
-  usuariosProjetos: [],
-  joinArrays: [],
-  horasFase: [],
-  horasUsuarios: [],
-  pdfContent: [],
+  fases: [], // lista de fases
+  projetos: [], // lista de projetos
+  grupos: [],
+  usuarios: [], // lista de todos os usuários
+  usuariosProjetos: [], // lista de usuarios registrados nos projetos
+  usuariosIndividual: [], // lista de horas por fase e total separado por usuarios no projeto
+  joinArrays: [], // junta os arrays pdfContent, horasFases, horasUsuarios,
+  horasFase: [], // é o total de horas por fase/projeto
+  horasUsuarios: [], // horas de usuarios por projeto
+  pdfContent: [], // dados gerais do projeto
   fetching: false,
   error: false,
   err: ''
@@ -247,6 +250,61 @@ export const actions = {
     }
     commit('SET', { data: false, key: 'fetching' })
   },
+  usuariosIndividual: async ({ commit, state }) => {
+    commit('SET', { data: true, key: 'fetching' })
+    const usuariosProjetos = state.pdfContent
+
+    try {
+      const grupos = await Grupos.get()
+
+      const data = usuariosProjetos.map(obj => {
+        const grupo = grupos.data.values.filter(grupo => grupo.id === obj.grupo)
+        let totalHorasProjetoUsuario = 0
+
+        return obj.equipe.map(membro => {
+          totalHorasProjetoUsuario = obj.horas
+            .filter(hora => hora.usuario === membro.id)
+            .reduce((acc, { horas, extras }) => (acc += horas + extras), 0)
+
+          const fases = obj.fases.map(fase => {
+            const horasUsuario = obj.horas
+              .filter(
+                hora => hora.fase === fase.idfase && hora.usuario === membro.id
+              )
+              .reduce((acc, { horas, extras }) => (acc += horas + extras), 0)
+            const horasEquipe = obj.horas
+              .filter(hora => hora.fase === fase.idfase)
+              .reduce((acc, { horas, extras }) => (acc += horas + extras), 0)
+            return {
+              nome: fase.nome,
+              horasUsuario,
+              horasEquipe
+            }
+          })
+          return {
+            ind: 3,
+            values: {
+              nomeProjeto: obj.nomeProjeto,
+              nomeMembro: membro.nome,
+              grupo: grupo[0].nome,
+              totalHorasProjeto: obj.totalHoras,
+              totalHorasProjetoUsuario,
+              fases
+            }
+          }
+        })
+      })
+
+      let newData = []
+      data.map(res => res.map(r => newData.push(r))) // deixando todos os arrays em 1 nivel
+
+      commit('SET', { data: newData, key: 'usuariosIndividual' })
+    } catch (err) {
+      commit('SET', { data: err, key: 'err' })
+      commit('SET', { data: true, key: 'error' })
+    }
+    commit('SET', { data: false, key: 'fetching' })
+  },
   joinArrays: ({ state, commit }) => {
     commit('SET', { data: true, key: 'fetching' })
     try {
@@ -264,7 +322,8 @@ export const actions = {
         values: state.horasUsuarios
       }
 
-      const data = arrayIntersect(pdfContent, horasFase, horasUsuarios)
+      let data = arrayIntersect(pdfContent, horasFase, horasUsuarios)
+      data = [].concat(data, state.usuariosIndividual)
 
       commit('SET', { data, key: 'joinArrays' })
     } catch (err) {
@@ -273,7 +332,7 @@ export const actions = {
     }
     commit('SET', { data: false, key: 'fetching' })
   },
-  reset: ({ commit }) => commit('RESET')
+  RESET: ({ commit }) => commit('RESET')
 }
 
 export const mutations = {
@@ -281,7 +340,16 @@ export const mutations = {
     state[key] = data
   },
   RESET: state => {
-    state.horasProjetosUsuario = []
+    ;(state.fases = []),
+      (state.projetos = []),
+      (state.usuarios = []),
+      (state.usuariosProjetos = [])
+    state.usuariosIndividual = []
+    state.joinArrays = []
+    state.horasFase = []
+    state.horasUsuarios = []
+    state.pdfContent = []
     state.fetching = false
+    ;(state.error = false), (state.err = '')
   }
 }

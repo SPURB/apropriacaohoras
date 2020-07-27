@@ -1,10 +1,15 @@
 <template>
-  <div class="pre-impressao-admin">
+  <div
+    class="pre-impressao-admin"
+    :style="{ display: fetching ? 'block' : 'flex' }"
+  >
     <preloader v-if="fetching" />
+
     <btn-progresso
       class="pre-impressao-admin__navigation rotate"
       :disabled="page <= 1"
       @btnPrograssoAction="prevPage"
+      v-if="!fetching"
     />
 
     <div class="pre-impressao-admin__container">
@@ -186,6 +191,80 @@
             </div>
           </pre-impressao-a4>
         </template>
+        <template v-if="projeto.ind === 3">
+          <pre-impressao-a4
+            :paginationIndex="page"
+            :paginationTotal="pageCount"
+          >
+            <div class="pre-impressao-admin__header">
+              <h2>{{ projeto.values.nomeMembro }}</h2>
+              <p class="pre-impressao-admin--align-right">
+                Horas totais registradas<br />
+                <span>
+                  {{ projeto.values.totalHorasProjeto }}
+                </span>
+              </p>
+            </div>
+            <div class="pre-impressao-admin__main">
+              <div class="projeto">
+                <div class="projeto__title">
+                  <h3>{{ projeto.values.nomeProjeto }}</h3>
+                  <p>{{ projeto.values.grupo }}</p>
+                </div>
+                <table class="projeto__table">
+                  <thead>
+                    <tr>
+                      <th>Fases</th>
+                      <th>Horas do funcionário</th>
+                      <th>Horas da equipe</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="projeto__fase"
+                      v-for="(fase, index) in projeto.values.fases"
+                      :key="`fase-${index}`"
+                    >
+                      <td>{{ fase.nome }}</td>
+                      <td>{{ fase.horasUsuario }}</td>
+                      <td>{{ fase.horasEquipe }}</td>
+                      <td>
+                        <graf-bar
+                          :base="fase.horasEquipe"
+                          :current="fase.horasUsuario"
+                          :total="projeto.values.totalHorasProjeto"
+                          :height="32"
+                          :width="200"
+                        />
+                      </td>
+                    </tr>
+                    <tr class="projeto__soma">
+                      <td>total</td>
+                      <td>{{ projeto.values.totalHorasProjetoUsuario }}</td>
+                      <td>{{ projeto.values.totalHorasProjeto }}</td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="pre-impressao-admin__footer">
+              <p
+                class="pre-impressao-admin__legenda"
+                style="border-color: #434343"
+              >
+                {{ projeto.values.nomeMembro }}
+              </p>
+              <p
+                class="pre-impressao-admin__legenda"
+                style="border-color: #DFDFDF"
+              >
+                Equipe
+              </p>
+            </div>
+          </pre-impressao-a4>
+        </template>
       </div>
     </div>
 
@@ -193,6 +272,7 @@
       class="pre-impressao-admin__navigation"
       :disabled="page === pageCount"
       @btnPrograssoAction="nextPage"
+      v-if="!fetching"
     />
   </div>
 </template>
@@ -231,7 +311,8 @@ export default {
       usuariosProjetos: state => state.usuariosProjetos,
       pdfContent: state => state.pdfContent,
       horasFase: state => state.horasFase,
-      horasUsuarios: state => state.horasUsuarios
+      horasUsuarios: state => state.horasUsuarios,
+      individualHoras: state => state.usuariosIndividual
     }),
     isReady () {
       return !this.error && !this.fetching
@@ -248,6 +329,9 @@ export default {
       this.usuariosHoras()
     },
     horasUsuarios () {
+      this.usuariosIndividual()
+    },
+    individualHoras () {
       this.joinArrays()
       this.joinProjetos = this.$store.state['admin']['pre-impressao'][
         'joinArrays'
@@ -259,13 +343,19 @@ export default {
       // seta no meta para pegar o valor
       // tentei com emit porém não funcionou
       this.$route.meta.pdfContent = Pdf.pdfAdmin(this.joinProjetos)
+      this.$route.meta.fetching = false
     }
   },
   created () {
+    // faz o get dos dados primordiais.
     this.setupOn()
+
+    // seta o fetching
+    this.$route.meta.fetching = true
   },
   methods: {
     ...mapActions('admin/pre-impressao', [
+      'reset',
       'getFases',
       'getProjetos',
       'getUsuarios',
@@ -273,6 +363,7 @@ export default {
       'usuariosByProjetos',
       'usuariosBySubatividades',
       'usuariosHoras',
+      'usuariosIndividual',
       'joinArrays'
     ]),
     setupOn () {
@@ -297,8 +388,6 @@ export default {
 
 <style lang="scss" scoped>
 .pre-impressao-admin {
-  display: flex;
-
   &__header {
     display: flex;
     justify-content: space-between;

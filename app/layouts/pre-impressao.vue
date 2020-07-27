@@ -62,8 +62,7 @@ export default {
       },
       pdf: {
         loading: false
-      },
-      content: this.$store.state['pre-impressao'].contentForPdf
+      }
     }
   },
   computed: {
@@ -72,6 +71,11 @@ export default {
       error: state => state.error,
       err: state => state.err
     }),
+    ...mapState('admin/pre-impressao', {
+      fetchingAdmin: state => state.fetching,
+      errorAdmin: state => state.error,
+      errAdmin: state => state.err
+    }),
     from () {
       const from = this.$route.query.from
       return from ? from : '/'
@@ -79,6 +83,15 @@ export default {
   },
   watch: {
     fetching (state) {
+      if (state) {
+        this.csv.loading = state
+        this.pdf.loading = state
+      } else {
+        this.csv.loading = false
+        this.pdf.loading = false
+      }
+    },
+    fetchingAdmin (state) {
       if (state) {
         this.csv.loading = state
         this.pdf.loading = state

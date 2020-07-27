@@ -141,18 +141,22 @@ export default {
     let primeira = []
     let segunda = []
     let terceira = []
+    let quarta = []
 
     projetos.forEach(projeto => {
       if (projeto.ind === 0) {
-        primeira.push(Estrutura.primeiraPageAdmin(projeto.values))
+        primeira.push(Estrutura.primeiraPaginaAdmin(projeto.values))
       } else if (projeto.ind === 1) {
-        segunda.push([{ text: `Segunda ${projeto.values.nomeProjeto}` }])
+        segunda.push(Estrutura.segundaPaginaAdmin(projeto.values))
+      } else if (projeto.ind === 2) {
+        terceira.push(Estrutura.terceiraPaginaAdmin(projeto.values))
       } else {
-        terceira.push([{ text: `Terceira ${projeto.values.nomeProjeto}` }])
+        quarta.push(Estrutura.quartaPaginaAdmin(projeto.values))
       }
     })
 
     let content = Commons.arrayIntersect(primeira, segunda, terceira)
+    content = [].concat(content, quarta)
     content = Estrutura.pageBreak(content)
 
     return {
