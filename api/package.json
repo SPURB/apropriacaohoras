@@ -16,7 +16,8 @@
     "db:rebuild": "sequelize-cli db:migrate:undo:all && sequelize-cli db:migrate && sequelize-cli db:seed:undo:all && sequelize-cli db:seed:all",
     "db:init": "sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
     "db:reset": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
-    "lint": "prettier-standard src/{*,/**/*}.js seeders/{*,/**/*}.js migrations/{*,/**/*}.js"
+    "lint": "prettier-standard src/{*,/**/*}.js seeders/{*,/**/*}.js migrations/{*,/**/*}.js",
+    "db:dump": "babel-node ./dump"
   },
   "husky": {
     "hooks": {
@@ -40,6 +41,7 @@
     "express": "^4.17.1",
     "generate-password": "^1.5.1",
     "mysql2": "^2.0.2",
+    "mysqldump": "^3.2.0",
     "node-fetch": "^2.6.0",
     "sequelize": "^5.21.2"
   },
