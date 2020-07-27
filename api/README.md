@@ -33,7 +33,7 @@ SERVICE_EMAIL=http://url/do/servico/de/envio/email
 npm run db:init
 ```
 
-## desenvolvimento
+## Desenvolvimento
 1. Inicie o ambiente de desenvolvimento da api. 
 ```
 npm run dev
@@ -44,7 +44,7 @@ npm run dev
 Para reiniciar o servidor com alterações no model rode o comando  `npm run db:reset`.
 > Antes de alterar o modelo atualize também os arquivos de `/migrations` e o `/seeders`
 
-## produção
+## Produção
 1. Compile o código
 ```
 npm run build
@@ -54,6 +54,16 @@ npm run build
 ```
 npm run start
 ```
+
+## Backup
+Para fazer um backup do banco rode o comando abaixo
+```
+npm run db:dump
+```
+Este comando irá criar um arquivo comprimido do banco especificado em `.env` (equivalente ao comando [myslqldump](https://dev.mysql.com/doc/refman/5.7/en/mysqldump.html)):
+
+<img src="https://user-images.githubusercontent.com/4117768/88560876-10978200-d005-11ea-8518-dbeb408ae657.gif" style="border: 1px solid grey">
+
 
 ___
 
@@ -71,7 +81,7 @@ https://apropriacaohoras.herokuapp.com/aproriacaohoras/api/0.0.1/usuarios-projet
 ```
 ___
 
-### documentação
+### Documentação
 Mantenha a atualizada documentação com [postman](https://www.postman.com/) - `apropriacao-de-horas.postman_collection.json`
 
 > veja a documentação do [sequelize](https://sequelize.org/master/manual/) para detalhamento do contexto e detalhamento do ORM utilizado.
