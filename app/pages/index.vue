@@ -78,6 +78,9 @@
         </template>
       </section>
     </div>
+    <nuxt-link class="login__link" to="/faq" tag="a"
+      >Do que se trata este projeto?</nuxt-link
+    >
   </div>
 </template>
 
@@ -199,6 +202,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.login {
+  &__link {
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
+    text-decoration: none;
+    color: rgb(200, 200, 200);
+    &:hover {
+      color: white;
+      transition: color 0.15s ease-in-out;
+    }
+  }
+}
 .auth-card {
   display: flex;
   justify-content: center;
