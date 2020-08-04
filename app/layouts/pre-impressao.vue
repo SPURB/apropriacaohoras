@@ -9,8 +9,30 @@
       action-text="Voltar"
       @setModalAction="goBack(from)"
     />
+    <nav>
+      <btn-progresso
+        class="pre-impressao__navigation pre-impressao__navigation--left"
+        :disabled="page <= 1"
+        stroke="#A8A8A8"
+        background="white"
+        @btnPrograssoAction="prevPage"
+        v-if="!fetching"
+      />
+      <btn-progresso
+        class="pre-impressao__navigation pre-impressao__navigation--right"
+        :disabled="page === pageCount"
+        stroke="#A8A8A8"
+        background="white"
+        @btnPrograssoAction="nextPage"
+        v-if="!fetching"
+      />
+    </nav>
     <div class="pre-impressao__container">
-      <voltar class="pre-impressao__voltar" :to="from" />
+      <voltar
+        class="pre-impressao__voltar"
+        :to="from"
+        @click.prevent="resetPagination"
+      />
 
       <div class="row">
         <div class="column">
@@ -42,10 +64,11 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { saveAs } from 'file-saver'
 import Voltar from '~/components/router-links/Voltar'
 import BtnAction from '~/components/elements/BtnAction'
+import BtnProgresso from '~/components/elements/BtnProgresso'
 import Modal from '~/components/sections/Modal'
 
 export default {
@@ -53,6 +76,7 @@ export default {
   components: {
     Voltar,
     BtnAction,
+    BtnProgresso,
     Modal
   },
   data () {
@@ -70,7 +94,9 @@ export default {
     ...mapState('pre-impressao', {
       fetching: state => state.fetching,
       error: state => state.error,
-      err: state => state.err
+      err: state => state.err,
+      page: state => state.page,
+      pageCount: state => state.pageCount
     }),
     ...mapState('admin/pre-impressao', {
       fetchingAdmin: state => state.fetching,
@@ -104,6 +130,7 @@ export default {
   },
   methods: {
     ...mapActions('pre-impressao', ['reset', 'setContentForPdf']),
+    ...mapMutations('pre-impressao', ['SET']),
     loadExternalLib (url) {
       return new Promise((resolve, reject) => {
         const script = document.createElement('script')
@@ -149,6 +176,16 @@ export default {
     goBack (route) {
       this.$router.push(route)
       this.reset()
+    },
+    nextPage () {
+      this.SET({ data: this.page + 1, key: 'page' })
+    },
+    prevPage () {
+      this.SET({ data: this.page - 1, key: 'page' })
+    },
+    resetPagination () {
+      this.SET({ data: 1, key: 'page' })
+      this.SET({ data: 1, key: 'pageCount' })
     }
   }
 }
@@ -158,7 +195,7 @@ export default {
   background-color: #fff;
   min-height: 100vh;
   &__container {
-    max-width: 900px;
+    max-width: $tablet;
     margin: auto;
     padding-top: 3rem;
     @media (max-width: $tablet) {
@@ -173,6 +210,21 @@ export default {
     max-width: 600px;
     margin: auto;
     padding-bottom: 3rem;
+  }
+  &__navigation {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    border: 0;
+    z-index: 9;
+
+    &--left {
+      left: 0;
+      transform: rotate(180deg);
+    }
+    &--right {
+      right: 0;
+    }
   }
 }
 

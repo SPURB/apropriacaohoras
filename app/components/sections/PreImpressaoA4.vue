@@ -36,7 +36,6 @@ export default {
   data () {
     return {
       height: 0,
-      width: 0,
       origin: '',
       now: ''
     }
@@ -49,6 +48,10 @@ export default {
     paginationTotal: {
       type: Number,
       required: true
+    },
+    width: {
+      type: Number,
+      default: 800
     }
   },
   computed: {
@@ -69,7 +72,7 @@ export default {
     }
   },
   mounted () {
-    this.width = this.$refs.a4.offsetWidth
+    // this.width = this.$refs.a4.offsetWidth
     this.height = this.width * 1.51
     this.origin = `${window.location.host}/apropriacaohoras/`
 

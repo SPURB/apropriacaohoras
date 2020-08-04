@@ -5,13 +5,6 @@
   >
     <preloader v-if="fetching" />
 
-    <btn-progresso
-      class="pre-impressao-admin__navigation rotate"
-      :disabled="page <= 1"
-      @btnPrograssoAction="prevPage"
-      v-if="!fetching"
-    />
-
     <div class="pre-impressao-admin__container">
       <div v-if="isReady" class="pre-impressao-admin__projetos" id="printer">
         <template v-if="projeto.ind === 0">
@@ -267,21 +260,13 @@
         </template>
       </div>
     </div>
-
-    <btn-progresso
-      class="pre-impressao-admin__navigation"
-      :disabled="page === pageCount"
-      @btnPrograssoAction="nextPage"
-      v-if="!fetching"
-    />
   </div>
 </template>
 
 <script>
 import Pdf from '~/libs/pdf'
-import { mapState, mapActions, mapGetters } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
-import BtnProgresso from '~/components/elements/BtnProgresso'
 import Preloader from '~/components/elements/Preloader'
 import GrafBar from '~/components/elements/GrafBar'
 
@@ -290,7 +275,6 @@ export default {
   layout: 'pre-impressao',
   data () {
     return {
-      page: 1,
       pageCount: 0,
       joinProjetos: [],
       projeto: {}
@@ -298,12 +282,12 @@ export default {
   },
   components: {
     PreImpressaoA4,
-    BtnProgresso,
     Preloader,
     GrafBar
   },
   computed: {
     ...mapState('usuario', ['nome', 'projetos', 'id']),
+    ...mapState('pre-impressao', ['page']),
     ...mapState('admin/pre-impressao', {
       fetching: state => state.fetching,
       error: state => state.error,
@@ -319,6 +303,14 @@ export default {
     }
   },
   watch: {
+    pageCount (count) {
+      this.SET({ data: count, key: 'pageCount' })
+    },
+    page (currentPage) {
+      if (currentPage > 0) {
+        this.currentProjeto()
+      }
+    },
     usuariosProjetos () {
       this.usuariosByProjetos()
     },
@@ -366,6 +358,7 @@ export default {
       'usuariosIndividual',
       'joinArrays'
     ]),
+    ...mapMutations('pre-impressao', ['SET']),
     setupOn () {
       this.getProjetos()
       this.getUsuarios()
@@ -373,15 +366,15 @@ export default {
     },
     currentProjeto () {
       this.projeto = this.joinProjetos[this.page - 1]
-    },
-    nextPage () {
-      this.page = this.page + 1
-      this.currentProjeto()
-    },
-    prevPage () {
-      this.page = this.page - 1
-      this.currentProjeto()
     }
+    // nextPage () {
+    //   this.page = this.page + 1
+    //   this.currentProjeto()
+    // },
+    // prevPage () {
+    //   this.page = this.page - 1
+    //   this.currentProjeto()
+    // }
   }
 }
 </script>
@@ -464,7 +457,7 @@ export default {
   &__container {
     display: flex;
     justify-content: center;
-    min-width: 80%;
+    width: 100%;
   }
 
   &__projetos {

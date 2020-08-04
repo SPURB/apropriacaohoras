@@ -184,11 +184,11 @@ export const actions = {
         const fases = obj.fases.map(fase => {
           const subatividades = fase.subatividades.map(s => {
             let totalHoras = 0
-            let horas = obj.horas.filter(hora => hora.subatividade === s.id)
-
-            horas.map(hora => {
-              totalHoras = totalHoras + hora.horas + hora.extras
-            })
+            obj.horas
+              .filter(hora => hora.subatividade === s.id)
+              .map(hora => {
+                totalHoras = totalHoras + hora.horas + hora.extras
+              })
 
             return {
               nome: s.nome,
