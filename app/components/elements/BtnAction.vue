@@ -8,6 +8,7 @@
     }"
     :disabled="reallyDisabled"
     @click="action"
+    data-cy="btn-action"
   >
     <template v-if="loading">{{ loadingMessage }}</template>
     <template v-else>{{ title }}</template>

@@ -4,14 +4,15 @@
     :style="{ display: fetching ? 'block' : 'flex' }"
   >
     <preloader v-if="fetching" />
-    <btn-progresso
-      class="pre-impressao-usuario__navigation rotate"
+    <!-- <btn-progresso
+      class="pre-impressao-usuario__navigation pre-impressao-usuario__navigation--left"
       :disabled="page <= 1"
+      background="transparent"
       @btnPrograssoAction="prevPage"
       v-if="!fetching"
-    />
+    /> -->
     <div class="pre-impressao-usuario__container">
-      <div v-if="isReady" class="pre-impressao-usuario__projetos" id="printer">
+      <div v-if="isReady" class="pre-impressao-usuario__projetos">
         <pre-impressao-a4
           v-if="projeto.totalHorasProjeto"
           :paginationIndex="page"
@@ -86,21 +87,13 @@
         </pre-impressao-a4>
       </div>
     </div>
-
-    <btn-progresso
-      class="pre-impressao-usuario__navigation"
-      :disabled="page === pageCount"
-      @btnPrograssoAction="nextPage"
-      v-if="!fetching"
-    />
   </div>
 </template>
 
 <script>
 import Pdf from '~/libs/pdf'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
-import BtnProgresso from '~/components/elements/BtnProgresso'
 import Preloader from '~/components/elements/Preloader'
 import GrafBar from '~/components/elements/GrafBar'
 
@@ -109,13 +102,11 @@ export default {
   layout: 'pre-impressao',
   data () {
     return {
-      page: 1,
       projeto: {}
     }
   },
   components: {
     PreImpressaoA4,
-    BtnProgresso,
     Preloader,
     GrafBar
   },
@@ -129,7 +120,8 @@ export default {
       'projetosUsuario',
       'gruposUsuario',
       'fasesUsuario',
-      'horas'
+      'horas',
+      'page'
     ]),
     isReady () {
       return !this.error && !this.fetching
@@ -236,6 +228,14 @@ export default {
     }
   },
   watch: {
+    page (currentPage) {
+      if (currentPage > 0) {
+        this.currentProjeto()
+      }
+    },
+    pageCount (count) {
+      this.SET({ data: count, key: 'pageCount' })
+    },
     projetos () {
       this.setupHorasProjetos()
     },
@@ -275,6 +275,7 @@ export default {
       'getFasesUsuario',
       'getHoras'
     ]),
+    ...mapMutations('pre-impressao', ['SET']),
     setupHorasProjetos () {
       this.getHorasProjetos({
         ids: this.projetos,
@@ -295,14 +296,6 @@ export default {
     },
     currentProjeto () {
       this.projeto = this.projetosFases[this.page - 1]
-    },
-    nextPage () {
-      this.page = this.page + 1
-      this.currentProjeto()
-    },
-    prevPage () {
-      this.page = this.page - 1
-      this.currentProjeto()
     }
   }
 }
@@ -340,15 +333,6 @@ export default {
 
   &__container {
     display: flex;
-  }
-
-  &__navigation {
-    background: transparent;
-    align-self: center;
-
-    &.rotate {
-      transform: rotate(180deg);
-    }
   }
 }
 .projeto {

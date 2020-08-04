@@ -2,7 +2,6 @@ import Projetos from '@/services/api-projeto'
 import Grupos from '@/services/api-grupo'
 import Fases from '@/services/api-fase'
 import Horas from '@/services/api-horas'
-import Lib from '@/libs'
 
 export const state = () => ({
   horasProjetosUsuario: [],
@@ -11,6 +10,8 @@ export const state = () => ({
   fasesUsuario: [],
   horas: [],
   contentForPdf: [],
+  page: 1,
+  pageCount: 1,
   fetching: false,
   error: false,
   err: ''

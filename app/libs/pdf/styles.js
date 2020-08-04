@@ -2,7 +2,7 @@ export default {
   styles01: () => {
     return {
       header: {
-        fontSize: 25,
+        fontSize: 18,
         alignment: 'left',
         bold: true
       },
@@ -39,7 +39,7 @@ export default {
   styles02: () => {
     return {
       header: {
-        fontSize: 25,
+        fontSize: 18,
         alignment: 'left',
         bold: true
       },
