@@ -14,7 +14,7 @@
 
       <div class="row">
         <div class="column">
-          <nuxt />
+          <nuxt ref="childrenImpressao" />
         </div>
       </div>
       <div class="row pre-impressao__btns">
@@ -29,7 +29,7 @@
         <div class="column column--center">
           <btn-action
             title="Gerar pdf"
-            @action="createPdf({ content: ['first', 'second'] }, 'teste.pdf')"
+            @action="createPdf"
             :loading="pdf.loading"
             loading-message="Gerando pdf"
           />
@@ -62,11 +62,21 @@ export default {
       },
       pdf: {
         loading: false
-      }
+      },
+      content: this.$store.state['pre-impressao'].contentForPdf
     }
   },
   computed: {
-    ...mapState('pre-impressao', ['fetching', 'error', 'err']),
+    ...mapState('pre-impressao', {
+      fetching: state => state.fetching,
+      error: state => state.error,
+      err: state => state.err
+    }),
+    ...mapState('admin/pre-impressao', {
+      fetchingAdmin: state => state.fetching,
+      errorAdmin: state => state.error,
+      errAdmin: state => state.err
+    }),
     from () {
       const from = this.$route.query.from
       return from ? from : '/'
@@ -81,10 +91,19 @@ export default {
         this.csv.loading = false
         this.pdf.loading = false
       }
+    },
+    fetchingAdmin (state) {
+      if (state) {
+        this.csv.loading = state
+        this.pdf.loading = state
+      } else {
+        this.csv.loading = false
+        this.pdf.loading = false
+      }
     }
   },
   methods: {
-    ...mapActions('pre-impressao', 'reset'),
+    ...mapActions('pre-impressao', ['reset', 'setContentForPdf']),
     loadExternalLib (url) {
       return new Promise((resolve, reject) => {
         const script = document.createElement('script')
@@ -105,15 +124,26 @@ export default {
       saveAs(csvBlob, name)
       this.csv.loading = false
     },
-    async createPdf (content, name) {
+    async createPdf () {
       this.pdf.loading = true
-      await this.loadExternalLib(
-        'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/pdfmake.min.js'
-      )
-      await this.loadExternalLib(
-        'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/vfs_fonts.js'
-      )
-      window.pdfMake.createPdf(content).download(name)
+      let content = this.$route.meta.pdfContent
+
+      const now = this.$moment()
+      const dia = now.format('YYYY-MM-DD')
+      const horario = now.format('hh-mm').replace(':', 'h')
+      const name = `relatorio-${dia}-${horario}.pdf`
+
+      try {
+        await this.loadExternalLib(
+          'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/pdfmake.min.js'
+        )
+        await this.loadExternalLib(
+          'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/vfs_fonts.js'
+        )
+        window.pdfMake.createPdf(content).download(name)
+      } catch (err) {
+        console.log(err)
+      }
       this.pdf.loading = false
     },
     goBack (route) {
@@ -128,7 +158,7 @@ export default {
   background-color: #fff;
   min-height: 100vh;
   &__container {
-    max-width: $tablet;
+    max-width: 900px;
     margin: auto;
     padding-top: 3rem;
     @media (max-width: $tablet) {

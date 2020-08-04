@@ -1,18 +1,27 @@
 <template>
-  <div class="pre-impressao-usuario">
+  <div
+    class="pre-impressao-usuario"
+    :style="{ display: fetching ? 'block' : 'flex' }"
+  >
     <preloader v-if="fetching" />
-    <div v-if="isReady" class="pre-impressao-usuario__projetos">
-      <div v-for="(projeto, index) in projetosFases" :key="projeto.id">
+    <btn-progresso
+      class="pre-impressao-usuario__navigation rotate"
+      :disabled="page <= 1"
+      @btnPrograssoAction="prevPage"
+      v-if="!fetching"
+    />
+    <div class="pre-impressao-usuario__container">
+      <div v-if="isReady" class="pre-impressao-usuario__projetos" id="printer">
         <pre-impressao-a4
           v-if="projeto.totalHorasProjeto"
-          :paginationIndex="index + 1"
+          :paginationIndex="page"
           :paginationTotal="pageCount"
         >
           <div class="pre-impressao-usuario__header">
             <h2>{{ nome }}</h2>
             <p class="pre-impressao-usuario--align-right">
               Horas totais registradas<br /><span>{{
-                horasTotaisUsuario
+                projeto.totalHorasProjetoUsuario
               }}</span>
             </p>
           </div>
@@ -20,7 +29,7 @@
             <div class="projeto">
               <div class="projeto__title">
                 <h3>{{ projeto.nome }}</h3>
-                <p>{{ gruposHashTable[projeto.grupo] }}</p>
+                <p>{{ projeto.grupo }}</p>
               </div>
               <table class="projeto__table">
                 <thead>
@@ -77,18 +86,36 @@
         </pre-impressao-a4>
       </div>
     </div>
+
+    <btn-progresso
+      class="pre-impressao-usuario__navigation"
+      :disabled="page === pageCount"
+      @btnPrograssoAction="nextPage"
+      v-if="!fetching"
+    />
   </div>
 </template>
+
 <script>
+import Pdf from '~/libs/pdf'
 import { mapState, mapActions } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
+import BtnProgresso from '~/components/elements/BtnProgresso'
 import Preloader from '~/components/elements/Preloader'
 import GrafBar from '~/components/elements/GrafBar'
+
 export default {
   name: 'PreImpressaoUsuario',
   layout: 'pre-impressao',
+  data () {
+    return {
+      page: 1,
+      projeto: {}
+    }
+  },
   components: {
     PreImpressaoA4,
+    BtnProgresso,
     Preloader,
     GrafBar
   },
@@ -191,11 +218,14 @@ export default {
         return {
           nome,
           fases,
-          grupo,
+          grupo: this.gruposHashTable[grupo],
           totalHorasProjeto,
           totalHorasProjetoUsuario
         }
       })
+    },
+    projetosForPdf () {
+      return this.projetosFases.filter(projeto => projeto.totalHorasProjeto > 0)
     },
     pageCount () {
       if (!this.projetosFases.length) return 0
@@ -216,6 +246,18 @@ export default {
       const uniqueGrupos = [...new Set(grupos)]
 
       this.getGruposUsuario({ ids: uniqueGrupos })
+    },
+    projetosForPdf () {
+      if (this.projetosFases.length > 0) {
+        this.projeto = this.projetosFases[0]
+
+        // seta no meta para pegar o valor
+        // tentei com emit porém não funcionou
+        this.$route.meta.pdfContent = Pdf.pdfUsuario(
+          this.projetosForPdf,
+          this.nome
+        )
+      }
     },
     gruposUsuario (grupos) {
       const ids = grupos.map(grupo => grupo.id)
@@ -250,12 +292,26 @@ export default {
       })
 
       return combined
+    },
+    currentProjeto () {
+      this.projeto = this.projetosFases[this.page - 1]
+    },
+    nextPage () {
+      this.page = this.page + 1
+      this.currentProjeto()
+    },
+    prevPage () {
+      this.page = this.page - 1
+      this.currentProjeto()
     }
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .pre-impressao-usuario {
+  display: flex;
+
   &__header {
     display: flex;
     justify-content: space-between;
@@ -280,6 +336,19 @@ export default {
     margin-right: 1rem;
     border-left: 1rem solid;
     padding-left: 0.25rem;
+  }
+
+  &__container {
+    display: flex;
+  }
+
+  &__navigation {
+    background: transparent;
+    align-self: center;
+
+    &.rotate {
+      transform: rotate(180deg);
+    }
   }
 }
 .projeto {

@@ -26,12 +26,44 @@ export default {
     const today = new Date()
     const cDay = `${today.getDate()}`.padStart(2, '0')
     const cMonth = `${today.getMonth() + 1}`.padStart(2, '0')
-		const cYear = today.getFullYear()
-		const date = {
+    const cYear = today.getFullYear()
+    const date = {
       cMonth,
-			cDay,
-			cYear
+      cDay,
+      cYear
     }
     return date
+  },
+  separarArray (arr, tamanho) {
+    var novoArray = []
+    var i = 0
+    while (i < arr.length) {
+      novoArray.push(arr.slice(i, i + tamanho).map(a => a.nome))
+      i += tamanho
+    }
+    if (novoArray.length > 1) {
+      novoArray = novoArray.map(n => {
+        while (n.length != 4) {
+          n.push('')
+        }
+        return n
+      })
+    }
+    return novoArray
+  },
+  arrayIntersect (primeira, segunda, terceira) {
+    var arr_join = [],
+      arr = primeira.map((res, i) => {
+        arr_join.push(res)
+        if (segunda[i]) {
+          arr_join.push(segunda[i])
+        }
+        if (terceira[i]) {
+          arr_join.push(terceira[i])
+        }
+
+        return arr_join
+      })
+    return arr[0]
   }
 }
