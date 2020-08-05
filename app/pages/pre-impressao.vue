@@ -4,13 +4,6 @@
     :style="{ display: fetching ? 'block' : 'flex' }"
   >
     <preloader v-if="fetching" />
-    <!-- <btn-progresso
-      class="pre-impressao-usuario__navigation pre-impressao-usuario__navigation--left"
-      :disabled="page <= 1"
-      background="transparent"
-      @btnPrograssoAction="prevPage"
-      v-if="!fetching"
-    /> -->
     <div class="pre-impressao-usuario__container">
       <div v-if="isReady" class="pre-impressao-usuario__projetos">
         <pre-impressao-a4

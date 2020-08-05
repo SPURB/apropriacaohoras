@@ -6,7 +6,7 @@
     <preloader v-if="fetching" />
 
     <div class="pre-impressao-admin__container">
-      <div v-if="isReady" class="pre-impressao-admin__projetos" id="printer">
+      <div v-if="isReady" class="pre-impressao-admin__projetos">
         <template v-if="projeto.ind === 0">
           <pre-impressao-a4
             :paginationIndex="page"
@@ -16,10 +16,10 @@
               <h2>{{ projeto.values.nomeProjeto }}</h2>
             </div>
             <div class="pre-impressao-admin__subheader">
-              <p>
+              <!-- <p>
                 Data da última atualização:<br />
                 2020 06 13 às 13h42
-              </p>
+              </p> -->
               <p>
                 Horas totais:<br />
                 {{ projeto.values.totalHoras }}
@@ -275,7 +275,6 @@ export default {
   layout: 'pre-impressao',
   data () {
     return {
-      pageCount: 0,
       joinProjetos: [],
       projeto: {}
     }
@@ -287,7 +286,7 @@ export default {
   },
   computed: {
     ...mapState('usuario', ['nome', 'projetos', 'id']),
-    ...mapState('pre-impressao', ['page']),
+    ...mapState('pre-impressao', ['page', 'pageCount']),
     ...mapState('admin/pre-impressao', {
       fetching: state => state.fetching,
       error: state => state.error,
@@ -303,9 +302,6 @@ export default {
     }
   },
   watch: {
-    pageCount (count) {
-      this.SET({ data: count, key: 'pageCount' })
-    },
     page (currentPage) {
       if (currentPage > 0) {
         this.currentProjeto()
@@ -328,7 +324,8 @@ export default {
       this.joinProjetos = this.$store.state['admin']['pre-impressao'][
         'joinArrays'
       ]
-      this.pageCount = this.joinProjetos.length
+      // this.pageCount = this.joinProjetos.length
+      this.setPageCount(this.joinProjetos.length)
       this.currentProjeto()
     },
     joinProjetos () {
@@ -338,10 +335,12 @@ export default {
       this.$route.meta.fetching = false
     }
   },
+  beforeCreate () {
+    this.$store.dispatch('pre-impressao/reset')
+  },
   created () {
     // faz o get dos dados primordiais.
     this.setupOn()
-
     // seta o fetching
     this.$route.meta.fetching = true
   },
@@ -366,15 +365,10 @@ export default {
     },
     currentProjeto () {
       this.projeto = this.joinProjetos[this.page - 1]
+    },
+    setPageCount (data) {
+      this.SET({ data, key: 'pageCount' })
     }
-    // nextPage () {
-    //   this.page = this.page + 1
-    //   this.currentProjeto()
-    // },
-    // prevPage () {
-    //   this.page = this.page - 1
-    //   this.currentProjeto()
-    // }
   }
 }
 </script>

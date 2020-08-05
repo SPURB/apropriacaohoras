@@ -11,41 +11,44 @@
     />
     <nav>
       <btn-progresso
+        v-if="!fetching"
         class="pre-impressao__navigation pre-impressao__navigation--left"
         :disabled="page <= 1"
-        stroke="#A8A8A8"
-        background="white"
+        :stroke="'#A8A8A8'"
+        :background="'white'"
+        :onHoverBackground="'#777'"
+        :onHoverStroke="'white'"
         @btnPrograssoAction="prevPage"
-        v-if="!fetching"
+        :key="1"
       />
       <btn-progresso
+        v-if="!fetching"
         class="pre-impressao__navigation pre-impressao__navigation--right"
         :disabled="page === pageCount"
-        stroke="#A8A8A8"
-        background="white"
+        :stroke="'#A8A8A8'"
+        :background="'white'"
+        :onHoverBackground="'#777'"
+        :onHoverStroke="'white'"
+        :tooltip="`${page}/${pageCount}`"
+        :displayTooltip="true"
         @btnPrograssoAction="nextPage"
-        v-if="!fetching"
+        :key="2"
       />
     </nav>
     <div class="pre-impressao__container">
-      <voltar
-        class="pre-impressao__voltar"
-        :to="from"
-        @click.prevent="resetPagination"
-      />
-
+      <voltar class="pre-impressao__voltar" @click.prevent="reset" :to="from" />
       <div class="row">
         <div class="column">
           <nuxt ref="childrenImpressao" />
         </div>
       </div>
+      <p class="pre-impressao__page-counter">{{ page }}/{{ pageCount }}</p>
       <div class="row pre-impressao__btns">
         <div class="column column--left">
           <btn-action
             title="Gerar csv"
             @action="createCsv({ fields: '1' }, 'teste.csv')"
             :loading="csv.loading"
-            loading-message="Gerando csv"
           />
         </div>
         <div class="column column--center">
@@ -53,7 +56,6 @@
             title="Gerar pdf"
             @action="createPdf"
             :loading="pdf.loading"
-            loading-message="Gerando pdf"
           />
         </div>
         <div class="column column--right">
@@ -86,8 +88,7 @@ export default {
       },
       pdf: {
         loading: false
-      },
-      content: this.$store.state['pre-impressao'].contentForPdf
+      }
     }
   },
   computed: {
@@ -129,8 +130,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions('pre-impressao', ['reset', 'setContentForPdf']),
-    ...mapMutations('pre-impressao', ['SET']),
+    // ...mapActions('pre-impressao', ['reset']),
+    ...mapMutations('pre-impressao', ['SET', 'RESET']),
     loadExternalLib (url) {
       return new Promise((resolve, reject) => {
         const script = document.createElement('script')
@@ -153,8 +154,7 @@ export default {
     },
     async createPdf () {
       this.pdf.loading = true
-      let content = this.$route.meta.pdfContent
-
+      const content = this.$route.meta.pdfContent
       const now = this.$moment()
       const dia = now.format('YYYY-MM-DD')
       const horario = now.format('hh-mm').replace(':', 'h')
@@ -175,18 +175,19 @@ export default {
     },
     goBack (route) {
       this.$router.push(route)
-      this.reset()
+      // this.reset()
+      // this.resetPagination()
     },
     nextPage () {
       this.SET({ data: this.page + 1, key: 'page' })
     },
     prevPage () {
       this.SET({ data: this.page - 1, key: 'page' })
-    },
-    resetPagination () {
-      this.SET({ data: 1, key: 'page' })
-      this.SET({ data: 1, key: 'pageCount' })
     }
+    // resetPagination () {
+    //   this.SET({ data: 1, key: 'page' })
+    //   this.SET({ data: 1, key: 'pageCount' })
+    // }
   }
 }
 </script>
@@ -225,6 +226,9 @@ export default {
     &--right {
       right: 0;
     }
+  }
+  &__page-counter {
+    text-align: center;
   }
 }
 

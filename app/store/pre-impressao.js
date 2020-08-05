@@ -9,7 +9,6 @@ export const state = () => ({
   gruposUsuario: [],
   fasesUsuario: [],
   horas: [],
-  contentForPdf: [],
   page: 1,
   pageCount: 1,
   fetching: false,
@@ -84,5 +83,13 @@ export const mutations = {
   RESET: state => {
     state.horasProjetosUsuario = []
     state.fetching = false
+    state.projetosUsuario = []
+    state.gruposUsuario = []
+    state.fasesUsuario = []
+    state.horas = []
+    state.page = 1
+    state.pageCount = 1
+    state.error = false
+    state.err = ''
   }
 }
