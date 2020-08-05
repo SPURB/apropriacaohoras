@@ -7,13 +7,13 @@ import Subatividades from '@/services/api-subatividade'
 import Grupos from '@/services/api-grupo'
 
 export const state = () => ({
-  fases: [], // lista de fases
   projetos: [], // lista de projetos
   grupos: [],
   usuarios: [], // lista de todos os usuários
   usuariosProjetos: [], // lista de usuarios registrados nos projetos
   usuariosIndividual: [], // lista de horas por fase e total separado por usuarios no projeto
   joinArrays: [], // junta os arrays pdfContent, horasFases, horasUsuarios,
+  horas: [],
   horasFase: [], // é o total de horas por fase/projeto
   horasUsuarios: [], // horas de usuarios por projeto
   pdfContent: [], // dados gerais do projeto
@@ -46,17 +46,6 @@ const arrayIntersect = (obj1, obj2, obj3) => {
 }
 
 export const actions = {
-  getFases: async ({ commit }, { id }) => {
-    commit('SET', { data: true, key: 'fetching' })
-    try {
-      const { data } = await Fases.get(`?grupo=${id}`)
-      return data.values
-    } catch (err) {
-      commit('SET', { data: err, key: 'err' })
-      commit('SET', { data: true, key: 'error' })
-    }
-    commit('SET', { data: false, key: 'fetching' })
-  },
   getProjetos: async ({ commit }) => {
     commit('SET', { data: true, key: 'fetching' })
     try {
@@ -114,13 +103,23 @@ export const actions = {
         }
       })
 
-      for (const item of objs) {
-        const horas = await Horas.get(`?projeto=${item.projeto}`)
-        const fases = await Fases.get(`?grupo=${item.grupo}`)
+      let allHoras = []
+      let uniqueFases = {}
 
-        item.fases = fases.data.values
+      for (let item of objs) {
+        const horas = await Horas.get(`?projeto=${item.projeto}`)
+
+        if (!uniqueFases[item.grupo]) {
+          uniqueFases[item.grupo] = await Fases.get(`?grupo=${item.grupo}`)
+        }
+
+        item.fases = uniqueFases[item.grupo].data.values
         item.horas = horas.data.values
+
+        allHoras.push(horas.data.values)
       }
+
+      commit('SET', { data: allHoras, key: 'horas' })
 
       objs = objs.map(obj => {
         let totalHoras = 0
@@ -173,7 +172,7 @@ export const actions = {
       for (const item of usuariosProjetos) {
         let fases = item.fases
 
-        for (const fase of fases) {
+        for (let fase of fases) {
           const { data } = await Subatividades.get(fase.idfase)
           fase.subatividades = data.values
         }
@@ -224,8 +223,8 @@ export const actions = {
     try {
       const data = usuariosProjetos.map(obj => {
         const equipe = usuarios.map(usuario => {
-          let horas = obj.horas.filter(hora => hora.usuario === usuario.id)
-          let totalHoras = horas.reduce(
+          const horas = obj.horas.filter(hora => hora.usuario === usuario.id)
+          const totalHoras = horas.reduce(
             (acc, { horas, extras }) => (acc += horas + extras),
             0
           )
@@ -256,6 +255,8 @@ export const actions = {
 
     try {
       const grupos = await Grupos.get()
+
+      commit('SET', { data: grupos.data.values, key: 'grupos' })
 
       const data = usuariosProjetos.map(obj => {
         const grupo = grupos.data.values.filter(grupo => grupo.id === obj.grupo)

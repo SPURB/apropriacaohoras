@@ -35,8 +35,8 @@ export default {
     return date
   },
   separarArray (arr, tamanho) {
-    var novoArray = []
-    var i = 0
+    let novoArray = []
+    let i = 0
     while (i < arr.length) {
       novoArray.push(arr.slice(i, i + tamanho).map(a => a.nome))
       i += tamanho
@@ -52,7 +52,7 @@ export default {
     return novoArray
   },
   arrayIntersect (primeira, segunda, terceira) {
-    var arr_join = [],
+    let arr_join = [],
       arr = primeira.map((res, i) => {
         arr_join.push(res)
         if (segunda[i]) {

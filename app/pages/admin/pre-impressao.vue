@@ -264,6 +264,14 @@
 </template>
 
 <script>
+function createHashTable (items) {
+  let table = {}
+  items.forEach(({ id, nome }) => {
+    table[id] = nome
+  })
+  return table
+}
+
 import Pdf from '~/libs/pdf'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
@@ -295,7 +303,20 @@ export default {
       pdfContent: state => state.pdfContent,
       horasFase: state => state.horasFase,
       horasUsuarios: state => state.horasUsuarios,
-      individualHoras: state => state.usuariosIndividual
+      individualHoras: state => state.usuariosIndividual,
+      usuariosHashTable: state => createHashTable(state.usuarios),
+      gruposHashTable: state => createHashTable(state.grupos),
+      projetosHashTable: state => createHashTable(state.projetos),
+      horas: state => state.horas.filter(hora => hora.length),
+      projetoGrupo: state => {
+        let table = {}
+
+        state.projetos.forEach(({ id, grupo }) => {
+          table[id] = grupo
+        })
+
+        return table
+      }
     }),
     isReady () {
       return !this.error && !this.fetching
@@ -324,30 +345,24 @@ export default {
       this.joinProjetos = this.$store.state['admin']['pre-impressao'][
         'joinArrays'
       ]
-      // this.pageCount = this.joinProjetos.length
       this.setPageCount(this.joinProjetos.length)
       this.currentProjeto()
     },
-    joinProjetos () {
-      // seta no meta para pegar o valor
-      // tentei com emit porém não funcionou
-      this.$route.meta.pdfContent = Pdf.pdfAdmin(this.joinProjetos)
-      this.$route.meta.fetching = false
+    joinProjetos (projetos) {
+      this.$nuxt.$emit('getCsv', projetos)
+      this.$nuxt.$emit('getPdf', Pdf.pdfAdmin(projetos))
     }
   },
   beforeCreate () {
     this.$store.dispatch('pre-impressao/reset')
   },
   created () {
-    // faz o get dos dados primordiais.
     this.setupOn()
-    // seta o fetching
-    this.$route.meta.fetching = true
   },
   methods: {
     ...mapActions('admin/pre-impressao', [
       'reset',
-      'getFases',
+      // 'getFases',
       'getProjetos',
       'getUsuarios',
       'getUsuariosProjetos',

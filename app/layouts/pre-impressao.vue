@@ -47,14 +47,14 @@
         <div class="column column--left">
           <btn-action
             title="Gerar csv"
-            @action="createCsv(csv.content, fileName('csv'))"
+            @action="createCsv(csv.content, fileName(nprodam, 'csv'))"
             :loading="csv.loading"
           />
         </div>
         <div class="column column--center">
           <btn-action
             title="Gerar pdf"
-            @action="createPdf(pdf.content, fileName('pdf'))"
+            @action="createPdf(pdf.content, fileName(nprodam, 'pdf'))"
             :loading="pdf.loading"
           />
         </div>
@@ -88,11 +88,13 @@ export default {
         content: {}
       },
       pdf: {
-        loading: false
+        loading: false,
+        content: {}
       }
     }
   },
   computed: {
+    ...mapState('usuario', ['usuario']),
     ...mapState('pre-impressao', {
       fetching: state => state.fetching,
       error: state => state.error,
@@ -108,6 +110,9 @@ export default {
     from () {
       const from = this.$route.query.from
       return from ? from : '/'
+    },
+    nprodam () {
+      return this.usuario.nprodam
     }
   },
   watch: {
@@ -184,14 +189,15 @@ export default {
           errorStatus: true,
           error
         })
+      } finally {
+        this.pdf.loading = false
       }
-      this.pdf.loading = false
     },
-    fileName (extension) {
+    fileName (prefix, extension) {
       const now = this.$moment()
       const dia = now.format('YYYY-MM-DD')
       const horario = now.format('hh-mm').replace(':', 'h')
-      return `relatorio-${dia}-${horario}.${extension}`
+      return `${prefix}_${dia}-${horario}.${extension}`
     },
     goBack (route) {
       this.csv.content = {}
