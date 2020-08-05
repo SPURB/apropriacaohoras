@@ -240,16 +240,29 @@ export default {
 
       this.getGruposUsuario({ ids: uniqueGrupos })
     },
-    projetosForPdf () {
+    projetosForPdf (projetos) {
       if (this.projetosFases.length > 0) {
         this.projeto = this.projetosFases[0]
 
-        // seta no meta para pegar o valor
-        // tentei com emit porém não funcionou
-        this.$route.meta.pdfContent = Pdf.pdfUsuario(
-          this.projetosForPdf,
-          this.nome
-        )
+        const contentPdf = Pdf.pdfUsuario(this.projetosForPdf, this.nome)
+
+        const contentCsv = projetos.map(({ fases, grupo, nome }) => {
+          const values = fases.map(({ horasUsuario, horasEquipe }) => {
+            return {
+              projeto: nome,
+              grupo,
+              'suas horas': horasUsuario,
+              'horas da equipe': horasEquipe
+            }
+          })
+
+          return {
+            values
+          }
+        })
+
+        this.$nuxt.$emit('getPdf', contentPdf)
+        this.$nuxt.$emit('getCsv', this.flatArrays(contentCsv))
       }
     },
     gruposUsuario (grupos) {

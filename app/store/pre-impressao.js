@@ -73,6 +73,10 @@ export const actions = {
     const horas = ids.map(id => Horas.get(`?projeto=${id}`))
     promiseAllTable(commit, { promises: horas, table: 'horas' })
   },
+  printStatus: ({ commit }, { errorStatus, error }) => {
+    commit('SET', { data: errorStatus, key: 'error' })
+    commit('SET', { data: err, key: error })
+  },
   reset: ({ commit }) => commit('RESET')
 }
 

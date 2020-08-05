@@ -36,7 +36,7 @@
       />
     </nav>
     <div class="pre-impressao__container">
-      <voltar class="pre-impressao__voltar" @click.prevent="reset" :to="from" />
+      <voltar class="pre-impressao__voltar" :to="from" />
       <div class="row">
         <div class="column">
           <nuxt ref="childrenImpressao" />
@@ -47,14 +47,14 @@
         <div class="column column--left">
           <btn-action
             title="Gerar csv"
-            @action="createCsv({ fields: '1' }, 'teste.csv')"
+            @action="createCsv(csv.content, fileName('csv'))"
             :loading="csv.loading"
           />
         </div>
         <div class="column column--center">
           <btn-action
             title="Gerar pdf"
-            @action="createPdf"
+            @action="createPdf(pdf.content, fileName('pdf'))"
             :loading="pdf.loading"
           />
         </div>
@@ -84,7 +84,8 @@ export default {
   data () {
     return {
       csv: {
-        loading: false
+        loading: false,
+        content: {}
       },
       pdf: {
         loading: false
@@ -129,9 +130,16 @@ export default {
       }
     }
   },
+  created () {
+    this.$nuxt.$on('getCsv', data => this.handleData(data, 'csv'))
+    this.$nuxt.$on('getPdf', data => this.handleData(data, 'pdf'))
+  },
   methods: {
-    // ...mapActions('pre-impressao', ['reset']),
-    ...mapMutations('pre-impressao', ['SET', 'RESET']),
+    handleData (data, key) {
+      this[key].content = data
+    },
+    ...mapMutations('pre-impressao', ['SET']),
+    ...mapActions('pre-impressao', ['printStatus']),
     loadExternalLib (url) {
       return new Promise((resolve, reject) => {
         const script = document.createElement('script')
@@ -145,20 +153,23 @@ export default {
     },
     async createCsv (content, name) {
       this.csv.loading = true
-      await this.loadExternalLib('https://cdn.jsdelivr.net/npm/json2csv')
-      const csvBlob = new Blob([window.json2csv.parse(content)], {
-        type: 'text/csv; charset=utf-8'
-      })
-      saveAs(csvBlob, name)
-      this.csv.loading = false
+      try {
+        await this.loadExternalLib('https://cdn.jsdelivr.net/npm/json2csv')
+        const csvBlob = new Blob([window.json2csv.parse(content)], {
+          type: 'text/csv; charset=utf-8'
+        })
+        saveAs(csvBlob, name)
+      } catch (error) {
+        this.printStatus({
+          errorStatus: true,
+          error
+        })
+      } finally {
+        this.csv.loading = false
+      }
     },
-    async createPdf () {
+    async createPdf (content, name) {
       this.pdf.loading = true
-      const content = this.$route.meta.pdfContent
-      const now = this.$moment()
-      const dia = now.format('YYYY-MM-DD')
-      const horario = now.format('hh-mm').replace(':', 'h')
-      const name = `relatorio-${dia}-${horario}.pdf`
 
       try {
         await this.loadExternalLib(
@@ -168,15 +179,24 @@ export default {
           'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.62/vfs_fonts.js'
         )
         window.pdfMake.createPdf(content).download(name)
-      } catch (err) {
-        console.log(err)
+      } catch (error) {
+        this.printStatus({
+          errorStatus: true,
+          error
+        })
       }
       this.pdf.loading = false
     },
+    fileName (extension) {
+      const now = this.$moment()
+      const dia = now.format('YYYY-MM-DD')
+      const horario = now.format('hh-mm').replace(':', 'h')
+      return `relatorio-${dia}-${horario}.${extension}`
+    },
     goBack (route) {
+      this.csv.content = {}
+      this.pdf.content = {}
       this.$router.push(route)
-      // this.reset()
-      // this.resetPagination()
     },
     nextPage () {
       this.SET({ data: this.page + 1, key: 'page' })
@@ -184,10 +204,6 @@ export default {
     prevPage () {
       this.SET({ data: this.page - 1, key: 'page' })
     }
-    // resetPagination () {
-    //   this.SET({ data: 1, key: 'page' })
-    //   this.SET({ data: 1, key: 'pageCount' })
-    // }
   }
 }
 </script>
