@@ -5,11 +5,14 @@ import Fases from '@/services/api-fase'
 import Horas from '@/services/api-horas'
 import Subatividades from '@/services/api-subatividade'
 import Grupos from '@/services/api-grupo'
+import { promiseTable } from '@/libs/helpers'
 
 export const state = () => ({
-  projetos: [], // lista de projetos
+  projetos: {},
   grupos: [],
-  usuarios: [], // lista de todos os usuários
+  fases: {},
+  subatividades: [],
+  usuarios: {}, // lista de todos os usuários
   usuariosProjetos: [], // lista de usuarios registrados nos projetos
   usuariosIndividual: [], // lista de horas por fase e total separado por usuarios no projeto
   joinArrays: [], // junta os arrays pdfContent, horasFases, horasUsuarios,
@@ -46,51 +49,30 @@ const arrayIntersect = (obj1, obj2, obj3) => {
 }
 
 export const actions = {
-  getProjetos: async ({ commit }) => {
-    commit('SET', { data: true, key: 'fetching' })
-    try {
-      const { data } = await Projetos.get()
-      commit('SET', { data: data.values, key: 'projetos' })
-      commit('SET', { data: false, key: 'error' })
-    } catch (err) {
-      commit('SET', { data: err, key: 'err' })
-      commit('SET', { data: true, key: 'error' })
-    }
-    commit('SET', { data: false, key: 'fetching' })
+  getFases: ({ commit }) => {
+    promiseTable(commit, { promise: Fases.get(), table: 'fases' })
   },
-  getUsuarios: async ({ commit }) => {
-    commit('SET', { data: true, key: 'fetching' })
-    try {
-      const { data } = await Usuarios.get()
-      commit('SET', { data: data.data, key: 'usuarios' })
-      commit('SET', { data: false, key: 'error' })
-    } catch (err) {
-      commit('SET', { data: err, key: 'err' })
-      commit('SET', { data: true, key: 'error' })
-    }
-    commit('SET', { data: false, key: 'fetching' })
+  getProjetos: ({ commit }) => {
+    promiseTable(commit, { promise: Projetos.get(), table: 'projetos' })
   },
-  getUsuariosProjetos: async ({ commit }) => {
-    commit('SET', { data: true, key: 'fetching' })
-    try {
-      const { data } = await UsuariosProjetos.get()
-      commit('SET', { data: data.values, key: 'usuariosProjetos' })
-      commit('SET', { data: false, key: 'error' })
-    } catch (err) {
-      commit('SET', { data: err, key: 'err' })
-      commit('SET', { data: true, key: 'error' })
-    }
-    commit('SET', { data: false, key: 'fetching' })
+  getUsuarios: ({ commit }) => {
+    promiseTable(commit, { promise: Usuarios.get(), table: 'usuarios' })
+  },
+  getUsuariosProjetos: ({ commit }) => {
+    promiseTable(commit, {
+      promise: UsuariosProjetos.get(),
+      table: 'usuariosProjetos'
+    })
   },
   usuariosByProjetos: async ({ state, commit }) => {
     commit('SET', { data: true, key: 'fetching' })
     try {
-      const agrupado = groupBy(state.usuariosProjetos, 'projeto')
+      const agrupado = groupBy(state.usuariosProjetos.values, 'projeto')
 
-      let objs = state.projetos.map(projeto => {
+      let objs = state.projetos.values.map(projeto => {
         const nomeProjeto = projeto.nome
         const equipe = agrupado[projeto.id].map(agUsuario => {
-          return state.usuarios.filter(
+          return state.usuarios.data.filter(
             usuario => agUsuario.usuario === usuario.id
           )[0]
         })
@@ -167,6 +149,8 @@ export const actions = {
   usuariosBySubatividades: async ({ commit, state }) => {
     commit('SET', { data: true, key: 'fetching' })
     let usuariosProjetos = state.pdfContent
+
+    let allSubatividades = []
     try {
       // pega as subatividades pela fase
       for (const item of usuariosProjetos) {
@@ -175,8 +159,11 @@ export const actions = {
         for (let fase of fases) {
           const { data } = await Subatividades.get(fase.idfase)
           fase.subatividades = data.values
+          allSubatividades.push(data.values)
         }
       }
+
+      commit('SET', { data: allSubatividades, key: 'subatividades' })
 
       // pegando horas por subatividade
       const data = usuariosProjetos.map(obj => {
@@ -196,6 +183,7 @@ export const actions = {
           })
 
           return {
+            id: fase.idfase,
             nome: fase.nome,
             totalRows: subatividades.length + 1,
             subatividades
@@ -218,7 +206,7 @@ export const actions = {
   usuariosHoras: ({ commit, state }) => {
     commit('SET', { data: true, key: 'fetching' })
     const usuariosProjetos = state.pdfContent
-    const usuarios = state.usuarios
+    const usuarios = state.usuarios.data
 
     try {
       const data = usuariosProjetos.map(obj => {
@@ -295,11 +283,7 @@ export const actions = {
           }
         })
       })
-
-      let newData = []
-      data.map(res => res.map(r => newData.push(r))) // deixando todos os arrays em 1 nivel
-
-      commit('SET', { data: newData, key: 'usuariosIndividual' })
+      commit('SET', { data: data.flat(), key: 'usuariosIndividual' })
     } catch (err) {
       commit('SET', { data: err, key: 'err' })
       commit('SET', { data: true, key: 'error' })
@@ -342,9 +326,9 @@ export const mutations = {
   },
   RESET: state => {
     state.fases = []
-    state.projetos = []
-    state.usuarios = []
-    state.usuariosProjetos = []
+    state.projetos = {}
+    state.usuarios = {}
+    state.usuariosProjetos = {}
     state.usuariosIndividual = []
     state.joinArrays = []
     state.horasFase = []

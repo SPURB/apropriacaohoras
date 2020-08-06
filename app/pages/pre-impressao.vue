@@ -89,6 +89,7 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
 import Preloader from '~/components/elements/Preloader'
 import GrafBar from '~/components/elements/GrafBar'
+import { createHashTable } from '~/libs/helpers'
 
 export default {
   name: 'PreImpressaoUsuario',
@@ -128,16 +129,7 @@ export default {
     },
     gruposHashTable () {
       if (!this.gruposUsuario.length) return {}
-
-      let table = {}
-
-      this.gruposUsuario.forEach(grupo => {
-        if (grupo.nome && grupo.id) {
-          table[grupo.id] = grupo.nome
-        }
-      })
-
-      return table
+      return createHashTable(this.gruposUsuario)
     },
     validFases () {
       if (!this.fasesUsuario.length) return []
@@ -146,6 +138,10 @@ export default {
     validHoras () {
       if (!this.horas.length) return []
       return this.flatArrays(this.horas)
+    },
+    fasesHashTable () {
+      if (!this.validFases.length) return {}
+      return createHashTable(this.validFases)
     },
     projetosFases () {
       if (
@@ -247,10 +243,11 @@ export default {
         const contentPdf = Pdf.pdfUsuario(this.projetosForPdf, this.nome)
 
         const contentCsv = projetos.map(({ fases, grupo, nome }) => {
-          const values = fases.map(({ horasUsuario, horasEquipe }) => {
+          const values = fases.map(({ horasUsuario, horasEquipe, id }) => {
             return {
-              projeto: nome,
               grupo,
+              projeto: nome,
+              fase: this.fasesHashTable[id],
               'suas horas': horasUsuario,
               'horas da equipe': horasEquipe
             }
@@ -292,13 +289,7 @@ export default {
       this.getHoras({ ids: this.projetos })
     },
     flatArrays (multipleArrays) {
-      let combined = []
-
-      multipleArrays.map(({ values }) => {
-        values.forEach(val => combined.push(val))
-      })
-
-      return combined
+      return multipleArrays.map(({ values }) => values).flat()
     },
     currentProjeto () {
       this.projeto = this.projetosFases[this.page - 1]

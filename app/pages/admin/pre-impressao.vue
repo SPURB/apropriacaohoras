@@ -264,19 +264,12 @@
 </template>
 
 <script>
-function createHashTable (items) {
-  let table = {}
-  items.forEach(({ id, nome }) => {
-    table[id] = nome
-  })
-  return table
-}
-
 import Pdf from '~/libs/pdf'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
 import Preloader from '~/components/elements/Preloader'
 import GrafBar from '~/components/elements/GrafBar'
+import { createHashTable } from '~/libs/helpers'
 
 export default {
   name: 'PreImpressaoAdmin',
@@ -304,14 +297,17 @@ export default {
       horasFase: state => state.horasFase,
       horasUsuarios: state => state.horasUsuarios,
       individualHoras: state => state.usuariosIndividual,
-      usuariosHashTable: state => createHashTable(state.usuarios),
+      usuariosHashTable: state => createHashTable(state.usuarios.data),
       gruposHashTable: state => createHashTable(state.grupos),
-      projetosHashTable: state => createHashTable(state.projetos),
-      horas: state => state.horas.filter(hora => hora.length),
+      projetosHashTable: state => createHashTable(state.projetos.values),
+      fasesHashTable: state => createHashTable(state.fases.values),
+      horas: state => state.horas.filter(hora => hora.length).flat(),
+      subatividaesHashTable: state =>
+        createHashTable(state.subatividades.flat()),
       projetoGrupo: state => {
         let table = {}
 
-        state.projetos.forEach(({ id, grupo }) => {
+        state.projetos.values.forEach(({ id, grupo }) => {
           table[id] = grupo
         })
 
@@ -349,7 +345,7 @@ export default {
       this.currentProjeto()
     },
     joinProjetos (projetos) {
-      this.$nuxt.$emit('getCsv', projetos)
+      this.$nuxt.$emit('getCsv', this.createCsv())
       this.$nuxt.$emit('getPdf', Pdf.pdfAdmin(projetos))
     }
   },
@@ -362,7 +358,7 @@ export default {
   methods: {
     ...mapActions('admin/pre-impressao', [
       'reset',
-      // 'getFases',
+      'getFases',
       'getProjetos',
       'getUsuarios',
       'getUsuariosProjetos',
@@ -376,6 +372,7 @@ export default {
     setupOn () {
       this.getProjetos()
       this.getUsuarios()
+      this.getFases()
       this.getUsuariosProjetos()
     },
     currentProjeto () {
@@ -383,6 +380,31 @@ export default {
     },
     setPageCount (data) {
       this.SET({ data, key: 'pageCount' })
+    },
+    createCsv () {
+      return this.horas.map(
+        ({
+          dataRefInicio,
+          descricao,
+          extras,
+          fase,
+          horas,
+          projeto,
+          subatividade,
+          usuario
+        }) => {
+          return {
+            projeto: this.projetosHashTable[projeto],
+            fase: this.fasesHashTable[fase],
+            subatividade: this.subatividaesHashTable[subatividade],
+            usuario: this.usuariosHashTable[usuario],
+            descricao,
+            'data de referência': dataRefInicio,
+            horas,
+            extras
+          }
+        }
+      )
     }
   }
 }

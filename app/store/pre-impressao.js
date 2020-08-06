@@ -2,6 +2,7 @@ import Projetos from '@/services/api-projeto'
 import Grupos from '@/services/api-grupo'
 import Fases from '@/services/api-fase'
 import Horas from '@/services/api-horas'
+import { promiseAllTable } from '@/libs/helpers'
 
 export const state = () => ({
   horasProjetosUsuario: [],
@@ -15,19 +16,6 @@ export const state = () => ({
   error: false,
   err: ''
 })
-
-function promiseAllTable (commit, { promises, table }) {
-  Promise.all(promises)
-    .then(res => {
-      const datas = res.map(({ data }) => data)
-      commit('SET', { data: datas, key: table })
-    })
-    .catch(err => {
-      commit('SET', { data: err, key: 'err' })
-      commit('SET', { data: true, key: 'error' })
-    })
-    .finally(() => commit('SET', { data: false, key: 'fetching' }))
-}
 
 export const actions = {
   getHorasProjetos: async ({ commit }, { ids, today, user }) => {
