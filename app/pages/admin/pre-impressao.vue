@@ -5,7 +5,10 @@
   >
     <preloader v-if="fetching" />
 
-    <div class="pre-impressao-admin__container">
+    <div
+      v-if="projeto.ind !== undefined"
+      class="pre-impressao-admin__container"
+    >
       <div v-if="isReady" class="pre-impressao-admin__projetos">
         <template v-if="projeto.ind === 0">
           <pre-impressao-a4
@@ -57,13 +60,20 @@
                     >
                       <td>{{ fase.nome }}</td>
                       <td>{{ fase.totalHorasFase }}</td>
-                      <td>
+                      <td class="graf-barra">
                         <graf-bar
                           :base="0"
                           :current="fase.totalHorasFase"
-                          :total="projeto.values.totalHoras"
-                          :height="32"
+                          :total="
+                            sumArray(
+                              projeto.values.fases.map(
+                                ({ totalHorasFase }) => totalHorasFase
+                              )
+                            )
+                          "
+                          :height="30"
                           :width="200"
+                          :background="'#fbfbfb'"
                         />
                       </td>
                     </tr>
@@ -100,7 +110,7 @@
                   </div>
                   <table
                     :key="`fases-${index}`"
-                    class="projeto__table"
+                    class="projeto__table projeto__table--paginado"
                     v-for="(fases, index) in pagina"
                   >
                     <thead class="">
@@ -116,6 +126,20 @@
                       >
                         <td>{{ subatividade.nome }}</td>
                         <td>{{ subatividade.totalHoras }}</td>
+                        <td class="graf-barra">
+                          <graf-bar
+                            :base="0"
+                            :current="subatividade.totalHoras"
+                            :total="
+                              sumArray(
+                                fases.map(({ totalHoras }) => totalHoras)
+                              )
+                            "
+                            :height="30"
+                            :width="200"
+                            :background="'#fbfbfb'"
+                          />
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -159,13 +183,14 @@
                     >
                       <td>{{ membro.nome }}</td>
                       <td>{{ membro.totalHoras }}</td>
-                      <td>
+                      <td class="graf-barra">
                         <graf-bar
                           :base="0"
                           :current="membro.totalHoras"
                           :total="projeto.values.totalHoras"
                           :height="32"
                           :width="200"
+                          :background="'#fbfbfb'"
                         />
                       </td>
                     </tr>
@@ -213,13 +238,14 @@
                       <td>{{ fase.nome }}</td>
                       <td>{{ fase.horasUsuario }}</td>
                       <td>{{ fase.horasEquipe }}</td>
-                      <td>
+                      <td class="graf-barra">
                         <graf-bar
                           :base="fase.horasEquipe"
                           :current="fase.horasUsuario"
                           :total="projeto.values.totalHorasProjeto"
-                          :height="32"
+                          :height="30"
                           :width="200"
+                          :background="'#fbfbfb'"
                         />
                       </td>
                     </tr>
@@ -328,17 +354,22 @@ export default {
             }
           })
         })
-        .forEach((subatividades, index) => {
+        .forEach((subatividades, index, array) => {
           const len = subatividades.length
           const currentSoma = len + soma
 
           if (currentSoma <= maxSoma) {
-            soma = currentSoma
             pagina.push(subatividades)
+            soma = currentSoma
           } else {
             paginas.push(pagina)
             pagina = []
-            soma = 0
+            pagina.push(subatividades)
+            soma = len
+          }
+
+          if (index === array.length - 1) {
+            paginas.push(pagina)
           }
         })
 
@@ -404,6 +435,9 @@ export default {
       this.getUsuarios()
       this.getFases()
       this.getUsuariosProjetos()
+    },
+    sumArray (arryOfNumbers) {
+      return arryOfNumbers.reduce((acc, curr) => acc + curr, 0)
     },
     currentProjeto () {
       this.projeto = this.joinProjetos[this.page - 1]
@@ -563,6 +597,12 @@ export default {
         align-items: center;
         padding-right: 0;
       }
+      &.graf-barra {
+        justify-content: flex-end;
+      }
+    }
+    &--paginado {
+      margin-top: 1rem;
     }
   }
   &__fase {

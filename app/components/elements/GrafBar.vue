@@ -3,7 +3,7 @@
     :width="width"
     :height="height"
     :viewBox="`0 0 ${width} ${height}`"
-    fill="none"
+    :style="`background:${background}`"
   >
     <rect :width="baseRatio" :height="height" :fill="baseFill" />
     <rect :width="currentRatio" :height="height" :fill="currentFill" />
@@ -40,6 +40,10 @@ export default {
     width: {
       type: Number,
       default: 252
+    },
+    background: {
+      type: String,
+      default: 'white'
     }
   },
   computed: {
