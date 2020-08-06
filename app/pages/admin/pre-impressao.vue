@@ -79,59 +79,50 @@
           </pre-impressao-a4>
         </template>
         <template v-if="projeto.ind === 1">
-          <pre-impressao-a4
-            :paginationIndex="page"
-            :paginationTotal="pageCount"
-          >
-            <div class="pre-impressao-admin__header--fases">
-              <h2>{{ projeto.values.nomeProjeto }}</h2>
+          <div v-for="(pagina, index) in fasesPaginadas" :key="index">
+            <pre-impressao-a4
+              :paginationIndex="page"
+              :paginationTotal="pageCount"
+            >
+              <div class="pre-impressao-admin__header--fases">
+                <h2>{{ projeto.values.nomeProjeto }}</h2>
 
-              <p>
-                Horas totais registradas:<br />
-                <span>{{ projeto.values.totalHoras }}</span>
-              </p>
-            </div>
+                <p>
+                  Horas totais registradas:<br />
+                  <span>{{ projeto.values.totalHoras }}</span>
+                </p>
+              </div>
 
-            <div class="pre-impressao-admin__main">
-              <div class="projeto">
-                <div class="projeto__title">
-                  <h3>Horas totais por Subatividades</h3>
-                </div>
-                <table
-                  :key="`fases-${index}`"
-                  class="projeto__table"
-                  v-for="(fase, index) in projeto.values.fases"
-                >
-                  <thead>
-                    <tr>
-                      <th>{{ fase.nome }}</th>
+              <div class="pre-impressao-admin__main">
+                <div class="projeto">
+                  <div class="projeto__title">
+                    <h3>Horas totais por subatividades</h3>
+                  </div>
+                  <table
+                    :key="`fases-${index}`"
+                    class="projeto__table"
+                    v-for="(fases, index) in pagina"
+                  >
+                    <thead class="">
+                      <th>{{ fases[0].fase }}</th>
                       <th>Horas</th>
                       <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      :key="`fase-${index}`"
-                      class="projeto__fase"
-                      v-for="(subatividade, index) in fase.subatividades"
-                    >
-                      <td>{{ subatividade.nome }}</td>
-                      <td>{{ subatividade.totalHoras }}</td>
-                      <td>
-                        <graf-bar
-                          :base="0"
-                          :current="subatividade.totalHoras"
-                          :total="projeto.totalHoras"
-                          :height="32"
-                          :width="200"
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      <tr
+                        :key="`fase-${index}`"
+                        class="projeto__fase"
+                        v-for="(subatividade, index) in fases"
+                      >
+                        <td>{{ subatividade.nome }}</td>
+                        <td>{{ subatividade.totalHoras }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          </pre-impressao-a4>
+            </pre-impressao-a4>
+          </div>
         </template>
         <template v-if="projeto.ind === 2">
           <pre-impressao-a4
@@ -277,7 +268,10 @@ export default {
   data () {
     return {
       joinProjetos: [],
-      projeto: {}
+      projeto: {
+        ind: 0,
+        values: []
+      }
     }
   },
   components: {
@@ -314,6 +308,42 @@ export default {
         return table
       }
     }),
+    fasesPaginadas () {
+      if (this.projeto.ind !== 1) return [[{}]] // schema, cada array do segundo nível é uma página. O objeto é a subatividade.
+
+      let paginas = []
+      let pagina = []
+
+      let soma = 0
+      const maxSoma = 18 // máximo de linhas de cada página
+
+      this.projeto.values.fases
+        .map(({ nome, subatividades, id }) => {
+          return subatividades.map(subatividade => {
+            return {
+              idFase: id,
+              fase: nome,
+              nome: subatividade.nome,
+              totalHoras: subatividade.totalHoras
+            }
+          })
+        })
+        .forEach((subatividades, index) => {
+          const len = subatividades.length
+          const currentSoma = len + soma
+
+          if (currentSoma <= maxSoma) {
+            soma = currentSoma
+            pagina.push(subatividades)
+          } else {
+            paginas.push(pagina)
+            pagina = []
+            soma = 0
+          }
+        })
+
+      return paginas
+    },
     isReady () {
       return !this.error && !this.fetching
     }
