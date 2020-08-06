@@ -187,7 +187,7 @@ export default {
       } catch (error) {
         this.printStatus({
           errorStatus: true,
-          error
+          error: error || 'Erro na impressão'
         })
       } finally {
         this.pdf.loading = false

@@ -63,7 +63,7 @@ export const actions = {
   },
   printStatus: ({ commit }, { errorStatus, error }) => {
     commit('SET', { data: errorStatus, key: 'error' })
-    commit('SET', { data: err, key: error })
+    commit('SET', { data: error, key: 'err' })
   },
   reset: ({ commit }) => commit('RESET')
 }

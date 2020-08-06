@@ -27,9 +27,7 @@ export default {
       {
         marginTop: 10,
         columns: [
-          {
-            text: 'Data da última atualização: \n 2020 06 13 às 13h42'
-          },
+          {},
           {
             text: `Horas totais registradas \n ${projeto.totalHoras}`,
             style: ['rightText']
@@ -88,8 +86,8 @@ export default {
           widths: ['70%', '30%'],
           body: [
             [
-              { text: fase.nome, style: ['tableFirst'] },
-              { text: 'Horas', style: ['tableFirst'] }
+              { text: fase.nome, style: ['tableFirst'], margin: [0, 20, 0, 0] },
+              { text: 'Horas', style: ['tableFirst'], margin: [0, 20, 0, 0] }
             ],
             ...content
           ]

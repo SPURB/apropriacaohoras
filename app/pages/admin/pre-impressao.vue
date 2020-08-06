@@ -309,7 +309,7 @@ export default {
       }
     }),
     fasesPaginadas () {
-      if (this.projeto.ind !== 1) return [[{}]] // schema, cada array do segundo nível é uma página. O objeto é a subatividade.
+      if (this.projeto.ind !== 1) return [[{}]] // -> Estrutura do output. Cada array do segundo nível é uma página. O objeto é a subatividade.
 
       let paginas = []
       let pagina = []
