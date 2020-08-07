@@ -413,8 +413,10 @@ export default {
   beforeCreate () {
     this.$store.dispatch('pre-impressao/reset')
   },
-  created () {
-    this.setupOn()
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.setupOn()
+    })
   },
   methods: {
     ...mapActions('admin/pre-impressao', [
