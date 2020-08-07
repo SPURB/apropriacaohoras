@@ -1,6 +1,6 @@
 <template>
   <div class="admin-relatorios">
-    <section v-if="fetching" class="index-comum__preloader-wrapper">
+    <section v-if="fetching" class="admin-relatorios__preloader-wrapper">
       <preloader :color="'#fff'" />
     </section>
     <section class="admin-relatorios__detalhados">
@@ -29,12 +29,26 @@
 
     <section class="admin-relatorios__tabela">
       <tabela-projeto :projetos="projetosCardMap" />
+    </section>
+    <section class="admin-relatorios__actions">
       <btn-action
-        class="index-comum__action"
-        title="Visualizar relatório detalhado"
+        class="admin-relatorios__action"
+        title="Visualizar meu relatório detalhado"
         @action="
           $router.push({
             path: '/pre-impressao',
+            query: {
+              from: '/admin/relatorios'
+            }
+          })
+        "
+      />
+      <btn-action
+        class="admin-relatorios__action"
+        title="Visualizar relatório detalhado da equipe"
+        @action="
+          $router.push({
+            path: '/admin/pre-impressao',
             query: {
               from: '/admin/relatorios'
             }
@@ -109,6 +123,20 @@ export default {
   &__tabela {
     @media (max-width: $tablet) {
       padding: 1rem;
+    }
+  }
+  &__actions {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    @media (max-width: $tablet) {
+      flex-direction: column;
+    }
+  }
+  &__action {
+    margin: 2rem 1rem 3rem;
+    @media (max-width: $tablet) {
+      margin: 1rem;
     }
   }
 }

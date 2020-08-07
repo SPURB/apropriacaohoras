@@ -23,8 +23,7 @@ module.exports = {
           nome: 'PIU Setor Central',
           ativo: 1,
           grupo: 3,
-          createdAt:
-          now,
+          createdAt: now,
           updatedAt: now
         },
         {
@@ -38,7 +37,7 @@ module.exports = {
           nome: 'PIU Arco Tietê',
           ativo: 1,
           grupo: 3,
-          createdAt:now,
+          createdAt: now,
           updatedAt: now
         },
         {
@@ -203,12 +202,15 @@ module.exports = {
         },
         {
           nome: 'Falta abonada',
-          ativo: 4,
+          grupo: 4,
+          ativo: 1,
           createdAt: now,
           updatedAt: now
         },
         {
-          nome: 'Cursos', ativo: 4,
+          nome: 'Cursos',
+          grupo: 4,
+          ativo: 0,
           createdAt: now,
           updatedAt: now
         }

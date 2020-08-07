@@ -30,7 +30,7 @@
     </section>
 
     <section class="projeto" v-if="this.showProjeto">
-      <h1>{{ projeto.nome }}</h1>
+      <h3 data-cy="projeto__title">{{ projeto.nome }}</h3>
 
       <div class="elemento">
         <i class="icon icon-seta_esquerda"></i>
@@ -264,7 +264,7 @@ export default {
     flex-direction: column;
     padding: 25px;
 
-    h1 {
+    &__title {
       margin: 5px;
     }
     .elemento {

@@ -17,11 +17,12 @@
  * @type {Cypress.PluginConfig}
  */
 module.exports = (on, config) => {
+  require('cypress-plugin-retries/lib/plugin')(on)
 
   const apiBaseURl = {
-    'local': config.env['local'],
-    'homolog': config.env['homolog'],
-    'prod': config.env['prod']
+    local: config.env['local'],
+    homolog: config.env['homolog'],
+    prod: config.env['prod']
   }
 
   config.env.API_BASE_URL = apiBaseURl[process.env.NODE_ENV]

@@ -1,13 +1,14 @@
 {
-	"baseUrl": "http://localhost:3000",
-	"fixturesFolder": "cypress/fixtures",
-	"integrationFolder": "cypress/integration",
-	"pluginsFile": "cypress/plugins/index.js",
-	"screenshotsFolder": "cypress/screenshots",
-	"supportFile": "cypress/support/index.js",
-	"video": false,
-	"env": {
-		"local": "http://localhost:5000/apropriacaohoras/api/0.0.1",
-		"homolog": "https://apropriacaohoras.herokuapp.com/apropriacaohoras/api/0.0.1"
-	}
+  "baseUrl": "http://localhost:3000",
+  "fixturesFolder": "cypress/fixtures",
+  "integrationFolder": "cypress/integration",
+  "pluginsFile": "cypress/plugins/index.js",
+  "screenshotsFolder": "cypress/screenshots",
+  "supportFile": "cypress/support/index.js",
+  "video": false,
+  "env": {
+    "local": "http://localhost:5000/apropriacaohoras/api/0.0.1",
+    "homolog": "https://apropriacaohoras.herokuapp.com/apropriacaohoras/api/0.0.1",
+    "RETRIES": 0
+  }
 }

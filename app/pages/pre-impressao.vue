@@ -1,18 +1,22 @@
 <template>
-  <div class="pre-impressao-usuario">
+  <div
+    class="pre-impressao-usuario"
+    :style="{ display: fetching ? 'block' : 'flex' }"
+  >
     <preloader v-if="fetching" />
-    <div v-if="isReady" class="pre-impressao-usuario__projetos">
-      <div v-for="(projeto, index) in projetosFases" :key="projeto.id">
+    <div class="pre-impressao-usuario__container">
+      <div v-if="isReady" class="pre-impressao-usuario__projetos">
         <pre-impressao-a4
           v-if="projeto.totalHorasProjeto"
-          :paginationIndex="index + 1"
+          :paginationIndex="page"
           :paginationTotal="pageCount"
+          @getA4Width="setDinamicBreakPoints"
         >
           <div class="pre-impressao-usuario__header">
             <h2>{{ nome }}</h2>
             <p class="pre-impressao-usuario--align-right">
               Horas totais registradas<br /><span>{{
-                horasTotaisUsuario
+                projeto.totalHorasProjetoUsuario
               }}</span>
             </p>
           </div>
@@ -20,7 +24,7 @@
             <div class="projeto">
               <div class="projeto__title">
                 <h3>{{ projeto.nome }}</h3>
-                <p>{{ gruposHashTable[projeto.grupo] }}</p>
+                <p>{{ projeto.grupo }}</p>
               </div>
               <table class="projeto__table">
                 <thead>
@@ -28,7 +32,7 @@
                     <th>Fases</th>
                     <th>Suas horas</th>
                     <th>Horas da equipe</th>
-                    <th></th>
+                    <th v-if="showgrafbar"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -40,7 +44,7 @@
                     <td>{{ fase.nome }}</td>
                     <td>{{ fase.horasUsuario }}</td>
                     <td>{{ fase.horasEquipe }}</td>
-                    <td>
+                    <td v-if="showgrafbar">
                       <graf-bar
                         :base="fase.horasEquipe"
                         :current="fase.horasUsuario"
@@ -54,7 +58,7 @@
                     <td>total</td>
                     <td>{{ projeto.totalHorasProjetoUsuario }}</td>
                     <td>{{ projeto.totalHorasProjeto }}</td>
-                    <td></td>
+                    <td v-if="showgrafbar"></td>
                   </tr>
                 </tbody>
               </table>
@@ -79,14 +83,24 @@
     </div>
   </div>
 </template>
+
 <script>
-import { mapState, mapActions } from 'vuex'
+import Pdf from '~/libs/pdf'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
 import Preloader from '~/components/elements/Preloader'
 import GrafBar from '~/components/elements/GrafBar'
+import { createHashTable } from '~/libs/helpers'
+
 export default {
   name: 'PreImpressaoUsuario',
   layout: 'pre-impressao',
+  data () {
+    return {
+      projeto: {},
+      showgrafbar: true
+    }
+  },
   components: {
     PreImpressaoA4,
     Preloader,
@@ -102,7 +116,8 @@ export default {
       'projetosUsuario',
       'gruposUsuario',
       'fasesUsuario',
-      'horas'
+      'horas',
+      'page'
     ]),
     isReady () {
       return !this.error && !this.fetching
@@ -116,16 +131,7 @@ export default {
     },
     gruposHashTable () {
       if (!this.gruposUsuario.length) return {}
-
-      let table = {}
-
-      this.gruposUsuario.forEach(grupo => {
-        if (grupo.nome && grupo.id) {
-          table[grupo.id] = grupo.nome
-        }
-      })
-
-      return table
+      return createHashTable(this.gruposUsuario)
     },
     validFases () {
       if (!this.fasesUsuario.length) return []
@@ -134,6 +140,10 @@ export default {
     validHoras () {
       if (!this.horas.length) return []
       return this.flatArrays(this.horas)
+    },
+    fasesHashTable () {
+      if (!this.validFases.length) return {}
+      return createHashTable(this.validFases)
     },
     projetosFases () {
       if (
@@ -191,11 +201,14 @@ export default {
         return {
           nome,
           fases,
-          grupo,
+          grupo: this.gruposHashTable[grupo],
           totalHorasProjeto,
           totalHorasProjetoUsuario
         }
       })
+    },
+    projetosForPdf () {
+      return this.projetosFases.filter(projeto => projeto.totalHorasProjeto > 0)
     },
     pageCount () {
       if (!this.projetosFases.length) return 0
@@ -206,6 +219,14 @@ export default {
     }
   },
   watch: {
+    page (currentPage) {
+      if (currentPage > 0) {
+        this.currentProjeto()
+      }
+    },
+    pageCount (count) {
+      this.SET({ data: count, key: 'pageCount' })
+    },
     projetos () {
       this.setupHorasProjetos()
     },
@@ -216,6 +237,32 @@ export default {
       const uniqueGrupos = [...new Set(grupos)]
 
       this.getGruposUsuario({ ids: uniqueGrupos })
+    },
+    projetosForPdf (projetos) {
+      if (this.projetosFases.length > 0) {
+        this.projeto = this.projetosFases[0]
+
+        const contentPdf = Pdf.pdfUsuario(this.projetosForPdf, this.nome)
+
+        const contentCsv = projetos.map(({ fases, grupo, nome }) => {
+          const values = fases.map(({ horasUsuario, horasEquipe, id }) => {
+            return {
+              grupo,
+              projeto: nome,
+              fase: this.fasesHashTable[id],
+              'suas horas': horasUsuario,
+              'horas da equipe': horasEquipe
+            }
+          })
+
+          return {
+            values
+          }
+        })
+
+        this.$nuxt.$emit('getPdf', contentPdf)
+        this.$nuxt.$emit('getCsv', this.flatArrays(contentCsv))
+      }
     },
     gruposUsuario (grupos) {
       const ids = grupos.map(grupo => grupo.id)
@@ -233,6 +280,7 @@ export default {
       'getFasesUsuario',
       'getHoras'
     ]),
+    ...mapMutations('pre-impressao', ['SET']),
     setupHorasProjetos () {
       this.getHorasProjetos({
         ids: this.projetos,
@@ -243,19 +291,24 @@ export default {
       this.getHoras({ ids: this.projetos })
     },
     flatArrays (multipleArrays) {
-      let combined = []
-
-      multipleArrays.map(({ values }) => {
-        values.forEach(val => combined.push(val))
-      })
-
-      return combined
+      return multipleArrays.map(({ values }) => values).flat()
+    },
+    currentProjeto () {
+      this.projeto = this.projetosFases[this.page - 1]
+    },
+    setDinamicBreakPoints (width) {
+      if (width < 800) {
+        this.showgrafbar = false
+      }
     }
   }
 }
 </script>
+
 <style lang="scss" scoped>
 .pre-impressao-usuario {
+  display: flex;
+
   &__header {
     display: flex;
     justify-content: space-between;
@@ -263,6 +316,9 @@ export default {
     h2 {
       font-weight: normal;
       font-size: 1.52rem;
+      @media (max-width: $phone) {
+        font-size: 1rem;
+      }
     }
     span {
       font-size: 1rem;
@@ -280,6 +336,15 @@ export default {
     margin-right: 1rem;
     border-left: 1rem solid;
     padding-left: 0.25rem;
+  }
+
+  &__container {
+    display: flex;
+  }
+  &__container,
+  &__projetos,
+  .projeto__table {
+    width: 100%;
   }
 }
 .projeto {
@@ -308,6 +373,7 @@ export default {
         display: flex;
         align-items: center;
         padding-right: 0;
+        flex-direction: row-reverse;
       }
     }
   }
