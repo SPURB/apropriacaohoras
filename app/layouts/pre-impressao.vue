@@ -9,9 +9,9 @@
       action-text="Voltar"
       @setModalAction="goBack(from)"
     />
-    <nav>
+    <nav v-if="!fetching">
       <btn-progresso
-        v-if="!fetching"
+        v-if="page > 1"
         class="pre-impressao__navigation pre-impressao__navigation--left"
         :disabled="page <= 1"
         :stroke="'#A8A8A8'"
@@ -22,7 +22,6 @@
         :key="1"
       />
       <btn-progresso
-        v-if="!fetching"
         class="pre-impressao__navigation pre-impressao__navigation--right"
         :disabled="page === pageCount"
         :stroke="'#A8A8A8'"
@@ -35,11 +34,11 @@
         :key="2"
       />
     </nav>
-    <div class="pre-impressao__container">
+    <div class="pre-impressao__container" ref="pre-impressao-continer">
       <voltar class="pre-impressao__voltar" :to="from" />
       <div class="row">
         <div class="column">
-          <nuxt ref="childrenImpressao" />
+          <nuxt />
         </div>
       </div>
       <p class="pre-impressao__page-counter">{{ page }}/{{ pageCount }}</p>
@@ -228,11 +227,21 @@ export default {
   &__voltar {
     width: 100%;
     margin-bottom: 3rem;
+    @media (max-width: 669px) {
+      margin-bottom: 0.5rem;
+    }
   }
   &__btns {
     max-width: 600px;
     margin: auto;
     padding-bottom: 3rem;
+    @media (max-width: $phone) {
+      flex-direction: column;
+      margin-bottom: 3rem;
+      .column--center {
+        margin: auto 0;
+      }
+    }
   }
   &__navigation {
     position: fixed;
@@ -240,6 +249,12 @@ export default {
     height: 100vh;
     border: 0;
     z-index: 9;
+
+    @media (max-width: 669px) {
+      height: inherit;
+      top: unset;
+      bottom: 0;
+    }
 
     &--left {
       left: 0;

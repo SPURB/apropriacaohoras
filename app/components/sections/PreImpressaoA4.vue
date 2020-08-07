@@ -15,7 +15,7 @@
       />
       <p>{{ paginationIndex }} de {{ paginationTotal }}</p>
     </div>
-    <div class="pre-impressao-a4__main" :style="`height:${mainHeight}px`">
+    <div class="pre-impressao-a4__main" :style="`height:${mainHeight}`">
       <slot />
     </div>
     <div class="pre-impressao-a4__footer">
@@ -35,9 +35,9 @@ export default {
   },
   data () {
     return {
-      height: 0,
       origin: '',
-      now: ''
+      now: '',
+      width: 800
     }
   },
   props: {
@@ -48,32 +48,43 @@ export default {
     paginationTotal: {
       type: Number,
       required: true
-    },
-    width: {
-      type: Number,
-      default: 800
     }
   },
   computed: {
+    height () {
+      return this.width * 1.51
+    },
     logoMaxWidth () {
       return this.width * 0.179
     },
     paddingTop () {
+      if (this.width < 638) {
+        return 0
+      }
       return this.height * 0.054
     },
     paddingRightLeft () {
+      if (this.width < 638) {
+        return 0
+      }
       return this.width * 0.127
     },
     paddingBottom () {
+      if (this.width < 638) {
+        return 0
+      }
       return this.height * 0.024
     },
     mainHeight () {
-      return this.height * 0.8
+      if (this.width < 638) {
+        return '100%'
+      }
+      return `${this.height * 0.8}px`
     }
   },
   mounted () {
-    // this.width = this.$refs.a4.offsetWidth
-    this.height = this.width * 1.51
+    this.width = this.$refs.a4.offsetWidth
+    this.$emit('getA4Width', this.width)
     this.origin = `${window.location.host}/apropriacaohoras/`
 
     const now = this.$moment()
@@ -116,6 +127,10 @@ export default {
     &--right {
       text-align: right;
     }
+  }
+  @media (max-width: 669px) {
+    border: unset;
+    box-shadow: unset;
   }
 }
 </style>

@@ -10,6 +10,7 @@
           v-if="projeto.totalHorasProjeto"
           :paginationIndex="page"
           :paginationTotal="pageCount"
+          @getA4Width="setDinamicBreakPoints"
         >
           <div class="pre-impressao-usuario__header">
             <h2>{{ nome }}</h2>
@@ -31,7 +32,7 @@
                     <th>Fases</th>
                     <th>Suas horas</th>
                     <th>Horas da equipe</th>
-                    <th></th>
+                    <th v-if="showgrafbar"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -43,7 +44,7 @@
                     <td>{{ fase.nome }}</td>
                     <td>{{ fase.horasUsuario }}</td>
                     <td>{{ fase.horasEquipe }}</td>
-                    <td>
+                    <td v-if="showgrafbar">
                       <graf-bar
                         :base="fase.horasEquipe"
                         :current="fase.horasUsuario"
@@ -57,7 +58,7 @@
                     <td>total</td>
                     <td>{{ projeto.totalHorasProjetoUsuario }}</td>
                     <td>{{ projeto.totalHorasProjeto }}</td>
-                    <td></td>
+                    <td v-if="showgrafbar"></td>
                   </tr>
                 </tbody>
               </table>
@@ -96,7 +97,8 @@ export default {
   layout: 'pre-impressao',
   data () {
     return {
-      projeto: {}
+      projeto: {},
+      showgrafbar: true
     }
   },
   components: {
@@ -293,6 +295,11 @@ export default {
     },
     currentProjeto () {
       this.projeto = this.projetosFases[this.page - 1]
+    },
+    setDinamicBreakPoints (width) {
+      if (width < 800) {
+        this.showgrafbar = false
+      }
     }
   }
 }
@@ -309,6 +316,9 @@ export default {
     h2 {
       font-weight: normal;
       font-size: 1.52rem;
+      @media (max-width: $phone) {
+        font-size: 1rem;
+      }
     }
     span {
       font-size: 1rem;
@@ -330,6 +340,11 @@ export default {
 
   &__container {
     display: flex;
+  }
+  &__container,
+  &__projetos,
+  .projeto__table {
+    width: 100%;
   }
 }
 .projeto {
@@ -358,6 +373,7 @@ export default {
         display: flex;
         align-items: center;
         padding-right: 0;
+        flex-direction: row-reverse;
       }
     }
   }
