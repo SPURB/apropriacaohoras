@@ -6,6 +6,7 @@
     @mouseenter="toggleMouseEnter(true)"
     @mouseleave="toggleMouseEnter(false)"
     :style="`background: ${background}`"
+    data-cy="btn-progresso"
   >
     <span v-if="reactiveTooltip" class="btn-progresso__tootip">{{
       tooltip
@@ -114,6 +115,9 @@ export default {
   &:disabled {
     cursor: unset;
     opacity: 0.5;
+  }
+  &:focus {
+    outline: none;
   }
 }
 </style>

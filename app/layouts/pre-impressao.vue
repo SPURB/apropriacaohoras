@@ -41,7 +41,10 @@
           <nuxt />
         </div>
       </div>
-      <p class="pre-impressao__page-counter">{{ page }}/{{ pageCount }}</p>
+      <p class="pre-impressao__page-counter">
+        <span data-cy="pre-impressao__page-counter">{{ page }}</span
+        >/{{ pageCount }}
+      </p>
       <div class="row pre-impressao__btns">
         <div class="column column--left">
           <btn-action
@@ -234,7 +237,7 @@ export default {
   &__btns {
     max-width: 600px;
     margin: auto;
-    padding-bottom: 3rem;
+    padding-bottom: 5rem;
     @media (max-width: $phone) {
       flex-direction: column;
       margin-bottom: 3rem;
@@ -248,7 +251,7 @@ export default {
     top: 0;
     height: 100vh;
     border: 0;
-    z-index: 9;
+    z-index: 8;
 
     @media (max-width: 669px) {
       height: inherit;

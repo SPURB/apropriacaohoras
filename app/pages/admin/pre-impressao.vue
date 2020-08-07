@@ -4,7 +4,17 @@
     :style="{ display: fetching ? 'block' : 'flex' }"
   >
     <preloader v-if="fetching" />
-
+    <modal
+      v-if="error"
+      :title="'Erro!'"
+      :error="true"
+      :description="err"
+      :action-description="
+        'Houve um problema na aplicação. Tente recarregar a página.'
+      "
+      :action-text="'Voltar'"
+      @setModalAction="goBack"
+    />
     <div
       v-if="projeto.ind !== undefined"
       class="pre-impressao-admin__container"
@@ -287,6 +297,7 @@ import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
 import Preloader from '~/components/elements/Preloader'
 import GrafBar from '~/components/elements/GrafBar'
 import { createHashTable } from '~/libs/helpers'
+import Modal from '~/components/sections/Modal'
 
 export default {
   name: 'PreImpressaoAdmin',
@@ -376,7 +387,7 @@ export default {
       return paginas
     },
     isReady () {
-      return !this.error && !this.fetching
+      return !this.fetching
     }
   },
   watch: {
@@ -431,6 +442,7 @@ export default {
       'usuariosIndividual',
       'joinArrays'
     ]),
+    ...mapActions('usuario'['filterProjetos']),
     ...mapMutations('pre-impressao', ['SET']),
     setupOn () {
       this.getProjetos()
@@ -471,6 +483,11 @@ export default {
           }
         }
       )
+    },
+    goBack () {
+      this.reset()
+      this.$store.dispatch('pre-impressao/reset')
+      this.$router.go(-1)
     }
   }
 }

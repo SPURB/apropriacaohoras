@@ -13,7 +13,10 @@
         :fill-type="'#1D1D1B'"
         :fill-brand="'#038375'"
       />
-      <p>{{ paginationIndex }} de {{ paginationTotal }}</p>
+      <p>
+        <span data-cy="pre-impressao__pagina">{{ paginationIndex }}</span> de
+        {{ paginationTotal }}
+      </p>
     </div>
     <div class="pre-impressao-a4__main" :style="`height:${mainHeight}`">
       <slot />
