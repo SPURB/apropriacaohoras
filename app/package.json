@@ -6,9 +6,9 @@
   "scripts": {
     "serve": "nuxt serve",
     "lint": "prettier-standard ./{*,/**/*}.vue --format",
-    "build": "cross-env NODE_ENV=prod nuxt build && cross-env NODE_ENV=prod nuxt export",
-    "build:local": "cross-env NODE_ENV=local nuxt build && cross-env NODE_ENV=local nuxt export",
-    "build:homolog": "cross-env NODE_ENV=homolog nuxt build && cross-env NODE_ENV=homolog nuxt export",
+    "build": "cross-env NODE_ENV=prod nuxt generate",
+    "build:local": "cross-env NODE_ENV=local nuxt generate",
+    "build:homolog": "cross-env NODE_ENV=homolog nuxt generate",
     "dev": "cross-env NODE_ENV=homolog nuxt",
     "dev:local": "cross-env NODE_ENV=local nuxt",
     "cy:open": "cross-env NODE_ENV=homolog cypress open",
@@ -34,7 +34,7 @@
     "axios": "^0.19.2",
     "file-saver": "^2.0.2",
     "fuse.js": "^3.2.1",
-    "nuxt": "^2.13.2",
+    "nuxt": "^2.14.1",
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {
