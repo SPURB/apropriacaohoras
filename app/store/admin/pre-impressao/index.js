@@ -7,24 +7,6 @@ import Subatividades from '@/services/api-subatividade'
 import Grupos from '@/services/api-grupo'
 import { promiseTable } from '@/libs/helpers'
 
-export const state = () => ({
-  projetos: {},
-  grupos: [],
-  fases: {},
-  subatividades: [],
-  usuarios: {}, // lista de todos os usuários
-  usuariosProjetos: [], // lista de usuarios registrados nos projetos
-  usuariosIndividual: [], // lista de horas por fase e total separado por usuarios no projeto
-  joinArrays: [], // junta os arrays pdfContent, horasFases, horasUsuarios,
-  horas: [],
-  horasFase: [], // é o total de horas por fase/projeto
-  horasUsuarios: [], // horas de usuarios por projeto
-  pdfContent: [], // dados gerais do projeto
-  fetching: false,
-  error: false,
-  err: ''
-})
-
 const groupBy = (xs, key) => {
   return xs.reduce((rv, x) => {
     ;(rv[x[key]] = rv[x[key]] || []).push(x)
@@ -47,6 +29,24 @@ const arrayIntersect = (obj1, obj2, obj3) => {
     })
   return arr[0]
 }
+
+export const state = () => ({
+  projetos: {},
+  grupos: [],
+  fases: {},
+  subatividades: [],
+  usuarios: {}, // lista de todos os usuários
+  usuariosProjetos: [], // lista de usuarios registrados nos projetos
+  usuariosIndividual: [], // lista de horas por fase e total separado por usuarios no projeto
+  joinArrays: [], // junta os arrays pdfContent, horasFases, horasUsuarios,
+  horas: [],
+  horasFase: [], // é o total de horas por fase/projeto
+  horasUsuarios: [], // horas de usuarios por projeto
+  pdfContent: [], // dados gerais do projeto
+  fetching: false,
+  error: false,
+  err: ''
+})
 
 export const actions = {
   getFases: ({ commit }) => {

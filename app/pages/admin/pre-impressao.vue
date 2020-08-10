@@ -17,6 +17,8 @@
     <preloader v-if="fetching" />
     <div v-else class="pre-impressao-admin__container">
       <div v-if="isReady" class="pre-impressao-admin__projetos">
+        <pre-impressao-admin-pagina-1 />
+
         <template v-if="isReady && projeto.ind === 0">
           <pre-impressao-a4
             :paginationIndex="page"
@@ -26,10 +28,6 @@
               <h2>{{ projeto.values.nomeProjeto }}</h2>
             </div>
             <div class="pre-impressao-admin__subheader">
-              <!-- <p>
-                Data da última atualização:<br />
-                2020 06 13 às 13h42
-              </p> -->
               <p>
                 Horas totais:<br />
                 {{ projeto.values.totalHoras }}
@@ -95,6 +93,9 @@
             </div>
           </pre-impressao-a4>
         </template>
+
+        <pre-impressao-admin-pagina-2 />
+
         <template v-if="projeto.ind === 1">
           <div v-for="(pagina, index) in fasesPaginadas" :key="index">
             <pre-impressao-a4
@@ -295,6 +296,8 @@ import Preloader from '~/components/elements/Preloader'
 import GrafBar from '~/components/elements/GrafBar'
 import { createHashTable } from '~/libs/helpers'
 import Modal from '~/components/sections/Modal'
+import PreImpressaoAdminPagina1 from '~/components/sections/PreImpressaoAdminPagina1'
+import PreImpressaoAdminPagina2 from '~/components/sections/PreImpressaoAdminPagina2'
 
 export default {
   name: 'PreImpressaoAdmin',
@@ -309,6 +312,8 @@ export default {
     }
   },
   components: {
+    PreImpressaoAdminPagina1,
+    PreImpressaoAdminPagina2,
     PreImpressaoA4,
     Preloader,
     GrafBar

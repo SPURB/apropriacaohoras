@@ -9,7 +9,7 @@
       :class="disabledClass"
     >
       <option value="0" selected disabled>
-        Selecione uma opção
+        {{ optionTitle }}
       </option>
       <option
         :key="item.nome + index"
@@ -42,6 +42,14 @@ export default {
     },
     disabled: {
       type: Boolean
+    },
+    setOptionValue: {
+      type: Number,
+      default: 0
+    },
+    optionTitle: {
+      type: String,
+      default: 'Selecione uma opção'
     }
   },
   data () {

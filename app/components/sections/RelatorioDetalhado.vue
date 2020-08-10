@@ -5,9 +5,15 @@
         :title="'Projetos'"
         :idInput="'projetos'"
         :values="projetos"
+        :setOptionValue="projeto"
+        :optionTitle="optionTitle"
         data-cy="select__option"
       />
-      <button v-if="projeto > 0" @click="RESET" data-cy="btn__limpar">
+      <button
+        v-if="projeto"
+        @click.prevent="resetFilters"
+        data-cy="btn__limpar"
+      >
         Limpar filtro
       </button>
     </section>
@@ -34,13 +40,14 @@
 import CustomSelect from '~/components/forms/CustomSelect'
 import TabelaHoras from '~/components/sections/TabelaHoras'
 import Pagination from '~/components/elements/Pagination'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 export default {
   name: 'RelatorioDetalhado',
   data () {
     return {
       pageNumber: 0,
-      size: 9
+      size: 9,
+      optionTitle: ''
     }
   },
   components: {
@@ -51,11 +58,13 @@ export default {
   computed: {
     ...mapState('relatorios', {
       projetos: state => state.projetos,
-      horasUsuariosByProjetos: state => state.horasUsuariosByProjetos
+      horasUsuariosByProjetos: state => state.horasUsuariosByProjetos,
+      projeto: state => state.projetoSelected
     }),
     ...mapState('form-registrar-horas', {
       projeto: state => state.horas.projeto
     }),
+    ...mapGetters('relatorios', ['projetoInfo']),
     thead () {
       return [
         {
@@ -90,6 +99,10 @@ export default {
   watch: {
     projeto (val) {
       this.getRelatorioDetalhado()
+    },
+    projetoInfo (projeto) {
+      this.optionTitle =
+        projeto.nome !== '' ? projeto.nome : 'Selecione um projeto'
     }
   },
   methods: {
@@ -97,6 +110,11 @@ export default {
     ...mapActions('form-registrar-horas', ['RESET']),
     setPageNumber (val) {
       this.pageNumber = val
+    },
+    resetFilters () {
+      this.optionTitle = 'Selecione um projeto'
+      this.setOptionValue = 0
+      this.RESET()
     }
   }
 }
@@ -125,7 +143,6 @@ export default {
       }
     }
   }
-
   &__table {
     margin: 15px;
     overflow-x: hidden;
