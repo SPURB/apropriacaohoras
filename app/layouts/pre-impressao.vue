@@ -1,7 +1,7 @@
 <template>
   <div class="pre-impressao">
     <modal
-      v-if="error"
+      v-if="error && !fetching"
       title="Erro!"
       :error="true"
       :description="err"

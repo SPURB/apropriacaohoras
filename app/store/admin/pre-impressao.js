@@ -140,11 +140,14 @@ export const actions = {
       objs = objs.filter(p => p.horas.length > 0)
 
       commit('SET', { data: objs, key: 'pdfContent' })
+      commit('SET', { data: false, key: 'error' })
+      commit('SET', { data: '', key: 'err' })
     } catch (err) {
       commit('SET', { data: err, key: 'err' })
       commit('SET', { data: true, key: 'error' })
+    } finally {
+      commit('SET', { data: false, key: 'fetching' })
     }
-    commit('SET', { data: false, key: 'fetching' })
   },
   usuariosBySubatividades: async ({ commit, state }) => {
     commit('SET', { data: true, key: 'fetching' })
@@ -197,11 +200,14 @@ export const actions = {
         }
       })
       commit('SET', { data, key: 'horasFase' })
+      commit('SET', { data: false, key: 'error' })
+      commit('SET', { data: '', key: 'err' })
     } catch (err) {
       commit('SET', { data: err, key: 'err' })
       commit('SET', { data: true, key: 'error' })
+    } finally {
+      commit('SET', { data: false, key: 'fetching' })
     }
-    commit('SET', { data: false, key: 'fetching' })
   },
   usuariosHoras: ({ commit, state }) => {
     commit('SET', { data: true, key: 'fetching' })
@@ -231,11 +237,14 @@ export const actions = {
         }
       })
       commit('SET', { data, key: 'horasUsuarios' })
+      commit('SET', { data: false, key: 'error' })
+      commit('SET', { data: '', key: 'err' })
     } catch (err) {
       commit('SET', { data: err, key: 'err' })
       commit('SET', { data: true, key: 'error' })
+    } finally {
+      commit('SET', { data: false, key: 'fetching' })
     }
-    commit('SET', { data: false, key: 'fetching' })
   },
   usuariosIndividual: async ({ commit, state }) => {
     commit('SET', { data: true, key: 'fetching' })
@@ -284,11 +293,14 @@ export const actions = {
         })
       })
       commit('SET', { data: data.flat(), key: 'usuariosIndividual' })
+      commit('SET', { data: false, key: 'error' })
+      commit('SET', { data: '', key: 'err' })
     } catch (err) {
       commit('SET', { data: err, key: 'err' })
       commit('SET', { data: true, key: 'error' })
+    } finally {
+      commit('SET', { data: false, key: 'fetching' })
     }
-    commit('SET', { data: false, key: 'fetching' })
   },
   joinArrays: ({ state, commit }) => {
     commit('SET', { data: true, key: 'fetching' })
@@ -314,8 +326,11 @@ export const actions = {
     } catch (err) {
       commit('SET', { data: err, key: 'err' })
       commit('SET', { data: true, key: 'error' })
+    } finally {
+      commit('SET', { data: false, key: 'fetching' })
+      commit('SET', { data: false, key: 'error' })
+      commit('SET', { data: '', key: 'err' })
     }
-    commit('SET', { data: false, key: 'fetching' })
   },
   RESET: ({ commit }) => commit('RESET')
 }

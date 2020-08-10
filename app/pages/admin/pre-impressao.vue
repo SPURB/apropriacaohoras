@@ -3,7 +3,6 @@
     class="pre-impressao-admin"
     :style="{ display: fetching ? 'block' : 'flex' }"
   >
-    <preloader v-if="fetching" />
     <modal
       v-if="error"
       :title="'Erro!'"
@@ -15,12 +14,10 @@
       :action-text="'Voltar'"
       @setModalAction="goBack"
     />
-    <div
-      v-if="projeto.ind !== undefined"
-      class="pre-impressao-admin__container"
-    >
+    <preloader v-if="fetching" />
+    <div v-else class="pre-impressao-admin__container">
       <div v-if="isReady" class="pre-impressao-admin__projetos">
-        <template v-if="projeto.ind === 0">
+        <template v-if="isReady && projeto.ind === 0">
           <pre-impressao-a4
             :paginationIndex="page"
             :paginationTotal="pageCount"
@@ -291,7 +288,7 @@
 </template>
 
 <script>
-import Pdf from '~/libs/pdf'
+import { pdfAdmin } from '~/libs/pdf'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
 import Preloader from '~/components/elements/Preloader'
@@ -418,11 +415,8 @@ export default {
     },
     joinProjetos (projetos) {
       this.$nuxt.$emit('getCsv', this.createCsv())
-      this.$nuxt.$emit('getPdf', Pdf.pdfAdmin(projetos))
+      this.$nuxt.$emit('getPdf', pdfAdmin(projetos))
     }
-  },
-  beforeCreate () {
-    this.$store.dispatch('pre-impressao/reset')
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -445,6 +439,7 @@ export default {
     ...mapActions('usuario'['filterProjetos']),
     ...mapMutations('pre-impressao', ['SET']),
     setupOn () {
+      this.$store.dispatch('pre-impressao/reset')
       this.getProjetos()
       this.getUsuarios()
       this.getFases()
