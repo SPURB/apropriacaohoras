@@ -242,7 +242,7 @@ export default {
       if (this.projetosFases.length > 0) {
         this.projeto = this.projetosFases[0]
 
-        const contentPdf = pdfUsuario(this.projetosForPdf, this.nome)
+        const contentPdf = pdfUsuario(projetos, this.nome)
 
         const contentCsv = projetos.map(({ fases, grupo, nome }) => {
           const values = fases.map(({ horasUsuario, horasEquipe, id }) => {

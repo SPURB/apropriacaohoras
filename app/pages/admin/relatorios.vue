@@ -31,7 +31,8 @@
             path: '/admin/pre-impressao',
             query: {
               from: '/admin/relatorios',
-              projeto: projetoInfo.id
+              projeto: projetoInfo.id,
+              section: 1
             }
           })
         "

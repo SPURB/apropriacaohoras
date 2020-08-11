@@ -15,6 +15,30 @@ export const state = () => ({
   err: ''
 })
 
+export const getters = {
+  totalHoras: state => {
+    if (!state.horas.length) return 0
+    return state.horas
+      .map(({ horas, extras }) => horas + extras)
+      .reduce((a, c) => a + c, 0)
+  },
+  fasesComHoras: state => {
+    if (!state.fases.length || !state.horas.length) return []
+    return state.fases.map(({ nome, id }) => {
+      const totalHorasFase = state.horas
+        .filter(({ fase }) => fase === id)
+        .map(({ horas, extras }) => horas + extras)
+        .reduce((a, c) => a + c, 0)
+
+      return {
+        totalHorasFase,
+        nome,
+        id
+      }
+    })
+  }
+}
+
 export const actions = {
   getProjetoInfo: async ({ commit }, idProjeto) => {
     commit('SET', { data: true, key: 'fetching' })

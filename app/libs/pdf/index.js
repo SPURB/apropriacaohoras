@@ -1,6 +1,12 @@
 import Styles from './styles'
 import Commons from '../index'
-import Estrutura from './estrutura'
+import {
+  primeiraPaginaAdmin,
+  segundaPaginaAdmin,
+  terceiraPaginaAdmin,
+  quartaPaginaAdmin,
+  pageBreak
+} from './estrutura'
 import { line, spurbanismoBase64 } from './commons'
 
 const origin = `${window.location.host}/apropriacaohoras/`
@@ -142,13 +148,13 @@ const pdfAdmin = projetos => {
 
   projetos.forEach(projeto => {
     if (projeto.ind === 0) {
-      primeira.push(Estrutura.primeiraPaginaAdmin(projeto.values))
+      primeira.push(primeiraPaginaAdmin(projeto.values))
     } else if (projeto.ind === 1) {
-      segunda.push(Estrutura.segundaPaginaAdmin(projeto.values))
+      segunda.push(segundaPaginaAdmin(projeto.values))
     } else if (projeto.ind === 2) {
-      terceira.push(Estrutura.terceiraPaginaAdmin(projeto.values))
+      terceira.push(terceiraPaginaAdmin(projeto.values))
     } else {
-      quarta.push(Estrutura.quartaPaginaAdmin(projeto.values))
+      quarta.push(quartaPaginaAdmin(projeto.values))
     }
   })
 
@@ -197,4 +203,42 @@ const pdfAdmin = projetos => {
   }
 }
 
-export { pdfUsuario, pdfAdmin }
+const pdfAdmin2 = ({ primeiraPaginaAdmin }) => {
+  return {
+    pageSize: 'A4',
+    header: (currentPage, pageCount) => {
+      return {
+        columns: [
+          {
+            image: spurbanismoBase64,
+            width: 100,
+            marginTop: 25,
+            marginLeft: 40
+          },
+          {
+            alignment: 'right',
+            text: currentPage.toString() + ' de ' + pageCount,
+            marginTop: 25,
+            marginRight: 40
+          }
+        ]
+      }
+    },
+    primeiraPaginaAdmin,
+    footer: {
+      margin: [40, -15, 40, 0],
+      columns: [
+        {
+          text: `Verifique este documento \n ${origin}`,
+          style: ['leftText', 'footer']
+        },
+        {
+          text: `Relatório gerado em \n ${date.cDay}/${date.cMonth}/${date.cYear} às ${horario}`,
+          style: ['rightText', 'footer']
+        }
+      ]
+    }
+  }
+}
+
+export { pdfUsuario, pdfAdmin, pdfAdmin2 }

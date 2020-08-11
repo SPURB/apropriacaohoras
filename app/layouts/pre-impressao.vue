@@ -18,19 +18,19 @@
         :background="'transparent'"
         :onHoverBackground="'#777'"
         :onHoverStroke="'white'"
-        @btnPrograssoAction="prevPage"
+        @btnPrograssoAction="changeSection(-1)"
         :key="1"
       />
       <btn-progresso
         class="pre-impressao__navigation pre-impressao__navigation--right"
-        :disabled="page === pageCount"
+        :disabled="page === 3"
         :stroke="'#A8A8A8'"
         :background="'transparent'"
         :onHoverBackground="'#777'"
         :onHoverStroke="'white'"
-        :tooltip="`${page}/${pageCount}`"
+        :tooltip="`${page}/${3}`"
         :displayTooltip="true"
-        @btnPrograssoAction="nextPage"
+        @btnPrograssoAction="changeSection(1)"
         :key="2"
       />
     </nav>
@@ -206,11 +206,18 @@ export default {
       this.pdf.content = {}
       this.$router.push(route)
     },
-    nextPage () {
-      this.SET({ data: this.page + 1, key: 'page' })
-    },
-    prevPage () {
-      this.SET({ data: this.page - 1, key: 'page' })
+    changeSection (number) {
+      const section = parseInt(this.$route.query.section)
+      const { from, projeto } = this.$route.query
+
+      this.$router.replace({
+        query: {
+          from,
+          projeto,
+          section: section + number
+        }
+      })
+      this.SET({ data: this.page + number, key: 'page' })
     }
   }
 }
