@@ -9,6 +9,6 @@
   "env": {
     "local": "http://localhost:5000/apropriacaohoras/api/0.0.1",
     "homolog": "https://apropriacaohoras.herokuapp.com/apropriacaohoras/api/0.0.1",
-    "RETRIES": 0
+    "RETRIES": 2
   }
 }

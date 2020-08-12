@@ -15,7 +15,7 @@ describe('Testes de integração páginas de pré-impressão', () => {
       })
     cy.get('[data-cy=btn-progresso]')
       .click()
-      .get('[data-cy=pre-impressao__page-counter]')
+      .get('[data-cy=pre-impressao__pagina]')
       .then(el => {
         const endPageNum = parseInt(el.text())
         cy.wrap({ endPageNum })
@@ -39,7 +39,7 @@ describe('Testes de integração páginas de pré-impressão', () => {
       })
       .get('[data-cy=btn-progresso]')
       .click()
-      .get('[data-cy=pre-impressao__page-counter]')
+      .get('[data-cy=pre-impressao__pagina]')
       .then(el => {
         const endPageNum = parseInt(el.text())
         cy.wrap({ endPageNum })
