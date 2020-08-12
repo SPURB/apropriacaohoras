@@ -3,7 +3,7 @@ describe('Testes de integração páginas de pré-impressão', () => {
     cy.fakeLogin('/admin/')
   })
 
-  it('Verifica se folha está sendo renderizado duas folhas em /relatorio', () => {
+  it('Verifica navegação de pré-impressão para admin /relatorio', () => {
     let startPageNum
     cy.visit('/relatorios/')
       .get('[data-cy=btn-action]')
@@ -15,7 +15,7 @@ describe('Testes de integração páginas de pré-impressão', () => {
       })
     cy.get('[data-cy=btn-progresso]')
       .click()
-      .get('[data-cy=pre-impressao__page-counter]')
+      .get('[data-cy=pre-impressao__pagina]')
       .then(el => {
         const endPageNum = parseInt(el.text())
         cy.wrap({ endPageNum })
@@ -24,9 +24,11 @@ describe('Testes de integração páginas de pré-impressão', () => {
       })
   })
 
-  it('Verifica página de pré-impressão para admin  /admin/relatorio', () => {
+  it('Verifica navegação de pré-impressão para admin /admin/relatorio', () => {
     let startPageNum
     cy.visit('/admin/relatorios')
+      .get('#projetos')
+      .select('1')
       .get('[data-cy=btn-action]')
       .next()
       .click()
@@ -37,7 +39,7 @@ describe('Testes de integração páginas de pré-impressão', () => {
       })
       .get('[data-cy=btn-progresso]')
       .click()
-      .get('[data-cy=pre-impressao__page-counter]')
+      .get('[data-cy=pre-impressao__pagina]')
       .then(el => {
         const endPageNum = parseInt(el.text())
         cy.wrap({ endPageNum })

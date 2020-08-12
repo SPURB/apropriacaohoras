@@ -5,9 +5,41 @@
     </section>
     <section class="admin-relatorios__detalhados">
       <h2 class="admin-relatorios__title">
-        Relatório detalhado
+        Relatórios
       </h2>
       <relatorio-detalhado />
+    </section>
+    <section class="admin-relatorios__actions">
+      <btn-action
+        class="admin-relatorios__action"
+        title="Relatório de horas individual"
+        @action="
+          $router.push({
+            path: '/pre-impressao',
+            query: {
+              from: '/admin/relatorios',
+              section: 1,
+              type: 'usuario'
+            }
+          })
+        "
+      />
+      <btn-action
+        v-if="projetoInfo.id"
+        class="admin-relatorios__action"
+        :title="`Relatório de horas do ${projetoInfo.nome}`"
+        @action="
+          $router.push({
+            path: '/admin/pre-impressao',
+            query: {
+              from: '/admin/relatorios',
+              projeto: projetoInfo.id,
+              section: 1,
+              type: 'projeto'
+            }
+          })
+        "
+      />
     </section>
     <section class="admin-relatorios__cards">
       <h2 class="admin-relatorios__title">
@@ -29,32 +61,6 @@
 
     <section class="admin-relatorios__tabela">
       <tabela-projeto :projetos="projetosCardMap" />
-    </section>
-    <section class="admin-relatorios__actions">
-      <btn-action
-        class="admin-relatorios__action"
-        title="Visualizar meu relatório detalhado"
-        @action="
-          $router.push({
-            path: '/pre-impressao',
-            query: {
-              from: '/admin/relatorios'
-            }
-          })
-        "
-      />
-      <btn-action
-        class="admin-relatorios__action"
-        title="Visualizar relatório detalhado da equipe"
-        @action="
-          $router.push({
-            path: '/admin/pre-impressao',
-            query: {
-              from: '/admin/relatorios'
-            }
-          })
-        "
-      />
     </section>
   </div>
 </template>
@@ -82,19 +88,25 @@ export default {
   },
   computed: {
     ...mapState('relatorios', ['fetching']),
-    ...mapGetters('relatorios', ['projetosCardMap'])
+    ...mapGetters('relatorios', ['projetosCardMap', 'projetoInfo'])
   },
   async created () {
     await this.getRelatorios()
     await this.getHorasProjeto()
     await this.getRelatorioDetalhado()
   },
+  mounted () {
+    this.resetPreImpressao()
+  },
   methods: {
     ...mapActions('relatorios', [
       'getRelatorios',
       'getHorasProjeto',
       'getRelatorioDetalhado'
-    ])
+    ]),
+    ...mapActions('pre-impressao', {
+      resetPreImpressao: 'reset'
+    })
   }
 }
 </script>

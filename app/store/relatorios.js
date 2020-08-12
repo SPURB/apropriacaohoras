@@ -9,6 +9,7 @@ import moment from 'moment'
 
 export const state = () => ({
   projetos: [],
+  projetoSelected: 0,
   horasUsuario: [],
   horasProjeto: [],
   horasUsuariosByProjetos: [],
@@ -19,17 +20,18 @@ export const state = () => ({
 })
 
 export const getters = {
-  projetosMap: (state) => {
+  projetosMap: state => {
     if (state.projetos.length) {
       let mapped = {}
-      state.projetos.forEach(projeto => mapped[projeto.id] = projeto.nome)
+      state.projetos.forEach(projeto => (mapped[projeto.id] = projeto.nome))
 
       return mapped
     }
     return {}
   },
   projetosCardMap: (state, getters, rootState) => {
-    const ready = state.horasUsuario.length ||
+    const ready =
+      state.horasUsuario.length ||
       state.projetos.length ||
       rootState.usuario.projetos.length ||
       state.horasProjeto.length
@@ -50,16 +52,20 @@ export const getters = {
         return horas
       })
       .sort((a, b) => b.desdeInicio - a.desdeInicio)
+  },
+  projetoInfo: state => {
+    if (!state.projetoSelected)
+      return {
+        nome: ''
+      }
+    return state.projetos.find(({ id }) => id === state.projetoSelected)
   }
 }
 
 export const actions = {
   getRelatorios: ({ commit, rootState }) => {
     commit('SET', { key: 'fetching', data: true })
-    Promise.all([
-      Projetos.get(),
-      Horas.get(`?usuario=${rootState.usuario.id}`)
-    ])
+    Promise.all([Projetos.get(), Horas.get(`?usuario=${rootState.usuario.id}`)])
       .then(responses => {
         const projetos = responses[0].data.values
         const horas = responses[1].data.values
@@ -78,14 +84,18 @@ export const actions = {
   getHorasProjeto: ({ commit, rootState }) => {
     if (!rootState.usuario.projetos.length) return
 
-    const inicio = moment().startOf("month").format("YYYY-MM-DD")
-    const fim = moment().endOf("month").format("YYYY-MM-DD")
+    const inicio = moment()
+      .startOf('month')
+      .format('YYYY-MM-DD')
+    const fim = moment()
+      .endOf('month')
+      .format('YYYY-MM-DD')
 
     commit('SET', { key: 'fetching', data: true })
     const projetos = rootState.usuario.projetos
 
     Acoes.agruparHoras(projetos, inicio, fim)
-      .then((totais => {
+      .then(totais => {
         const data = totais.data.map(res => {
           return {
             horas: res.horas,
@@ -96,7 +106,7 @@ export const actions = {
           }
         })
         commit('SET', { key: 'horasProjeto', data })
-      }))
+      })
       .catch(err => {
         console.log(err)
         commit('SET', { key: 'error', data: true })
@@ -109,9 +119,13 @@ export const actions = {
   },
   getRelatorioDetalhado: ({ commit, rootState }) => {
     let url
-    rootState['form-registrar-horas'].horas.projeto !== null ? 
-    url = `?projeto=${rootState['form-registrar-horas'].horas.projeto}` :
-    url = ''
+    const projetoId = rootState['form-registrar-horas'].horas.projeto
+    if (projetoId) {
+      commit('SET', { data: projetoId, key: 'projetoSelected' })
+      url = `?projeto=${rootState['form-registrar-horas'].horas.projeto}`
+    } else {
+      url = ''
+    }
     Promise.all([
       Usuarios.get(),
       Fases.get(),
@@ -125,13 +139,14 @@ export const actions = {
 
       let data = []
       horas.forEach(hora => {
-
-         let usuario = {
+        let usuario = {
           nome: usuarios.find(usuario => usuario.id === hora.usuario).nome,
           registros: hora.horas + hora.extras,
-          subatividade: subatividades.find(subatividade => subatividade.id === hora.subatividade).nome,
+          subatividade: subatividades.find(
+            subatividade => subatividade.id === hora.subatividade
+          ).nome,
           fase: fases.find(fase => fase.id === hora.fase).nome
-        }        
+        }
         data.push(usuario)
       })
       commit('SET', { data, key: 'horasUsuariosByProjetos' })
@@ -144,17 +159,19 @@ export const actions = {
 
 export const mutations = {
   ORDER_BY: (state, payload) => {
-    state.horasUsuariosByProjetos = state.horasUsuariosByProjetos
-                                    .sort((a, b) => (a.payload > b.payload) ? 1 : -1)
+    state.horasUsuariosByProjetos = state.horasUsuariosByProjetos.sort((a, b) =>
+      a.payload > b.payload ? 1 : -1
+    )
   },
-  SET: (state, { data, key }) => { state[key] = data },
-  RESET: (state) => {
+  SET: (state, { data, key }) => {
+    state[key] = data
+  },
+  RESET: state => {
     state.projetos = []
-    state.horasUsuario = [],
-    state.horasUsuariosByProjetos = []
+    ;(state.horasUsuario = []), (state.horasUsuariosByProjetos = [])
     state.fetching = false
     state.error = false
     state.errorStatus = 0
-    state.errorMessage =''
+    state.errorMessage = ''
   }
 }

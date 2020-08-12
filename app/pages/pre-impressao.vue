@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import Pdf from '~/libs/pdf'
+import { pdfUsuario } from '~/libs/pdf/index'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import PreImpressaoA4 from '~/components/sections/PreImpressaoA4'
 import Preloader from '~/components/elements/Preloader'
@@ -215,7 +215,7 @@ export default {
       const valid = this.projetosFases.filter(
         ({ totalHorasProjeto }) => totalHorasProjeto
       )
-      return valid.length
+      return valid.length - 1
     }
   },
   watch: {
@@ -242,7 +242,7 @@ export default {
       if (this.projetosFases.length > 0) {
         this.projeto = this.projetosFases[0]
 
-        const contentPdf = Pdf.pdfUsuario(this.projetosForPdf, this.nome)
+        const contentPdf = pdfUsuario(projetos, this.nome)
 
         const contentCsv = projetos.map(({ fases, grupo, nome }) => {
           const values = fases.map(({ horasUsuario, horasEquipe, id }) => {

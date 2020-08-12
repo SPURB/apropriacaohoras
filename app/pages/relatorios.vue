@@ -28,7 +28,9 @@
           goTo({
             path: '/pre-impressao',
             query: {
-              from: '/relatorios'
+              from: '/relatorios',
+              section: 1,
+              type: 'usuario'
             }
           })
         "
@@ -66,8 +68,14 @@ export default {
     await this.getRelatorios()
     await this.getHorasProjeto()
   },
+  mounted () {
+    this.resetPreImpressao()
+  },
   methods: {
     ...mapActions('relatorios', ['getRelatorios', 'getHorasProjeto']),
+    ...mapActions('pre-impressao', {
+      resetPreImpressao: 'reset'
+    }),
     goTo (to) {
       this.$router.push(to)
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="pre-impressao">
     <modal
-      v-if="error"
+      v-if="error && !fetching"
       title="Erro!"
       :error="true"
       :description="err"
@@ -9,7 +9,7 @@
       action-text="Voltar"
       @setModalAction="goBack(from)"
     />
-    <nav v-if="!fetching">
+    <nav v-if="!fetching && type === 'usuario'">
       <btn-progresso
         v-if="page > 1"
         class="pre-impressao__navigation pre-impressao__navigation--left"
@@ -18,7 +18,7 @@
         :background="'transparent'"
         :onHoverBackground="'#777'"
         :onHoverStroke="'white'"
-        @btnPrograssoAction="prevPage"
+        @btnPrograssoAction="change(-1)"
         :key="1"
       />
       <btn-progresso
@@ -30,7 +30,32 @@
         :onHoverStroke="'white'"
         :tooltip="`${page}/${pageCount}`"
         :displayTooltip="true"
-        @btnPrograssoAction="nextPage"
+        @btnPrograssoAction="change(1)"
+        :key="2"
+      />
+    </nav>
+    <nav v-if="!fetching && type === 'projeto'">
+      <btn-progresso
+        v-if="page > 1"
+        class="pre-impressao__navigation pre-impressao__navigation--left"
+        :disabled="page <= 1"
+        :stroke="'#A8A8A8'"
+        :background="'transparent'"
+        :onHoverBackground="'#777'"
+        :onHoverStroke="'white'"
+        @btnPrograssoAction="change(-1)"
+        :key="1"
+      />
+      <btn-progresso
+        class="pre-impressao__navigation pre-impressao__navigation--right"
+        :disabled="page === 3"
+        :stroke="'#A8A8A8'"
+        :background="'transparent'"
+        :onHoverBackground="'#777'"
+        :onHoverStroke="'white'"
+        :tooltip="`${page}/${3}`"
+        :displayTooltip="true"
+        @btnPrograssoAction="change(1)"
         :key="2"
       />
     </nav>
@@ -41,10 +66,6 @@
           <nuxt />
         </div>
       </div>
-      <p class="pre-impressao__page-counter">
-        <span data-cy="pre-impressao__page-counter">{{ page }}</span
-        >/{{ pageCount }}
-      </p>
       <div class="row pre-impressao__btns">
         <div class="column column--left">
           <btn-action
@@ -115,6 +136,12 @@ export default {
     },
     nprodam () {
       return this.usuario.nprodam
+    },
+    section () {
+      return this.$route.query.section ? this.$route.query.section : ''
+    },
+    type () {
+      return this.$route.query.type
     }
   },
   watch: {
@@ -135,6 +162,15 @@ export default {
         this.csv.loading = false
         this.pdf.loading = false
       }
+    },
+    section () {
+      setTimeout(() => {
+        this.$scrollTo('.pre-impressao', 150, {
+          easing: 'ease-in',
+          cancelable: true,
+          force: true
+        })
+      }, 150)
     }
   },
   created () {
@@ -206,11 +242,19 @@ export default {
       this.pdf.content = {}
       this.$router.push(route)
     },
-    nextPage () {
-      this.SET({ data: this.page + 1, key: 'page' })
-    },
-    prevPage () {
-      this.SET({ data: this.page - 1, key: 'page' })
+    change (number) {
+      const section = parseInt(this.$route.query.section)
+      const { from, projeto, type } = this.$route.query
+
+      this.$router.replace({
+        query: {
+          from,
+          projeto,
+          section: section + number,
+          type
+        }
+      })
+      this.SET({ data: this.page + number, key: 'page' })
     }
   }
 }
@@ -266,9 +310,6 @@ export default {
     &--right {
       right: 0;
     }
-  }
-  &__page-counter {
-    text-align: center;
   }
 }
 
