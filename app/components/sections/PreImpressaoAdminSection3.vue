@@ -1,6 +1,9 @@
 <template>
   <div class="pre-impressao-admin-section-3">
-    <pre-impressao-a4 :paginationIndex="3" :paginationTotal="3">
+    <pre-impressao-a4
+      :paginationIndex="totalPages"
+      :paginationTotal="totalPages"
+    >
       <div class="pre-impressao-admin__header--fases">
         <h2>{{ projeto }}</h2>
 
@@ -63,6 +66,7 @@ export default {
       'usuarios'
     ]),
     ...mapGetters('admin/pre-impressao/section1', ['totalHoras']),
+    ...mapGetters('admin/pre-impressao/section2', ['totalPages']),
     usuarioComHoras () {
       if (!this.usuarios.length || !this.horas) return []
 

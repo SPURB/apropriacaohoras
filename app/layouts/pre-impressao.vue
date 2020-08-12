@@ -9,7 +9,7 @@
       action-text="Voltar"
       @setModalAction="goBack(from)"
     />
-    <nav v-if="!fetching">
+    <nav v-if="!fetching && type === 'usuario'">
       <btn-progresso
         v-if="page > 1"
         class="pre-impressao__navigation pre-impressao__navigation--left"
@@ -18,7 +18,32 @@
         :background="'transparent'"
         :onHoverBackground="'#777'"
         :onHoverStroke="'white'"
-        @btnPrograssoAction="changeSection(-1)"
+        @btnPrograssoAction="change(-1)"
+        :key="1"
+      />
+      <btn-progresso
+        class="pre-impressao__navigation pre-impressao__navigation--right"
+        :disabled="page === pageCount"
+        :stroke="'#A8A8A8'"
+        :background="'transparent'"
+        :onHoverBackground="'#777'"
+        :onHoverStroke="'white'"
+        :tooltip="`${page}/${pageCount}`"
+        :displayTooltip="true"
+        @btnPrograssoAction="change(1)"
+        :key="2"
+      />
+    </nav>
+    <nav v-if="!fetching && type === 'projeto'">
+      <btn-progresso
+        v-if="page > 1"
+        class="pre-impressao__navigation pre-impressao__navigation--left"
+        :disabled="page <= 1"
+        :stroke="'#A8A8A8'"
+        :background="'transparent'"
+        :onHoverBackground="'#777'"
+        :onHoverStroke="'white'"
+        @btnPrograssoAction="change(-1)"
         :key="1"
       />
       <btn-progresso
@@ -30,7 +55,7 @@
         :onHoverStroke="'white'"
         :tooltip="`${page}/${3}`"
         :displayTooltip="true"
-        @btnPrograssoAction="changeSection(1)"
+        @btnPrograssoAction="change(1)"
         :key="2"
       />
     </nav>
@@ -41,10 +66,6 @@
           <nuxt />
         </div>
       </div>
-      <p class="pre-impressao__page-counter">
-        <span data-cy="pre-impressao__page-counter">{{ page }}</span
-        >/{{ pageCount }}
-      </p>
       <div class="row pre-impressao__btns">
         <div class="column column--left">
           <btn-action
@@ -115,6 +136,12 @@ export default {
     },
     nprodam () {
       return this.usuario.nprodam
+    },
+    section () {
+      return this.$route.query.section ? this.$route.query.section : ''
+    },
+    type () {
+      return this.$route.query.type
     }
   },
   watch: {
@@ -135,6 +162,15 @@ export default {
         this.csv.loading = false
         this.pdf.loading = false
       }
+    },
+    section () {
+      setTimeout(() => {
+        this.$scrollTo('.pre-impressao', 150, {
+          easing: 'ease-in',
+          cancelable: true,
+          force: true
+        })
+      }, 150)
     }
   },
   created () {
@@ -206,15 +242,16 @@ export default {
       this.pdf.content = {}
       this.$router.push(route)
     },
-    changeSection (number) {
+    change (number) {
       const section = parseInt(this.$route.query.section)
-      const { from, projeto } = this.$route.query
+      const { from, projeto, type } = this.$route.query
 
       this.$router.replace({
         query: {
           from,
           projeto,
-          section: section + number
+          section: section + number,
+          type
         }
       })
       this.SET({ data: this.page + number, key: 'page' })

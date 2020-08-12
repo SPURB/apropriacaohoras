@@ -1,7 +1,10 @@
 <template>
   <div class="pre-impressao-admin-section-2">
     <div v-for="(pagina, index) in fasesPaginadas" :key="index">
-      <pre-impressao-a4 :paginationIndex="2" :paginationTotal="3">
+      <pre-impressao-a4
+        :paginationIndex="index + 2"
+        :paginationTotal="totalPages"
+      >
         <div class="pre-impressao-admin__header--fases">
           <h2>{{ projeto }}</h2>
           <p>
@@ -66,65 +69,12 @@ export default {
       'totalHoras',
       'fasesComHoras'
     ]),
-    ...mapGetters('admin/pre-impressao/section2', ['subatividadesFlat']),
-    ...mapState('admin/pre-impressao/section2', [
-      'subatividades',
-      'totalPages'
+    ...mapGetters('admin/pre-impressao/section2', [
+      'subatividadesFlat',
+      'fasesPaginadas'
     ]),
-    fasesPaginadas () {
-      if (!this.fasesComHoras.length || !this.subatividadesFlat.length)
-        return []
-
-      let paginas = []
-      let pagina = []
-
-      let soma = 0
-      const maxSoma = 18 // máximo de linhas de cada página
-
-      this.fasesComHoras
-        .map(({ nome, id, totalHorasFase }) => {
-          const subatividades = this.subatividadesFlat
-            .filter(subatividade => subatividade.fase === id)
-            .map(subatividade => {
-              const horas = this.horas
-                .filter(hora => hora.subatividade === subatividade.id)
-                .map(hora => hora.horas + hora.extras)
-                .reduce((a, ac) => a + ac, 0)
-
-              return {
-                nome: subatividade.nome,
-                horas
-              }
-            })
-
-          return {
-            nome,
-            id,
-            totalHorasFase,
-            subatividades
-          }
-        })
-        .forEach((item, index, array) => {
-          const len = item.subatividades.length
-          const currentSoma = len + soma
-
-          if (currentSoma <= maxSoma) {
-            pagina.push(item)
-            soma = currentSoma
-          } else {
-            paginas.push(pagina)
-            pagina = []
-            pagina.push(item)
-            soma = len
-          }
-
-          if (index === array.length - 1) {
-            paginas.push(pagina)
-          }
-        })
-
-      return paginas
-    },
+    ...mapState('admin/pre-impressao/section2', ['subatividades']),
+    ...mapGetters('admin/pre-impressao/section2', ['totalPages']),
     isReady () {
       return this.fasesPaginadas.length > 0
     }

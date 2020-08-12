@@ -215,7 +215,7 @@ export default {
       const valid = this.projetosFases.filter(
         ({ totalHorasProjeto }) => totalHorasProjeto
       )
-      return valid.length
+      return valid.length - 1
     }
   },
   watch: {

@@ -35,6 +35,7 @@
     "file-saver": "^2.0.2",
     "fuse.js": "^3.2.1",
     "nuxt": "^2.14.1",
+    "vue-scrollto": "^2.18.2",
     "vuex-persist": "^2.2.0"
   },
   "devDependencies": {

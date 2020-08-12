@@ -17,7 +17,9 @@
           $router.push({
             path: '/pre-impressao',
             query: {
-              from: '/admin/relatorios'
+              from: '/admin/relatorios',
+              section: 1,
+              type: 'usuario'
             }
           })
         "
@@ -32,7 +34,8 @@
             query: {
               from: '/admin/relatorios',
               projeto: projetoInfo.id,
-              section: 1
+              section: 1,
+              type: 'projeto'
             }
           })
         "
@@ -92,12 +95,18 @@ export default {
     await this.getHorasProjeto()
     await this.getRelatorioDetalhado()
   },
+  mounted () {
+    this.resetPreImpressao()
+  },
   methods: {
     ...mapActions('relatorios', [
       'getRelatorios',
       'getHorasProjeto',
       'getRelatorioDetalhado'
-    ])
+    ]),
+    ...mapActions('pre-impressao', {
+      resetPreImpressao: 'reset'
+    })
   }
 }
 </script>

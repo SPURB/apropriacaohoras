@@ -1,6 +1,6 @@
 <template>
   <div class="pre-impressao-admin-section-1">
-    <pre-impressao-a4 :paginationIndex="1" :paginationTotal="3">
+    <pre-impressao-a4 :paginationIndex="1" :paginationTotal="totalPages">
       <div class="pre-impressao-admin__header">
         <h2>{{ projeto }}</h2>
       </div>
@@ -81,7 +81,8 @@ export default {
     ...mapGetters('admin/pre-impressao/section1', [
       'totalHoras',
       'fasesComHoras'
-    ])
+    ]),
+    ...mapGetters('admin/pre-impressao/section2', ['totalPages'])
   }
 }
 </script>
