@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="pre-impressao-admin"
-    :style="{ display: fetching ? 'block' : 'flex' }"
-  >
+  <div class="pre-impressao-admin">
     <div class="pre-impressao-admin__container">
       <div class="pre-impressao-admin__projetos">
         <pre-impressao-admin-section-1 v-if="section === 1" />
@@ -14,7 +11,7 @@
 </template>
 
 <script>
-import { pdfAdmin2 } from '~/libs/pdf'
+import { pdfAdmin } from '~/libs/pdf'
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import { createHashTable } from '~/libs/helpers'
 import PreImpressaoAdminSection1 from '~/components/sections/PreImpressaoAdminSection1'
@@ -30,6 +27,10 @@ export default {
     PreImpressaoAdminSection3
   },
   computed: {
+    ...mapGetters('admin/pre-impressao/section1', [
+      'totalHoras',
+      'fasesComHoras'
+    ]),
     ...mapState('admin/pre-impressao/section1', [
       'projeto',
       'horas',
@@ -63,7 +64,18 @@ export default {
     allset (isSet) {
       if (isSet) {
         this.$nuxt.$emit('getCsv', this.createCsv())
-        this.$nuxt.$emit('getPdf', [])
+        this.$nuxt.$emit(
+          'getPdf',
+          pdfAdmin({
+            usuarios: this.usuarios,
+            fases: this.fases,
+            fasesComHoras: this.fasesComHoras,
+            horas: this.horas,
+            projeto: this.projeto,
+            subatividadesFlat: this.subatividadesFlat,
+            totalHoras: this.totalHoras
+          })
+        )
       }
     },
     fases (items) {

@@ -1,13 +1,7 @@
-import Styles from './styles'
+import { styles01, styles02 } from './styles'
 import Commons from '../index'
-import {
-  primeiraPaginaAdmin,
-  segundaPaginaAdmin,
-  terceiraPaginaAdmin,
-  quartaPaginaAdmin,
-  pageBreak
-} from './estrutura'
 import { line, spurbanismoBase64 } from './commons'
+import { adminSection1, adminSection2, adminSection3 } from './sections'
 
 const origin = `${window.location.host}/apropriacaohoras/`
 const date = Commons.currentDate()
@@ -133,77 +127,14 @@ const pdfUsuario = (projetos, nome) => {
         }
       ]
     },
-    styles: Styles.styles01(),
+    styles: styles01,
     defaultStyle: {
       columnGap: 20
     }
   }
 }
 
-const pdfAdmin = projetos => {
-  let primeira = []
-  let segunda = []
-  let terceira = []
-  let quarta = []
-
-  projetos.forEach(projeto => {
-    if (projeto.ind === 0) {
-      primeira.push(primeiraPaginaAdmin(projeto.values))
-    } else if (projeto.ind === 1) {
-      segunda.push(segundaPaginaAdmin(projeto.values))
-    } else if (projeto.ind === 2) {
-      terceira.push(terceiraPaginaAdmin(projeto.values))
-    } else {
-      quarta.push(quartaPaginaAdmin(projeto.values))
-    }
-  })
-
-  let content = Commons.arrayIntersect(primeira, segunda, terceira)
-  content = [].concat(content, quarta)
-  content = Estrutura.pageBreak(content)
-
-  return {
-    pageSize: 'A4',
-    content,
-    header: function (currentPage, pageCount) {
-      return {
-        columns: [
-          {
-            image: spurbanismoBase64,
-            width: 100,
-            marginTop: 25,
-            marginLeft: 40
-          },
-          {
-            alignment: 'right',
-            text: currentPage.toString() + ' de ' + pageCount,
-            marginTop: 25,
-            marginRight: 40
-          }
-        ]
-      }
-    },
-    footer: {
-      margin: [40, -15, 40, 0],
-      columns: [
-        {
-          text: `Verifique este documento \n ${origin}`,
-          style: ['leftText', 'footer']
-        },
-        {
-          text: `Relatório gerado em \n ${date.cDay}/${date.cMonth}/${date.cYear} às ${horario}`,
-          style: ['rightText', 'footer']
-        }
-      ]
-    },
-    styles: Styles.styles02(),
-    defaultStyle: {
-      columnGap: 20
-    }
-  }
-}
-
-const pdfAdmin2 = ({ primeiraPaginaAdmin }) => {
+const pdfAdmin = content => {
   return {
     pageSize: 'A4',
     header: (currentPage, pageCount) => {
@@ -224,7 +155,11 @@ const pdfAdmin2 = ({ primeiraPaginaAdmin }) => {
         ]
       }
     },
-    primeiraPaginaAdmin,
+    content: [
+      adminSection1(content),
+      adminSection2(content),
+      adminSection3(content)
+    ],
     footer: {
       margin: [40, -15, 40, 0],
       columns: [
@@ -237,8 +172,9 @@ const pdfAdmin2 = ({ primeiraPaginaAdmin }) => {
           style: ['rightText', 'footer']
         }
       ]
-    }
+    },
+    styles: styles02
   }
 }
 
-export { pdfUsuario, pdfAdmin, pdfAdmin2 }
+export { pdfUsuario, pdfAdmin }

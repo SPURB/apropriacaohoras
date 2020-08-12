@@ -47,7 +47,7 @@ export default {
     return {
       pageNumber: 0,
       size: 9,
-      optionTitle: ''
+      optionTitle: 'Selecione um projeto'
     }
   },
   components: {
