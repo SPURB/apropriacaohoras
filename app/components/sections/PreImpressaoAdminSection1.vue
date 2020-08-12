@@ -19,11 +19,11 @@
         </section>
       </div>
       <div class="pre-impressao-admin__main">
-        <div class="projeto">
-          <div class="projeto__title">
+        <div class="pre-impressao-projeto">
+          <div class="pre-impressao-projeto__title">
             <h3>Horas totais por fases</h3>
           </div>
-          <table class="projeto__table">
+          <table class="pre-impressao-projeto__table">
             <thead>
               <tr>
                 <th>Fases</th>
@@ -34,7 +34,7 @@
             <tbody>
               <tr
                 :key="`fase-${index}`"
-                class="projeto__fase"
+                class="pre-impressao-projeto__fase"
                 v-for="(fase, index) in fasesComHoras"
               >
                 <td>{{ fase.nome }}</td>
@@ -50,7 +50,7 @@
                   />
                 </td>
               </tr>
-              <tr class="projeto__soma">
+              <tr class="pre-impressao-projeto__soma">
                 <td>total</td>
                 <td>{{ totalHoras }}</td>
                 <td></td>

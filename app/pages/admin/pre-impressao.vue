@@ -126,7 +126,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .pre-impressao-admin {
   &__header {
     display: flex;
@@ -220,7 +220,7 @@ export default {
     }
   }
 }
-.projeto {
+.pre-impressao-projeto {
   margin-top: 1rem;
 
   &__title {

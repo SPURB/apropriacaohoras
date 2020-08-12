@@ -311,9 +311,6 @@ export default {
       right: 0;
     }
   }
-  &__page-counter {
-    text-align: center;
-  }
 }
 
 .column {

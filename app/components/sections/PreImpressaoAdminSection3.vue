@@ -13,11 +13,11 @@
         </p>
       </div>
       <div class="pre-impressao-admin__main">
-        <div class="projeto">
-          <div class="projeto__title">
+        <div class="pre-impressao-projeto">
+          <div class="pre-impressao-projeto__title">
             <h3>Horas totais por Funcionário</h3>
           </div>
-          <table class="projeto__table">
+          <table class="pre-impressao-projeto__table">
             <thead>
               <tr>
                 <th>Funcionário</th>
@@ -28,7 +28,7 @@
             <tbody>
               <tr
                 :key="`usuarios-${index}`"
-                class="projeto__fase"
+                class="pre-impressao-projeto__fase"
                 v-for="(usuario, index) in usuarioComHoras"
               >
                 <td>{{ usuario.nome }}</td>

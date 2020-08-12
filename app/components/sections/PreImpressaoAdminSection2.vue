@@ -14,13 +14,13 @@
         </div>
 
         <div v-if="isReady" class="pre-impressao-admin__main">
-          <div class="projeto">
-            <div class="projeto__title">
+          <div class="pre-impressao-projeto">
+            <div class="pre-impressao-projeto__title">
               <h3>Horas totais por subatividades</h3>
             </div>
             <table
               :key="`fases-${index}`"
-              class="projeto__table projeto__table--paginado"
+              class="pre-impressao-projeto__table pre-impressao-projeto__table--paginado"
               v-for="(fase, index) in pagina"
             >
               <thead>
@@ -31,7 +31,7 @@
               <tbody>
                 <tr
                   :key="`fase-${index}`"
-                  class="projeto__fase"
+                  class="pre-impressao-projeto__fase"
                   v-for="(subatividade, index) in fase.subatividades"
                 >
                   <td>{{ subatividade.nome }}</td>
