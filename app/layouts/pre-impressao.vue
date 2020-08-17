@@ -70,7 +70,7 @@
         <div class="column column--left">
           <btn-action
             title="Gerar csv"
-            @action="createCsv(csv.content, fileName(nprodam, 'csv'))"
+            @action="createCsv(csv.content, fileName(nprodam, 'xlsx'))"
             :loading="csv.loading"
           />
         </div>
@@ -197,9 +197,28 @@ export default {
     async createCsv (content, name) {
       this.csv.loading = true
       try {
-        await this.loadExternalLib('https://cdn.jsdelivr.net/npm/json2csv')
-        const csvBlob = new Blob([window.json2csv.parse(content)], {
-          type: 'text/csv; charset=utf-8'
+        await this.loadExternalLib(
+          'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js'
+        )
+
+        const EXCEL_TYPE =
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+
+        const worksheet = window.XLSX.utils.json_to_sheet(content)
+        const workbook = {
+          Sheets: {
+            data: worksheet
+          },
+          SheetNames: ['data']
+        }
+
+        const excelBuffer = window.XLSX.write(workbook, {
+          bookType: 'xlsx',
+          type: 'array'
+        })
+
+        const csvBlob = new Blob([excelBuffer], {
+          type: EXCEL_TYPE
         })
         saveAs(csvBlob, name)
       } catch (error) {
