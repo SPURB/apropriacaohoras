@@ -7,7 +7,7 @@
     <div class="pre-impressao-usuario__container">
       <div v-if="isReady" class="pre-impressao-usuario__projetos">
         <pre-impressao-a4
-          v-if="projeto.totalHorasProjeto"
+          v-if="showProjeto"
           :paginationIndex="page"
           :paginationTotal="pageCount"
           @getA4Width="setDinamicBreakPoints"
@@ -98,6 +98,7 @@ export default {
   data () {
     return {
       projeto: {},
+      showProjeto: false,
       showgrafbar: true
     }
   },
@@ -208,14 +209,11 @@ export default {
       })
     },
     projetosForPdf () {
-      return this.projetosFases.filter(projeto => projeto.totalHorasProjeto > 0)
+      return this.projetosFases
     },
     pageCount () {
       if (!this.projetosFases.length) return 0
-      const valid = this.projetosFases.filter(
-        ({ totalHorasProjeto }) => totalHorasProjeto
-      )
-      return valid.length - 1
+      return this.projetosFases.length - 1
     }
   },
   watch: {
@@ -240,6 +238,7 @@ export default {
     },
     projetosForPdf (projetos) {
       if (this.projetosFases.length > 0) {
+        this.showProjeto = false
         this.projeto = this.projetosFases[0]
 
         const contentPdf = pdfUsuario(projetos, this.nome)
@@ -262,6 +261,7 @@ export default {
 
         this.$nuxt.$emit('getPdf', contentPdf)
         this.$nuxt.$emit('getCsv', this.flatArrays(contentCsv))
+        this.showProjeto = true
       }
     },
     gruposUsuario (grupos) {

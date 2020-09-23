@@ -4,8 +4,7 @@ const apiBase = {
   homolog: 'https://apropriacaohoras.herokuapp.com/apropriacaohoras/api/0.0.1'
 }
 
-const appBase =
-  process.env.CI || process.env.NODE_ENV === 'prod' ? '/apropriacaohoras/' : '/'
+const appBase = '/apropriacaohoras/'
 
 export default {
   target: 'static',
