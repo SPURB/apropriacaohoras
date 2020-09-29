@@ -13,6 +13,10 @@ export const state = () => ({
   horasUsuario: [],
   horasProjeto: [],
   horasUsuariosByProjetos: [],
+  filtros: {
+    dataInicial: '',
+    dataFinal: ''
+  },
   fetching: false,
   error: false,
   errorStatus: 0,
@@ -117,12 +121,15 @@ export const actions = {
       })
       .finally(() => commit('SET', { key: 'fetching', data: false }))
   },
-  getRelatorioDetalhado: ({ commit, rootState }) => {
+  getRelatorioDetalhado: ({ commit, rootState, state }) => {
     let url
+    const { filtros } = state
     const projetoId = rootState['form-registrar-horas'].horas.projeto
     if (projetoId) {
       commit('SET', { data: projetoId, key: 'projetoSelected' })
-      url = `?projeto=${rootState['form-registrar-horas'].horas.projeto}`
+      url = `
+        ?projeto=${rootState['form-registrar-horas'].horas.projeto}
+        &dataRefInicio=${filtros.dataInicial}&dataRefInicio=${filtros.dataFinal}`
     } else {
       url = ''
     }
@@ -151,6 +158,9 @@ export const actions = {
       })
       commit('SET', { data, key: 'horasUsuariosByProjetos' })
     })
+  },
+  setFiltros: ({ commit }, payload) => {
+    commit('SET', { data: payload, key: 'filtros' })
   },
   orderBy: ({ commit }, payload) => {
     commit('ORDER_BY', payload)

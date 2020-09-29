@@ -9,6 +9,14 @@
         :optionTitle="optionTitle"
         data-cy="select__option"
       />
+      <div class="relatorio-detalhado__date-group">
+        <input-date
+          v-if="projeto"
+          title="Data inicial"
+          @date="setDataInicial"
+        />
+        <input-date v-if="projeto" title="Data final" @date="setDataFinal" />
+      </div>
       <button
         v-if="projeto"
         @click.prevent="resetFilters"
@@ -38,6 +46,7 @@
 
 <script>
 import CustomSelect from '~/components/forms/CustomSelect'
+import InputDate from '~/components/forms/InputDate'
 import TabelaHoras from '~/components/sections/TabelaHoras'
 import Pagination from '~/components/elements/Pagination'
 import { mapState, mapActions, mapGetters } from 'vuex'
@@ -47,11 +56,16 @@ export default {
     return {
       pageNumber: 0,
       size: 9,
-      optionTitle: 'Selecione um projeto'
+      optionTitle: 'Selecione um projeto',
+      filtros: {
+        dataInicial: '',
+        dataFinal: ''
+      }
     }
   },
   components: {
     CustomSelect,
+    InputDate,
     TabelaHoras,
     Pagination
   },
@@ -103,10 +117,17 @@ export default {
     projetoInfo (projeto) {
       this.optionTitle =
         projeto.nome !== '' ? projeto.nome : 'Selecione um projeto'
+    },
+    filtros: {
+      deep: true,
+      handler () {
+        this.setFiltros(this.filtros)
+        this.getRelatorioDetalhado()
+      }
     }
   },
   methods: {
-    ...mapActions('relatorios', ['getRelatorioDetalhado']),
+    ...mapActions('relatorios', ['getRelatorioDetalhado', 'setFiltros']),
     ...mapActions('form-registrar-horas', ['RESET']),
     setPageNumber (val) {
       this.pageNumber = val
@@ -115,6 +136,12 @@ export default {
       this.optionTitle = 'Selecione um projeto'
       this.setOptionValue = 0
       this.RESET()
+    },
+    setDataInicial (val) {
+      this.filtros.dataInicial = val
+    },
+    setDataFinal (val) {
+      this.filtros.dataFinal = val
     }
   }
 }
@@ -125,7 +152,6 @@ export default {
   width: 100%;
 
   &__select {
-    width: 50%;
     display: flex;
 
     button {
@@ -143,6 +169,11 @@ export default {
       }
     }
   }
+
+  &__date-group {
+    display: flex;
+  }
+
   &__table {
     margin: 15px;
     overflow-x: hidden;
@@ -153,7 +184,8 @@ export default {
   }
 
   @media (max-width: 874px) {
-    &__select {
+    &__select,
+    &__date-group {
       width: 100%;
       flex-direction: column;
     }

@@ -47,12 +47,8 @@
   </div>
 </template>
 <script>
-import ErroIcon from '~/components/elements/Erro'
-import SucessoIcon from '~/components/elements/Sucesso'
-
 export default {
   name: 'Modal',
-  components: { ErroIcon, SucessoIcon },
   props: {
     title: {
       type: String,
