@@ -17,7 +17,7 @@ export default {
   },
   async created () {
     try {
-      const { data } = await Usuario.get('admin=1')
+      const { data } = await Usuario.get('?admin=1')
       this.admins = data.data.map(admin => admin.nome).sort()
     } catch (err) {}
   }
